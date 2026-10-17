@@ -1,0 +1,40 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='849' height='563' viewBox='0 0 849 563'>
+<rect width='100%' height='100%' fill='white'/>
+<rect x='110.0' y='90.0' width='619.2' height='333.4' rx='10' fill='#4a4a4a' stroke='#222222' stroke-width='1.5'/>
+<rect x='142.0' y='122.0' width='555.2' height='269.4' rx='0' fill='#5c5c5c' stroke='#222222' stroke-width='0.8'/>
+<rect x='110.0' y='180.5' width='28.0' height='152.4' rx='0' fill='#7a7a7a' stroke='#222222' stroke-width='1.5'/>
+<rect x='701.2' y='180.5' width='28.0' height='152.4' rx='0' fill='#7a7a7a' stroke='#222222' stroke-width='1.5'/>
+<rect x='132.2' y='90.0' width='101.6' height='28.0' rx='0' fill='#7a7a7a' stroke='#222222' stroke-width='1.5'/>
+<rect x='605.4' y='90.0' width='101.6' height='28.0' rx='0' fill='#7a7a7a' stroke='#222222' stroke-width='1.5'/>
+<text x='419.6' y='262.7' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='white' text-anchor='middle' font-weight='normal'>underside (machine upside down, back at top)</text>
+<text x='146.0' y='186.7' font-family='Helvetica, Arial, sans-serif' font-size='12' fill='#eeeeee' text-anchor='start' font-weight='normal'>end boss</text>
+<text x='183.0' y='136.0' font-family='Helvetica, Arial, sans-serif' font-size='12' fill='#eeeeee' text-anchor='middle' font-weight='normal'>hinge boss</text>
+<line x1='110.0' y1='90.0' x2='110.0' y2='52.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='183.0' y1='90.0' x2='183.0' y2='52.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='110.0' y1='46.0' x2='183.0' y2='46.0' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='110.0,46.0 119.0,42.0 119.0,50.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='183.0,46.0 174.0,50.0 174.0,42.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='146.5' y='39.0' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='middle' font-weight='normal'>center (from left end)</text>
+<line x1='132.2' y1='90.0' x2='132.2' y2='82.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='233.8' y1='90.0' x2='233.8' y2='82.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='132.2' y1='76.0' x2='233.8' y2='76.0' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='132.2,76.0 141.2,72.0 141.2,80.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='233.8,76.0 224.8,80.0 224.8,72.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='183.0' y='69.0' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='middle' font-weight='normal'>length</text>
+<line x1='110.0' y1='423.4' x2='64.0' y2='423.4' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='110.0' y1='256.7' x2='64.0' y2='256.7' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='58.0' y1='423.4' x2='58.0' y2='256.7' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='58.0,423.4 62.0,432.4 54.0,432.4' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='58.0,256.7 54.0,247.7 62.0,247.7' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='66.0' y='345.0' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='start' font-weight='normal'></text>
+<text x='50.0' y='340.0' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#1f5fa8' text-anchor='middle' font-weight='normal' transform='rotate(-90 50.0 340.0)'>center (from front edge)</text>
+<line x1='110.0' y1='180.5' x2='100.0' y2='180.5' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='110.0' y1='332.9' x2='100.0' y2='332.9' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='94.0' y1='180.5' x2='94.0' y2='332.9' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='94.0,180.5 98.0,189.5 90.0,189.5' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='94.0,332.9 90.0,323.9 98.0,323.9' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='102.0' y='261.7' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='start' font-weight='normal'></text>
+<text x='88.0' y='206.7' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#1f5fa8' text-anchor='middle' font-weight='normal' transform='rotate(-90 88.0 206.7)'>length</text>
+<text x='419.6' y='463.4' font-family='Helvetica, Arial, sans-serif' font-size='12' fill='#555555' text-anchor='middle' font-weight='bold'>FRONT</text>
+<text x='419.6' y='498.4' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#555555' text-anchor='middle' font-weight='normal' font-style='italic'>Each thickened area is one bed_reliefs entry: [edge, center, length, thickness].</text>
+</svg>

@@ -1,0 +1,4 @@
+docs/guide/guide.typ
+*.stl
+*.3mf
+.DS_Store

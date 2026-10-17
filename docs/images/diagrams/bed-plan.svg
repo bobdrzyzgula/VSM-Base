@@ -1,0 +1,37 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='939' height='523' viewBox='0 0 939 523'>
+<rect width='100%' height='100%' fill='white'/>
+<rect x='90.0' y='70.0' width='619.2' height='333.4' rx='10' fill='#4a4a4a' stroke='#222222' stroke-width='1.5'/>
+<text x='399.6' y='242.7' font-family='Helvetica, Arial, sans-serif' font-size='16' fill='white' text-anchor='middle' font-weight='normal'>bed top surface</text>
+<text x='399.6' y='30.0' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#555555' text-anchor='middle' font-weight='bold'>BACK (hinge side)</text>
+<text x='399.6' y='465.4' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#555555' text-anchor='middle' font-weight='bold'>FRONT (operator side)</text>
+<text x='35.0' y='236.7' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#555555' text-anchor='middle' font-weight='bold' transform='rotate(-90 35.0 236.7)'>LEFT (needle end)</text>
+<text x='874.2' y='236.7' font-family='Helvetica, Arial, sans-serif' font-size='13' fill='#555555' text-anchor='middle' font-weight='bold' transform='rotate(90 874.2 236.7)'>RIGHT (handwheel end)</text>
+<circle cx='163.0' cy='79.0' r='6.0' fill='white' stroke='#222222' stroke-width='1.5' stroke-dasharray='3,2'/>
+<circle cx='636.2' cy='79.0' r='6.0' fill='white' stroke='#222222' stroke-width='1.5' stroke-dasharray='3,2'/>
+<text x='399.6' y='100.0' font-family='Helvetica, Arial, sans-serif' font-size='12' fill='#dddddd' text-anchor='middle' font-weight='normal' font-style='italic'>hinge holes (in the rear skirt, below the edge)</text>
+<line x1='90.0' y1='70.0' x2='90.0' y2='62.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='163.0' y1='70.0' x2='163.0' y2='62.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='90.0' y1='56.0' x2='163.0' y2='56.0' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='90.0,56.0 99.0,52.0 99.0,60.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='163.0,56.0 154.0,60.0 154.0,52.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='126.5' y='49.0' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='middle' font-weight='normal'>hinge_hole_inset_in</text>
+<line x1='636.2' y1='70.0' x2='636.2' y2='62.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='709.2' y1='70.0' x2='709.2' y2='62.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='636.2' y1='56.0' x2='709.2' y2='56.0' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='636.2,56.0 645.2,52.0 645.2,60.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='709.2,56.0 700.2,60.0 700.2,52.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='672.7' y='49.0' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='middle' font-weight='normal'>hinge_hole_inset_in</text>
+<line x1='90.0' y1='403.4' x2='90.0' y2='439.4' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='709.2' y1='403.4' x2='709.2' y2='439.4' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='90.0' y1='433.4' x2='709.2' y2='433.4' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='90.0,433.4 99.0,429.4 99.0,437.4' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='709.2,433.4 700.2,437.4 700.2,429.4' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='399.6' y='426.4' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='middle' font-weight='normal'>bed_length_in</text>
+<line x1='709.2' y1='70.0' x2='737.2' y2='70.0' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='709.2' y1='403.4' x2='737.2' y2='403.4' stroke='#1f5fa8' stroke-width='0.8'/>
+<line x1='731.2' y1='70.0' x2='731.2' y2='403.4' stroke='#1f5fa8' stroke-width='1.2'/>
+<polygon points='731.2,70.0 735.2,79.0 727.2,79.0' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<polygon points='731.2,403.4 727.2,394.4 735.2,394.4' fill='#1f5fa8' stroke='#1f5fa8' stroke-width='0.5'/>
+<text x='739.2' y='241.7' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='start' font-weight='normal'></text>
+<text x='739.2' y='241.7' font-family='Helvetica, Arial, sans-serif' font-size='14' fill='#1f5fa8' text-anchor='start' font-weight='normal'>bed_width_in</text>
+</svg>
