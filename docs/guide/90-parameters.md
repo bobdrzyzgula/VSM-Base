@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 255 parameters; 253 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 312 parameters; 310 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -388,3 +388,85 @@ There are 255 parameters; 253 of them appear in the Customizer. The rest are lis
 | `lid_hinge_end_clearance` | `0.15` | Clearance at the lid's two hinge ends (less end float keeps both bumps engaged) |
 | `lid_recess_clearance` | `0.075` | Clearance between bump and recess, per side |
 | `lid_open_stop` | `true` | Cut a chamfer behind the hinge so an open lid leans back and stays up |
+
+## Inserts
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ins_spacing` | `10` | Spacing between parts in the insert print layouts *Range 0 to 50, step 1.* |
+| `bobbin_d` | `20.6375` | Bobbin diameter (class 15 and 66: 13/16"), for the bobbin trays and the spool tray |
+| `bobbin_t` | `11.1125` | Bobbin thickness (class 15 and 66: 7/16") |
+
+## Bobbin trays (corner bay)
+
+| Parameter | Default | Description |
+|---|---|---|
+| `bb_trays` | `0` | Number of trays, bottom included; 0 = as many as fit under the lid *Range 0 to 10, step 1.* |
+| `bb_post_d` | `5` | Post diameter (class 15 and 66 bores are a little over 6 mm) *Range 3 to 10, step 0.1.* |
+| `bb_grid` | `[3, 3]` | Post grid [columns (X), rows (Y)]; cells that would crowd the center column are left empty |
+| `bb_floor` | `3` | Tray floor thickness *Range 1.2 to 6, step 0.1.* |
+| `bb_bobbin_clear` | `1` | Clearance between a bobbin's top and the tray above *Range 0 to 4, step 0.1.* |
+| `bb_wall_clear` | `0.75` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
+| `bb_corner_r` | `2` | Tray corner radius *Range 0 to 10, step 0.5.* |
+| `bb_top_clear` | `1` | Clearance between the top of the knob and the lid *Range 0 to 5, step 0.1.* |
+| `bb_lighten` | `true` | Lightening holes where four cells meet |
+| `bb_lighten_d` | `12` | Lightening hole diameter *Range 4 to 20, step 0.5.* |
+| `bb_pin_d` | `3` | Pin on each post tip: diameter *Range 1.5 to 6, step 0.1.* |
+| `bb_pin_h` | `2` | Pin height above the post shoulder *Range 0.5 to 5, step 0.1.* |
+| `bb_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
+| `bb_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
+| `bb_socket_chamfer` | `0.6` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
+| `bb_column_d` | `12` | Handle column diameter *Range 6 to 20, step 0.5.* |
+| `bb_column_flare` | `2` | Flare radius at the column's foot *Range 0 to 5, step 0.5.* |
+| `bb_knob_d` | `18` | Knob diameter *Range 8 to 30, step 0.5.* |
+| `bb_knob_h` | `8` | Knob height *Range 3 to 20, step 0.5.* |
+| `bb_hole_clear` | `0.5` | Clearance between the knob and the upper trays' center holes, per side *Range 0.1 to 2, step 0.05.* |
+
+## Notion trays (back or left bay)
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ot_bay` | `"back"` | Bay the notion and spool trays go in *Choices: back, left.* |
+| `ot_custom_h` | `12` | Custom tray height *Range 5 to 80, step 0.5.* |
+| `ot_show` | `[25, 20, 15, 10]` | Tray heights shown stacked in part notion_assembly |
+| `ot_wall_clear` | `1` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
+| `ot_wall` | `1.2` | Wall thickness *Range 0.8 to 4, step 0.1.* |
+| `ot_floor` | `1.6` | Floor thickness *Range 0.8 to 4, step 0.1.* |
+| `ot_corner_r` | `2` | Outer corner radius *Range 0 to 10, step 0.5.* |
+| `ot_boss` | `9` | Corner boss size (square, from the outer corner) *Range 5 to 20, step 0.5.* |
+| `ot_pin_d` | `3` | Pin diameter *Range 1.5 to 6, step 0.1.* |
+| `ot_pin_h` | `2` | Pin height above the wall tops *Range 0.5 to 5, step 0.1.* |
+| `ot_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
+| `ot_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
+| `ot_socket_chamfer` | `0.5` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
+| `ot_grip_w` | `40` | Finger-hold lip length along each end wall *Range 10 to 120, step 1.* |
+| `ot_grip_reach` | `5` | How far the lip reaches in from the wall *Range 0 to 15, step 0.5.* |
+| `ot_grip_t` | `1.5` | Thickness of the lip at its top, above the 45-degree underside *Range 0.8 to 4, step 0.1.* |
+| `ot_top_clear` | `1` | Clearance between the top tray's pins and the lid *Range 0 to 5, step 0.1.* |
+
+## Notion tray compartments
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ot_compartments` | `false` | Divide the plain notion trays (not the spool tray) into compartments |
+| `ot_cell` | `25.4` | Target compartment size; the grid divides the tray evenly to come closest to it *Range 10 to 100, step 0.1.* |
+| `ot_cols` | `0` | Compartments along the tray's length (0 = from ot_cell) *Range 0 to 20, step 1.* |
+| `ot_rows` | `0` | Compartments across the tray's width (0 = from ot_cell) *Range 0 to 20, step 1.* |
+| `ot_divider_frac` | `0.8` | Divider height, as a fraction of the tray height *Range 0.2 to 1, step 0.05.* |
+| `ot_divider_t` | `1.2` | Divider thickness *Range 0.8 to 4, step 0.1.* |
+
+## Spool tray
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ot_spool_d` | `38` | Spool diameter *Range 20 to 80, step 0.5.* |
+| `ot_spool_h` | `44` | Spool height *Range 20 to 100, step 0.5.* |
+| `ot_spool_post_d` | `5` | Post diameter at the top, through the bobbin *Range 3 to 15, step 0.1.* |
+| `ot_spool_post_base_d` | `7` | Post diameter at the floor; the post tapers to the top diameter at the spool top *Range 3 to 20, step 0.1.* |
+| `ot_spool_bore` | `7.5` | Smallest spool bore you expect (for the console check) *Range 3 to 20, step 0.1.* |
+| `ot_spool_gap` | `1.5` | Space between neighboring spools *Range 0 to 10, step 0.1.* |
+| `ot_spool_wall_gap` | `0.5` | Space between the spools and the tray walls and corner bosses *Range 0 to 5, step 0.1.* |
+| `ot_spool_top_clear` | `1` | Clearance between the bobbin tops and the tray above *Range 0 to 5, step 0.1.* |
+| `ot_spool_open_sides` | `true` | Cut the long side walls down to a curb between the corner bosses, so the spools can be grasped from the side |
+| `ot_spool_curb` | `10` | Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends) *Range 3 to 40, step 0.5.* |
+| `ot_spool_cut_r` | `5` | Radius at the bottom corners of the cutaway *Range 0 to 20, step 0.5.* |

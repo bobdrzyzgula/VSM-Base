@@ -44,8 +44,12 @@ fit on your printer, and then print a base that fits.
   piece, each with a hinged or lift-out lid (solid or perforated, finger
   hole or thumb tab), and trenches so the bobbin cover can still slide open.
   Each also comes as a freestanding box with the same bay and lid.
-- **Organizer inserts** can be designed against a published list of bay
-  sizes; see [docs/inserts.md](docs/inserts.md).
+- **Organizer inserts** for the bays: stacking bobbin trays for the corner
+  bay (40 class 15/66 bobbins at the defaults), lifted out together by a
+  center knob; stacking notion trays for the back or left bay in 10–30 mm
+  and custom heights, plain or divided into compartments; and a spool tray
+  that holds each spool with its bobbin on top. Others can be designed
+  against a published list of bay sizes; see [docs/inserts.md](docs/inserts.md).
 - **Test parts** for checking the fit, the joints and the hardware before
   committing to a long print.
 - **Self-checking.** Every render prints the key dimensions and warns about
