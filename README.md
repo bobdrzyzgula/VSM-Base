@@ -70,7 +70,7 @@ and others) are welcome; see the guide.
 2. Open `scad/vsm_base.scad` and show the Customizer
    (*Window → Customizer*).
 3. **Measure your machine's bed casting** and enter the numbers in
-   *Machine bed*. The [User's Guide](docs/vsm-base-guide.pdf) explains each
+   *Machine bed*. The User's Guide ([measuring chapter](docs/guide/03-measuring.md)) explains each
    measurement. Don't skip this, even for a 99: castings vary.
 4. Read the console output after each render (F5/F6), and fix any WARNING
    lines before going further.
@@ -107,16 +107,21 @@ lengths rounded up to stock sizes.
 
 ## Documentation
 
-- **[User's Guide (PDF)](docs/vsm-base-guide.pdf)**: measuring, configuring,
-  testing, printing and assembly.
-- The guide's source is in [`docs/guide/`](docs/guide/), one Markdown file per
-  chapter, and reads directly on GitHub.
+- **User's Guide**: measuring, configuring, testing, printing and
+  assembly. Each [release](https://github.com/bobdrzyzgula/VSM-Base/releases)
+  carries it as a PDF and as a single HTML page that opens in any browser.
+- Between releases, read the guide here: its source is in
+  [`docs/guide/`](docs/guide/), one Markdown file per chapter, and reads
+  directly on GitHub. Or build the PDF and HTML yourself (below).
 - [`docs/guide/90-parameters.md`](docs/guide/90-parameters.md) lists every
   parameter. It is generated from the comments in the model.
 
-To rebuild the documentation, see the [`Makefile`](Makefile): `make params`,
-`make images`, `make pdf`. The PDF needs pandoc 3.1.2 or later and
-[Typst](https://typst.app).
+To build the documentation, see the [`Makefile`](Makefile): `make params`,
+`make images`, `make pdf`, `make html`, or `make docs` for both. They go in
+`build/`. Both need pandoc 3.1.2 or later; the PDF also needs
+[Typst](https://typst.app). A version tag (`v*`) builds both and attaches them
+to a GitHub release (see
+[`.github/workflows/release.yml`](.github/workflows/release.yml)).
 
 ## License
 

@@ -1,0 +1,62 @@
+/* Stylesheet for the HTML build of the User's Guide (make html). */
+:root {
+  --bg: #fdfdfb; --fg: #1f2328; --muted: #5d6670; --rule: #d8dcd6;
+  --link: #1f5fa8; --code-bg: #f1f2ee; --quote-bg: #f3f5f0; --quote-bar: #8aa37b;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17191c; --fg: #e3e5e8; --muted: #9aa3ad; --rule: #353a40;
+    --link: #79aef0; --code-bg: #23272b; --quote-bg: #1f2420; --quote-bar: #6f8a62;
+  }
+  img { background: #fff; border-radius: 4px; }   /* diagrams have transparent backgrounds */
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0 auto; padding: 2rem 16px 4rem; max-width: 46rem;
+  background: var(--bg); color: var(--fg);
+  font: 1rem/1.6 Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif;
+  -webkit-text-size-adjust: 100%;
+}
+h1, h2, h3, h4, #TOC { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.8rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+h2 { font-size: 1.3rem; margin: 2.2rem 0 .6rem; }
+h3 { font-size: 1.1rem; margin: 1.8rem 0 .5rem; }
+.header-section-number { color: var(--muted); margin-right: .5em; }
+header#title-block-header { margin-bottom: 2rem; }
+header#title-block-header h1.title { border: 0; margin-top: 0; font-size: 2.2rem; }
+header .author, header .date { color: var(--muted); margin: .2rem 0; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+img { max-width: 100%; height: auto; }
+figure { margin: 1.5rem 0; text-align: center; }
+figcaption { color: var(--muted); font-size: .9rem; margin-top: .4rem; text-align: left; }
+code { font: .88em/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+       background: var(--code-bg); padding: .1em .3em; border-radius: 3px; overflow-wrap: anywhere; }
+pre { background: var(--code-bg); padding: .8rem 1rem; border-radius: 4px; overflow-x: auto; }
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+blockquote { margin: 1.2rem 0; padding: .6rem 1rem; background: var(--quote-bg);
+             border-left: 3px solid var(--quote-bar); border-radius: 0 4px 4px 0; }
+blockquote p { margin: .4rem 0; }
+table { border-collapse: collapse; margin: 1rem 0; font-size: .92rem; display: block;
+        overflow-x: auto; max-width: 100%; }
+th, td { border: 1px solid var(--rule); padding: .35rem .55rem; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); }
+#TOC { font-size: .92rem; border: 1px solid var(--rule); border-radius: 6px; padding: .8rem 1rem; margin: 0 0 2rem; }
+#TOC::before { content: "Contents"; display: block; font-weight: 600; margin-bottom: .4rem; }
+#TOC ul { list-style: none; padding-left: 1.1rem; margin: .2rem 0; }
+#TOC > ul { padding-left: 0; }
+#TOC a { text-decoration: none; }
+#TOC a:hover { text-decoration: underline; }
+/* Wide screens: contents in a fixed column at the left */
+@media (min-width: 78rem) {
+  body { margin-left: max(19rem, calc(50vw - 23rem)); }
+  #TOC { position: fixed; top: 1.5rem; bottom: 1.5rem; width: 16rem;
+         left: max(1rem, calc(50vw - 23rem - 18rem)); overflow-y: auto; margin: 0; }
+}
+@media print {
+  #TOC { position: static; width: auto; }
+  body { margin: 0 auto; max-width: none; }
+  a { color: inherit; }
+}

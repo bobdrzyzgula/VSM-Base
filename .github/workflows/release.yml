@@ -1,0 +1,67 @@
+# Build the User's Guide (PDF and HTML) and attach it to a GitHub release.
+#
+# Push a version tag to make a release:
+#     git tag v0.1.0-alpha && git push origin v0.1.0-alpha
+# The release is named for the tag, and marked as a pre-release when the
+# tag contains "alpha", "beta" or "rc". It carries the guide as PDF and as a
+# single HTML page, and the model file. The release notes can be edited on
+# GitHub afterwards.
+#
+# Run it by hand (Actions -> Release -> Run workflow) to build the guide
+# without releasing; the documents are then kept as a workflow artifact.
+
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pandoc and Typst
+        run: |
+          curl -fsSL -o /tmp/pandoc.deb \
+            https://github.com/jgm/pandoc/releases/download/3.1.3/pandoc-3.1.3-1-amd64.deb
+          sudo dpkg -i /tmp/pandoc.deb
+          curl -fsSL -o /tmp/typst.tar.xz \
+            https://github.com/typst/typst/releases/download/v0.11.1/typst-x86_64-unknown-linux-musl.tar.xz
+          tar -xJf /tmp/typst.tar.xz -C /tmp
+          sudo install /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          pandoc --version | head -1
+          typst --version
+
+      - name: Build the guide
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            make docs VERSION="${GITHUB_REF_NAME#v}"
+          else
+            make docs
+          fi
+          cp scad/vsm_base.scad build/
+
+      - name: Keep the documents (manual runs)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsm-base-guide
+          path: build/
+
+      - name: Create the release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pre=""
+          case "${GITHUB_REF_NAME}" in *alpha*|*beta*|*rc*) pre="--prerelease" ;; esac
+          gh release create "${GITHUB_REF_NAME}" $pre \
+            --title "VSM Base ${GITHUB_REF_NAME}" \
+            --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide is attached as a PDF and as a single HTML page (open it in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2." \
+            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm_base.scad
