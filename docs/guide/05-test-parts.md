@@ -13,6 +13,7 @@
 - Center slice: the front-wall serrations, and which half goes on first
   (lower the right half onto the left).
 - Rod plugs: press fit in the end strip's rod holes.
+- Split test (its own part, `part = "split_test"`, not in the test set): just the front of the split joint, both halves, with the front-wall serrations and the first dovetail key, for a quick check of a serrated joint. The wall stubs are `split_test_h` tall (30 mm; 0 for full height).
 - Outlet block (outlet compartment only): curbs, screw height, and the
   insert or through-screw hole, with your outlet and plugs in place.
 - Extension top slices: lip fit, pegs, supports, and the bobbin-plate trench.

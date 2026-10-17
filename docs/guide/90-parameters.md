@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 312 parameters; 310 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 322 parameters; 320 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -17,6 +17,8 @@ There are 312 parameters; 310 of them appear in the Customizer. The rest are lis
 | `test_stub_w` | `20` | Test parts: full-height wall stubs either side of the joint in the center slice |
 | `test_hinge_w` | `40` | Test parts: size of the hinge block (X), centered on the left hinge |
 | `test_split_gap` | `10` | Gap between the two halves of split test parts |
+| `split_test_h` | `30` | Split test (part split_test): height of the front-wall stubs; 0 = full height *Range 0 to 100, step 1.* |
+| `split_test_w` | `25` | Split test: width either side of the split line *Range 10 to 60, step 1.* |
 | `printer_size` | `[256, 256, 256]` | Printer build volume, for the size check and the print plates |
 | `printer_margin` | `8` | Keep parts this far inside the bed's edges (room for supports, brims and skirts) *Range 0 to 30, step 1.* |
 | `print_plate` | `0` | Print plates (part all): 0 = every plate, laid out side by side; N = plate N only *Range 0 to 30, step 1.* |
@@ -123,6 +125,12 @@ There are 312 parameters; 310 of them appear in the Customizer. The rest are lis
 | `outlet_cap_t` | `2` | Through mount: cap thickness *Range 1 to 4, step 0.1.* |
 | `outlet_insert_d` | `5.6` | Hole for the heat-set insert in the right end wall (use the insert maker's recommended diameter) |
 | `outlet_insert_depth` | `12` | Depth of the insert hole into the wall *Range 4 to 20, step 0.5.* |
+| `outlet_labels` | `true` | Recess the receptacle names into the floor in front of the outlet |
+| `outlet_light_side` | `"back"` | Receptacle wired always on (the light); the other is the controlled motor output *Choices: back, front.* |
+| `outlet_light_label` | `"LIGHT"` | Name for the always-on receptacle |
+| `outlet_motor_label` | `"MOTOR"` | Name for the controlled receptacle |
+| `outlet_label_size` | `7` | Letter height *Range 3 to 12, step 0.5.* |
+| `outlet_label_depth` | `0.6` | Recess depth *Range 0.2 to 2, step 0.1.* |
 | `outlet_lid_hinge` | `"left"` | Edge the outlet-compartment lid hinges on *Choices: left, right, front, back.* |
 | `outlet_slot_1_side` | `"front"` | Cord slot 1: lid edge it opens from *Choices: none, front, right, back.* |
 | `outlet_slot_2_side` | `"back"` | Cord slot 2: lid edge it opens from *Choices: none, front, right, back.* |
@@ -341,8 +349,15 @@ There are 312 parameters; 310 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `lip_edge_round` | `2` | Radius of the rounded top edge along the lip front *Range 0 to 5, step 0.5.* |
-| `lip_fillet` | `5` | Radius of the inside corner where the lip front meets the body *Range 0 to 15, step 0.5.* |
+| `lip_edge_round` | `2` | Radius of the rounded top edge along the lip front (also the free edges of an extended back lip) *Range 0 to 5, step 0.5.* |
+| `lip_fillet` | `5` | Radius of the inside corner where the lip front meets the body (also an extended back lip's corners) *Range 0 to 15, step 0.5.* |
+
+## Back lip
+
+| Parameter | Default | Description |
+|---|---|---|
+| `back_lip_extend` | `true` | Run the back lip on past a short back extension, over the base's back rim, to reach the last back peg hole |
+| `back_lip_peg_margin` | `10` | How far the lip runs past the last peg's center *Range 6 to 30, step 0.5.* |
 
 ## Lid hinges
 

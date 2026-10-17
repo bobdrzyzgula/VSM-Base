@@ -19,6 +19,20 @@
 > a small hammer, and print the outlet lid. To close the pass-through again
 > later, print `passthrough_cover`.
 
+> **Note: a short back extension.** If `back_ext_length` is too short to
+> reach the last back peg hole, the back lip runs on past the body over the
+> base's back rim to reach it (`back_lip_extend`), with a rounded end and a
+> fillet into the body; the console says how far. That extension then fits
+> only a base with the same `back_peg_xs`. If you move the base's peg holes
+> left with `back_peg_xs` instead, the lip needn't run on, but the
+> extension, again, fits only bases with those holes.
+>
+> **Note: outlet labels.** With the outlet, LIGHT (always on) and MOTOR
+> (the controlled output) are recessed into the floor by their receptacles,
+> LIGHT at the back by default (`outlet_light_side`), since the outlet goes
+> in with the always-on side and the cord to the back. The words, size and
+> depth are settings; `outlet_labels = false` leaves them off.
+>
 > **Note: insert trays need their bay.** The bobbin trays need the corner
 > bay and the notion and spool trays need the bay named by `ot_bay`. The bay
 > can be the attached extension or its freestanding box (`make_corner_box`

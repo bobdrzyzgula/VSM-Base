@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 24
+// Singer 99 base, version 25
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -121,13 +121,19 @@
 // v24: organizer inserts: bobbin trays for the corner bay (a second stack
 // goes in the freestanding corner box); notion trays for the back or left
 // bay in 30-10 mm and custom heights, plain or compartmented; a spool tray.
+//
+// v25: the back lip runs on past a short back extension to reach the last
+// back peg hole, its free end rounded and filleted into the body; LIGHT and
+// MOTOR recessed into the outlet compartment floor by their receptacles;
+// part split_test, the front of the split joint (serrations and first
+// dovetail) for a quick fit test.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -144,6 +150,10 @@ test_stub_w = 20;
 test_hinge_w = 40;
 // Gap between the two halves of split test parts
 test_split_gap = 10;
+// Split test (part split_test): height of the front-wall stubs; 0 = full height
+split_test_h = 30; // [0 : 1 : 100]
+// Split test: width either side of the split line
+split_test_w = 25; // [10 : 1 : 60]
 // Printer build volume, for the size check and the print plates
 printer_size = [256, 256, 256];
 // Keep parts this far inside the bed's edges (room for supports, brims and skirts)
@@ -289,6 +299,18 @@ outlet_cap_t = 2; // [1 : 0.1 : 4]
 outlet_insert_d = 5.6;
 // Depth of the insert hole into the wall
 outlet_insert_depth = 12; // [4 : 0.5 : 20]
+// Recess the receptacle names into the floor in front of the outlet
+outlet_labels = true;
+// Receptacle wired always on (the light); the other is the controlled motor output
+outlet_light_side = "back"; // [back, front]
+// Name for the always-on receptacle
+outlet_light_label = "LIGHT";
+// Name for the controlled receptacle
+outlet_motor_label = "MOTOR";
+// Letter height
+outlet_label_size = 7; // [3 : 0.5 : 12]
+// Recess depth
+outlet_label_depth = 0.6; // [0.2 : 0.1 : 2]
 // Edge the outlet-compartment lid hinges on
 outlet_lid_hinge = "left"; // [left, right, front, back]
 // Cord slot 1: lid edge it opens from
@@ -596,10 +618,16 @@ rod_plug_clearance = 0.1;
 rod_plug_rib = 0.15;
 
 /* [Left lip] */
-// Radius of the rounded top edge along the lip front
+// Radius of the rounded top edge along the lip front (also the free edges of an extended back lip)
 lip_edge_round = 2; // [0 : 0.5 : 5]
-// Radius of the inside corner where the lip front meets the body
+// Radius of the inside corner where the lip front meets the body (also an extended back lip's corners)
 lip_fillet = 5; // [0 : 0.5 : 15]
+
+/* [Back lip] */
+// Run the back lip on past a short back extension, over the base's back rim, to reach the last back peg hole
+back_lip_extend = true;
+// How far the lip runs past the last peg's center
+back_lip_peg_margin = 10; // [6 : 0.5 : 30]
 /* [Lid hinges] */
 // Lid edge each lid hinges on
 base_lid_hinge = "right"; // [left, right, front, back]
@@ -1165,14 +1193,19 @@ cn_y0 = bk_y0;
 cn_y1 = bk_y1;
 
 // Lips: from the seat edge over the rim to the body
-bk_lip = [[bk_x0, seat_y1], [bk_x1, bk_y0 + overlap]];
+// The back lip runs on past a short body to the last back peg (never past
+// the base's right end)
+bk_lip_want = back_lip_extend && len(back_peg_xs) > 0 ? max(back_peg_xs) + back_lip_peg_margin : 0;
+bk_lip_x1  = min(outer_length, max(bk_x1, bk_lip_want));
+bk_lip_ext = bk_lip_x1 - bk_x1 > 0.01;
+bk_lip = [[bk_x0, seat_y1], [bk_lip_x1, bk_y0 + overlap]];
 lf_lip = [[lf_x1 - overlap, bed_y0],
           [seat_x0, has_back ? seat_y1 - ext_gap : outer_width]];
 
 peg_back_y = (seat_y1 + outer_width) / 2;
 peg_left_x = seat_x0 / 2 + 0.5;
 peg_right_x = outer_length - right_rim / 2 - 0.5;
-back_pegs  = [for (x = back_peg_xs) if (x - peg_d >= bk_x0 && x + peg_d <= bk_x1) x];
+back_pegs  = [for (x = back_peg_xs) if (x - peg_d >= bk_x0 && x + peg_d <= bk_lip_x1) x];
 left_pegs  = [for (y = left_peg_ys) if (y - peg_d >= lf_lip[0].y && y + peg_d <= lf_lip[1].y) y];
 
 // Per-piece wall insets [left, right, front, back] (extra where a socket is)
@@ -1438,7 +1471,7 @@ if (report && ins_in(part, ot_parts)) {
 }
 
 // Footprints of the printed parts (X, Y, Z)
-bk_size = [bk_x1 - bk_x0, bk_y1 - seat_y1, ext_top_z];
+bk_size = [bk_lip_x1 - bk_x0, bk_y1 - seat_y1, ext_top_z];
 lf_size = [seat_x0 - lf_x0, lf_y1 - lf_y0, ext_top_z];
 cn_size = [cn_x1 - cn_x0 + ext_dt_depth, cn_y1 - cn_y0 + ext_dt_depth, ext_top_z];
 half_x  = max(cut_x + key_depth, outer_length - cut_x);
@@ -1524,6 +1557,18 @@ if (report && lid_hinge_reach > -0.5
              " mm past the ledge on its hinge side; inserts that lift out need at least ",
              max(0, lid_hinge_reach) + 0.3, " mm clearance there"));
 if (has_back) if (report) echo(str("Back extension part: ", bk_size, fits(bk_size) ? "" : "  WARNING: exceeds printer"));
+if (has_back && report) {
+    if (bk_lip_ext)
+        echo(str("Back lip: runs ", bk_lip_x1 - bk_x1, " mm past the body, to X ", bk_lip_x1,
+                 ", to reach the peg at X ", max(back_peg_xs),
+                 " (the extension is now specific to this base's back_peg_xs)"));
+    for (x = back_peg_xs) if (len([for (p = back_pegs) if (p == x) p]) == 0)
+        echo(str("WARNING: the back peg at X ", x, " is off the back lip; ",
+                 back_lip_extend ? "move it with back_peg_xs" : "turn on back_lip_extend or move it with back_peg_xs"));
+    if (bk_lip_ext && bk_lip_x1 > lid_x0
+        && (has_outlet ? outlet_lid_hinge : base_lid_hinge) == "back" && lid_on("base"))
+        echo("WARNING: the back lip runs over the compartment lid's back hinge; the open lid will hit it");
+}
 if (has_left) if (report) echo(str("Left extension part: ", lf_size, fits(lf_size) ? "" : "  WARNING: exceeds printer"));
 if (has_corner) if (report) echo(str("Corner piece part: ", cn_size, fits(cn_size) ? "" : "  WARNING: exceeds printer"));
 if (report) echo(str("Base part", split ? " (each half)" : "", ": ", base_size,
@@ -1581,6 +1626,17 @@ if (has_outlet) {
              st_x1 - st_x0 - ol_T, " mm between the outlet face and the divider for the plugs"));
     if (ol_L + 2 * (ol_c + outlet_curb_w) > st_y1 - st_y0)
         if (report) echo("WARNING: the outlet and its curbs are longer than the compartment");
+    if (outlet_labels && report) {
+        echo(str("Outlet labels: ", outlet_light_label, " by the ", outlet_light_side, " receptacle, ",
+                 outlet_motor_label, " by the ", outlet_light_side == "back" ? "front" : "back",
+                 ", ", outlet_label_size, " mm letters recessed ", outlet_label_depth, " mm"));
+        if (max(ol_lab_w(outlet_light_label), ol_lab_w(outlet_motor_label)) > ol_lab_x1 - ol_lab_x0)
+            echo("WARNING: an outlet label is too long for the floor in front of the outlet; shorten it or lower outlet_label_size");
+        if (outlet_label_size > outlet_receptacle_spacing - 3)
+            echo("WARNING: the outlet labels are too tall for the receptacle spacing; lower outlet_label_size");
+        if (outlet_label_depth > floor_z - 1)
+            echo("WARNING: outlet_label_depth leaves under 1 mm of floor");
+    }
     if (abs(outlet_y_offset) + ol_L / 2 + ol_c + outlet_curb_w > (st_y1 - st_y0) / 2)
         if (report) echo("WARNING: the outlet's curbs run into the compartment's front or back wall");
     if (ol_zc + outlet_insert_d / 2 > seat_floor_z - 3)
@@ -1777,6 +1833,9 @@ if (part == "assembly") {
     if (ol_cb > 0) outlet_cap();
 } else if (part == "rod_plugs") {
     if (harness_rods && rod_plug_len > 0) rod_plugs();
+} else if (part == "split_test") {
+    if (split) split_test();
+    else if (report) echo("WARNING: split_test needs split = true");
 } else if (part == "test_parts") {
     test_parts();
 } else if (ins_in(part, bb_parts)) {
@@ -1934,6 +1993,7 @@ module base() {
                     cylinder(h = outlet_insert_depth + overlap, d = outlet_insert_d);
             if (has_outlet && outlet_mount == "through")
                 outlet_through_hole();
+            if (has_outlet && outlet_labels) outlet_label_cuts();
 
             // Cord pass-through in the divider
             if (compartment_option != "storage")
@@ -2218,7 +2278,7 @@ module back_ext_part() {
     difference() {
         union() {
             ext_shell(bk_x0, bk_y0, bk_x1, bk_y1, edges);
-            ext_lip(bk_lip[0], bk_lip[1]);
+            back_lip();
             if (ext_peg_style == "molded") for (x = back_pegs) ext_peg(x, peg_back_y);
         }
         ext_hollow("back", bk_rab);
@@ -2228,6 +2288,65 @@ module back_ext_part() {
             corner_tongues(ext_dt_clearance, -overlap, ext_top_z + 2 * overlap);
         back_trench_cut();
     }
+}
+
+// Back lip: a plain slab over the base's back rim, or, when it runs on past
+// a short body (bk_lip_ext), a slab whose free end is rounded in plan, with
+// its free top edges rounded, its edge on the seat line kept square, and a
+// plan fillet where its back edge meets the body's right wall. No gusset
+// underneath: the base rim is lip_clearance below.
+// Plan outline of an extended back lip: the lip under the body, run on to
+// the left and front (so those stay square), the run-on strip with its end
+// rounded, and a stand-in for the body's right wall so the closing makes
+// the fillet
+module back_lip_plan() {
+    R   = lip_fillet;
+    y0  = seat_y1;
+    y1  = bk_y0;
+    big = 50;
+    re  = max(0.01, min(R, (y1 - y0) / 2 - 0.01));
+    offset(r = -R) offset(delta = R)
+        union() {
+            translate([bk_x0 - big, y0 - big])
+                square([bk_x1 - bk_x0 + big, y1 - y0 + big + overlap]);
+            translate([bk_x0 - big, y1]) square([bk_x1 - bk_x0 + big, big]);
+            translate([bk_x1 - 25, y0])
+                offset(r = re) offset(delta = -re)
+                    square([bk_lip_x1 - bk_x1 + 25, y1 - y0]);
+        }
+}
+
+module back_lip() {
+    r  = lip_edge_round;
+    R  = lip_fillet;
+    y0 = seat_y1;
+    y1 = bk_y0;
+    if (!bk_lip_ext) ext_lip(bk_lip[0], bk_lip[1]);
+    else
+        intersection() {
+            union() {
+                translate([0, 0, lip_z0]) linear_extrude(height = lip_t - r) back_lip_plan();
+                if (r > 0) {
+                    minkowski() {
+                        translate([0, 0, lip_z0 + lip_t - r - 0.01])
+                            linear_extrude(height = 0.01) offset(delta = -r) back_lip_plan();
+                        sphere(r = r, $fn = 24);
+                    }
+                    // keep the top edge on the seat line square
+                    translate([0, 0, lip_z0]) linear_extrude(height = lip_t)
+                        intersection() {
+                            back_lip_plan();
+                            translate([bk_x0 - 1, y0 - 1]) square([bk_lip_x1 - bk_x0 + 2, r + 1]);
+                        }
+                }
+            }
+            // the lip itself, plus the fillet beside the body (not over it)
+            union() {
+                translate([bk_x0, y0, lip_z0]) cube([bk_x1 - bk_x0, y1 - y0 + overlap, lip_t]);
+                translate([bk_x1 - overlap, y0, lip_z0])
+                    cube([bk_lip_x1 - bk_x1 + 1, y1 - y0 + R + 1, lip_t]);
+            }
+        }
 }
 
 // Left lip: starts at the bed's front edge, its front top edge rounded and
@@ -2543,6 +2662,24 @@ module outlet_curbs() {
         translate([x0, y0, 0]) cube([st_x1 - x0 + overlap, w, outlet_curb_h + overlap]);
         translate([x0, y1, 0]) cube([st_x1 - x0 + overlap, w, outlet_curb_h + overlap]);
     }
+}
+
+// Receptacle names recessed into the floor between the divider and the
+// outlet's front curb, each centered on its receptacle and set toward the
+// outlet face, reading from the front
+ol_lab_x1 = ol_x0 - ol_c - outlet_curb_w - 2;    // right end of the words
+ol_lab_x0 = st_x0 + 2;                            // farthest left they may reach
+ol_lab_light_y = ol_yc + (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
+ol_lab_motor_y = ol_yc - (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
+// rough width of a word in bold sans capitals
+function ol_lab_w(t) = 0.72 * outlet_label_size * len(t);
+module outlet_label_cuts() {
+    for (l = [[outlet_light_label, ol_lab_light_y], [outlet_motor_label, ol_lab_motor_y]])
+        if (len(l[0]) > 0)
+            translate([ol_lab_x1, l[1], floor_z - outlet_label_depth])
+                linear_extrude(height = outlet_label_depth + overlap)
+                    text(l[0], size = outlet_label_size, font = "Liberation Sans:style=Bold",
+                         halign = "right", valign = "center");
 }
 
 // Cord slots in the outlet-compartment lid. Each is open at its lid edge,
@@ -3043,6 +3180,17 @@ module base_box(mn, mx, halves) {
     }
 }
 
+// Split test: the front of the joint, both halves, for trying the front-wall
+// serrations and the first dovetail key. Each piece prints upright, as in
+// the base; lower the right piece onto the left.
+split_test_y1 = min(keys) + key_head / 2 + 6;
+split_test_z1 = split_test_h > 0 ? max(split_test_h, floor_z + 2) : outer_depth + 1;
+module split_test() {
+    x0 = cut_x - split_test_w;
+    translate([-x0, 1, 0])
+        base_box([x0, -1, -1], [cut_x + split_test_w, split_test_y1, split_test_z1], true);
+}
+
 module test_parts() {
     g   = explode;
     W   = outer_width;
@@ -3069,7 +3217,7 @@ module test_parts() {
 
     // Row 2: tops of the extensions, upright as they print, lips overhanging
     x_bk = 0;
-    x_lf = x_bk + (has_back ? bk_x1 - bk_x0 + g : 0);
+    x_lf = x_bk + (has_back ? bk_size.x + g : 0);
     x_cn = x_lf + (has_left ? seat_x0 - lf_x0 + g : 0);
     zt = ext_top_z - th;
     module top_slice() {
