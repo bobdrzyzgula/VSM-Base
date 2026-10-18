@@ -63,22 +63,30 @@ The hardware list in the console has the full list, with lengths.
 | Stop pin | `rod_d` rod (3/16"), 15 mm | The same rod as the harness rods |
 | Return spring | Torsion spring, about 12 mm OD, at least 8.5 mm ID | To be chosen; the model leaves room for a typical one |
 | Bar | Steel, 3/8" square at the hub end | Out from the hub, bent down 12.5" (`knee_bar_drop`) |
-| Screws | M3 set screws, M3 screws and nuts, 5 M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | |
+| Screws | M3 set screws, M3 screws and nuts, M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | |
+| Power, `cordset` | A standard pedal controller cordset | Its molded entry and steel clip fit the base's entry |
+| Power, `iec` | Schurter KE16.5100.107 fused C14 inlet (1-pole, snap-in, 2 mm panel), its fuse drawer, a T2A 5 × 20 mm fuse; 3 Wago 221-413 lever connectors | Earth strip (brass or phosphor bronze) for the shaft |
 
 Print the knee parts (`knee_sector`, `knee_pinion`, `knee_hub`,
-`knee_cover`, `knee_cord_clamp`) in PETG or ASA. They are on the print
-plates with the other small parts.
+`knee_cover`, and `knee_cord_clamp` for a bare cord) in PETG or ASA. They
+are on the print plates with the other small parts. Print `knee_entry_test`
+first if you are using a cordset.
 
 ## The pot
 
 The board's original slide pot (VR1) comes off, and the Bourns pot takes its
-place, wired as a two-terminal variable resistor: the wiper and one end.
+place as a two-terminal variable resistor. In the board's own terms:
+
+- the Bourns pot's **wiper** goes to the old **pin-2** pad;
+- the pot's **end that the wiper approaches at full knee travel** goes to
+  the old **pin-1** pad;
+- a jumper joins the old **pin-3** pad to the pin-2 pad, which puts RV2
+  across the pot.
+
 Over the knee's travel it should sweep about the same resistance as the
-slide pot did, about 0–220 kΩ (`knee_r_span`). At the defaults the pot
-turns about 45° over 2.5" of knee travel, which is about 190 kΩ of its
-1 MΩ. **Confirm by tracing the board that VR1 is used as a two-terminal
-resistor before you wire it.** If the board uses it as a three-terminal
-divider, the wiring and the span change.
+slide pot did, about 0–220 kΩ (`knee_r_span`). At the defaults the shaft
+turns 13.5° to the hard stop, so the pot turns 54°, about 225 kΩ of its
+1 MΩ.
 
 From the Bourns datasheet [1]:
 
@@ -101,10 +109,12 @@ The pot mounts from behind the bulkhead, with its bushing through the
 beside the main one; `knee_pot_lug_angle` sets where that hole is, so you
 can turn the pot to put its pins where the wiring is easiest.
 
-**Setting the rest position.** Before tightening the pinion's clamp screw,
-set the pot so that, with the bar at its rest stop, it reads the high end of
-the span (about 220 kΩ between the wiper and the end you are using).
-Pressing the knee should then turn it toward zero. Then tighten the clamp.
+**Setting the pot.** Set it at the hard stop. Hold the bar against the
+stop, turn the pot's shaft until the wiper reads about 0 Ω to the pin-1
+end, and tighten the pinion's clamp screw. At rest it then reads about
+225 kΩ (the console gives the figure for your settings), and full speed
+comes at the stop. The pot's mechanical stop is about 30° beyond its
+electrical end, so the pot is never the hard stop.
 
 ## The switch
 
@@ -144,30 +154,78 @@ The board lies flat in the back of the bay, its long axis front to back,
 components up, on three posts 8 mm above the floor: a boss for an M3
 heat-set insert (the board's 5.5 mm hole takes an M3 screw and washer), a
 peg that fits the notch in the board's end, and a plain rest post. The
-positions follow the controller enclosure they were copied from:
+positions are those of the board's own enclosure:
 
-- the peg is 47.3 mm along and 5.0 mm across from the screw
+- the peg is 47.3 mm along and 5.0 mm across from the screw;
 - the rest post is 4.3 mm along and 19.5 mm across from the screw.
 
-`knee_board_screw` gives the screw's position from the board's front end
-and left edge, 48.3 mm and 7 mm by default. **Measure your board and set
-it.** If the posts come out mirrored, set `knee_board_mirror`.
+Along is measured from the notched end, across from the long edge nearer
+the screw; with the components up, across is to the right of along.
+`knee_board_screw` is the screw's position, 49.6 mm along and 12.5 mm
+across, measured from the board. By default the board is turned with its
+notched end toward the back of the bay (`knee_board_turn`), which puts its
+two spade tabs on the right, near the front, where the power leads come
+in. The cover leaves 16 mm beside them for the connectors and their wires
+(`knee_board_tab_room`).
 
 The printed cover goes over the board and screws down with two M3 × 30
 screws into inserts in floor bosses. Its notches let the leads out: the
 front notch, by the divider, for the pot and switch leads and the motor
-lead; the side notch for the mains cord.
+lead; the side notch, beside the spade tabs, for the power leads.
 
-**Mains cord.** The cord comes in through a slot in the right end wall and
-is gripped inside by a clamp bar, two M3 screws into inserts, over a
-ridged saddle. `knee_cord` sets the slot for the cord's width and thickness
-(flat SPT-2 by default). The motor lead goes out through the cord
-pass-through in the divider, under the bed.
+**Heat.** The board is labeled 1.0 A. Its BT136 triac is a 4 A part, but
+it has no heatsink, and at more than 1 A it runs hot in a closed box. If
+your motor draws more (`knee_motor_amps`), fit a small clip-on heatsink to
+the triac and the cover gets vent slots. The triac's tab is live, so the
+heatsink is too: keep it inside the cover.
+
+## Power
+
+`knee_power` chooses how the controller is wired in. All three are at
+mains potential.
+
+**`cordset` (default).** The controller takes a standard pedal
+controller cordset, the kind that is sold separately with a three-pin
+machine plug or a duplex outlet in the middle. Only the control loop enters
+the box: two leads in series with the motor, to the board's two spade tabs,
+with the off switch in one of them. The cordset's molded entry pushes
+through a 13.9 × 8.5 mm hole in a 4.4 mm wall, pocketed into the right end
+wall above the handhold. Inside, its steel clip, U down, goes on from
+above: push the molded entry in hard, compressing it, until its groove
+clears the wall, then push the clip down over the groove until its bump
+clicks into the dimple at the top of the hole. The clip stretches the soft
+molding a little, and that holds it tight. The entry sits beside the
+board's tabs so that the cordset's 78 mm leads reach with slack; the console
+checks this. Print `knee_entry_test` first to try the fit; the wall
+thickness, hole and dimple are settings.
+
+**`iec`.** A fused IEC C14 inlet in the right end wall feeds the
+controller directly, for machines whose motor and light were hardwired to
+their original controller. The inlet is a Schurter KE snap-in [3] (a
+52.5 × 27.5 mm cutout in a 2 mm panel, pocketed into the end wall), on its
+side above the board cover. Inside, the fused line goes to the light and,
+through the board and the off switch, to the motor; the leads go through
+the cord pass-through to a junction under the bed: three Wago 221-413
+lever connectors [4] (line, neutral, switched motor) in a cradle on the
+cavity floor beside the pass-through. The motor and light leads land
+there. A T2A slow-blow fuse covers a 1.3 A motor and the lamp. The
+console gives the junction's height; check that your machine's mechanism
+clears it. The inlet's depth behind the panel varies by version
+(`knee_iec_depth`); check yours.
+
+With the IEC inlet, the shaft can be earthed (`knee_earth`). A post behind
+the shaft's end takes an M3 insert. Screw a strip of brass or phosphor
+bronze to it, with the earth lead's ring terminal, bent so its free end
+bears on the end of the shaft. Contact through the oily bushings isn't
+reliable, and the bar, hub and shaft are metal you touch.
+
+**`bare`.** A bare cord through a slot in the end wall, gripped inside by
+a printed clamp bar (part `knee_cord_clamp`) over a ridged saddle.
 
 ## Assembly order
 
-1. Fit the heat-set inserts: the board boss, the two cover bosses and the
-   two cord-clamp bosses.
+1. Fit the heat-set inserts: the board boss, the two cover bosses, and the
+   earth post or cord-clamp bosses if you have them.
 2. Press the two bushings in, flanges forward: one into the front wall from
    outside, one into the bulkhead from the front.
 3. Press the stop pin into the hole in the front face below the bushing,
@@ -186,7 +244,8 @@ pass-through in the divider, under the bed.
 8. Fit the pinion on the pot's shaft, set the rest position (above), and
    tighten its clamp.
 9. Adjust the switch (above).
-10. Wire the board; screw it down, fit the cover, and clamp the cord.
+10. Wire the board and the power entry; screw the board down and fit the
+    cover. For `iec`, wire the junction under the bed.
 11. Plug the bar into the hub.
 
 ## Settings
@@ -203,7 +262,11 @@ likely to change:
 - **`knee_ratio`**, **`knee_pinion_teeth`**: the gearing.
 - **`knee_pot_angle`**: where the pot sits around the shaft (20° below the
   horizontal by default, which keeps the pot clear of the right wall).
-- **`knee_board_screw`**, **`knee_board_mirror`**: the board's posts.
+- **`knee_board_screw`**, **`knee_board_turn`**: the board's posts and
+  orientation.
+- **`knee_power`**: cordset, IEC inlet or bare cord; **`knee_entry_pos`**
+  and **`knee_entry_z`** place the entry.
+- **`knee_motor_amps`**: over 1 A adds the cover vents and the heatsink note.
 - **`knee_view`**: in part `knee_assembly`, shows the mechanism at rest (0)
   or at the stop (1).
 
@@ -216,3 +279,10 @@ likely to change:
    [Master Electronics](https://www.masterelectronics.com/en/bourns/91a1ab28a25l-10736707.html).
 2. Omron, *SS Subminiature Basic Switch*, Cat. No. B032-E1-14:
    [omronfs.omron.com](https://omronfs.omron.com/en_US/ecb/products/pdf/en-ss.pdf).
+3. Schurter, *KE: IEC Appliance Inlet C14 with Fuseholder 1- or 2-pole*:
+   [schurter.com](https://www.schurter.com/en/datasheet/KE) (order numbers,
+   panel thicknesses, ratings) and the
+   [PDF datasheet](https://www.schurter.com/en/datasheet/typ_KE.pdf)
+   (dimension drawings).
+4. WAGO 221-413 lever connector, 3-conductor, 18.8 × 18.8 × 8.6 mm, 0.2–4 mm²
+   (24–12 AWG): [automa.net](https://automa.net/wago/221-413).

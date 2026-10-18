@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 374 parameters; 372 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 393 parameters; 391 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -188,13 +188,32 @@ There are 374 parameters; 372 of them appear in the Customizer. The rest are lis
 | `knee_switch_screw` | `2.4` | Switch screw clearance (M2 or #2-56) *Range 1.8 to 3, step 0.05.* |
 | `knee_stop_r` | `14` | Stop pin: radius on the front face (the pin is cut from rod_d rod) *Range 10 to 25, step 0.5.* |
 | `knee_board` | `[75, 35]` | Board (75 x 35 mm donor board): [length, width] |
-| `knee_board_screw` | `[48.3, 7]` | Board screw: [along from the board's front end, across from its left edge]; the peg and rest post follow from it (measure your board) |
-| `knee_board_mirror` | `false` | Mirror the board's posts left to right |
+| `knee_board_screw` | `[49.6, 12.5]` | Board screw: [along from the board's notched end, across from the long edge nearer the screw]; the peg and rest post follow from it |
+| `knee_board_turn` | `180` | Board orientation: 180 = notched end toward the back of the bay, spade tabs on the right; 0 = notched end forward, tabs on the left *Choices: 0, 180.* |
+| `knee_board_tabs` | `[58, 70]` | Spade tabs, on the long edge away from the screw: positions along from the notched end |
+| `knee_board_tab_room` | `16` | Room beside the board for the spade connectors and their wires *Range 8 to 30, step 0.5.* |
+| `knee_board_mirror` | `false` | Mirror the board's posts across the board (for a board laid out the other way round) |
 | `knee_board_h` | `8` | Board underside above the floor *Range 4 to 20, step 0.5.* |
 | `knee_board_parts_h` | `13.6` | Tallest part above the board underside *Range 5 to 40, step 0.1.* |
 | `knee_insert_d` | `4.6` | Heat-set insert hole, M3 *Range 3 to 6, step 0.05.* |
-| `knee_cord` | `[7.5, 4.5]` | Mains cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5) |
-| `knee_cord_pos` | `14` | Mains cord: position along the right end wall, from the bay's back wall *Range 8 to 120, step 0.5.* |
+| `knee_power` | `"cordset"` | How the controller is wired in: cordset = the standard pedal cordset's molded entry and clip (the control loop out to the cordset's junction); iec = fused IEC C14 inlet, with the motor and light wired at a junction under the bed; bare = a bare cord through a slot, held by a printed clamp *Choices: cordset, iec, bare.* |
+| `knee_motor_amps` | `1.0` | Motor current (for the triac heating note and the cover vents) *Range 0.2 to 3, step 0.1.* |
+| `knee_earth` | `true` | Earth contact for the shaft: a post behind the shaft's end for a spring strip and the earth lead (iec) |
+| `knee_entry_hole` | `[13.9, 8.5]` | Cordset entry: hole [width, height] (long side horizontal) |
+| `knee_entry_wall` | `4.4` | Cordset entry: wall thickness at the hole *Range 3 to 6, step 0.05.* |
+| `knee_entry_dimple` | `[3.4, 2.4, 2.8]` | Cordset entry: dimple for the clip's bump, at the top of the hole [width, height, depth from the inside] |
+| `knee_entry_clip` | `[21.4, 9.5]` | Cordset entry: steel clip [width, height] |
+| `knee_entry_z` | `20` | Cordset entry: hole center above the bay floor (its pocket must clear the right handhold's ceiling) *Range 6 to 45, step 0.5.* |
+| `knee_entry_pos` | `0` | Cordset entry or IEC inlet: position from the bay's back wall; 0 = beside the board's spade tabs *Range 0 to 140, step 0.5.* |
+| `knee_entry_lead` | `78` | Cordset: lead length inside, from the molded face to the connector tips *Range 30 to 200, step 1.* |
+| `knee_iec_cutout` | `[52.5, 27.5]` | IEC inlet (Schurter KE snap-in, mounted on its side): panel cutout [along the wall, height] |
+| `knee_iec_radius` | `3` | IEC inlet: cutout corner radius *Range 0 to 5, step 0.5.* |
+| `knee_iec_panel` | `2` | IEC inlet: panel thickness (KE: 1.5, 2 or 2.5 mm versions) *Range 1.5 to 2.5, step 0.5.* |
+| `knee_iec_depth` | `40` | IEC inlet: depth behind the panel, with its connectors (check your inlet) *Range 20 to 70, step 0.5.* |
+| `knee_wago` | `[18.8, 18.8, 8.6]` | Junction: Wago 221-413 lever connector [width, depth, height] |
+| `knee_wago_n` | `3` | Junction: number of connectors (line, neutral, switched motor) *Range 1 to 6, step 1.* |
+| `knee_cord` | `[7.5, 4.5]` | Bare cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5) |
+| `knee_cord_pos` | `14` | Bare cord: position along the right end wall, from the bay's back wall *Range 8 to 120, step 0.5.* |
 | `knee_view` | `0` | Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop) *Range 0 to 1, step 0.05.* |
 
 ## Lollipop hinge

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 26
+// Singer 99 base, version 27
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -134,13 +134,21 @@
 // and hard stops on the front face take the knee's force. Bulkhead, board
 // posts, cover, cord clamp; parts knee_sector, knee_pinion, knee_hub,
 // knee_cover, knee_cord_clamp, and a knee_assembly cutaway view.
+//
+// v27: knee controller power options (knee_power): the standard pedal
+// cordset's molded entry with its steel clip, or a fused IEC C14 inlet
+// with a Wago lever-connector junction under the bed, or a bare cord and
+// clamp. Board posts fixed (handedness) and measured; the board turned end
+// for end, with room for its spade connectors; earth contact for the
+// shaft; cover vents for motors over 1 A; pot set at the hard stop; part
+// knee_entry_test.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -425,9 +433,15 @@ knee_switch_screw = 2.4; // [1.8 : 0.05 : 3]
 knee_stop_r = 14; // [10 : 0.5 : 25]
 // Board (75 x 35 mm donor board): [length, width]
 knee_board = [75, 35];
-// Board screw: [along from the board's front end, across from its left edge]; the peg and rest post follow from it (measure your board)
-knee_board_screw = [48.3, 7];
-// Mirror the board's posts left to right
+// Board screw: [along from the board's notched end, across from the long edge nearer the screw]; the peg and rest post follow from it
+knee_board_screw = [49.6, 12.5];
+// Board orientation: 180 = notched end toward the back of the bay, spade tabs on the right; 0 = notched end forward, tabs on the left
+knee_board_turn = 180; // [0, 180]
+// Spade tabs, on the long edge away from the screw: positions along from the notched end
+knee_board_tabs = [58, 70];
+// Room beside the board for the spade connectors and their wires
+knee_board_tab_room = 16; // [8 : 0.5 : 30]
+// Mirror the board's posts across the board (for a board laid out the other way round)
 knee_board_mirror = false;
 // Board underside above the floor
 knee_board_h = 8; // [4 : 0.5 : 20]
@@ -435,9 +449,41 @@ knee_board_h = 8; // [4 : 0.5 : 20]
 knee_board_parts_h = 13.6; // [5 : 0.1 : 40]
 // Heat-set insert hole, M3
 knee_insert_d = 4.6; // [3 : 0.05 : 6]
-// Mains cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5)
+// How the controller is wired in: cordset = the standard pedal cordset's molded entry and clip (the control loop out to the cordset's junction); iec = fused IEC C14 inlet, with the motor and light wired at a junction under the bed; bare = a bare cord through a slot, held by a printed clamp
+knee_power = "cordset"; // [cordset, iec, bare]
+// Motor current (for the triac heating note and the cover vents)
+knee_motor_amps = 1.0; // [0.2 : 0.1 : 3]
+// Earth contact for the shaft: a post behind the shaft's end for a spring strip and the earth lead (iec)
+knee_earth = true;
+// Cordset entry: hole [width, height] (long side horizontal)
+knee_entry_hole = [13.9, 8.5];
+// Cordset entry: wall thickness at the hole
+knee_entry_wall = 4.4; // [3 : 0.05 : 6]
+// Cordset entry: dimple for the clip's bump, at the top of the hole [width, height, depth from the inside]
+knee_entry_dimple = [3.4, 2.4, 2.8];
+// Cordset entry: steel clip [width, height]
+knee_entry_clip = [21.4, 9.5];
+// Cordset entry: hole center above the bay floor (its pocket must clear the right handhold's ceiling)
+knee_entry_z = 20; // [6 : 0.5 : 45]
+// Cordset entry or IEC inlet: position from the bay's back wall; 0 = beside the board's spade tabs
+knee_entry_pos = 0; // [0 : 0.5 : 140]
+// Cordset: lead length inside, from the molded face to the connector tips
+knee_entry_lead = 78; // [30 : 1 : 200]
+// IEC inlet (Schurter KE snap-in, mounted on its side): panel cutout [along the wall, height]
+knee_iec_cutout = [52.5, 27.5];
+// IEC inlet: cutout corner radius
+knee_iec_radius = 3; // [0 : 0.5 : 5]
+// IEC inlet: panel thickness (KE: 1.5, 2 or 2.5 mm versions)
+knee_iec_panel = 2; // [1.5 : 0.5 : 2.5]
+// IEC inlet: depth behind the panel, with its connectors (check your inlet)
+knee_iec_depth = 40; // [20 : 0.5 : 70]
+// Junction: Wago 221-413 lever connector [width, depth, height]
+knee_wago = [18.8, 18.8, 8.6];
+// Junction: number of connectors (line, neutral, switched motor)
+knee_wago_n = 3; // [1 : 1 : 6]
+// Bare cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5)
 knee_cord = [7.5, 4.5];
-// Mains cord: position along the right end wall, from the bay's back wall
+// Bare cord: position along the right end wall, from the bay's back wall
 knee_cord_pos = 14; // [8 : 0.5 : 120]
 // Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop)
 knee_view = 0; // [0 : 0.05 : 1]
@@ -1834,18 +1880,57 @@ kn_shaft_len = kn_yf + knee_bushing[2] - kn_shaft_front;
 // to back; a printed cover over it
 kn_bc   = 1.5;                                                  // clearance inside the cover
 kn_cw   = 2;                                                    // cover wall
-kn_bx0  = st_x0 + 0.5 + kn_cw + kn_bc;
+kn_turn = knee_board_turn == 180;
+kn_tr   = knee_board_tab_room;
+kn_bx0  = st_x0 + 0.5 + kn_cw + kn_bc + (kn_turn ? 0 : kn_tr);  // board's left edge
+kn_bx1  = kn_bx0 + knee_board[1];
 kn_by0  = st_y1 - 0.5 - kn_cw - kn_bc - knee_board[0];
-function kn_bp(p) = [kn_bx0 + (knee_board_mirror ? knee_board[1] - p[1] : p[1]), kn_by0 + p[0]];
+kn_by1  = kn_by0 + knee_board[0];
+// Board point [along from the notched end, across from the edge nearer the
+// screw] in the bay. Components up, the across direction is to the right of
+// the along direction (as in the board's own enclosure).
+function kn_bp(p) = let(c = knee_board_mirror ? knee_board[1] - p[1] : p[1])
+    kn_turn ? [kn_bx0 + c, kn_by1 - p[0]] : [kn_bx1 - c, kn_by0 + p[0]];
 kn_screw = kn_bp(knee_board_screw);
 kn_peg   = kn_bp(knee_board_screw + [-47.3, 5]);
 kn_rest  = kn_bp(knee_board_screw + [-4.3, 19.5]);
-kn_cv0   = [kn_bx0 - kn_bc - kn_cw, kn_by0 - kn_bc - kn_cw];
-kn_cv1   = [kn_bx0 + knee_board[1] + kn_bc + kn_cw, kn_by0 + knee_board[0] + kn_bc + kn_cw];
+kn_tabs  = [for (t = knee_board_tabs) kn_bp([t, knee_board[1]])];
+kn_tab_y = [min([for (p = kn_tabs) p.y]), max([for (p = kn_tabs) p.y])];
+kn_cv0   = [st_x0 + 0.5, kn_by0 - kn_bc - kn_cw];
+kn_cv1   = [kn_bx1 + kn_bc + kn_cw + (kn_turn ? kn_tr : 0), kn_by1 + kn_bc + kn_cw];
 kn_cv_h  = knee_board_h + knee_board_parts_h + 2 + kn_cw;        // cover height above the floor
 kn_cv_ear = 8;                                                    // screw ears on its right side
-kn_cv_ys = [kn_by0 + 10, kn_by0 + 45];
+kn_cv_notch = [kn_tab_y[0] - 7, kn_tab_y[1] + 7];                 // side notch for the leads
+kn_cv_ycand = [for (y = [kn_by0 + 6, kn_by0 + 30, kn_by1 - 30, kn_by1 - 6])
+                  if (y < kn_cv_notch[0] - kn_cv_ear || y > kn_cv_notch[1] + kn_cv_ear) y];
+kn_cv_ys = [kn_cv_ycand[0], kn_cv_ycand[len(kn_cv_ycand) - 1]];
 kn_cv_bh = 4;                                                     // floor bosses under the ears
+kn_vent  = knee_motor_amps > 1.0;
+// Cordset entry or IEC inlet in the right end wall
+kn_ent_y = knee_entry_pos > 0 ? st_y1 - knee_entry_pos : (kn_tab_y[0] + kn_tab_y[1]) / 2;
+kn_ent_z = kn_z0 + knee_entry_z;
+kn_ent_x = outer_length - knee_entry_wall;                        // inner face of the thin wall
+kn_clip_top = kn_ent_z + 5.5 / 2 + (knee_entry_clip[1] - 5.3);    // installed clip's top edge
+kn_pk_z  = [kn_ent_z - knee_entry_hole[1] / 2 - 1, kn_clip_top + 8];   // clip pocket, bottom and top
+kn_pk_w  = knee_entry_clip[0] + 0.8;
+kn_lead_reach = norm([kn_ent_x - 3.6 - (kn_turn ? kn_bx1 : kn_bx0), kn_ent_y - kn_tab_y[0]])
+              + norm([0, kn_tab_y[1] - kn_tab_y[0]]);
+kn_iec_pk = knee_iec_cutout + [6, 6];                              // pocket round the inlet body
+kn_iec_z  = kn_z0 + kn_cv_h + 2 + kn_iec_pk[1] / 2;               // above the board cover
+kn_iec_in = knee_iec_depth - (end_wall_r() - knee_iec_panel);     // body reaching into the bay
+function end_wall_r() = outer_length - st_x1;
+// Junction under the bed (iec), on the cavity floor beside the pass-through
+kn_wg   = knee_wago + [0.3, 0.3, 0];
+kn_wg_w = knee_wago_n * kn_wg.x + (knee_wago_n + 1) * 1.6;        // the row, along X
+kn_wg_d = kn_wg.y + 1.6;                                          // across it, along Y
+kn_wg_x1 = divider_x0 - 0.5;
+kn_wg_x0 = kn_wg_x1 - kn_wg_w;
+// behind the pass-through's mouth if there is room, else in front of it;
+// wire entries face the mouth
+kn_wg_back = cord_hole_y + cord_hole_width / 2 + 3 + kn_wg_d < mc_y1 - 1;
+kn_wg_y0 = kn_wg_back ? cord_hole_y + cord_hole_width / 2 + 3 : cord_hole_y - cord_hole_width / 2 - 3 - kn_wg_d;
+// Earth post behind the shaft's end
+kn_ep_y = kn_yf + knee_bushing[2] + 2.5;
 // Mains cord through the right end wall, gripped by a clamp bar
 kn_cord_y  = st_y1 - knee_cord_pos;
 kn_saddle  = 3;
@@ -1894,6 +1979,34 @@ if (has_knee && report) {
         echo("WARNING: no cord pass-through in the divider for the motor lead");
     if (kn_release > 0.25 * kn_th)
         echo("NOTE: the switch releases late in the swing; mount it with its lever's free end down, or reduce knee_switch_press");
+    echo(str("Pot setting: with the bar held at the hard stop, set the wiper at the pin-1 end (0 ohm) and clamp the pinion; at rest it then reads about ",
+             round(knee_pot_r * kn_pot_degx / knee_pot_travel), " kOhm"));
+    echo(str("Board: notched end ", kn_turn ? "toward the back" : "forward", ", spade tabs on the ",
+             kn_turn ? "right" : "left", " at Y ", [for (p = kn_tabs) round(p.y * 10) / 10]));
+    if (knee_power == "cordset") {
+        echo(str("Power: cordset entry in the right end wall at ", round(st_y1 - kn_ent_y), " mm from the bay's back wall, ",
+                 knee_entry_z, " mm above the floor; lead to the farther tab about ", round(kn_lead_reach), " mm of ", knee_entry_lead));
+        if (kn_lead_reach > knee_entry_lead - 10)
+            echo("WARNING: the cordset's leads won't reach the board's tabs with slack; move the entry (knee_entry_pos)");
+        if (handholds && kn_ent_y + kn_pk_w / 2 > hh_y0 && kn_ent_y - kn_pk_w / 2 < hh_y1
+            && kn_pk_z[0] < handhold_height + handhold_depth - handhold_lip_flat + 2)
+            echo("WARNING: the cordset entry's pocket runs into the right handhold's ceiling; raise knee_entry_z");
+    }
+    if (knee_power == "iec") {
+        echo(str("Power: IEC C14 inlet on its side in the right end wall, ", knee_iec_cutout[0], " x ", knee_iec_cutout[1],
+                 " cutout in a ", knee_iec_panel, " mm panel, centre ", round(kn_iec_z - kn_z0), " mm above the floor; body reaches ",
+                 round(kn_iec_in), " mm into the bay"));
+        echo(str("Junction: ", knee_wago_n, " x Wago 221-413 on the cavity floor beside the pass-through, ",
+                 knee_wago[2] + 2, " mm tall (", round(top_z - kn_z0 - knee_wago[2] - 2), " mm below the bed's top); check your machine's mechanism clears it"));
+        if (kn_iec_z + kn_iec_pk[1] / 2 > seat_floor_z - 2)
+            echo("WARNING: the IEC inlet's pocket runs into the lid rabbet; lower the board cover or the inlet");
+        if (kn_wg_y0 < mc_y0 + 1 || kn_wg_y0 + kn_wg_d > mc_y1 - 1)
+            echo("WARNING: no room on the cavity floor beside the pass-through for the junction");
+        if (kn_ent_y - kn_iec_pk[0] / 2 < kn_yb + 2)
+            echo("WARNING: the IEC inlet's body runs into the bulkhead; move it back (knee_entry_pos)");
+    }
+    if (knee_motor_amps > 1.0)
+        echo(str("NOTE: ", knee_motor_amps, " A is over the board's 1.0 A label: fit a small clip-on heatsink to the triac (its tab is live, so the heatsink is too: keep it inside the cover); the cover gets vent slots"));
     echo("DANGER: the board, the pot's pins and the switch's terminals are live at mains voltage. Work on it unplugged; keep the cover on");
     echo("=======================");
 }
@@ -1988,9 +2101,21 @@ if (report && has_knee) {
     echo("Knee return spring: 1 x torsion spring, about 12 mm OD over the shaft (at least 8.5 mm ID), straight legs");
     echo("Knee pot: Bourns 91A1A-B28-A25L (1 MOhm linear cermet, 1/4\" plastic slotted shaft, 3/8-32 bushing, lug), with its nut and lockwasher");
     echo("Knee off switch: Omron SS-5GL (hinge lever, SPDT, 5 A 125 VAC); 2 x M2 x 12 or #2-56 x 1/2\" screws, nuts and washers");
-    echo("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover); 2 x M3 x 12 (cord clamp)");
-    echo("Knee heat-set inserts: 5 x M3 (board boss, 2 cover bosses, 2 cord-clamp bosses)");
-    echo("Knee wiring: 300 V insulated wire for the pot and switch leads; mains cord (SPT-2 or similar)");
+    echo(str("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover)",
+             knee_power == "bare" ? "; 2 x M3 x 12 (cord clamp)" : "",
+             knee_power == "iec" && knee_earth ? "; 1 x M3 x 6 + ring terminal (earth strip)" : ""));
+    echo(str("Knee heat-set inserts: ", 3 + (knee_power == "bare" ? 2 : 0) + (knee_power == "iec" && knee_earth ? 1 : 0),
+             " x M3 (board boss, 2 cover bosses", knee_power == "bare" ? ", 2 cord-clamp bosses" : "",
+             knee_power == "iec" && knee_earth ? ", earth post" : "", ")"));
+    if (knee_power == "cordset")
+        echo("Knee power: a standard pedal controller cordset (molded entry and its steel clip), its two leads to the board's spade tabs, the off switch in one of them");
+    if (knee_power == "iec") {
+        echo(str("Knee power: fused IEC C14 inlet, Schurter KE series 1-pole snap-in for a ", knee_iec_panel,
+                 " mm panel (KE16.5100.107 for 2 mm), with its fuse drawer and a T2A 5 x 20 mm fuse; an IEC C13 mains cord"));
+        echo(str("Knee junction: ", knee_wago_n, " x Wago 221-413 lever connectors (line, neutral, switched motor)"));
+        if (knee_earth) echo("Knee earth: a strip of brass or phosphor bronze bearing on the shaft's end, with the earth lead's ring terminal");
+    }
+    echo("Knee wiring: 300 V insulated wire (18 AWG for the motor and line) for the pot, switch and junction leads; 6.3 mm female quick-connects for the board");
 }
 if (report) echo(str("Bed cushions: ", frac16(bed_cushion_in + 1 / 32), " thick, compressed"));
 if (split && serrations && serr_n > 0)
@@ -2106,7 +2231,9 @@ if (part == "assembly") {
 } else if (part == "knee_cover") {
     if (has_knee) knee_cover_part();
 } else if (part == "knee_cord_clamp") {
-    if (has_knee) knee_cord_clamp_part();
+    if (has_knee && knee_power == "bare") knee_cord_clamp_part();
+} else if (part == "knee_entry_test") {
+    knee_entry_test_part();
 } else if (part == "knee_assembly") {
     // Cutaway of the right bay with the mechanism, the bar pushed to knee_view
     if (has_knee) {
@@ -3309,7 +3436,7 @@ build_parts = concat(
                 ["knee_pinion", "small", [kn_rp * 2 + 4, kn_rp * 2 + 4], []],
                 ["knee_hub", "small", [2 * kn_hub_disc[0], 2 * kn_hub_disc[0]], []],
                 ["knee_cover", "small", [kn_cv1.x - kn_cv0.x + kn_cv_ear, kn_cv1.y - kn_cv0.y], []],
-                ["knee_cord_clamp", "small", [8, 2 * kn_clamp_dy + 8], []]] : [],
+                if (knee_power == "bare") ["knee_cord_clamp", "small", [8, 2 * kn_clamp_dy + 8], []]] : [],
     has_passthrough && passthrough_cover
         ? [["passthrough_cover", "small",
             [cord_hole_width + 6, cord_hole_height + cord_hole_width / 2 + 6], []]] : []);
@@ -4178,9 +4305,17 @@ module knee_cover_raw() {
         for (y = kn_cv_ys)
             translate([L.x + kn_cv_ear / 2, y - kn_cv0.y, -1]) cylinder(d = 3.4, h = h + 2, $fn = 20);
         // wire notches: front end by the divider (pot, switch and motor
-        // leads), right side by the mains cord
+        // leads), right side by the spade tabs (power leads)
         translate([kn_cw + 1, -1, -1]) cube([14, kn_cw + 2, 10]);
-        translate([L.x - kn_cw - 1, kn_cord_y - kn_cv0.y - 6, -1]) cube([kn_cw + 2, 12, knee_cord[1] + kn_saddle + 3]);
+        translate([L.x - kn_cw - 1, kn_cv_notch[0] - kn_cv0.y, -1])
+            cube([kn_cw + 2, kn_cv_notch[1] - kn_cv_notch[0], 12]);
+        if (knee_power == "bare")
+            translate([L.x - kn_cw - 1, kn_cord_y - kn_cv0.y - 6, -1]) cube([kn_cw + 2, 12, knee_cord[1] + kn_saddle + 3]);
+        // vent slots over the board, for motors over 1 A
+        if (kn_vent)
+            for (i = [0 : 5])
+                translate([kn_bx0 - kn_cv0.x + 4, kn_by0 - kn_cv0.y + 8 + i * 10, h - kn_cw - 1])
+                    cube([knee_board[1] - 8, 3, kn_cw + 2]);
     }
 }
 
@@ -4236,12 +4371,14 @@ module knee_base_add() {
         cylinder(d = 4, h = knee_board_h + overlap, $fn = 24);
     // Floor bosses for the cover's ears and the cord clamp (M3 heat-set)
     for (p = concat([for (y = kn_cv_ys) [kn_cv1.x + kn_cv_ear / 2, y, kn_cv_bh]],
-                    [for (s = [-1, 1]) [kn_clamp_x, kn_cord_y + s * kn_clamp_dy, kn_clamp_bh]]))
+                    knee_power == "bare"
+                        ? [for (s = [-1, 1]) [kn_clamp_x, kn_cord_y + s * kn_clamp_dy, kn_clamp_bh]] : []))
         translate([p.x, p.y, kn_z0 - overlap]) difference() {
             cylinder(d = 8, h = p.z + overlap, $fn = 32);
             translate([0, 0, overlap + p.z - 6]) cylinder(d = knee_insert_d, h = 7, $fn = 30);
         }
     // Cord saddle, ridged, from the end wall in past the clamp
+    if (knee_power == "bare")
     translate([kn_clamp_x - 8, kn_cord_y - knee_cord[0] / 2 - 1, kn_z0 - overlap]) {
         cube([st_x1 - kn_clamp_x + 8 + overlap, knee_cord[0] + 2, kn_saddle + overlap]);
         for (dx = [3, 8, 13]) translate([dx, 0, kn_saddle + overlap]) rotate([-90, 0, 0])
@@ -4250,6 +4387,67 @@ module knee_base_add() {
     // Post for the return spring's fixed leg, beside the shaft in front of the sector
     translate([kn_sx - kn_s * 13, (st_y0 + kn_ygf) / 2, kn_z0 - overlap])
         cylinder(d = 5, h = kn_sz - 6 - kn_z0 + overlap, $fn = 24);
+    // Earth post behind the shaft's end: an M3 insert in its front face, 6 mm
+    // above the shaft, for a spring strip that bears on the shaft's end
+    if (knee_power == "iec" && knee_earth)
+        translate([kn_sx - 5, kn_ep_y, kn_z0 - overlap]) difference() {
+            cube([10, 7, kn_sz + 10 - kn_z0 + overlap]);
+            translate([5, -1, kn_sz + 6 - kn_z0 + overlap]) rotate([-90, 0, 0])
+                cylinder(d = knee_insert_d, h = 7, $fn = 30);
+        }
+    // Junction under the bed: a cradle for the Wago connectors on the cavity
+    // floor beside the pass-through, wire entries toward the cavity
+    if (knee_power == "iec")
+        translate([kn_wg_x0, kn_wg_y0, floor_z - overlap]) difference() {
+            cube([kn_wg_w, kn_wg_d, 6 + overlap]);
+            for (i = [0 : knee_wago_n - 1])
+                translate([1.6 + i * (kn_wg.x + 1.6), kn_wg_back ? -1 : 1.6, 1 + overlap])
+                    cube([kn_wg.x, kn_wg.y + 1, 7]);
+        }
+}
+
+// The cordset entry's pocket and hole, and the IEC inlet's pocket and
+// cutout, cut into the right end wall
+module knee_power_cuts() {
+    if (knee_power == "cordset") {
+        // pocket from inside, leaving the thin wall; the clip drops in from above
+        translate([st_x1 - overlap, kn_ent_y - kn_pk_w / 2, kn_pk_z[0]])
+            cube([kn_ent_x - st_x1 + overlap, kn_pk_w, kn_pk_z[1] - kn_pk_z[0]]);
+        // the hole
+        translate([kn_ent_x - 1, kn_ent_y - knee_entry_hole[0] / 2, kn_ent_z - knee_entry_hole[1] / 2])
+            cube([knee_entry_wall + 2, knee_entry_hole[0], knee_entry_hole[1]]);
+        // dimple for the clip's bump, at the top of the hole, from the inside
+        translate([kn_ent_x - 1, kn_ent_y - knee_entry_dimple[0] / 2, kn_ent_z + knee_entry_hole[1] / 2 - 0.5])
+            cube([knee_entry_dimple[2] + 1, knee_entry_dimple[0], knee_entry_dimple[1] + 0.5]);
+    }
+    if (knee_power == "iec") {
+        px = outer_length - knee_iec_panel;
+        translate([st_x1 - overlap, kn_ent_y - kn_iec_pk[0] / 2, kn_iec_z - kn_iec_pk[1] / 2])
+            cube([px - st_x1 + overlap, kn_iec_pk[0], kn_iec_pk[1]]);
+        translate([px - 1, kn_ent_y, kn_iec_z]) rotate([0, 90, 0])
+            linear_extrude(height = knee_iec_panel + 2)
+                offset(r = knee_iec_radius) offset(delta = -knee_iec_radius)
+                    square([knee_iec_cutout[1], knee_iec_cutout[0]], center = true);
+    }
+}
+
+// Test part: the cordset entry's thin wall with its hole and dimple, and
+// the pocket's side walls that guide the clip; printed outside face down
+module knee_entry_test_part() {
+    W = kn_pk_w + 8;
+    H = kn_pk_z[1] - kn_pk_z[0] + 4;
+    D = knee_entry_wall + 8;
+    zc = kn_ent_z - kn_pk_z[0] + 2;                     // hole centre above the part's bottom
+    difference() {
+        cube([W, H, D]);
+        // pocket (open at the back and the top)
+        translate([4, 2, knee_entry_wall]) cube([kn_pk_w, H, D]);
+        translate([W / 2 - knee_entry_hole[0] / 2, zc - knee_entry_hole[1] / 2, -1])
+            cube([knee_entry_hole[0], knee_entry_hole[1], knee_entry_wall + 2]);
+        translate([W / 2 - knee_entry_dimple[0] / 2, zc + knee_entry_hole[1] / 2 - 0.5,
+                   knee_entry_wall - knee_entry_dimple[2]])
+            cube([knee_entry_dimple[0], knee_entry_dimple[1] + 0.5, knee_entry_dimple[2] + 1]);
+    }
 }
 
 // Holes cut into the base: front-wall bushing, stop-pin hole, mains cord
@@ -4258,7 +4456,9 @@ module knee_base_cuts() {
         cylinder(d = knee_bushing_hole, h = st_y0 + 2, $fn = 48);
     translate([kn_sx, -1, kn_sz - knee_stop_r]) rotate([-90, 0, 0])
         cylinder(d = rod_d - 0.1, h = kn_pin_len - kn_pin_out + 1, $fn = 24);
-    // cord: a rounded slot through the end wall, chamfered outside
+    knee_power_cuts();
+    // bare cord: a rounded slot through the end wall
+    if (knee_power == "bare")
     translate([st_x1 - 1, kn_cord_y, kn_cord_z]) rotate([0, 90, 0])
         linear_extrude(height = outer_length - st_x1 + 2)
             hull() for (s = [-1, 1])
@@ -4274,7 +4474,8 @@ module knee_in_place(th = 0) {
         kn_on_axis(kn_px, kn_ypb, kn_pz, false) rotate(-a * knee_ratio) knee_pinion_part();
         kn_on_axis(kn_sx, kn_hub_y0, kn_sz, false) rotate(a) knee_hub_part();
         translate([kn_cv0.x, kn_cv0.y, kn_z0]) knee_cover_raw();
-        translate([kn_clamp_x, kn_cord_y, kn_z0 + kn_clamp_bh + 4]) mirror([0, 0, 1]) knee_cord_clamp_part();
+        if (knee_power == "bare")
+            translate([kn_clamp_x, kn_cord_y, kn_z0 + kn_clamp_bh + 4]) mirror([0, 0, 1]) knee_cord_clamp_part();
     }
     // hardware
     color("Silver") {
@@ -4301,4 +4502,16 @@ module knee_in_place(th = 0) {
         translate([kn_sw_x0, kn_yf - kn_sw[2], kn_sw_z0]) cube([kn_sw_x1 - kn_sw_x0, kn_sw[2], kn_sw[0]]);
     }
     color("DarkGreen") translate([kn_bx0, kn_by0, kn_z0 + knee_board_h]) cube([knee_board[1], knee_board[0], 1.6]);
+    color("DimGray") {
+        if (knee_power == "iec")
+            translate([outer_length - knee_iec_panel - knee_iec_depth, kn_ent_y - knee_iec_cutout[0] / 2,
+                       kn_iec_z - knee_iec_cutout[1] / 2])
+                cube([knee_iec_depth, knee_iec_cutout[0], knee_iec_cutout[1]]);
+        if (knee_power == "cordset")
+            translate([kn_ent_x - 3.6, kn_ent_y - 13.3 / 2, kn_ent_z - 8.5 / 2]) cube([outer_length - kn_ent_x + 3.6 + 8, 13.3, 8.5]);
+        if (knee_power == "iec")
+            for (i = [0 : knee_wago_n - 1])
+                translate([kn_wg_x0 + 1.6 + i * (kn_wg.x + 1.6) + 0.15, kn_wg_y0 + (kn_wg_back ? 0 : 1.6) + 0.15, floor_z + 1])
+                    cube([knee_wago[0], knee_wago[1], knee_wago[2]]);
+    }
 }
