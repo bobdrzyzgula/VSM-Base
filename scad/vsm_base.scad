@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 25
+// Singer 99 base, version 26
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -127,13 +127,20 @@
 // MOTOR recessed into the outlet compartment floor by their receptacles;
 // part split_test, the front of the split joint (serrations and first
 // dovetail) for a quick fit test.
+//
+// v26: knee controller (compartment_option "knee"): a knee bar turns a
+// shaft in the right bay; a gear sector turns a pot that replaces the donor
+// speed-control board's slide pot, a snap switch cuts the motor at rest,
+// and hard stops on the front face take the knee's force. Bulkhead, board
+// posts, cover, cord clamp; parts knee_sector, knee_pinion, knee_hub,
+// knee_cover, knee_cord_clamp, and a knee_assembly cutaway view.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -327,6 +334,113 @@ outlet_slot_w = 9; // [4 : 0.5 : 20]
 outlet_slot_depth = 25;
 // Chamfer on the slot's top edges, easing a cord pulled over them
 outlet_slot_chamfer = 1.5;
+
+/* [Knee controller] */
+// The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay; a gear sector on the shaft turns a pot standing in for the donor board's slide pot, and a switch cuts the motor at rest. See the User's Guide before building: the board is live at mains voltage.
+// Which way the knee pushes the bar
+knee_push = "right"; // [right, left]
+// Bar: drop from the shaft to where the knee meets it (12.5" = 317.5 mm)
+knee_bar_drop = 317.5; // [150 : 0.5 : 450]
+// Knee travel at that point, for full speed (2.5" = 63.5 mm)
+knee_travel = 63.5; // [20 : 0.5 : 100]
+// Knee travel at the hard stop (3" = 76.2 mm)
+knee_travel_max = 76.2; // [20 : 0.5 : 120]
+// Bar's square end (3/8" = 9.525 mm)
+knee_bar_square = 9.525; // [5 : 0.025 : 16]
+// Clearance on the bar's square end, per side
+knee_bar_clearance = 0.15; // [0 : 0.05 : 0.5]
+// Shaft diameter
+knee_shaft_d = 8; // [6 : 0.5 : 12]
+// Shaft axis: distance from the divider
+knee_shaft_x = 17; // [10 : 0.5 : 40]
+// Shaft axis: height above the bay floor; 0 = middle of the bay
+knee_shaft_z = 0; // [0 : 0.5 : 60]
+// Flanged bushings (2, front wall and bulkhead): [bore, outside diameter, length]
+knee_bushing = [8, 12, 10];
+// Bushing flange: [diameter, thickness]
+knee_bushing_flange = [16, 2];
+// Hole for a bushing's sleeve (press fit; FDM holes print a little small)
+knee_bushing_hole = 12.1; // [8 : 0.05 : 20]
+// Bulkhead (carries the rear bushing, the pot and the switch): distance behind the front wall's inside face
+knee_bulkhead_pos = 36; // [25 : 0.5 : 80]
+// Bulkhead thickness where the pot mounts (the pot's bushing must reach through it and take the nut)
+knee_bulkhead_t = 3; // [2 : 0.1 : 5]
+// Bulkhead height above the shaft axis
+knee_bulkhead_above = 15; // [5 : 0.5 : 30]
+// Gears: module (mm per tooth)
+knee_gear_module = 1; // [0.5 : 0.05 : 2]
+// Pinion teeth (on the pot)
+knee_pinion_teeth = 16; // [12 : 1 : 30]
+// Gear ratio, sector to pinion (the sector is cut from a gear with ratio x pinion teeth)
+knee_ratio = 4; // [2 : 1 : 8]
+// Gear face width
+knee_gear_face = 5; // [3 : 0.5 : 10]
+// Tooth thinning per gear for backlash, at the pitch circle
+knee_gear_backlash = 0.15; // [0 : 0.05 : 0.5]
+// Extra center distance between the gears
+knee_gear_cd_extra = 0.1; // [0 : 0.05 : 0.5]
+// Direction from the shaft to the pot, degrees (0 = straight right, negative = down)
+knee_pot_angle = -20; // [-60 : 1 : 60]
+// Pot (Bourns 91, 5/8" square): body size
+knee_pot_body = 15.88; // [10 : 0.01 : 25]
+// Pot body depth behind the panel, with room for the pins and wires
+knee_pot_depth = 22; // [10 : 0.5 : 40]
+// Pot bushing (3/8-32 UNEF): panel hole
+knee_pot_hole = 9.9; // [6 : 0.05 : 14]
+// Pot bushing length
+knee_pot_bushing_len = 9.53; // [5 : 0.01 : 15]
+// Pot shaft diameter (1/4")
+knee_pot_shaft_d = 6.35; // [3 : 0.05 : 8]
+// Pot shaft length from the mounting face (B28: 7/8")
+knee_pot_shaft_len = 22.23; // [12 : 0.01 : 30]
+// Pot anti-rotation lug: radius from the shaft (0.305")
+knee_pot_lug_r = 7.75; // [5 : 0.05 : 12]
+// Pot anti-rotation lug: direction from the shaft, degrees (90 = up); turn the pot to suit
+knee_pot_lug_angle = 90; // [-180 : 1 : 180]
+// Pot anti-rotation lug: hole diameter
+knee_pot_lug_hole = 2.6; // [1.5 : 0.1 : 4]
+// Pot: total resistance, kOhm
+knee_pot_r = 1000; // [10 : 10 : 5000]
+// Pot: electrical travel, degrees
+knee_pot_travel = 240; // [180 : 1 : 300]
+// Resistance span the board wants over the knee travel, kOhm (the slide pot's useful range)
+knee_r_span = 220; // [10 : 5 : 2000]
+// Off switch (Omron SS-5GL): body [length, height, thickness]
+knee_switch_body = [19.8, 10.2, 6.4];
+// Switch mounting holes: pitch, and height above the bottom (terminal) edge
+knee_switch_holes = [9.5, 2.9];
+// Switch operating position, from the mounting-hole line (8.8 +/- 0.8)
+knee_switch_op = 8.8; // [5 : 0.1 : 15]
+// Switch movement differential (release beyond the operating position)
+knee_switch_md = 0.8; // [0.1 : 0.05 : 2]
+// How far past the operating position the bar's rest holds the lever
+knee_switch_press = 0.3; // [0 : 0.05 : 1.5]
+// Actuating point: distance from the switch end nearest the floor
+knee_switch_act = 3; // [0 : 0.5 : 19]
+// Adjusting slots for the switch: travel each way
+knee_switch_adjust = 1.5; // [0 : 0.1 : 4]
+// Switch screw clearance (M2 or #2-56)
+knee_switch_screw = 2.4; // [1.8 : 0.05 : 3]
+// Stop pin: radius on the front face (the pin is cut from rod_d rod)
+knee_stop_r = 14; // [10 : 0.5 : 25]
+// Board (75 x 35 mm donor board): [length, width]
+knee_board = [75, 35];
+// Board screw: [along from the board's front end, across from its left edge]; the peg and rest post follow from it (measure your board)
+knee_board_screw = [48.3, 7];
+// Mirror the board's posts left to right
+knee_board_mirror = false;
+// Board underside above the floor
+knee_board_h = 8; // [4 : 0.5 : 20]
+// Tallest part above the board underside
+knee_board_parts_h = 13.6; // [5 : 0.1 : 40]
+// Heat-set insert hole, M3
+knee_insert_d = 4.6; // [3 : 0.05 : 6]
+// Mains cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5)
+knee_cord = [7.5, 4.5];
+// Mains cord: position along the right end wall, from the bay's back wall
+knee_cord_pos = 14; // [8 : 0.5 : 120]
+// Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop)
+knee_view = 0; // [0 : 0.05 : 1]
 
 /* [Lollipop hinge] */
 // Hinge flange diameter
@@ -1021,6 +1135,7 @@ st_y1  = seat_y1 - lid_ledge;
 // Outlet (compartment_option "outlet"), standing on the compartment floor
 // against the right end wall, face toward -X
 has_outlet = compartment_option == "outlet";
+has_knee   = compartment_option == "knee";
 ol_L  = outlet_size[0];
 ol_W  = outlet_size[1];
 ol_T  = outlet_size[2];
@@ -1262,7 +1377,7 @@ function ext_bay(which, rab) = let(b = bay_rect(which, rab))
     [[b[0].x, b[0].y, ext_floor],
      [b[1].x, b[1].y, bay_z1(which, ext_top_z, ext_lid_thickness)]];
 compartments = concat(
-    has_compartment && !has_outlet
+    has_compartment && !has_outlet && !has_knee
         ? [["base", [st_x0, st_y0, floor_z],
                     [st_x1, st_y1, bay_z1("base", top_z, rabbit_depth)]]] : [],
     bay_back   ? [concat(["back"],   ext_bay("back", bk_rab))]   : [],
@@ -1653,6 +1768,137 @@ if (has_outlet) {
 }
 
 // ---------------------------------------------------------------------------
+// Knee controller (compartment_option "knee"): derived values and report
+// ---------------------------------------------------------------------------
+//
+// The bay's front view is the XZ plane. Angles there are measured from +X
+// toward +Z; the knee angle th >= 0 turns the shaft so that a point at
+// angle a (at rest) is at a + kn_s * th (kn_s = 1 when the knee pushes
+// right: the bar's foot, below the shaft, moves +X).
+kn_s   = knee_push == "right" ? 1 : -1;
+kn_z0  = floor_z;
+kn_z1  = bay_z1("base", top_z, rabbit_depth);
+kn_sx  = st_x0 + knee_shaft_x;                          // shaft axis
+kn_sz  = knee_shaft_z > 0 ? kn_z0 + knee_shaft_z : (kn_z0 + kn_z1) / 2;
+kn_th  = atan(knee_travel / knee_bar_drop);             // full speed
+kn_thx = atan(knee_travel_max / knee_bar_drop);         // hard stop
+kn_m   = knee_gear_module;
+kn_zp  = knee_pinion_teeth;
+kn_zs  = knee_pinion_teeth * knee_ratio;
+kn_rp  = kn_m * kn_zp / 2;                              // pitch radii
+kn_rs  = kn_m * kn_zs / 2;
+kn_cd  = kn_rp + kn_rs + knee_gear_cd_extra;
+kn_px  = kn_sx + kn_cd * cos(knee_pot_angle);           // pot axis
+kn_pz  = kn_sz + kn_cd * sin(knee_pot_angle);
+kn_pot_deg = knee_ratio * kn_th;
+kn_pot_degx = knee_ratio * kn_thx;
+kn_r_over  = knee_pot_r * kn_pot_deg / knee_pot_travel; // kOhm over the travel
+// Along Y (front to back)
+kn_yf  = st_y0 + knee_bulkhead_pos;                     // bulkhead front face
+kn_yb  = kn_yf + knee_bulkhead_t;                       // its back face (pot mounting face)
+kn_ypb = kn_yb - knee_pot_bushing_len - 0.7;            // gears' back face
+kn_ygf = kn_ypb - knee_gear_face;                       // gears' front face
+kn_pin_hub = kn_ygf - (kn_yb - knee_pot_shaft_len);     // pinion hub length on the shaft
+kn_hub_back = max(0, kn_yf - knee_bushing_flange[1] - 0.6 - kn_ypb); // sector hub behind the sector
+kn_bz1 = kn_sz + knee_bulkhead_above;                   // bulkhead top
+kn_boss_r = knee_bushing[1] / 2 + 3;
+// Sector: teeth over the swing, two teeth more each way
+kn_tooth = 360 / kn_zs;
+kn_sec_a0 = knee_pot_angle - (kn_s > 0 ? kn_thx : 0) - 2 * kn_tooth;
+kn_sec_a1 = knee_pot_angle + (kn_s > 0 ? 0 : kn_thx) + 2 * kn_tooth;
+kn_hub_r  = 11;
+// Switch, on the bulkhead's front face below the shaft. A blade on the
+// sector, pointing down at rest, holds the lever in; the knee swings it
+// away. The lever faces the blade; the body lies on the far side.
+kn_blade_t = 3;
+kn_sw = knee_switch_body;
+kn_sw_lv  = kn_sx - kn_s * kn_blade_t / 2;                       // lever contact line, at rest
+kn_sw_hx  = kn_sw_lv - kn_s * (knee_switch_op - knee_switch_press); // hole line
+kn_sw_x0  = min(kn_sw_hx - kn_s * knee_switch_holes[1], kn_sw_hx + kn_s * (kn_sw[1] - knee_switch_holes[1]));
+kn_sw_x1  = max(kn_sw_hx - kn_s * knee_switch_holes[1], kn_sw_hx + kn_s * (kn_sw[1] - knee_switch_holes[1]));
+kn_sw_z0  = kn_z0 + 1.5;
+kn_sw_hz  = [kn_sw_z0 + (kn_sw[0] - knee_switch_holes[0]) / 2,
+             kn_sw_z0 + (kn_sw[0] + knee_switch_holes[0]) / 2];
+kn_blade_r = kn_sz - kn_z0 - 1.5;                                // blade reach
+kn_act_r  = kn_sz - (kn_sw_z0 + knee_switch_act);                // radius at the actuating point
+kn_release = (knee_switch_press + knee_switch_md) / kn_act_r * 180 / PI;
+// Stop pin on the front face, below the shaft
+kn_pin_len = 15;
+kn_pin_out = 5.5;
+kn_hub_disc = [knee_stop_r + rod_d / 2 + 5, 6];              // [radius, thickness]
+kn_hub_y0  = -knee_bushing_flange[1] - 0.5;                    // disc back face
+kn_hub_boss = [knee_bar_square * sqrt(2) / 2 + 2 * knee_bar_clearance + 4, 26];
+kn_shaft_front = kn_hub_y0 - kn_hub_disc[1] - 6;               // shaft's front end
+kn_shaft_len = kn_yf + knee_bushing[2] - kn_shaft_front;
+// Board, in the back of the bay against the divider, its long axis front
+// to back; a printed cover over it
+kn_bc   = 1.5;                                                  // clearance inside the cover
+kn_cw   = 2;                                                    // cover wall
+kn_bx0  = st_x0 + 0.5 + kn_cw + kn_bc;
+kn_by0  = st_y1 - 0.5 - kn_cw - kn_bc - knee_board[0];
+function kn_bp(p) = [kn_bx0 + (knee_board_mirror ? knee_board[1] - p[1] : p[1]), kn_by0 + p[0]];
+kn_screw = kn_bp(knee_board_screw);
+kn_peg   = kn_bp(knee_board_screw + [-47.3, 5]);
+kn_rest  = kn_bp(knee_board_screw + [-4.3, 19.5]);
+kn_cv0   = [kn_bx0 - kn_bc - kn_cw, kn_by0 - kn_bc - kn_cw];
+kn_cv1   = [kn_bx0 + knee_board[1] + kn_bc + kn_cw, kn_by0 + knee_board[0] + kn_bc + kn_cw];
+kn_cv_h  = knee_board_h + knee_board_parts_h + 2 + kn_cw;        // cover height above the floor
+kn_cv_ear = 8;                                                    // screw ears on its right side
+kn_cv_ys = [kn_by0 + 10, kn_by0 + 45];
+kn_cv_bh = 4;                                                     // floor bosses under the ears
+// Mains cord through the right end wall, gripped by a clamp bar
+kn_cord_y  = st_y1 - knee_cord_pos;
+kn_saddle  = 3;
+kn_cord_z  = kn_z0 + kn_saddle + knee_cord[1] / 2;
+kn_clamp_x = st_x1 - 10;
+kn_clamp_dy = knee_cord[0] / 2 + 6;
+kn_clamp_bh = kn_saddle + knee_cord[1] - 0.5;                   // clamp boss height (squeezes the cord)
+
+if (has_knee && report) {
+    echo("=== Knee controller ===");
+    echo(str("Shaft: ", knee_shaft_d, " mm, axis ", knee_shaft_x, " mm from the divider and ",
+             kn_sz - kn_z0, " mm above the bay floor; ", round(kn_shaft_len), " mm long"));
+    echo(str("Knee travel ", knee_travel, " mm at ", knee_bar_drop, " mm below the shaft: shaft turns ",
+             round(kn_th * 100) / 100, " deg (hard stop at ", round(kn_thx * 100) / 100, " deg, ",
+             knee_travel_max, " mm)"));
+    echo(str("Gears: module ", kn_m, ", pinion ", kn_zp, " teeth (pitch radius ", kn_rp, "), sector ",
+             kn_zs, "-tooth (pitch radius ", kn_rs, "), center distance ", kn_cd, ", ratio ", knee_ratio));
+    echo(str("Pot turns ", round(kn_pot_deg * 10) / 10, " deg over the travel (", round(kn_pot_degx * 10) / 10,
+             " at the stop): about ", round(kn_r_over), " kOhm of its ", knee_pot_r, " kOhm (target ",
+             knee_r_span, ")"));
+    echo(str("Switch releases about ", round(kn_release * 10) / 10, " deg into the swing (",
+             round(kn_release / kn_th * 100), "% of the travel; actuating point ", round(kn_act_r * 10) / 10,
+             " mm below the shaft)"));
+    if (abs(kn_r_over - knee_r_span) > 0.25 * knee_r_span)
+        echo("NOTE: the pot's span over the travel is far from knee_r_span; change knee_ratio or the travel");
+    if (kn_pot_degx > knee_pot_travel / 2)
+        echo("WARNING: the pot turns more than half its electrical travel at the stop; check the rest setting");
+    if (kn_px + knee_pot_body / 2 > st_x1 - 1 || kn_pz - knee_pot_body / 2 < kn_z0 + 1
+        || kn_pz + knee_pot_body / 2 > kn_bz1)
+        echo("WARNING: the pot body runs into the bay wall, floor or above the bulkhead; change knee_pot_angle or knee_shaft_x");
+    if (kn_sz - kn_rs - kn_m < kn_z0 + 1 && knee_pot_angle - 2 * kn_tooth - kn_thx < -60)
+        echo("WARNING: the sector's teeth may reach the floor");
+    if (kn_sw_x0 - knee_switch_adjust < st_x0 + 0.5 || kn_sw_x1 + knee_switch_adjust > st_x1 - 0.5)
+        echo("WARNING: the switch and its adjusting slots run into the bay wall; change knee_shaft_x");
+    if (kn_pin_hub < 4)
+        echo(str("WARNING: only ", kn_pin_hub, " mm of pot shaft for the pinion's hub"));
+    if (kn_hub_back < 3)
+        echo("WARNING: little room for the sector's hub behind it; move knee_bulkhead_pos back or shorten the pot bushing");
+    if (kn_ygf - 12 < st_y0)
+        echo("WARNING: under 12 mm in front of the sector for the return spring; move knee_bulkhead_pos back");
+    if (kn_bz1 > kn_z1 - 8)
+        echo("WARNING: the bulkhead leaves under 8 mm under the lid for wires");
+    if (kn_cv0.y < kn_yb + knee_pot_depth)
+        echo("WARNING: the board cover runs into the pot; move knee_bulkhead_pos forward");
+    if (!has_passthrough)
+        echo("WARNING: no cord pass-through in the divider for the motor lead");
+    if (kn_release > 0.25 * kn_th)
+        echo("NOTE: the switch releases late in the swing; mount it with its lever's free end down, or reduce knee_switch_press");
+    echo("DANGER: the board, the pot's pins and the switch's terminals are live at mains voltage. Work on it unplugged; keep the cover on");
+    echo("=======================");
+}
+
+// ---------------------------------------------------------------------------
 // Hardware list
 // ---------------------------------------------------------------------------
 
@@ -1729,6 +1975,23 @@ if (report && turn_button)
     echo(str("Turn button screw: 1 x ", turn_button_nut_spec, " x ",
              stock_len(turn_button_nut_spec, tb_screw_need), " pan head (at least ",
              round(tb_screw_need * 10) / 10, " mm) + 1 washer + 1 hex nut (slides into its slot from inside the cavity)"));
+if (report && has_knee) {
+    echo(str("Knee shaft: 1 x ", knee_shaft_d, " mm steel rod (drill rod or ground shaft), ",
+             round(kn_shaft_len), " mm long; file two small flats for the set screws"));
+    echo(str("Knee bushings: 2 x flanged bronze sleeve bearing, ", knee_bushing[0], " mm bore x ",
+             knee_bushing[1], " mm OD x ", knee_bushing[2], " mm long, flange ", knee_bushing_flange[0],
+             " x ", knee_bushing_flange[1], " mm"));
+    echo(str("Knee stop pin: 1 x ", frac16(rod_d / in + 1 / 32), " rod, cut to ", kn_pin_len,
+             " mm, pressed into the front face"));
+    echo(str("Knee bar: steel, ", round(knee_bar_square * 100) / 100, " mm square at the socket end, out from the hub, bent down ",
+             knee_bar_drop, " mm"));
+    echo("Knee return spring: 1 x torsion spring, about 12 mm OD over the shaft (at least 8.5 mm ID), straight legs");
+    echo("Knee pot: Bourns 91A1A-B28-A25L (1 MOhm linear cermet, 1/4\" plastic slotted shaft, 3/8-32 bushing, lug), with its nut and lockwasher");
+    echo("Knee off switch: Omron SS-5GL (hinge lever, SPDT, 5 A 125 VAC); 2 x M2 x 12 or #2-56 x 1/2\" screws, nuts and washers");
+    echo("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover); 2 x M3 x 12 (cord clamp)");
+    echo("Knee heat-set inserts: 5 x M3 (board boss, 2 cover bosses, 2 cord-clamp bosses)");
+    echo("Knee wiring: 300 V insulated wire for the pot and switch leads; mains cord (SPT-2 or similar)");
+}
 if (report) echo(str("Bed cushions: ", frac16(bed_cushion_in + 1 / 32), " thick, compressed"));
 if (split && serrations && serr_n > 0)
     if (report) echo("Assembly: lower the right half straight down onto the left half (the front-wall serrations engage from below)");
@@ -1742,6 +2005,7 @@ if (part == "assembly") {
     color("SteelBlue") base();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
     if (turn_button) color("LightSteelBlue") turn_button_part();
+    if (has_knee) knee_in_place();
     if (has_back) {
         color("Peru") back_ext_part();
         color("BurlyWood") lid_part("back");
@@ -1833,6 +2097,25 @@ if (part == "assembly") {
     if (ol_cb > 0) outlet_cap();
 } else if (part == "rod_plugs") {
     if (harness_rods && rod_plug_len > 0) rod_plugs();
+} else if (part == "knee_sector") {
+    if (has_knee) knee_sector_part();
+} else if (part == "knee_pinion") {
+    if (has_knee) knee_pinion_part();
+} else if (part == "knee_hub") {
+    if (has_knee) knee_hub_part();
+} else if (part == "knee_cover") {
+    if (has_knee) knee_cover_part();
+} else if (part == "knee_cord_clamp") {
+    if (has_knee) knee_cord_clamp_part();
+} else if (part == "knee_assembly") {
+    // Cutaway of the right bay with the mechanism, the bar pushed to knee_view
+    if (has_knee) {
+        color("SteelBlue") intersection() {
+            base();
+            translate([st_x0 - 25, -1, -1]) cube([outer_length - st_x0 + 26, outer_width + 2, kn_bz1 + 1]);
+        }
+        knee_in_place(knee_view * kn_thx);
+    }
 } else if (part == "split_test") {
     if (split) split_test();
     else if (report) echo("WARNING: split_test needs split = true");
@@ -1956,6 +2239,7 @@ module handhold_knockouts() {
 module base() {
     handhold_knockouts();
     if (has_outlet) outlet_curbs();
+    if (has_knee) knee_base_add();
     if (has_passthrough && passthrough_knockouts) passthrough_knockout_walls();
     difference() {
         union() {
@@ -1994,6 +2278,7 @@ module base() {
             if (has_outlet && outlet_mount == "through")
                 outlet_through_hole();
             if (has_outlet && outlet_labels) outlet_label_cuts();
+            if (has_knee) knee_base_cuts();
 
             // Cord pass-through in the divider
             if (compartment_option != "storage")
@@ -3020,6 +3305,11 @@ build_parts = concat(
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
     turn_button ? [["turn_button", "small", [turn_button_w + 1, tb_R + turn_button_w], []]] : [],
+    has_knee ? [["knee_sector", "small", [2 * (kn_rs + 2 * kn_m), kn_blade_r + kn_rs + 2 * kn_m], []],
+                ["knee_pinion", "small", [kn_rp * 2 + 4, kn_rp * 2 + 4], []],
+                ["knee_hub", "small", [2 * kn_hub_disc[0], 2 * kn_hub_disc[0]], []],
+                ["knee_cover", "small", [kn_cv1.x - kn_cv0.x + kn_cv_ear, kn_cv1.y - kn_cv0.y], []],
+                ["knee_cord_clamp", "small", [8, 2 * kn_clamp_dy + 8], []]] : [],
     has_passthrough && passthrough_cover
         ? [["passthrough_cover", "small",
             [cord_hole_width + 6, cord_hole_height + cord_hole_width / 2 + 6], []]] : []);
@@ -3047,6 +3337,12 @@ module place_part(id) {
     else if (id == "ext_pegs")   translate([0, peg_d / 2 + 2, 0]) ext_pegs(n_ext_pegs + peg_spares);
     else if (id == "passthrough_cover")
         translate([cord_hole_width / 2 + 3, 3, 0]) passthrough_cover_part();
+    else if (id == "knee_sector")
+        translate([kn_rs + 2 * kn_m, kn_blade_r, 0]) knee_sector_part();
+    else if (id == "knee_pinion")  translate([kn_rp + 2, kn_rp + 2, 0]) knee_pinion_part();
+    else if (id == "knee_hub")     translate([kn_hub_disc[0], kn_hub_disc[0], 0]) knee_hub_part();
+    else if (id == "knee_cover")   knee_cover_part();
+    else if (id == "knee_cord_clamp") translate([4, kn_clamp_dy + 4, 0]) knee_cord_clamp_part();
     else if (id == "turn_button")
         translate([turn_button_w / 2 + 0.5, tb_R, turn_button_t + tb_top]) rotate([180, 0, 0])
             translate([-tb_x, -tb_y, 0]) turn_button_part();
@@ -3697,4 +3993,312 @@ module ot_test_corners() {
     for (i = [0, 1])
         translate([-lo.x + i * (sz.x + ins_spacing), -lo.y, 0])
             intersection() { ot_tray(h); translate(lo) cube(sz); }
+}
+
+// ---------------------------------------------------------------------------
+// Knee controller: geometry
+// ---------------------------------------------------------------------------
+
+// Involute spur gear outline, teeth centred at angles a0 + k * 360 / z.
+// Teeth are thinned by bl at the pitch circle for backlash.
+function kn_inv(a) = tan(a) - a * PI / 180;
+module kn_gear2d(m, z, a0 = 0, bl = 0, pa = 20, add = 1) {
+    r  = m * z / 2;
+    rb = r * cos(pa);
+    ra = r + add * m;
+    rf = r - 1.25 * m;
+    r0 = max(rb, rf);
+    beta = (PI * m / 2 - bl) / (2 * r);                 // half tooth at the pitch circle, rad
+    function hw(rr) = (beta + kn_inv(pa) - kn_inv(acos(min(1, rb / rr)))) * 180 / PI;
+    n  = 6;
+    rs = [for (i = [0 : n]) r0 + (ra - r0) * i / n];
+    pts = [for (k = [0 : z - 1])
+              let(c = a0 + k * 360 / z)
+              each concat(
+                  [[rf * cos(c - hw(r0)), rf * sin(c - hw(r0))]],
+                  [for (q = rs) [q * cos(c - hw(q)), q * sin(c - hw(q))]],
+                  [for (i = [n : -1 : 0]) let(q = rs[i]) [q * cos(c + hw(q)), q * sin(c + hw(q))]],
+                  [[rf * cos(c + hw(r0)), rf * sin(c + hw(r0))],
+                   [rf * cos(c + 180 / z), rf * sin(c + 180 / z)]])];
+    polygon(pts);
+}
+
+// Pinion outline generated by rolling it against the sector's gear (made
+// slightly fat, for backlash, and long in the tooth, for root clearance):
+// the conjugate profile, with the undercut a small pinion needs.
+module kn_pinion2d() {
+    ra = kn_rp + kn_m;
+    cs = knee_pot_angle + 180;                          // from the pinion to the shaft
+    sp = kn_cd * [cos(cs), sin(cs)];
+    steps = 90;
+    difference() {
+        circle(r = ra, $fn = 4 * kn_zp);
+        for (i = [-steps : steps]) {
+            ph = i * 180 / (steps * knee_ratio);         // sector turn; pinion frame turns by ph * ratio
+            rotate(ph * knee_ratio) translate(sp) rotate(ph)
+                intersection() {
+                    kn_gear2d_cut();
+                    rotate(cs + 180 - ph) polygon([[0, 0], [60, -12], [60, 12]]);   // fixed on the line of centers
+                }
+        }
+    }
+}
+// The sector's gear as a cutter: thickened by the backlash, teeth long by
+// the root clearance
+module kn_gear2d_cut() {
+    offset(delta = 0) kn_gear2d(kn_m, kn_zs, knee_pot_angle, -knee_gear_backlash, 20, 1.25);
+}
+
+// Arc slot of width w at radius r from angle a0 to a1
+module kn_arc_slot(r, a0, a1, w) {
+    n = max(2, ceil(abs(a1 - a0) / 2));
+    for (i = [0 : n - 1])
+        hull() for (a = [a0 + (a1 - a0) * i / n, a0 + (a1 - a0) * (i + 1) / n])
+            translate([r * cos(a), r * sin(a)]) circle(d = w, $fn = 24);
+}
+
+// Place a part built in its print frame (u, v across, w up) on the knee
+// shaft: (u, v) -> (X, Z) about the shaft, w -> +Y from y (mirror) or -Y.
+module kn_on_axis(x, y, z, back = true) {
+    multmatrix(back ? [[1, 0, 0, x], [0, 0, 1, y], [0, 1, 0, z], [0, 0, 0, 1]]
+                    : [[1, 0, 0, x], [0, 0, -1, y], [0, 1, 0, z], [0, 0, 0, 1]])
+        children();
+}
+
+// Sector: hub, toothed sector and the switch blade, in its print frame
+// (front face down). The hub and the blade's lug stand up from it, toward
+// the bulkhead. Set screw through a nut slot in the hub.
+module knee_sector_part() {
+    t   = knee_gear_face;
+    hb  = kn_hub_back;
+    lug = kn_yf - 0.8 - kn_ypb;                         // lug, to just short of the bulkhead
+    rs0 = kn_sz - (kn_sw_z0 + kn_sw[0] + 1);            // lug spans the switch's length
+    difference() {
+        union() {
+            linear_extrude(height = t) {
+                // toothed sector
+                intersection() {
+                    kn_gear2d(kn_m, kn_zs, knee_pot_angle, knee_gear_backlash);
+                    polygon(concat([[0, 0]],
+                        [for (i = [0 : 12]) let(a = kn_sec_a0 + (kn_sec_a1 - kn_sec_a0) * i / 12)
+                            (kn_rs + 2 * kn_m) * [cos(a), sin(a)]]));
+                }
+                // web from the hub to the teeth
+                intersection() {
+                    circle(r = kn_rs - 1.25 * kn_m + 0.01, $fn = 120);
+                    polygon(concat([[0, 0]],
+                        [for (i = [0 : 12]) let(a = kn_sec_a0 + 1 + (kn_sec_a1 - kn_sec_a0 - 2) * i / 12)
+                            (kn_rs + 2 * kn_m) * [cos(a), sin(a)]]));
+                }
+                circle(r = kn_hub_r, $fn = 48);
+                // blade, pointing down at rest
+                translate([-kn_blade_t / 2, -kn_blade_r]) square([kn_blade_t, kn_blade_r]);
+            }
+            // hub behind the sector
+            cylinder(r = kn_hub_r, h = t + hb, $fn = 48);
+            // lug on the blade, reaching back to the lever
+            translate([-kn_blade_t / 2, -kn_blade_r, 0])
+                cube([kn_blade_t, kn_blade_r - rs0, t + lug]);
+        }
+        translate([0, 0, -1]) cylinder(d = knee_shaft_d + 0.15, h = t + hb + 2, $fn = 40);
+        // spring leg hole
+        translate([0, kn_hub_r - 2.5, -1]) cylinder(d = 1.8, h = t + 2, $fn = 16);
+        // set screw (M3) and its nut slot, from the top of the hub
+        translate([0, 0, (t + hb) / 2]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_r + 1, $fn = 20);
+        translate([knee_shaft_d / 2 + 1.2, -3.1, (t + hb) / 2 - 2.9])
+            cube([2.6, 6.2, t + hb]);
+    }
+}
+
+// Pinion with a split clamp hub, in its print frame (gear face down, hub up)
+module knee_pinion_part() {
+    t  = knee_gear_face + 1;                            // 1 mm proud of the sector's front face
+    hl = max(4, kn_pin_hub - 1);
+    hr = 8.5;
+    difference() {
+        union() {
+            linear_extrude(height = t) kn_pinion2d();
+            translate([0, 0, t]) cylinder(r = hr, h = hl, $fn = 48);
+        }
+        translate([0, 0, -1]) cylinder(d = knee_pot_shaft_d + 0.15, h = t + hl + 2, $fn = 40);
+        // clamp: a slit through the hub, and an M3 screw across it
+        translate([0, -0.6, t + 0.6]) cube([hr + 1, 1.2, hl]);
+        translate([5, hr + 1, t + hl / 2 + 0.5]) rotate([90, 0, 0]) cylinder(d = 3.4, h = 2 * hr + 2, $fn = 20);
+        hull() for (dz = [0, hl]) translate([5, -4, t + hl / 2 + 0.5 + dz]) rotate([90, 0, 0])
+            cylinder(d = 6.4, h = 6, $fn = 6);                              // nut, dropped in from the top
+        translate([5, hr + 2, t + hl / 2 + 0.5]) rotate([90, 0, 0])
+            cylinder(d = 6, h = hr + 2 - 4, $fn = 32);                      // head
+    }
+}
+
+// Knee hub, outside the front face: a disc with the stop slot, and a boss
+// with the bar's square socket. In its print frame (disc down).
+module knee_hub_part() {
+    R  = kn_hub_disc[0];
+    td = kn_hub_disc[1];
+    bl = kn_hub_boss[1];
+    sq = knee_bar_square + 2 * knee_bar_clearance;
+    sd = -kn_shaft_front + kn_hub_y0;                   // shaft depth into the hub
+    pin_a = -90;                                        // pin below the shaft
+    difference() {
+        union() {
+            cylinder(r = R, h = td, $fn = 96);
+            cylinder(r = kn_hub_boss[0], h = td + bl, $fn = 64);
+        }
+        // stop slot: the pin's path over the swing
+        translate([0, 0, -1]) linear_extrude(height = td + 2)
+            kn_arc_slot(knee_stop_r, pin_a, pin_a - kn_s * kn_thx, rod_d + 0.6);
+        // shaft bore and set screw (M3) with a nut slot
+        translate([0, 0, -1]) cylinder(d = knee_shaft_d + 0.15, h = sd + 1, $fn = 40);
+        translate([0, 0, sd - 3]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_boss[0] + 1, $fn = 20);
+        translate([knee_shaft_d / 2 + 1.5, -3.1, sd - 3 - 2.9]) cube([2.6, 6.2, td + bl]);
+        // bar socket
+        translate([-sq / 2, -sq / 2, sd + 1]) cube([sq, sq, bl + td]);
+        translate([0, 0, td + bl - 1]) rotate(45)
+            cylinder(d1 = sq * sqrt(2), d2 = (sq + 2) * sqrt(2), h = 1.01, $fn = 4);
+    }
+}
+
+// Board cover: a box over the board, open below, with screw ears on its
+// right side and wire notches; printed top down.
+module knee_cover_part() mirror([0, 0, 1]) translate([0, 0, -kn_cv_h]) knee_cover_raw();
+// The cover as it sits in the bay, origin at its front left corner on the floor
+module knee_cover_raw() {
+    L = kn_cv1 - kn_cv0;
+    h = kn_cv_h;
+    eh = h - kn_cv_bh;                                  // ears stand on the floor bosses
+    difference() {
+        union() {
+            cube([L.x, L.y, h]);
+            for (y = kn_cv_ys)
+                translate([L.x - 0.01, y - kn_cv0.y - kn_cv_ear / 2, kn_cv_bh])
+                    cube([kn_cv_ear, kn_cv_ear, eh]);
+        }
+        translate([kn_cw, kn_cw, -1]) cube([L.x - 2 * kn_cw, L.y - 2 * kn_cw, h - kn_cw + 1]);
+        for (y = kn_cv_ys)
+            translate([L.x + kn_cv_ear / 2, y - kn_cv0.y, -1]) cylinder(d = 3.4, h = h + 2, $fn = 20);
+        // wire notches: front end by the divider (pot, switch and motor
+        // leads), right side by the mains cord
+        translate([kn_cw + 1, -1, -1]) cube([14, kn_cw + 2, 10]);
+        translate([L.x - kn_cw - 1, kn_cord_y - kn_cv0.y - 6, -1]) cube([kn_cw + 2, 12, knee_cord[1] + kn_saddle + 3]);
+    }
+}
+
+// Cord clamp bar, with a ridge under the cord; in its print frame (flat top down)
+module knee_cord_clamp_part() {
+    l = 2 * kn_clamp_dy + 8;
+    difference() {
+        union() {
+            translate([-4, -l / 2, 0]) cube([8, l, 4]);
+            translate([0, 0, 4]) rotate([90, 0, 0])
+                linear_extrude(height = knee_cord[0] + 2, center = true)
+                    polygon([[-2, 0], [2, 0], [0, 0.8]]);
+        }
+        for (s = [-1, 1]) translate([0, s * kn_clamp_dy, -1]) cylinder(d = 3.4, h = 8, $fn = 20);
+    }
+}
+
+// Solids added to the base: bulkhead, board posts, floor bosses, cord saddle,
+// spring post
+module knee_base_add() {
+    // Bulkhead across the bay, with the rear bushing's boss, the pot's hole
+    // and lug hole, and the switch's adjusting slots
+    difference() {
+        union() {
+            translate([st_x0 - overlap, kn_yf, kn_z0 - overlap])
+                cube([st_x1 - st_x0 + 2 * overlap, knee_bulkhead_t, kn_bz1 - kn_z0 + overlap]);
+            translate([kn_sx, kn_yf, kn_sz]) rotate([-90, 0, 0])
+                cylinder(r = kn_boss_r, h = knee_bushing[2], $fn = 48);
+        }
+        translate([kn_sx, kn_yf - 1, kn_sz]) rotate([-90, 0, 0])
+            cylinder(d = knee_bushing_hole, h = knee_bushing[2] + 2, $fn = 48);
+        translate([kn_px, kn_yf - 1, kn_pz]) rotate([-90, 0, 0])
+            cylinder(d = knee_pot_hole, h = knee_bulkhead_t + 2, $fn = 40);
+        translate([kn_px + knee_pot_lug_r * cos(knee_pot_lug_angle), kn_yf - 1,
+                   kn_pz + knee_pot_lug_r * sin(knee_pot_lug_angle)]) rotate([-90, 0, 0])
+            cylinder(d = knee_pot_lug_hole, h = knee_bulkhead_t + 2, $fn = 16);
+        for (z = kn_sw_hz)
+            hull() for (dx = [-knee_switch_adjust, knee_switch_adjust])
+                translate([kn_sw_hx + dx, kn_yf - 1, z]) rotate([-90, 0, 0])
+                    cylinder(d = knee_switch_screw, h = knee_bulkhead_t + 2, $fn = 16);
+    }
+    // Board posts: screw boss (M3 heat-set), alignment peg, rest post
+    translate([kn_screw.x, kn_screw.y, kn_z0 - overlap]) difference() {
+        cylinder(d = 9, h = knee_board_h + overlap, $fn = 40);
+        translate([0, 0, 2]) cylinder(d = knee_insert_d, h = knee_board_h + 1, $fn = 30);
+    }
+    translate([kn_peg.x, kn_peg.y, kn_z0 - overlap]) {
+        cylinder(d = 4, h = knee_board_h + overlap, $fn = 24);
+        cylinder(d = 2, h = knee_board_h + overlap + 3, $fn = 16);
+        translate([0, 0, knee_board_h + overlap + 3]) cylinder(d1 = 2, d2 = 0.8, h = 1, $fn = 16);
+    }
+    translate([kn_rest.x, kn_rest.y, kn_z0 - overlap])
+        cylinder(d = 4, h = knee_board_h + overlap, $fn = 24);
+    // Floor bosses for the cover's ears and the cord clamp (M3 heat-set)
+    for (p = concat([for (y = kn_cv_ys) [kn_cv1.x + kn_cv_ear / 2, y, kn_cv_bh]],
+                    [for (s = [-1, 1]) [kn_clamp_x, kn_cord_y + s * kn_clamp_dy, kn_clamp_bh]]))
+        translate([p.x, p.y, kn_z0 - overlap]) difference() {
+            cylinder(d = 8, h = p.z + overlap, $fn = 32);
+            translate([0, 0, overlap + p.z - 6]) cylinder(d = knee_insert_d, h = 7, $fn = 30);
+        }
+    // Cord saddle, ridged, from the end wall in past the clamp
+    translate([kn_clamp_x - 8, kn_cord_y - knee_cord[0] / 2 - 1, kn_z0 - overlap]) {
+        cube([st_x1 - kn_clamp_x + 8 + overlap, knee_cord[0] + 2, kn_saddle + overlap]);
+        for (dx = [3, 8, 13]) translate([dx, 0, kn_saddle + overlap]) rotate([-90, 0, 0])
+            linear_extrude(height = knee_cord[0] + 2) polygon([[-1.2, 0], [1.2, 0], [0, -1]]);
+    }
+    // Post for the return spring's fixed leg, beside the shaft in front of the sector
+    translate([kn_sx - kn_s * 13, (st_y0 + kn_ygf) / 2, kn_z0 - overlap])
+        cylinder(d = 5, h = kn_sz - 6 - kn_z0 + overlap, $fn = 24);
+}
+
+// Holes cut into the base: front-wall bushing, stop-pin hole, mains cord
+module knee_base_cuts() {
+    translate([kn_sx, -1, kn_sz]) rotate([-90, 0, 0])
+        cylinder(d = knee_bushing_hole, h = st_y0 + 2, $fn = 48);
+    translate([kn_sx, -1, kn_sz - knee_stop_r]) rotate([-90, 0, 0])
+        cylinder(d = rod_d - 0.1, h = kn_pin_len - kn_pin_out + 1, $fn = 24);
+    // cord: a rounded slot through the end wall, chamfered outside
+    translate([st_x1 - 1, kn_cord_y, kn_cord_z]) rotate([0, 90, 0])
+        linear_extrude(height = outer_length - st_x1 + 2)
+            hull() for (s = [-1, 1])
+                translate([0, s * (knee_cord[0] - knee_cord[1]) / 2])
+                    circle(d = knee_cord[1] + 0.8, $fn = 24);
+}
+
+// Parts in place, for the assembly views; hardware as stand-ins
+module knee_in_place(th = 0) {
+    a = kn_s * th;
+    color("DarkSlateGray") {
+        kn_on_axis(kn_sx, kn_ygf, kn_sz, true) rotate(a) knee_sector_part();
+        kn_on_axis(kn_px, kn_ypb, kn_pz, false) rotate(-a * knee_ratio) knee_pinion_part();
+        kn_on_axis(kn_sx, kn_hub_y0, kn_sz, false) rotate(a) knee_hub_part();
+        translate([kn_cv0.x, kn_cv0.y, kn_z0]) knee_cover_raw();
+        translate([kn_clamp_x, kn_cord_y, kn_z0 + kn_clamp_bh + 4]) mirror([0, 0, 1]) knee_cord_clamp_part();
+    }
+    // hardware
+    color("Silver") {
+        translate([kn_sx, kn_shaft_front, kn_sz]) rotate([-90, 0, 0])
+            cylinder(d = knee_shaft_d, h = kn_shaft_len, $fn = 32);
+        translate([kn_sx, -kn_pin_out, kn_sz - knee_stop_r]) rotate([-90, 0, 0])
+            cylinder(d = rod_d, h = kn_pin_len, $fn = 24);
+    }
+    color("Goldenrod") for (y = [0, kn_yf]) {
+        translate([kn_sx, y, kn_sz]) rotate([-90, 0, 0]) difference() {
+            union() {
+                cylinder(d = knee_bushing[1], h = knee_bushing[2], $fn = 32);
+                translate([0, 0, -knee_bushing_flange[1]]) cylinder(d = knee_bushing_flange[0], h = knee_bushing_flange[1], $fn = 32);
+            }
+            translate([0, 0, -5]) cylinder(d = knee_bushing[0], h = 30, $fn = 24);
+        }
+    }
+    color("DimGray") {
+        // pot body behind the bulkhead, its bushing and shaft through it
+        translate([kn_px, kn_yb + 15.3 / 2, kn_pz]) cube([knee_pot_body, 15.3, knee_pot_body], center = true);
+        translate([kn_px, kn_yb, kn_pz]) rotate([90, 0, 0]) cylinder(d = 9.5, h = knee_pot_bushing_len, $fn = 24);
+        translate([kn_px, kn_yb, kn_pz]) rotate([90, 0, 0]) cylinder(d = knee_pot_shaft_d, h = knee_pot_shaft_len, $fn = 24);
+        // switch body against the bulkhead
+        translate([kn_sw_x0, kn_yf - kn_sw[2], kn_sw_z0]) cube([kn_sw_x1 - kn_sw_x0, kn_sw[2], kn_sw[0]]);
+    }
+    color("DarkGreen") translate([kn_bx0, kn_by0, kn_z0 + knee_board_h]) cube([knee_board[1], knee_board[0], 1.6]);
 }

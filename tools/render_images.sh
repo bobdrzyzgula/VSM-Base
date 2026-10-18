@@ -34,3 +34,5 @@ render base-none       "165,108,41,55,0,25,760"   -D 'part="base"' -D 'split=fal
 render end-underside   "-170,-60,-90,15,110,20"    -D 'part="base"' -D 'split=false'
 # The two halves of the split base
 render split           "211,108,41,60,0,20,800"   -D 'part="base"'
+# Knee controller: cutaway of the right bay with the mechanism in place
+preview knee            "380,85,30,50,0,25,420"    -D 'part="knee_assembly"' -D 'compartment_option="knee"'

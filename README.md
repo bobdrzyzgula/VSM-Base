@@ -34,9 +34,11 @@ fit on your printer, and then print a base that fits.
   hinge holes; other hinge types can be added.
 - **Prints in two halves** on a 256 mm printer, joined by dovetail keys and
   three recessed steel mending plates with captive nuts.
-- **Optional side compartment**: storage, or a mount for the machine's
-  light-and-motor outlet with cord slots in its lid (controller options
-  planned); or a base fitted to the bed alone.
+- **Optional side compartment**: storage; a mount for the machine's
+  light-and-motor outlet with cord slots in its lid; a **knee controller**
+  (draft) built around an inexpensive pedal speed-control board, with a
+  geared pot, an off switch and hard stops; or a base fitted to the bed
+  alone.
 - **Handholds** under each end, after the original wooden bases, and steel
   rods for a carrying harness.
 - **Removable extensions** that sit level with the bed: a back compartment

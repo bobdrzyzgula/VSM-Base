@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 322 parameters; 320 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 374 parameters; 372 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -139,6 +139,63 @@ There are 322 parameters; 320 of them appear in the Customizer. The rest are lis
 | `outlet_slot_w` | `9` | Cord slot width *Range 4 to 20, step 0.5.* |
 | `outlet_slot_depth` | `25` | Cord slot depth in from the lid edge |
 | `outlet_slot_chamfer` | `1.5` | Chamfer on the slot's top edges, easing a cord pulled over them |
+
+## Knee controller
+
+| Parameter | Default | Description |
+|---|---|---|
+| `knee_push` | `"right"` | The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay; a gear sector on the shaft turns a pot standing in for the donor board's slide pot, and a switch cuts the motor at rest. See the User's Guide before building: the board is live at mains voltage. Which way the knee pushes the bar *Choices: right, left.* |
+| `knee_bar_drop` | `317.5` | Bar: drop from the shaft to where the knee meets it (12.5" = 317.5 mm) *Range 150 to 450, step 0.5.* |
+| `knee_travel` | `63.5` | Knee travel at that point, for full speed (2.5" = 63.5 mm) *Range 20 to 100, step 0.5.* |
+| `knee_travel_max` | `76.2` | Knee travel at the hard stop (3" = 76.2 mm) *Range 20 to 120, step 0.5.* |
+| `knee_bar_square` | `9.525` | Bar's square end (3/8" = 9.525 mm) *Range 5 to 16, step 0.025.* |
+| `knee_bar_clearance` | `0.15` | Clearance on the bar's square end, per side *Range 0 to 0.5, step 0.05.* |
+| `knee_shaft_d` | `8` | Shaft diameter *Range 6 to 12, step 0.5.* |
+| `knee_shaft_x` | `17` | Shaft axis: distance from the divider *Range 10 to 40, step 0.5.* |
+| `knee_shaft_z` | `0` | Shaft axis: height above the bay floor; 0 = middle of the bay *Range 0 to 60, step 0.5.* |
+| `knee_bushing` | `[8, 12, 10]` | Flanged bushings (2, front wall and bulkhead): [bore, outside diameter, length] |
+| `knee_bushing_flange` | `[16, 2]` | Bushing flange: [diameter, thickness] |
+| `knee_bushing_hole` | `12.1` | Hole for a bushing's sleeve (press fit; FDM holes print a little small) *Range 8 to 20, step 0.05.* |
+| `knee_bulkhead_pos` | `36` | Bulkhead (carries the rear bushing, the pot and the switch): distance behind the front wall's inside face *Range 25 to 80, step 0.5.* |
+| `knee_bulkhead_t` | `3` | Bulkhead thickness where the pot mounts (the pot's bushing must reach through it and take the nut) *Range 2 to 5, step 0.1.* |
+| `knee_bulkhead_above` | `15` | Bulkhead height above the shaft axis *Range 5 to 30, step 0.5.* |
+| `knee_gear_module` | `1` | Gears: module (mm per tooth) *Range 0.5 to 2, step 0.05.* |
+| `knee_pinion_teeth` | `16` | Pinion teeth (on the pot) *Range 12 to 30, step 1.* |
+| `knee_ratio` | `4` | Gear ratio, sector to pinion (the sector is cut from a gear with ratio x pinion teeth) *Range 2 to 8, step 1.* |
+| `knee_gear_face` | `5` | Gear face width *Range 3 to 10, step 0.5.* |
+| `knee_gear_backlash` | `0.15` | Tooth thinning per gear for backlash, at the pitch circle *Range 0 to 0.5, step 0.05.* |
+| `knee_gear_cd_extra` | `0.1` | Extra center distance between the gears *Range 0 to 0.5, step 0.05.* |
+| `knee_pot_angle` | `-20` | Direction from the shaft to the pot, degrees (0 = straight right, negative = down) *Range -60 to 60, step 1.* |
+| `knee_pot_body` | `15.88` | Pot (Bourns 91, 5/8" square): body size *Range 10 to 25, step 0.01.* |
+| `knee_pot_depth` | `22` | Pot body depth behind the panel, with room for the pins and wires *Range 10 to 40, step 0.5.* |
+| `knee_pot_hole` | `9.9` | Pot bushing (3/8-32 UNEF): panel hole *Range 6 to 14, step 0.05.* |
+| `knee_pot_bushing_len` | `9.53` | Pot bushing length *Range 5 to 15, step 0.01.* |
+| `knee_pot_shaft_d` | `6.35` | Pot shaft diameter (1/4") *Range 3 to 8, step 0.05.* |
+| `knee_pot_shaft_len` | `22.23` | Pot shaft length from the mounting face (B28: 7/8") *Range 12 to 30, step 0.01.* |
+| `knee_pot_lug_r` | `7.75` | Pot anti-rotation lug: radius from the shaft (0.305") *Range 5 to 12, step 0.05.* |
+| `knee_pot_lug_angle` | `90` | Pot anti-rotation lug: direction from the shaft, degrees (90 = up); turn the pot to suit *Range -180 to 180, step 1.* |
+| `knee_pot_lug_hole` | `2.6` | Pot anti-rotation lug: hole diameter *Range 1.5 to 4, step 0.1.* |
+| `knee_pot_r` | `1000` | Pot: total resistance, kOhm *Range 10 to 5000, step 10.* |
+| `knee_pot_travel` | `240` | Pot: electrical travel, degrees *Range 180 to 300, step 1.* |
+| `knee_r_span` | `220` | Resistance span the board wants over the knee travel, kOhm (the slide pot's useful range) *Range 10 to 2000, step 5.* |
+| `knee_switch_body` | `[19.8, 10.2, 6.4]` | Off switch (Omron SS-5GL): body [length, height, thickness] |
+| `knee_switch_holes` | `[9.5, 2.9]` | Switch mounting holes: pitch, and height above the bottom (terminal) edge |
+| `knee_switch_op` | `8.8` | Switch operating position, from the mounting-hole line (8.8 +/- 0.8) *Range 5 to 15, step 0.1.* |
+| `knee_switch_md` | `0.8` | Switch movement differential (release beyond the operating position) *Range 0.1 to 2, step 0.05.* |
+| `knee_switch_press` | `0.3` | How far past the operating position the bar's rest holds the lever *Range 0 to 1.5, step 0.05.* |
+| `knee_switch_act` | `3` | Actuating point: distance from the switch end nearest the floor *Range 0 to 19, step 0.5.* |
+| `knee_switch_adjust` | `1.5` | Adjusting slots for the switch: travel each way *Range 0 to 4, step 0.1.* |
+| `knee_switch_screw` | `2.4` | Switch screw clearance (M2 or #2-56) *Range 1.8 to 3, step 0.05.* |
+| `knee_stop_r` | `14` | Stop pin: radius on the front face (the pin is cut from rod_d rod) *Range 10 to 25, step 0.5.* |
+| `knee_board` | `[75, 35]` | Board (75 x 35 mm donor board): [length, width] |
+| `knee_board_screw` | `[48.3, 7]` | Board screw: [along from the board's front end, across from its left edge]; the peg and rest post follow from it (measure your board) |
+| `knee_board_mirror` | `false` | Mirror the board's posts left to right |
+| `knee_board_h` | `8` | Board underside above the floor *Range 4 to 20, step 0.5.* |
+| `knee_board_parts_h` | `13.6` | Tallest part above the board underside *Range 5 to 40, step 0.1.* |
+| `knee_insert_d` | `4.6` | Heat-set insert hole, M3 *Range 3 to 6, step 0.05.* |
+| `knee_cord` | `[7.5, 4.5]` | Mains cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5) |
+| `knee_cord_pos` | `14` | Mains cord: position along the right end wall, from the bay's back wall *Range 8 to 120, step 0.5.* |
+| `knee_view` | `0` | Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop) *Range 0 to 1, step 0.05.* |
 
 ## Lollipop hinge
 
