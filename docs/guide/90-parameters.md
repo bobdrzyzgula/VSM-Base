@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 393 parameters; 391 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 397 parameters; 395 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -183,7 +183,11 @@ There are 393 parameters; 391 of them appear in the Customizer. The rest are lis
 | `knee_switch_op` | `8.8` | Switch operating position, from the mounting-hole line (8.8 +/- 0.8) *Range 5 to 15, step 0.1.* |
 | `knee_switch_md` | `0.8` | Switch movement differential (release beyond the operating position) *Range 0.1 to 2, step 0.05.* |
 | `knee_switch_press` | `0.3` | How far past the operating position the bar's rest holds the lever *Range 0 to 1.5, step 0.05.* |
-| `knee_switch_act` | `3` | Actuating point: distance from the switch end nearest the floor *Range 0 to 19, step 0.5.* |
+| `knee_switch_act` | `5.3` | Actuating point: distance from the switch's end nearest the floor (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end; mount the free end down) *Range 0 to 19, step 0.1.* |
+| `knee_spring` | `[12.67, 1.5, 4.25]` | Return spring: [outside diameter, wire diameter, coils] (McMaster 9271K585 left-hand / 9271K651 right-hand: 0.499" OD, 0.059" wire, 4.25 coils) |
+| `knee_spring_rate` | `5.65` | Return spring: rate, N-mm per degree (9271K585: 4.5 in-lbf at 90 degrees = 5.65) *Range 0.5 to 30, step 0.05.* |
+| `knee_spring_preload` | `45` | Return spring: wind-up at rest (preload), degrees *Range 0 to 80, step 1.* |
+| `knee_spring_max` | `90` | Return spring: its maximum deflection, degrees *Range 30 to 360, step 1.* |
 | `knee_switch_adjust` | `1.5` | Adjusting slots for the switch: travel each way *Range 0 to 4, step 0.1.* |
 | `knee_switch_screw` | `2.4` | Switch screw clearance (M2 or #2-56) *Range 1.8 to 3, step 0.05.* |
 | `knee_stop_r` | `14` | Stop pin: radius on the front face (the pin is cut from rod_d rod) *Range 10 to 25, step 0.5.* |

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 27
+// Singer 99 base, version 28
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -142,6 +142,10 @@
 // for end, with room for its spade connectors; earth contact for the
 // shaft; cover vents for motors over 1 A; pot set at the hard stop; part
 // knee_entry_test.
+//
+// v28: knee return spring chosen (McMaster 9271K585 / 9271K651) with its
+// torque in the console; the switch's actuating point from Omron's
+// drawing (5.3 mm from the lever's free end).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -423,8 +427,16 @@ knee_switch_op = 8.8; // [5 : 0.1 : 15]
 knee_switch_md = 0.8; // [0.1 : 0.05 : 2]
 // How far past the operating position the bar's rest holds the lever
 knee_switch_press = 0.3; // [0 : 0.05 : 1.5]
-// Actuating point: distance from the switch end nearest the floor
-knee_switch_act = 3; // [0 : 0.5 : 19]
+// Actuating point: distance from the switch's end nearest the floor (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end; mount the free end down)
+knee_switch_act = 5.3; // [0 : 0.1 : 19]
+// Return spring: [outside diameter, wire diameter, coils] (McMaster 9271K585 left-hand / 9271K651 right-hand: 0.499" OD, 0.059" wire, 4.25 coils)
+knee_spring = [12.67, 1.5, 4.25];
+// Return spring: rate, N-mm per degree (9271K585: 4.5 in-lbf at 90 degrees = 5.65)
+knee_spring_rate = 5.65; // [0.5 : 0.05 : 30]
+// Return spring: wind-up at rest (preload), degrees
+knee_spring_preload = 45; // [0 : 1 : 80]
+// Return spring: its maximum deflection, degrees
+knee_spring_max = 90; // [30 : 1 : 360]
 // Adjusting slots for the switch: travel each way
 knee_switch_adjust = 1.5; // [0 : 0.1 : 4]
 // Switch screw clearance (M2 or #2-56)
@@ -1868,6 +1880,12 @@ kn_sw_hz  = [kn_sw_z0 + (kn_sw[0] - knee_switch_holes[0]) / 2,
 kn_blade_r = kn_sz - kn_z0 - 1.5;                                // blade reach
 kn_act_r  = kn_sz - (kn_sw_z0 + knee_switch_act);                // radius at the actuating point
 kn_release = (knee_switch_press + knee_switch_md) / kn_act_r * 180 / PI;
+// Return spring torque and the knee force it gives
+kn_sp_t0 = knee_spring_rate * knee_spring_preload;                // N-mm at rest
+kn_sp_t1 = knee_spring_rate * (knee_spring_preload + kn_thx);     // at the stop
+kn_sp_len = (knee_spring[2] + 1) * knee_spring[1];                // close-wound body
+kn_sp_id1 = (knee_spring[0] - knee_spring[1]) * knee_spring[2]
+            / (knee_spring[2] + (knee_spring_preload + kn_thx) / 360) - knee_spring[1];   // wound-up ID
 // Stop pin on the front face, below the shaft
 kn_pin_len = 15;
 kn_pin_out = 5.5;
@@ -1969,6 +1987,18 @@ if (has_knee && report) {
         echo(str("WARNING: only ", kn_pin_hub, " mm of pot shaft for the pinion's hub"));
     if (kn_hub_back < 3)
         echo("WARNING: little room for the sector's hub behind it; move knee_bulkhead_pos back or shorten the pot bushing");
+    echo(str("Return spring: ", round(kn_sp_t0), " N-mm at rest, ", round(kn_sp_t1), " at the stop (",
+             round((knee_spring_preload + kn_thx) / knee_spring_max * 100), "% of its rating); about ",
+             round(kn_sp_t1 / knee_bar_drop * 100) / 100, " N at the knee; inside diameter ", round(kn_sp_id1 * 10) / 10,
+             " mm wound up"));
+    if (kn_sp_id1 < knee_shaft_d + 0.3)
+        echo("WARNING: the return spring closes onto the shaft when wound up; use a spring for a larger shaft");
+    if (knee_spring_preload + kn_thx > knee_spring_max)
+        echo("WARNING: the return spring is wound past its rated deflection at the stop");
+    if (kn_sp_t0 < 60)
+        echo("WARNING: under 60 N-mm of return torque at rest; the bar may not return against the pot and switch");
+    if (kn_sp_len > kn_ygf - st_y0 - 3)
+        echo("WARNING: the return spring is longer than the room in front of the sector");
     if (kn_ygf - 12 < st_y0)
         echo("WARNING: under 12 mm in front of the sector for the return spring; move knee_bulkhead_pos back");
     if (kn_bz1 > kn_z1 - 8)
@@ -2098,7 +2128,8 @@ if (report && has_knee) {
              " mm, pressed into the front face"));
     echo(str("Knee bar: steel, ", round(knee_bar_square * 100) / 100, " mm square at the socket end, out from the hub, bent down ",
              knee_bar_drop, " mm"));
-    echo("Knee return spring: 1 x torsion spring, about 12 mm OD over the shaft (at least 8.5 mm ID), straight legs");
+    echo(str("Knee return spring: 1 x McMaster ", kn_s > 0 ? "9271K585 (left-hand wound)" : "9271K651 (right-hand wound)",
+             ", 90 deg, 0.499\" OD, 0.059\" wire, 4.25 coils, 2\" legs (pack of 6); trim the legs, bend the moving leg's end 4 mm along the shaft"));
     echo("Knee pot: Bourns 91A1A-B28-A25L (1 MOhm linear cermet, 1/4\" plastic slotted shaft, 3/8-32 bushing, lug), with its nut and lockwasher");
     echo("Knee off switch: Omron SS-5GL (hinge lever, SPDT, 5 A 125 VAC); 2 x M2 x 12 or #2-56 x 1/2\" screws, nuts and washers");
     echo(str("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover)",
@@ -4229,7 +4260,7 @@ module knee_sector_part() {
         }
         translate([0, 0, -1]) cylinder(d = knee_shaft_d + 0.15, h = t + hb + 2, $fn = 40);
         // spring leg hole
-        translate([0, kn_hub_r - 2.5, -1]) cylinder(d = 1.8, h = t + 2, $fn = 16);
+        translate([0, kn_hub_r - 2.5, -1]) cylinder(d = knee_spring[1] + 0.35, h = t + 2, $fn = 16);
         // set screw (M3) and its nut slot, from the top of the hub
         translate([0, 0, (t + hb) / 2]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_r + 1, $fn = 20);
         translate([knee_shaft_d / 2 + 1.2, -3.1, (t + hb) / 2 - 2.9])

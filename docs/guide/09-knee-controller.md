@@ -57,11 +57,11 @@ The hardware list in the console has the full list, with lengths.
 |---|---|---|
 | Speed-control board | XWW KB3151C "speed controller" pedal board, 75 × 35 mm | BT136-600E triac, DB3 diac, two 0.1 µF X2 capacitors, 2 MΩ min-speed trimmer (VR2); 110–120 V, 1.0 A |
 | Pot | Bourns 91A1A-B28-A25L | 1 MΩ linear cermet; plastic slotted 1/4" shaft, 7/8" long; 3/8-32 bushing with nut and lockwasher; anti-rotation lug |
-| Off switch | Omron SS-5GL | Hinge lever, SPDT, 5 A at 125 VAC |
+| Off switch | Omron SS-5GL (Digi-Key) | Hinge lever, SPDT, 5 A at 125 VAC; the standard 0.49 N version, not the low-force SS-5GL-F |
 | Shaft | 8 mm steel rod, about 80 mm | File two small flats for the set screws |
 | Bushings | 2 × flanged bronze sleeve bearing, 8 × 12 × 10 mm, flange 16 × 2 mm | Pressed into the front wall and the bulkhead |
 | Stop pin | `rod_d` rod (3/16"), 15 mm | The same rod as the harness rods |
-| Return spring | Torsion spring, about 12 mm OD, at least 8.5 mm ID | To be chosen; the model leaves room for a typical one |
+| Return spring | McMaster 9271K585 (left-hand wound) for a knee that pushes right; 9271K651 (right-hand) for one that pushes left | 90°, 0.499" OD, 0.059" wire, 4.25 coils, 2" legs, 4.5 in·lbf; pack of 6 |
 | Bar | Steel, 3/8" square at the hub end | Out from the hub, bent down 12.5" (`knee_bar_drop`) |
 | Screws | M3 set screws, M3 screws and nuts, M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | |
 | Power, `cordset` | A standard pedal controller cordset | Its molded entry and steel clip fit the base's entry |
@@ -128,6 +128,8 @@ From the Omron SS datasheet [2]:
   Operating force is 0.49 N at most.
 - It is rated 5 A at 125 VAC (resistive), with a mechanical life of 30
   million operations and an electrical life of 200,000.
+- The lever's actuating point is 14.5 mm from its pivot end, about 5.3 mm
+  from its free end (`knee_switch_act`).
 
 The switch screws to the front face of the bulkhead, below the shaft,
 through two slots that let it move ±1.5 mm toward or away from the blade.
@@ -147,6 +149,29 @@ creeping at the minimum speed set by the board's trimmer.
 If the switch's contacts were ever to weld, the motor would creep at the
 rest setting rather than run away. Setting VR2 as low as the motor will
 still start keeps that creep small.
+
+## The return spring
+
+The spring is McMaster's 9271K585 [5]: spring steel, 0.499" (12.7 mm)
+outside diameter, 0.059" (1.5 mm) wire, 4.25 coils, rated 4.5 in·lbf at
+90°, for a 0.312" shaft. On the 8 mm shaft its inside diameter stays above
+9 mm even wound up to the stop, since the knee uses only about two thirds
+of its rated deflection.
+
+A torsion spring should be loaded so that it winds up, its coils closing.
+Seen from the front, a knee that pushes right turns the shaft
+counterclockwise, which winds up a left-hand spring with its fixed leg in
+front: hence 9271K585. For a knee that pushes left, use the right-hand
+9271K651.
+
+Put it on the shaft in front of the sector, the fixed leg against the post
+on the floor and the moving leg's end bent 4 mm along the shaft into the
+hole in the sector's hub. Trim the legs as needed; the 2" legs are longer
+than the bay needs. Bend the fixed leg so the spring is wound about 45°
+when the bar is at rest (`knee_spring_preload`). The console then gives the
+torque: about 250 N·mm at rest and 330 N·mm at the stop, about 1 N at the
+knee. That is over four times what it takes to turn the pot (Bourns'
+maximum running torque, through the 4:1 gearing) and hold the switch in.
 
 ## The board
 
@@ -286,3 +311,5 @@ likely to change:
    (dimension drawings).
 4. WAGO 221-413 lever connector, 3-conductor, 18.8 × 18.8 × 8.6 mm, 0.2–4 mm²
    (24–12 AWG): [automa.net](https://automa.net/wago/221-413).
+5. McMaster-Carr torsion springs, 9271K585 and 9271K651:
+   [mcmaster.com](https://www.mcmaster.com/products/torsion-springs/).
