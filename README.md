@@ -122,10 +122,16 @@ lengths rounded up to stock sizes.
   directly on GitHub. Or build the PDF and HTML yourself (below).
 - [`docs/guide/90-parameters.md`](docs/guide/90-parameters.md) lists every
   parameter. It is generated from the comments in the model.
+- **Speed Control of Universal Motors in Sewing Machines**: a paper on how
+  sewing-machine motors respond to each kind of speed control, from rheostats
+  and carbon piles to triac and feedback controllers, and on the two
+  controller designs for the base. Its source is in
+  [`docs/motor-control/`](docs/motor-control/); releases carry it as PDF and
+  HTML.
 
 To build the documentation, see the [`Makefile`](Makefile): `make params`,
-`make images`, `make pdf`, `make html`, or `make docs` for both. They go in
-`build/`. Both need pandoc 3.1.2 or later; the PDF also needs
+`make images`, `make pdf`, `make html`, or `make docs` for both. They build
+the guide and the motor-control paper into `build/`. Both need pandoc 3.1.2 or later; the PDF also needs
 [Typst](https://typst.app). A version tag (`v*`) builds both and attaches them
 to a GitHub release (see
 [`.github/workflows/release.yml`](.github/workflows/release.yml)).

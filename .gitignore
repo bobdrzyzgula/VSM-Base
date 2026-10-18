@@ -1,4 +1,5 @@
 docs/guide/guide.typ
+docs/motor-control/paper.typ
 build/
 *.stl
 *.3mf

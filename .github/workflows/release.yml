@@ -3,8 +3,8 @@
 # Push a version tag to make a release:
 #     git tag v0.1.0-alpha && git push origin v0.1.0-alpha
 # The release is named for the tag, and marked as a pre-release when the
-# tag contains "alpha", "beta" or "rc". It carries the guide as PDF and as a
-# single HTML page, and the model file. The release notes can be edited on
+# tag contains "alpha", "beta" or "rc". It carries the guide and the motor-control
+# paper, each as PDF and as a single HTML page, and the model file. The release notes can be edited on
 # GitHub afterwards.
 #
 # Run it by hand (Actions -> Release -> Run workflow) to build the guide
@@ -63,5 +63,5 @@ jobs:
           case "${GITHUB_REF_NAME}" in *alpha*|*beta*|*rc*) pre="--prerelease" ;; esac
           gh release create "${GITHUB_REF_NAME}" $pre \
             --title "VSM Base ${GITHUB_REF_NAME}" \
-            --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide is attached as a PDF and as a single HTML page (open it in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2." \
-            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm_base.scad
+            --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide and the paper on motor speed control are attached as PDF and as single HTML pages (open them in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2." \
+            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm-motor-control.pdf build/vsm-motor-control.html build/vsm_base.scad

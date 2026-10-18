@@ -44,6 +44,12 @@ in front of the bulkhead, and the board cover at the back.](../images/renders/kn
   clear in the first couple of degrees of travel. The switch is wired in
   series with the motor.
 
+For why this controller behaves as it does (an open-loop triac phase
+control, like a good stock pedal, that holds no speed under load), and for
+the microcontroller design that follows it, see the companion paper, *Speed
+Control of Universal Motors in Sewing Machines*
+([`docs/motor-control/`](../motor-control/11-vsm-base.md)).
+
 The console's *Knee controller* block gives the numbers for your settings:
 how far the shaft and the pot turn, how much of the pot's resistance that
 spans, where the switch releases, and warnings if anything runs into the
