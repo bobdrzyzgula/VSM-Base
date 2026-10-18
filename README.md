@@ -6,7 +6,12 @@ out from measurements of your own machine. It prints on an ordinary
 desktop 3D printer, in two halves joined by dovetails and steel mending
 plates.
 
-![The base with its back, left and corner extensions](docs/images/renders/assembly.png)
+![A Singer 99K in the first complete base, with its back, left and corner extensions and their lids, printed in PETG](docs/images/photos/first-build.jpg)
+
+*The first complete build: a Singer 99K in its base, with the back, left
+and corner extensions and their lids, in gray and gold PETG.*
+
+![The model, with all three extensions](docs/images/renders/assembly.png)
 
 ## Why
 
