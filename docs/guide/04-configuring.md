@@ -44,6 +44,15 @@
 > at the defaults), so any mix of the 30, 25, 20, 15, 10 mm and custom
 > trays that totals no more than that fits under the lid. The spool tray
 > line gives what is left above a spool tray.
+>
+> **Note: compartments and gussets.** Divided notion trays aim for 2"
+> compartments by default (`ot_cell`), which gives 2 × 4 in the back or left
+> bay; 1" gives 3 × 8. Every notion tray, and the spool tray's curbs, has
+> small triangular gussets at the foot of its long walls (`ot_gussets`),
+> because a thin wall standing on a thin floor joins it at a single layer
+> line, the weakest place in the print. On the spool tray they sit in the
+> gaps between spools. Let trays cool on the plate before taking them off;
+> a long, thin tray pulled off warm can bow.
 
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic

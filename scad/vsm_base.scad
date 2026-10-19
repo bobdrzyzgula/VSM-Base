@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 29
+// Singer 99 base, version 30
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -157,6 +157,12 @@
 // 11.75:1) through an idler on a stub pin; the switch lies under the shaft,
 // worked by a cam on the sector. Parts knee_idler, knee_spring_housing and
 // knee_spring_cap; the stop pin is gone.
+//
+// v30: organizer trays from the first prints: compartment trays default to
+// a 2" target cell (2 x 4 in the back or left bay); small gussets at the
+// foot of the long walls of every notion tray and the spool tray's curbs,
+// where a thin wall meets the floor at a single layer line; the spool
+// tray's curb is 14 mm tall (was 10), to stiffen its floor along its length.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -993,8 +999,8 @@ ot_top_clear = 1; // [0 : 0.1 : 5]
 /* [Notion tray compartments] */
 // Divide the plain notion trays (not the spool tray) into compartments
 ot_compartments = false;
-// Target compartment size; the grid divides the tray evenly to come closest to it
-ot_cell = 25.4; // [10 : 0.1 : 100]
+// Target compartment size; the grid divides the tray evenly to come closest to it (2" gives 2 x 4 in the back or left bay; 1" gives 3 x 8)
+ot_cell = 50.8; // [10 : 0.1 : 100]
 // Compartments along the tray's length (0 = from ot_cell)
 ot_cols = 0; // [0 : 1 : 20]
 // Compartments across the tray's width (0 = from ot_cell)
@@ -1024,9 +1030,21 @@ ot_spool_top_clear = 1; // [0 : 0.1 : 5]
 // Cut the long side walls down to a curb between the corner bosses, so the spools can be grasped from the side
 ot_spool_open_sides = true;
 // Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends)
-ot_spool_curb = 10; // [3 : 0.5 : 40]
+ot_spool_curb = 14; // [3 : 0.5 : 40]
 // Radius at the bottom corners of the cutaway
 ot_spool_cut_r = 5; // [0 : 0.5 : 20]
+
+/* [Tray gussets] */
+// Small triangular ribs at the foot of the trays' long walls, where a thin wall meets the floor at one layer line
+ot_gussets = true;
+// Gusset thickness (on the spool tray it must fit between neighboring spools)
+ot_gusset_t = 1; // [0.6 : 0.1 : 3]
+// Gusset reach along the floor, from the wall
+ot_gusset_d = 5; // [1 : 0.5 : 15]
+// Gusset height up the wall (less on low trays)
+ot_gusset_h = 8; // [1 : 0.5 : 20]
+// Spacing to aim for between gussets on plain trays
+ot_gusset_pitch = 40; // [15 : 1 : 120]
 
 /* [Hidden] */
 // Overlap so cutters break cleanly through faces
@@ -1613,6 +1631,27 @@ ot_layouts = [for (c = [ot_rows(ot_sp_av.x, ot_sp_av.y, ot_sp_p, false),
 ot_layout_n = [for (l = ot_layouts) len(l)];
 ot_best   = [for (i = [0 : 2]) if (ot_layout_n[i] == max(ot_layout_n)) i][0];
 ot_spools = ot_layouts[ot_best];
+// Gussets. Plain trays: evenly along the long walls between the corner
+// bosses, or at the middle of each compartment along the wall. Spool tray:
+// in the gaps between neighboring spools, where a gusset clears every spool.
+ot_g_span = ot_in.x / 2 - ot_boss + ot_wall;                  // clear of the bosses
+ot_g_plain = let(n = max(1, round(2 * ot_g_span / ot_gusset_pitch)))
+    [for (i = [0 : n - 1]) -ot_g_span + (i + 0.5) * 2 * ot_g_span / n];
+ot_g_cells = [for (i = [0 : ot_ncols - 1])
+                 let(x = -ot_in.x / 2 + (i + 0.5) * ot_cell_sz.x + i * ot_divider_t)
+                 if (abs(x) < ot_g_span) x];
+function ot_g_clear(x, sy) =
+    let(yi = sy * (ot_wid / 2 - ot_wall))
+    min([for (q = ot_spools)
+            let(dx = max(abs(q.x - x) - ot_gusset_t / 2, 0),
+                dy = sy > 0 ? max(yi - ot_gusset_d - q.y, 0, q.y - yi)
+                            : max(q.y - (yi + ot_gusset_d), 0, yi - q.y))
+            norm([dx, dy])]) > ot_spool_d / 2 + 0.2;
+function ot_sort(v) = len(v) <= 1 ? v :
+    let(p = v[0]) concat(ot_sort([for (a = v) if (a < p) a]), [p], ot_sort([for (a = v) if (a > p) a]));
+ot_g_ux = ot_sort([for (q = ot_spools) round(q.x * 1000) / 1000]);  // spool columns, unique and sorted
+ot_g_xs = len(ot_g_ux) < 2 ? [] : [for (k = [0 : len(ot_g_ux) - 2]) (ot_g_ux[k] + ot_g_ux[k + 1]) / 2];
+ot_g_spool = [for (sy = [-1, 1]) [for (x = ot_g_xs) if (abs(x) < ot_g_span && ot_g_clear(x, sy)) x]];
 // Room at each end, between the end spools and the end walls, for fingers
 ot_spool_end_room = len(ot_spools) == 0 ? 0 :
     ot_len / 2 - ot_wall - max([for (q = ot_spools) abs(q.x)]) - ot_spool_d / 2;
@@ -4166,12 +4205,14 @@ module ot_in_bay() {
 // corner carries a pin on top and a socket underneath; a tray rests on the
 // wall tops of the one below. A lip with a 45-degree underside at the
 // middle of each end wall gives a finger hold.
-module ot_tray(h, grid = false) {
+module ot_tray(h, grid = false, gussets = true) {
     L = ot_len;
     W = ot_wid;
     w = ot_wall;
     r = ot_grip_reach > 0 ? ot_reach(h) : 0;
     if (grid) ot_dividers(h);
+    if (ot_gussets && gussets)
+        for (sy = [-1, 1]) ot_gusset_row(grid ? ot_g_cells : ot_g_plain, sy, h);
     difference() {
         union() {
             // Shell
@@ -4212,6 +4253,19 @@ module ot_tray(h, grid = false) {
     }
 }
 
+// Gussets along the long wall on side sy (+1 = +Y), at positions xs along
+// it, for a tray of height h: triangles from the wall's foot, ot_gusset_d
+// along the floor and up to ot_gusset_h up the wall
+module ot_gusset_row(xs, sy, h) {
+    gh = min(ot_gusset_h, 0.6 * (h - ot_floor));
+    yi = sy * (ot_wid / 2 - ot_wall);
+    for (x = xs)
+        translate([x - ot_gusset_t / 2, yi, ot_floor - overlap])
+            mirror([0, sy > 0 ? 1 : 0, 0])
+                rotate([90, 0, 90]) linear_extrude(height = ot_gusset_t)
+                    polygon([[-overlap, 0], [ot_gusset_d, 0], [-overlap, gh + overlap]]);
+}
+
 // Divider grid for a tray of height h, from the floor to ot_divider_frac of
 // the tray height
 module ot_dividers(h) {
@@ -4233,8 +4287,10 @@ module ot_spool_tray() {
     H  = ot_spool_tray_h;
     x1 = ot_len / 2 - ot_boss;
     r  = min(ot_spool_cut_r, x1, (H - ot_spool_curb) / 2);
+    if (ot_gussets)
+        for (i = [0 : 1]) ot_gusset_row(ot_g_spool[i], i == 0 ? -1 : 1, H);
     difference() {
-        ot_tray(H);
+        ot_tray(H, false, false);
         if (ot_spool_open_sides)
             rotate([90, 0, 0])
                 linear_extrude(height = ot_wid + 2, center = true)

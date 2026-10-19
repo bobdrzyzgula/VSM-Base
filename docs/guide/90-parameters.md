@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 404 parameters; 402 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 409 parameters; 407 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -551,7 +551,7 @@ There are 404 parameters; 402 of them appear in the Customizer. The rest are lis
 | Parameter | Default | Description |
 |---|---|---|
 | `ot_compartments` | `false` | Divide the plain notion trays (not the spool tray) into compartments |
-| `ot_cell` | `25.4` | Target compartment size; the grid divides the tray evenly to come closest to it *Range 10 to 100, step 0.1.* |
+| `ot_cell` | `50.8` | Target compartment size; the grid divides the tray evenly to come closest to it (2" gives 2 x 4 in the back or left bay; 1" gives 3 x 8) *Range 10 to 100, step 0.1.* |
 | `ot_cols` | `0` | Compartments along the tray's length (0 = from ot_cell) *Range 0 to 20, step 1.* |
 | `ot_rows` | `0` | Compartments across the tray's width (0 = from ot_cell) *Range 0 to 20, step 1.* |
 | `ot_divider_frac` | `0.8` | Divider height, as a fraction of the tray height *Range 0.2 to 1, step 0.05.* |
@@ -570,5 +570,15 @@ There are 404 parameters; 402 of them appear in the Customizer. The rest are lis
 | `ot_spool_wall_gap` | `0.5` | Space between the spools and the tray walls and corner bosses *Range 0 to 5, step 0.1.* |
 | `ot_spool_top_clear` | `1` | Clearance between the bobbin tops and the tray above *Range 0 to 5, step 0.1.* |
 | `ot_spool_open_sides` | `true` | Cut the long side walls down to a curb between the corner bosses, so the spools can be grasped from the side |
-| `ot_spool_curb` | `10` | Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends) *Range 3 to 40, step 0.5.* |
+| `ot_spool_curb` | `14` | Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends) *Range 3 to 40, step 0.5.* |
 | `ot_spool_cut_r` | `5` | Radius at the bottom corners of the cutaway *Range 0 to 20, step 0.5.* |
+
+## Tray gussets
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ot_gussets` | `true` | Small triangular ribs at the foot of the trays' long walls, where a thin wall meets the floor at one layer line |
+| `ot_gusset_t` | `1` | Gusset thickness (on the spool tray it must fit between neighboring spools) *Range 0.6 to 3, step 0.1.* |
+| `ot_gusset_d` | `5` | Gusset reach along the floor, from the wall *Range 1 to 15, step 0.5.* |
+| `ot_gusset_h` | `8` | Gusset height up the wall (less on low trays) *Range 1 to 20, step 0.5.* |
+| `ot_gusset_pitch` | `40` | Spacing to aim for between gussets on plain trays *Range 15 to 120, step 1.* |

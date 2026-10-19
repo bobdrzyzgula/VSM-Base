@@ -27,8 +27,10 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
 - the back, left and corner extensions with their hinged lids, the printed
   extension pegs, and the extended back lip;
 - the organizer insert test parts (`bobbin_test`, `notion_test`) and the
-  full stack of five bobbin trays. The notion and spool trays are being
-  printed now.
+  full stack of five bobbin trays; a spool tray and a divided notion tray
+  for the back bay. On the spool tray, in silk PLA, a curb split from the
+  floor at the first layer above it; the gussets and taller curb added
+  since have not been printed yet.
 
 These were printed from development versions of the model as it evolved,
 not from the current one: later changes (the split joint's serrations, for
