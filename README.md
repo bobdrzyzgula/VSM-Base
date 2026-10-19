@@ -38,7 +38,7 @@ one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes, and the standalone bobbin box; the turn button; pin or molded extension pegs; the
+the freestanding boxes, the standalone bobbin box, and the motor test rig; the turn button; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
@@ -87,6 +87,10 @@ fit on your printer, and then print a base that fits.
   and custom heights, plain or divided into compartments; and a spool tray
   that holds each spool with its bobbin on top. Others can be designed
   against a published list of bay sizes; see [docs/inserts.md](docs/inserts.md).
+- **A motor test rig** for the knee controller work: a plywood board of
+  printed modules for measuring a sewing motor (resistance, inductance,
+  speed, torque with a Prony brake) and the triac board; see
+  [hardware/motor-rig/](hardware/motor-rig/RIG_GUIDE.md).
 - **A standalone bobbin box**: the corner bay and its five bobbin trays as a
   small lidded box in one self-contained file, for anyone who wants the box
   without the base; see [standalone/bobbin-box/](standalone/bobbin-box/).

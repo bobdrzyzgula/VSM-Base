@@ -144,6 +144,8 @@ the design settles.
   bay for the drive and its heatsink, and a check that its DC output reaches
   the 99's top speed.
 
-Two bench measurements would settle the open questions for any of these: the
+A bench rig for these measurements is in the repository at
+`hardware/motor-rig/` (its guide is `RIG_GUIDE.md`). Two bench measurements
+would settle the open questions for any of these: the
 99 motor's current and speed on a variac at several voltages, giving $K$ and
 $R$ for the model in §2, and its top speed on rectified DC.
