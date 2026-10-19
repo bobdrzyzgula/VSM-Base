@@ -11,6 +11,32 @@ flatbed sewing machines. You give it measurements of your machine's bed
 casting; it produces a base whose seat, hinge recesses and clearances fit
 that casting, and that prints in two halves on an ordinary desktop printer.
 
+## What has been tested
+
+Only a small part of what the model can make has been printed and used.
+Treat everything else as **untested on a real printer**: it has been checked
+in the model, but not built.
+
+Tested, on a Singer 99K (the default machine profile), printed in PETG:
+
+- the base in its default form: split into two halves with the dovetail
+  keys and mending plates, the storage compartment, the handholds and
+  harness rods;
+- the back, left and corner extensions with their hinged lids, the printed
+  extension pegs, and the extended back lip;
+- the organizer insert test parts (`bobbin_test`, `notion_test`) and the
+  first two bobbin trays. The rest of the inserts are being printed now.
+
+Not yet tested, among others: other machines and custom profiles; the base
+printed in one piece; the outlet, knee-controller and jack compartments;
+the freestanding boxes; the turn button; pin or molded extension pegs; the
+pass-through cover; and every option set away from its default. The knee
+controller and the motor-control paper's designs have not been built at
+all.
+
+If you build something from the untested list, please report how it went
+as an issue on the project's GitHub repository.
+
 ## Why this exists
 
 Many vintage sewing machines were sold built into cabinets and tables.
