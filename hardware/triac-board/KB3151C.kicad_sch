@@ -1042,7 +1042,7 @@
           (size 1.27 1.27))
         (justify left)))
     (property "Value" "Tab, MT2 side"
-      (at 27.94 44.45 0)
+      (at 50.8 45.72 0)
       (effects
         (font
           (size 1.27 1.27))
@@ -1079,7 +1079,7 @@
           (size 1.27 1.27))
         (justify left)))
     (property "Value" "Tab, MT1 side"
-      (at 27.94 115.57 0)
+      (at 50.8 116.84 0)
       (effects
         (font
           (size 1.27 1.27))

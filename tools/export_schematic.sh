@@ -7,11 +7,12 @@ SCH=hardware/triac-board/KB3151C.kicad_sch
 OUT=docs/images/diagrams/kb3151c-schematic.svg
 TMP=$(mktemp -d)
 HOME=$TMP kicad-cli sch export svg --exclude-drawing-sheet -o "$TMP" "$SCH" > /dev/null
-# crop the A4 sheet to the drawing (mm): x 4..240, y 28..152
+# crop the A4 sheet to the circuit (mm), leaving out the notes below it
+# (the paper's caption carries them)
 python3 - "$TMP/KB3151C.svg" "$OUT" <<'PY'
 import re, sys
 s = open(sys.argv[1]).read()
-x, y, w, h = 4, 28, 236, 124
+x, y, w, h = 34, 31, 206, 89
 s = re.sub(r'width="[^"]*mm" height="[^"]*mm" viewBox="[^"]*"',
            f'width="{w}mm" height="{h}mm" viewBox="{x} {y} {w} {h}"', s, count=1)
 open(sys.argv[2], "w").write(s)

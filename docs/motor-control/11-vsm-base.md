@@ -38,13 +38,19 @@ minimum speed. The knee mechanism improves the command, not the regulation:
   the 10.2° swing. With it in series with the motor, the motor is fully off
   through the dead travel instead of creeping at the minimum set by VR2.
 
-![The donor board, KB3151C, traced from photos (KiCad source in
-`hardware/triac-board/`). The timing network runs from MT2 through the slide
-pot RV1 and R2 to C2; when C2 reaches the DB3's breakover it fires the
-BT136 through R1. The trimmer RV2 lies across RV1's whole track, which caps
-the timing resistance and so sets the slowest speed. R3 and C1 are the
-snubber across the triac. Points marked VERIFY are still to be checked with a
-meter.](../images/diagrams/kb3151c-schematic.svg){width=100%}
+![The donor board, KB3151C (XWW speed controller, 110–120 V, 1.0 A), traced
+from photos; KiCad source in `hardware/triac-board/`. J1 and J2 are its two
+spade tabs: the board is a two-terminal switch in series with the motor, and
+the triac's tab is MT2 (live). Timing: from MT2 through RV1's pin-1 section,
+in parallel with RV2 plus RV1's pin-3 section, to the wiper, then through R2
+into C2 and back to MT1. When C2 reaches the DB3's breakover it fires the
+BT136 through R1. RV2 lies across RV1's whole track. At RV1's pin-3 end is an
+off zone where the wiper is open and nothing fires; moving toward pin 1 the
+resistance falls toward zero and speed rises, and RV2, by capping the
+resistance just past the off zone, sets the slowest speed. R3 and C1 are the
+snubber across the triac. Still to check with a meter: that RV2's wiper is
+tied to its pin-3 end, that RV1's pin 1 and R3 go to the MT2 tab, and which
+of RV1's pins is the wiper.](../images/diagrams/kb3151c-schematic.svg){width=100%}
 
 **The board is a two-terminal series device.** It has only two spade tabs
 and sits in series in one leg of the motor circuit; it has no separate mains
