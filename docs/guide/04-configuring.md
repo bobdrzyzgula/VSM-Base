@@ -44,3 +44,7 @@
 > at the defaults), so any mix of the 30, 25, 20, 15, 10 mm and custom
 > trays that totals no more than that fits under the lid. The spool tray
 > line gives what is left above a spool tray.
+
+![The five bobbin trays stacked on their center post, lifted out of the
+corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic
+class 15/66 bobbins.](../images/photos/bobbin-stack.jpg){width=55%}
