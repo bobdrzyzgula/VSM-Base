@@ -29,6 +29,10 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
 - the organizer insert test parts (`bobbin_test`, `notion_test`) and the
   first two bobbin trays. The rest of the inserts are being printed now.
 
+These were printed from development versions of the model as it evolved,
+not from the current one: later changes (the split joint's serrations, for
+one) have not all been printed yet.
+
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
 the freestanding boxes; the turn button; pin or molded extension pegs; the
