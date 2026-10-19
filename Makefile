@@ -3,7 +3,9 @@
 #   make params   regenerate the parameter reference from the model
 #   make images   render the model views (needs OpenSCAD + BOSL2)
 #   make pdf      build build/vsm-base-guide.pdf and build/vsm-motor-control.pdf
-#                 (needs pandoc 3.1.2+ and typst)
+#                 (needs pandoc 3.1.2+ and typst; a recent pandoc (3.7, at least) needs
+#                 typst 0.12 or later. The release build uses pandoc 3.7.0.2
+#                 and typst 0.13.1.) PANDOC= and TYPST= pick other binaries.
 #   make html     build the same two as self-contained HTML pages, images
 #                 embedded (needs pandoc 3.1.2+)
 #   make docs     pdf and html
@@ -27,6 +29,8 @@ PDF      := $(BUILD)/vsm-base-guide.pdf
 HTML     := $(BUILD)/vsm-base-guide.html
 MC_PDF   := $(BUILD)/vsm-motor-control.pdf
 MC_HTML  := $(BUILD)/vsm-motor-control.html
+PANDOC   ?= pandoc
+TYPST    ?= typst
 VERSION  ?=
 LABEL    := $(if $(VERSION),Version $(VERSION),Development build)
 IMAGES   := $(wildcard docs/images/*/*)
@@ -53,16 +57,16 @@ html: $(HTML) $(MC_HTML)
 
 $(PDF): $(CHAPTERS) docs/guide/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
-	cd docs/guide && pandoc metadata.yaml $(notdir $(CHAPTERS)) \
+	cd docs/guide && $(PANDOC) metadata.yaml $(notdir $(CHAPTERS)) \
 	    --from markdown --to typst --standalone --toc --toc-depth=2 \
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -o guide.typ
-	typst compile --root docs docs/guide/guide.typ $@
+	$(TYPST) compile --root docs docs/guide/guide.typ $@
 	rm -f docs/guide/guide.typ
 
 $(HTML): $(CHAPTERS) docs/guide/metadata.yaml docs/guide/guide.css $(IMAGES)
 	mkdir -p $(BUILD)
-	cd docs/guide && pandoc metadata.yaml $(notdir $(CHAPTERS)) \
+	cd docs/guide && $(PANDOC) metadata.yaml $(notdir $(CHAPTERS)) \
 	    --from markdown --to html5 --standalone --embed-resources \
 	    --toc --toc-depth=2 --number-sections --css guide.css --mathml \
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
@@ -71,16 +75,16 @@ $(HTML): $(CHAPTERS) docs/guide/metadata.yaml docs/guide/guide.css $(IMAGES)
 
 $(MC_PDF): $(MC_CHAPTERS) docs/motor-control/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
-	cd docs/motor-control && pandoc metadata.yaml $(notdir $(MC_CHAPTERS)) \
+	cd docs/motor-control && $(PANDOC) metadata.yaml $(notdir $(MC_CHAPTERS)) \
 	    --from markdown --to typst --standalone --toc --toc-depth=1 \
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -o paper.typ
-	typst compile --root docs docs/motor-control/paper.typ $@
+	$(TYPST) compile --root docs docs/motor-control/paper.typ $@
 	rm -f docs/motor-control/paper.typ
 
 $(MC_HTML): $(MC_CHAPTERS) docs/motor-control/metadata.yaml docs/guide/guide.css $(IMAGES)
 	mkdir -p $(BUILD)
-	cd docs/motor-control && pandoc metadata.yaml $(notdir $(MC_CHAPTERS)) \
+	cd docs/motor-control && $(PANDOC) metadata.yaml $(notdir $(MC_CHAPTERS)) \
 	    --from markdown --to html5 --standalone --embed-resources \
 	    --toc --toc-depth=1 --number-sections --css ../guide/guide.css --mathml \
 	    -M date="$(LABEL), $$(date +'%B %Y')" \

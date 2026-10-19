@@ -163,7 +163,9 @@ lengths rounded up to stock sizes.
 To build the documentation, see the [`Makefile`](Makefile): `make params`,
 `make images`, `make pdf`, `make html`, or `make docs` for both. They build
 the guide and the motor-control paper into `build/`. Both need pandoc 3.1.2 or later; the PDF also needs
-[Typst](https://typst.app). A version tag (`v*`) builds both and attaches them
+[Typst](https://typst.app), 0.12 or later with a recent pandoc (the release
+build uses pandoc 3.7.0.2 and Typst 0.13.1). `make pdf TYPST=/path/to/typst`
+uses a Typst binary that isn't on your path. A version tag (`v*`) builds both and attaches them
 to a GitHub release (see
 [`.github/workflows/release.yml`](.github/workflows/release.yml)).
 

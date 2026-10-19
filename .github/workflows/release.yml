@@ -29,10 +29,10 @@ jobs:
       - name: Install pandoc and Typst
         run: |
           curl -fsSL -o /tmp/pandoc.deb \
-            https://github.com/jgm/pandoc/releases/download/3.1.3/pandoc-3.1.3-1-amd64.deb
+            https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb
           sudo dpkg -i /tmp/pandoc.deb
           curl -fsSL -o /tmp/typst.tar.xz \
-            https://github.com/typst/typst/releases/download/v0.11.1/typst-x86_64-unknown-linux-musl.tar.xz
+            https://github.com/typst/typst/releases/download/v0.13.1/typst-x86_64-unknown-linux-musl.tar.xz
           tar -xJf /tmp/typst.tar.xz -C /tmp
           sudo install /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
           pandoc --version | head -1
