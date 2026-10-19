@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 397 parameters; 395 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 404 parameters; 402 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -144,10 +144,13 @@ There are 397 parameters; 395 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `knee_push` | `"right"` | The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay; a gear sector on the shaft turns a pot standing in for the donor board's slide pot, and a switch cuts the motor at rest. See the User's Guide before building: the board is live at mains voltage. Which way the knee pushes the bar *Choices: right, left.* |
+| `knee_push` | `"right"` | The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay. A crank on the bar's hub, outside the front face, pushes a compression spring in a housing beside it; steel screws in the housing set the rest and the hard stop, so the knee's force stays out of the shaft and gears. Inside, two gear stages turn a pot standing in for the donor board's slide pot, and a cam on the sector works a switch that cuts the motor for the first part of the travel. See the User's Guide before building: the board is live at mains voltage. Which way the knee pushes the bar *Choices: right, left.* |
 | `knee_bar_drop` | `317.5` | Bar: drop from the shaft to where the knee meets it (12.5" = 317.5 mm) *Range 150 to 450, step 0.5.* |
-| `knee_travel` | `63.5` | Knee travel at that point, for full speed (2.5" = 63.5 mm) *Range 20 to 100, step 0.5.* |
-| `knee_travel_max` | `76.2` | Knee travel at the hard stop (3" = 76.2 mm) *Range 20 to 120, step 0.5.* |
+| `knee_travel_on` | `25.4` | Knee travel at that point where the switch closes and the motor starts; the travel before it is dead (1" = 25.4 mm) *Range 0 to 60, step 0.5.* |
+| `knee_travel` | `50.8` | Knee travel at that point for full speed (2" = 50.8 mm) *Range 20 to 100, step 0.5.* |
+| `knee_travel_max` | `57.15` | Knee travel at the hard stop (2.25" = 57.15 mm) *Range 20 to 120, step 0.5.* |
+| `knee_force_rest` | `4.45` | Knee force at rest (the spring's preload), N (1 lb = 4.45 N) *Range 0.5 to 20, step 0.05.* |
+| `knee_force_rate` | `0.263` | Knee force rise, N per mm of knee travel (1.5 lb/in = 0.263) *Range 0.05 to 1, step 0.001.* |
 | `knee_bar_square` | `9.525` | Bar's square end (3/8" = 9.525 mm) *Range 5 to 16, step 0.025.* |
 | `knee_bar_clearance` | `0.15` | Clearance on the bar's square end, per side *Range 0 to 0.5, step 0.05.* |
 | `knee_shaft_d` | `8` | Shaft diameter *Range 6 to 12, step 0.5.* |
@@ -156,16 +159,19 @@ There are 397 parameters; 395 of them appear in the Customizer. The rest are lis
 | `knee_bushing` | `[8, 12, 10]` | Flanged bushings (2, front wall and bulkhead): [bore, outside diameter, length] |
 | `knee_bushing_flange` | `[16, 2]` | Bushing flange: [diameter, thickness] |
 | `knee_bushing_hole` | `12.1` | Hole for a bushing's sleeve (press fit; FDM holes print a little small) *Range 8 to 20, step 0.05.* |
-| `knee_bulkhead_pos` | `36` | Bulkhead (carries the rear bushing, the pot and the switch): distance behind the front wall's inside face *Range 25 to 80, step 0.5.* |
+| `knee_bulkhead_pos` | `36` | Bulkhead (carries the rear bushing, the idler pin, the pot and the switch): distance behind the front wall's inside face *Range 25 to 80, step 0.5.* |
 | `knee_bulkhead_t` | `3` | Bulkhead thickness where the pot mounts (the pot's bushing must reach through it and take the nut) *Range 2 to 5, step 0.1.* |
 | `knee_bulkhead_above` | `15` | Bulkhead height above the shaft axis *Range 5 to 30, step 0.5.* |
 | `knee_gear_module` | `1` | Gears: module (mm per tooth) *Range 0.5 to 2, step 0.05.* |
-| `knee_pinion_teeth` | `16` | Pinion teeth (on the pot) *Range 12 to 30, step 1.* |
-| `knee_ratio` | `4` | Gear ratio, sector to pinion (the sector is cut from a gear with ratio x pinion teeth) *Range 2 to 8, step 1.* |
+| `knee_pinion_teeth` | `16` | First stage: idler pinion teeth (driven by the sector on the knee shaft) *Range 12 to 30, step 1.* |
+| `knee_ratio` | `4` | First stage ratio, sector to idler pinion (the sector is cut from a gear with ratio x pinion teeth) *Range 2 to 8, step 1.* |
+| `knee_gear2_teeth` | `47` | Second stage: idler gear teeth (a sector on the idler, driving the pot's pinion) *Range 20 to 80, step 1.* |
+| `knee_pinion2_teeth` | `16` | Second stage: pot pinion teeth *Range 12 to 30, step 1.* |
 | `knee_gear_face` | `5` | Gear face width *Range 3 to 10, step 0.5.* |
 | `knee_gear_backlash` | `0.15` | Tooth thinning per gear for backlash, at the pitch circle *Range 0 to 0.5, step 0.05.* |
 | `knee_gear_cd_extra` | `0.1` | Extra center distance between the gears *Range 0 to 0.5, step 0.05.* |
-| `knee_pot_angle` | `-20` | Direction from the shaft to the pot, degrees (0 = straight right, negative = down) *Range -60 to 60, step 1.* |
+| `knee_idler_angle` | `10` | Direction from the shaft to the idler, degrees (0 = straight right, negative = down) *Range -60 to 60, step 1.* |
+| `knee_pot_angle` | `-120` | Direction from the idler to the pot, degrees (-90 = straight down) *Range -180 to 0, step 1.* |
 | `knee_pot_body` | `15.88` | Pot (Bourns 91, 5/8" square): body size *Range 10 to 25, step 0.01.* |
 | `knee_pot_depth` | `22` | Pot body depth behind the panel, with room for the pins and wires *Range 10 to 40, step 0.5.* |
 | `knee_pot_hole` | `9.9` | Pot bushing (3/8-32 UNEF): panel hole *Range 6 to 14, step 0.05.* |
@@ -177,20 +183,21 @@ There are 397 parameters; 395 of them appear in the Customizer. The rest are lis
 | `knee_pot_lug_hole` | `2.6` | Pot anti-rotation lug: hole diameter *Range 1.5 to 4, step 0.1.* |
 | `knee_pot_r` | `1000` | Pot: total resistance, kOhm *Range 10 to 5000, step 10.* |
 | `knee_pot_travel` | `240` | Pot: electrical travel, degrees *Range 180 to 300, step 1.* |
-| `knee_r_span` | `220` | Resistance span the board wants over the knee travel, kOhm (the slide pot's useful range) *Range 10 to 2000, step 5.* |
-| `knee_switch_body` | `[19.8, 10.2, 6.4]` | Off switch (Omron SS-5GL): body [length, height, thickness] |
+| `knee_pot_mech` | `300` | Pot: mechanical rotation, degrees (the end zones beyond the electrical travel take the overtravel to the stop) *Range 180 to 330, step 1.* |
+| `knee_r_span` | `220` | Resistance span the board wants over the speed range (knee_travel_on to knee_travel), kOhm; a linear placeholder until the board is measured *Range 10 to 2000, step 5.* |
+| `knee_switch_body` | `[19.8, 10.2, 6.4]` | Off switch (Omron SS-5GL), lying under the shaft, lever up: body [length, height, thickness] |
 | `knee_switch_holes` | `[9.5, 2.9]` | Switch mounting holes: pitch, and height above the bottom (terminal) edge |
 | `knee_switch_op` | `8.8` | Switch operating position, from the mounting-hole line (8.8 +/- 0.8) *Range 5 to 15, step 0.1.* |
 | `knee_switch_md` | `0.8` | Switch movement differential (release beyond the operating position) *Range 0.1 to 2, step 0.05.* |
-| `knee_switch_press` | `0.3` | How far past the operating position the bar's rest holds the lever *Range 0 to 1.5, step 0.05.* |
-| `knee_switch_act` | `5.3` | Actuating point: distance from the switch's end nearest the floor (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end; mount the free end down) *Range 0 to 19, step 0.1.* |
-| `knee_spring` | `[12.67, 1.5, 4.25]` | Return spring: [outside diameter, wire diameter, coils] (McMaster 9271K585 left-hand / 9271K651 right-hand: 0.499" OD, 0.059" wire, 4.25 coils) |
-| `knee_spring_rate` | `5.65` | Return spring: rate, N-mm per degree (9271K585: 4.5 in-lbf at 90 degrees = 5.65) *Range 0.5 to 30, step 0.05.* |
-| `knee_spring_preload` | `45` | Return spring: wind-up at rest (preload), degrees *Range 0 to 80, step 1.* |
-| `knee_spring_max` | `90` | Return spring: its maximum deflection, degrees *Range 30 to 360, step 1.* |
-| `knee_switch_adjust` | `1.5` | Adjusting slots for the switch: travel each way *Range 0 to 4, step 0.1.* |
+| `knee_switch_press` | `0.3` | How far past the operating position the cam holds the lever at rest *Range 0 to 1.5, step 0.05.* |
+| `knee_switch_act` | `5.3` | Actuating point: distance from the lever's free end (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end) *Range 0 to 19, step 0.1.* |
+| `knee_switch_floor` | `5` | Switch body's bottom (terminal) edge above the bay floor, with room for the terminals and wires *Range 2 to 15, step 0.5.* |
+| `knee_switch_adjust` | `1.5` | Adjusting slots for the switch: travel up and down *Range 0 to 4, step 0.1.* |
 | `knee_switch_screw` | `2.4` | Switch screw clearance (M2 or #2-56) *Range 1.8 to 3, step 0.05.* |
-| `knee_stop_r` | `14` | Stop pin: radius on the front face (the pin is cut from rod_d rod) *Range 10 to 25, step 0.5.* |
+| `knee_spring` | `[15.24, 1.83, 31.75]` | Return spring (compression, standing in the housing beside the hub): [outside diameter, wire diameter, free length] (McMaster 9001T46: 0.6" OD, 0.072" wire, 1.25" long) |
+| `knee_spring_rate` | `7.88` | Return spring: rate, N per mm (9001T46: 45 lb/in = 7.88) *Range 1 to 50, step 0.01.* |
+| `knee_spring_max` | `14.78` | Return spring: its maximum deflection, mm (9001T46: 26 lb at 0.668" long, 14.8 mm down) *Range 3 to 40, step 0.01.* |
+| `knee_crank_r` | `0` | Crank radius, shaft to the crank pin; 0 = set from the spring rate to give knee_force_rate *Range 0 to 90, step 0.5.* |
 | `knee_board` | `[75, 35]` | Board (75 x 35 mm donor board): [length, width] |
 | `knee_board_screw` | `[49.6, 12.5]` | Board screw: [along from the board's notched end, across from the long edge nearer the screw]; the peg and rest post follow from it |
 | `knee_board_turn` | `180` | Board orientation: 180 = notched end toward the back of the bay, spade tabs on the right; 0 = notched end forward, tabs on the left *Choices: 0, 180.* |

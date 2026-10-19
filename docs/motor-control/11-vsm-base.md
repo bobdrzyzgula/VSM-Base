@@ -10,9 +10,10 @@ they develop. The base's User's Guide has the build details for the first.
 **What it is.** An inexpensive foot-pedal speed-control board (the XWW
 KB3151C, 75 × 35 mm) moved into the bay, with a knee lever in place of the
 pedal. A bar hangs below the table edge and turns a shaft running front to
-back in the bay. A 4:1 gear sector on the shaft turns a Bourns 91A1A-B28-A25L
+back in the bay. Two gear stages, about 11.75:1, turn a Bourns 91A1A-B28-A25L
 pot (1 MΩ linear cermet) that replaces the board's slide pot, VR1. A snap
-switch (Omron SS-5GL), held open by the sector at rest, cuts the motor.
+switch (Omron SS-5GL), held open by a cam on the shaft's sector through the
+first inch of travel, cuts the motor.
 
 **What kind of controller it is.** Electrically it is the open-loop triac phase
 control of §5: a BT136 triac, a DB3 diac and an RC timing network, with the
@@ -21,13 +22,21 @@ gives no speed regulation; the load sets speed, with the cogging at a crawl
 and the snap-on hysteresis described there. The 2 MΩ trimmer VR2 sets the
 minimum speed. The knee mechanism improves the command, not the regulation:
 
-- The geared pot turns about 45° over 2.5" of knee travel (54° to the hard
-  stop at 3"), so the usable range is spread over the whole lever travel.
-- Hard stops, a steel pin in a slot in the hub on the front face, take the
-  knee's force, so it never reaches the gears or the pot.
-- The off switch opens at rest and closes about 2.4° into the 11.3° swing.
-  With it in series with the motor, the motor is fully off at rest instead of
-  creeping at the minimum set by VR2.
+- The feel copies a Singer knee controller, measured at the knee 12.5"
+  below the shaft: about 1 lb at rest, rising 1.5 lb/in; an inch of dead
+  travel before the motor starts; the speed range over the next inch (about
+  2.5 to 4 lb); a hard stop at 2.25". The original's own action is short: an
+  inch from the motor starting to groan to flat out.
+- The return spring is a compression spring in a housing on the front face,
+  pushed by a crank on the bar's hub, with steel screw stops at rest and at
+  full travel. The knee's force goes from the bar through the crank into the
+  spring and stops, never into the shaft, the gears or the pot.
+- Because the speed range is only 4.5° of the shaft's swing, the gearing is
+  high: the pot turns about 53° (about 220 kΩ, the slide pot's span) over
+  that inch. This is a linear-in-resistance placeholder; see below.
+- The off switch opens at rest and closes at 1" of travel, about 4.6° into
+  the 10.2° swing. With it in series with the motor, the motor is fully off
+  through the dead travel instead of creeping at the minimum set by VR2.
 
 **The board is a two-terminal series device.** It has only two spade tabs
 and sits in series in one leg of the motor circuit; it has no separate mains
@@ -43,12 +52,13 @@ cordsets are interchangeable, so one pedal fits many machines.
   pin-1 pad;
 - a jumper from the old pin-3 pad to pin-2, which puts RV2 across the pot.
 
-It is set at the hard stop: with the bar held there, the wiper is put at the
-pin-1 end (about 0 Ω) and the pinion clamped. At rest it then reads about
-225 kΩ, close to the 0–220 kΩ the slide pot used. The pot's plastic shaft and
-the printed pinion are the isolation between the touchable bar and mains,
-with the pot's 1,500 VAC rating between element and bushing; a metal-shaft pot
-must not be substituted.
+It is set at full speed: with the bar held at 2", the wiper is put just at
+the pin-1 end (0 Ω) and the pinion clamped. At rest it then reads about
+445 kΩ. From full speed to the stop the pot turns another 13° into the dead
+zone past its electrical end, well short of its mechanical stop. The pot's
+plastic shaft and the printed pinion are the isolation between the
+touchable bar and mains, with the pot's 1,500 VAC rating between element and
+bushing; a metal-shaft pot must not be substituted.
 
 **Power.** Three ways in (`knee_power`), all at mains potential:
 
@@ -72,11 +82,22 @@ it holds no speed through a seam, and at a crawl it pulses. Its virtue is that
 it is cheap, uses a common part, and gives a vintage machine a knee control
 in its own base.
 
-One idea, untested: Bourns makes the 91 in audio (logarithmic) tapers. Since
-low speed sits at the high-resistance end of the pot's span, a log taper
-would spread that end over more of the knee's travel, a little like the carbon
-pile's resolution at the bottom of the range (§4). Whether it helps with this
-board's RC network is a bench question.
+**Low-end control.** With the board's RC firing network, speed is far from
+linear in the pot's resistance: the range from stopped to sewing speed is
+crowded into a small slice at the high-resistance end. A pot that moves
+linearly with the knee therefore puts most of the useful control into a
+fraction of the speed range. Three ways to spread it, none tested yet:
+
+- a resistor in parallel with the pot (RV2 is already there) to bend the
+  taper;
+- an audio (logarithmic) taper pot, which Bourns makes in the 91; it would
+  need more pot rotation and probably a 250–500 kΩ value;
+- non-circular gears, shaped so that speed, rather than resistance, follows
+  the knee.
+
+The last can be fitted exactly to a bench measurement of the board's speed
+against resistance on a 99 motor, which is the next step. Until then the
+gearing is linear in resistance.
 
 ## The MCU phase controller (in design)
 
@@ -90,8 +111,9 @@ microcontroller phase controller with an isolated control side. As it stands:
   base, or in a pedal-only base. External travel and pressure pedals as well as
   the knee lever.
 - The knee lever becomes a sensor input (pot or Hall) on the isolated low-voltage
-  side, so it needs no mains-rated parts. The geared mechanism, hard stops and
-  return spring of the first design carry over.
+  side, so it needs no mains-rated parts. The mechanism of the first design
+  (the crank, spring housing and screw stops, and the switch's dead travel)
+  carries over; the speed curve moves into firmware.
 - A speed sensor (handwheel or motor pulley) for true speed command, and the
   features it makes cheap: needle positioning, slow start, a speed limit, a
   single-stitch button; and a force-sensing pedal that reproduces the carbon

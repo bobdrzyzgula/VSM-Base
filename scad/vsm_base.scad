@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 28
+// Singer 99 base, version 29
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -133,7 +133,8 @@
 // speed-control board's slide pot, a snap switch cuts the motor at rest,
 // and hard stops on the front face take the knee's force. Bulkhead, board
 // posts, cover, cord clamp; parts knee_sector, knee_pinion, knee_hub,
-// knee_cover, knee_cord_clamp, and a knee_assembly cutaway view.
+// knee_cover, knee_cord_clamp, and a knee_assembly cutaway view. (v29
+// reworks the mechanism; see below.)
 //
 // v27: knee controller power options (knee_power): the standard pedal
 // cordset's molded entry with its steel clip, or a fused IEC C14 inlet
@@ -146,13 +147,23 @@
 // v28: knee return spring chosen (McMaster 9271K585 / 9271K651) with its
 // torque in the console; the switch's actuating point from Omron's
 // drawing (5.3 mm from the lever's free end).
+//
+// v29: knee controller reworked to a new feel: about 1 lb at rest rising
+// 1.5 lb/in, an inch of dead travel before the motor starts, full speed at
+// 2" and a hard stop at 2.25". The return spring is now a compression
+// spring in a housing on the front face, pushed by a crank on the knee hub,
+// with steel screw stops for rest and full travel, so the knee's force never
+// reaches the shaft, its set screws or the gears. Two-stage gearing (about
+// 11.75:1) through an idler on a stub pin; the switch lies under the shaft,
+// worked by a cam on the sector. Parts knee_idler, knee_spring_housing and
+// knee_spring_cap; the stop pin is gone.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_pinion, knee_hub, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -348,15 +359,21 @@ outlet_slot_depth = 25;
 outlet_slot_chamfer = 1.5;
 
 /* [Knee controller] */
-// The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay; a gear sector on the shaft turns a pot standing in for the donor board's slide pot, and a switch cuts the motor at rest. See the User's Guide before building: the board is live at mains voltage.
+// The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay. A crank on the bar's hub, outside the front face, pushes a compression spring in a housing beside it; steel screws in the housing set the rest and the hard stop, so the knee's force stays out of the shaft and gears. Inside, two gear stages turn a pot standing in for the donor board's slide pot, and a cam on the sector works a switch that cuts the motor for the first part of the travel. See the User's Guide before building: the board is live at mains voltage.
 // Which way the knee pushes the bar
 knee_push = "right"; // [right, left]
 // Bar: drop from the shaft to where the knee meets it (12.5" = 317.5 mm)
 knee_bar_drop = 317.5; // [150 : 0.5 : 450]
-// Knee travel at that point, for full speed (2.5" = 63.5 mm)
-knee_travel = 63.5; // [20 : 0.5 : 100]
-// Knee travel at the hard stop (3" = 76.2 mm)
-knee_travel_max = 76.2; // [20 : 0.5 : 120]
+// Knee travel at that point where the switch closes and the motor starts; the travel before it is dead (1" = 25.4 mm)
+knee_travel_on = 25.4; // [0 : 0.5 : 60]
+// Knee travel at that point for full speed (2" = 50.8 mm)
+knee_travel = 50.8; // [20 : 0.5 : 100]
+// Knee travel at the hard stop (2.25" = 57.15 mm)
+knee_travel_max = 57.15; // [20 : 0.5 : 120]
+// Knee force at rest (the spring's preload), N (1 lb = 4.45 N)
+knee_force_rest = 4.45; // [0.5 : 0.05 : 20]
+// Knee force rise, N per mm of knee travel (1.5 lb/in = 0.263)
+knee_force_rate = 0.263; // [0.05 : 0.001 : 1]
 // Bar's square end (3/8" = 9.525 mm)
 knee_bar_square = 9.525; // [5 : 0.025 : 16]
 // Clearance on the bar's square end, per side
@@ -373,7 +390,7 @@ knee_bushing = [8, 12, 10];
 knee_bushing_flange = [16, 2];
 // Hole for a bushing's sleeve (press fit; FDM holes print a little small)
 knee_bushing_hole = 12.1; // [8 : 0.05 : 20]
-// Bulkhead (carries the rear bushing, the pot and the switch): distance behind the front wall's inside face
+// Bulkhead (carries the rear bushing, the idler pin, the pot and the switch): distance behind the front wall's inside face
 knee_bulkhead_pos = 36; // [25 : 0.5 : 80]
 // Bulkhead thickness where the pot mounts (the pot's bushing must reach through it and take the nut)
 knee_bulkhead_t = 3; // [2 : 0.1 : 5]
@@ -381,18 +398,24 @@ knee_bulkhead_t = 3; // [2 : 0.1 : 5]
 knee_bulkhead_above = 15; // [5 : 0.5 : 30]
 // Gears: module (mm per tooth)
 knee_gear_module = 1; // [0.5 : 0.05 : 2]
-// Pinion teeth (on the pot)
+// First stage: idler pinion teeth (driven by the sector on the knee shaft)
 knee_pinion_teeth = 16; // [12 : 1 : 30]
-// Gear ratio, sector to pinion (the sector is cut from a gear with ratio x pinion teeth)
+// First stage ratio, sector to idler pinion (the sector is cut from a gear with ratio x pinion teeth)
 knee_ratio = 4; // [2 : 1 : 8]
+// Second stage: idler gear teeth (a sector on the idler, driving the pot's pinion)
+knee_gear2_teeth = 47; // [20 : 1 : 80]
+// Second stage: pot pinion teeth
+knee_pinion2_teeth = 16; // [12 : 1 : 30]
 // Gear face width
 knee_gear_face = 5; // [3 : 0.5 : 10]
 // Tooth thinning per gear for backlash, at the pitch circle
 knee_gear_backlash = 0.15; // [0 : 0.05 : 0.5]
 // Extra center distance between the gears
 knee_gear_cd_extra = 0.1; // [0 : 0.05 : 0.5]
-// Direction from the shaft to the pot, degrees (0 = straight right, negative = down)
-knee_pot_angle = -20; // [-60 : 1 : 60]
+// Direction from the shaft to the idler, degrees (0 = straight right, negative = down)
+knee_idler_angle = 10; // [-60 : 1 : 60]
+// Direction from the idler to the pot, degrees (-90 = straight down)
+knee_pot_angle = -120; // [-180 : 1 : 0]
 // Pot (Bourns 91, 5/8" square): body size
 knee_pot_body = 15.88; // [10 : 0.01 : 25]
 // Pot body depth behind the panel, with room for the pins and wires
@@ -415,9 +438,11 @@ knee_pot_lug_hole = 2.6; // [1.5 : 0.1 : 4]
 knee_pot_r = 1000; // [10 : 10 : 5000]
 // Pot: electrical travel, degrees
 knee_pot_travel = 240; // [180 : 1 : 300]
-// Resistance span the board wants over the knee travel, kOhm (the slide pot's useful range)
+// Pot: mechanical rotation, degrees (the end zones beyond the electrical travel take the overtravel to the stop)
+knee_pot_mech = 300; // [180 : 1 : 330]
+// Resistance span the board wants over the speed range (knee_travel_on to knee_travel), kOhm; a linear placeholder until the board is measured
 knee_r_span = 220; // [10 : 5 : 2000]
-// Off switch (Omron SS-5GL): body [length, height, thickness]
+// Off switch (Omron SS-5GL), lying under the shaft, lever up: body [length, height, thickness]
 knee_switch_body = [19.8, 10.2, 6.4];
 // Switch mounting holes: pitch, and height above the bottom (terminal) edge
 knee_switch_holes = [9.5, 2.9];
@@ -425,24 +450,24 @@ knee_switch_holes = [9.5, 2.9];
 knee_switch_op = 8.8; // [5 : 0.1 : 15]
 // Switch movement differential (release beyond the operating position)
 knee_switch_md = 0.8; // [0.1 : 0.05 : 2]
-// How far past the operating position the bar's rest holds the lever
+// How far past the operating position the cam holds the lever at rest
 knee_switch_press = 0.3; // [0 : 0.05 : 1.5]
-// Actuating point: distance from the switch's end nearest the floor (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end; mount the free end down)
+// Actuating point: distance from the lever's free end (Omron's drawing: 14.5 mm from the lever's pivot end, so 5.3 from its free end)
 knee_switch_act = 5.3; // [0 : 0.1 : 19]
-// Return spring: [outside diameter, wire diameter, coils] (McMaster 9271K585 left-hand / 9271K651 right-hand: 0.499" OD, 0.059" wire, 4.25 coils)
-knee_spring = [12.67, 1.5, 4.25];
-// Return spring: rate, N-mm per degree (9271K585: 4.5 in-lbf at 90 degrees = 5.65)
-knee_spring_rate = 5.65; // [0.5 : 0.05 : 30]
-// Return spring: wind-up at rest (preload), degrees
-knee_spring_preload = 45; // [0 : 1 : 80]
-// Return spring: its maximum deflection, degrees
-knee_spring_max = 90; // [30 : 1 : 360]
-// Adjusting slots for the switch: travel each way
+// Switch body's bottom (terminal) edge above the bay floor, with room for the terminals and wires
+knee_switch_floor = 5; // [2 : 0.5 : 15]
+// Adjusting slots for the switch: travel up and down
 knee_switch_adjust = 1.5; // [0 : 0.1 : 4]
 // Switch screw clearance (M2 or #2-56)
 knee_switch_screw = 2.4; // [1.8 : 0.05 : 3]
-// Stop pin: radius on the front face (the pin is cut from rod_d rod)
-knee_stop_r = 14; // [10 : 0.5 : 25]
+// Return spring (compression, standing in the housing beside the hub): [outside diameter, wire diameter, free length] (McMaster 9001T46: 0.6" OD, 0.072" wire, 1.25" long)
+knee_spring = [15.24, 1.83, 31.75];
+// Return spring: rate, N per mm (9001T46: 45 lb/in = 7.88)
+knee_spring_rate = 7.88; // [1 : 0.01 : 50]
+// Return spring: its maximum deflection, mm (9001T46: 26 lb at 0.668" long, 14.8 mm down)
+knee_spring_max = 14.78; // [3 : 0.01 : 40]
+// Crank radius, shaft to the crank pin; 0 = set from the spring rate to give knee_force_rate
+knee_crank_r = 0; // [0 : 0.5 : 90]
 // Board (75 x 35 mm donor board): [length, width]
 knee_board = [75, 35];
 // Board screw: [along from the board's notched end, across from the long edge nearer the screw]; the peg and rest post follow from it
@@ -1838,61 +1863,121 @@ kn_z0  = floor_z;
 kn_z1  = bay_z1("base", top_z, rabbit_depth);
 kn_sx  = st_x0 + knee_shaft_x;                          // shaft axis
 kn_sz  = knee_shaft_z > 0 ? kn_z0 + knee_shaft_z : (kn_z0 + kn_z1) / 2;
-kn_th  = atan(knee_travel / knee_bar_drop);             // full speed
-kn_thx = atan(knee_travel_max / knee_bar_drop);         // hard stop
+kn_L   = knee_bar_drop;
+kn_th_on = atan(knee_travel_on / kn_L);                 // motor starts
+kn_th  = atan(knee_travel / kn_L);                      // full speed
+kn_thx = atan(knee_travel_max / kn_L);                  // hard stop
+// Gears. First stage: the sector on the shaft drives the idler's pinion;
+// second stage: the idler's gear (a sector) drives the pot's pinion. The
+// idler turns on a stub pin pressed into the bulkhead.
 kn_m   = knee_gear_module;
 kn_zp  = knee_pinion_teeth;
 kn_zs  = knee_pinion_teeth * knee_ratio;
-kn_rp  = kn_m * kn_zp / 2;                              // pitch radii
+kn_rp  = kn_m * kn_zp / 2;                              // pitch radii, first stage
 kn_rs  = kn_m * kn_zs / 2;
 kn_cd  = kn_rp + kn_rs + knee_gear_cd_extra;
-kn_px  = kn_sx + kn_cd * cos(knee_pot_angle);           // pot axis
-kn_pz  = kn_sz + kn_cd * sin(knee_pot_angle);
-kn_pot_deg = knee_ratio * kn_th;
-kn_pot_degx = knee_ratio * kn_thx;
-kn_r_over  = knee_pot_r * kn_pot_deg / knee_pot_travel; // kOhm over the travel
-// Along Y (front to back)
+kn_ix  = kn_sx + kn_cd * cos(knee_idler_angle);         // idler axis
+kn_iz  = kn_sz + kn_cd * sin(knee_idler_angle);
+kn_z2  = knee_gear2_teeth;
+kn_zp2 = knee_pinion2_teeth;
+kn_r2  = kn_m * kn_z2 / 2;                              // pitch radii, second stage
+kn_rp2 = kn_m * kn_zp2 / 2;
+kn_cd2 = kn_r2 + kn_rp2 + knee_gear_cd_extra;
+kn_px  = kn_ix + kn_cd2 * cos(knee_pot_angle);          // pot axis
+kn_pz  = kn_iz + kn_cd2 * sin(knee_pot_angle);
+kn_ratio2 = kn_z2 / kn_zp2;
+kn_rt  = knee_ratio * kn_ratio2;                        // overall, pot to shaft
+kn_pot_deg  = kn_rt * (kn_th - kn_th_on);               // pot turn over the speed range
+kn_pot_degx = kn_rt * kn_thx;                           // rest to the stop
+kn_pot_over = kn_rt * (kn_thx - kn_th);                 // full speed to the stop
+kn_r_over   = knee_pot_r * kn_pot_deg / knee_pot_travel; // kOhm over the speed range
+// Along Y (front to back). Plane B (idler gear, pot pinion) lies just in
+// front of the pot's bushing; plane A (sector, idler pinion) in front of it.
 kn_yf  = st_y0 + knee_bulkhead_pos;                     // bulkhead front face
 kn_yb  = kn_yf + knee_bulkhead_t;                       // its back face (pot mounting face)
-kn_ypb = kn_yb - knee_pot_bushing_len - 0.7;            // gears' back face
-kn_ygf = kn_ypb - knee_gear_face;                       // gears' front face
-kn_pin_hub = kn_ygf - (kn_yb - knee_pot_shaft_len);     // pinion hub length on the shaft
-kn_hub_back = max(0, kn_yf - knee_bushing_flange[1] - 0.6 - kn_ypb); // sector hub behind the sector
+kn_ypb = kn_yb - knee_pot_bushing_len - 0.7;            // plane B, back face
+kn_ygf = kn_ypb - knee_gear_face;                       // plane B, front face
+kn_yab = kn_ygf - 0.5;                                  // plane A, back face
+kn_yaf = kn_yab - knee_gear_face;                       // plane A, front face
+kn_pin_hub = kn_ygf - 1 - (kn_yb - knee_pot_shaft_len); // pot pinion's hub length on its shaft
+kn_hub_back = max(0, kn_yf - knee_bushing_flange[1] - 0.6 - kn_yab); // sector hub behind the sector
 kn_bz1 = kn_sz + knee_bulkhead_above;                   // bulkhead top
 kn_boss_r = knee_bushing[1] / 2 + 3;
-// Sector: teeth over the swing, two teeth more each way
+kn_ip_y0 = kn_yaf - 3;                                  // idler pin's front end (push nut in front of the idler)
+kn_ip_len = kn_yb - kn_ip_y0;
+kn_ib_r  = 5;                                           // idler pin boss on the bulkhead
+// Sector: teeth over the swing, two teeth more each way (the shaft turns
+// +kn_s th, so the teeth that reach the line of centers come from behind it)
 kn_tooth = 360 / kn_zs;
-kn_sec_a0 = knee_pot_angle - (kn_s > 0 ? kn_thx : 0) - 2 * kn_tooth;
-kn_sec_a1 = knee_pot_angle + (kn_s > 0 ? 0 : kn_thx) + 2 * kn_tooth;
+kn_sec_a0 = knee_idler_angle - (kn_s > 0 ? kn_thx : 0) - 2 * kn_tooth;
+kn_sec_a1 = knee_idler_angle + (kn_s > 0 ? 0 : kn_thx) + 2 * kn_tooth;
 kn_hub_r  = 11;
-// Switch, on the bulkhead's front face below the shaft. A blade on the
-// sector, pointing down at rest, holds the lever in; the knee swings it
-// away. The lever faces the blade; the body lies on the far side.
-kn_blade_t = 3;
+// Idler gear: the idler turns -kn_s * ratio * th
+kn_tooth2 = 360 / kn_z2;
+kn_i_swing = knee_ratio * kn_thx;
+kn_ig_a0 = knee_pot_angle - (kn_s < 0 ? kn_i_swing : 0) - 2 * kn_tooth2;
+kn_ig_a1 = knee_pot_angle + (kn_s > 0 ? kn_i_swing : 0) + 2 * kn_tooth2;
+kn_ig_disc = kn_rp + kn_m + 1.5;                        // disc under the idler pinion
+// Switch, lying on the bulkhead's front face below the shaft, lever up,
+// its free end toward the push. A cam on the sector holds the lever down at
+// rest; past a dwell a ramp drops away (about 45 degrees) and the switch
+// releases at knee_travel_on.
 kn_sw = knee_switch_body;
-kn_sw_lv  = kn_sx - kn_s * kn_blade_t / 2;                       // lever contact line, at rest
-kn_sw_hx  = kn_sw_lv - kn_s * (knee_switch_op - knee_switch_press); // hole line
-kn_sw_x0  = min(kn_sw_hx - kn_s * knee_switch_holes[1], kn_sw_hx + kn_s * (kn_sw[1] - knee_switch_holes[1]));
-kn_sw_x1  = max(kn_sw_hx - kn_s * knee_switch_holes[1], kn_sw_hx + kn_s * (kn_sw[1] - knee_switch_holes[1]));
-kn_sw_z0  = kn_z0 + 1.5;
-kn_sw_hz  = [kn_sw_z0 + (kn_sw[0] - knee_switch_holes[0]) / 2,
-             kn_sw_z0 + (kn_sw[0] + knee_switch_holes[0]) / 2];
-kn_blade_r = kn_sz - kn_z0 - 1.5;                                // blade reach
-kn_act_r  = kn_sz - (kn_sw_z0 + knee_switch_act);                // radius at the actuating point
-kn_release = (knee_switch_press + knee_switch_md) / kn_act_r * 180 / PI;
-// Return spring torque and the knee force it gives
-kn_sp_t0 = knee_spring_rate * knee_spring_preload;                // N-mm at rest
-kn_sp_t1 = knee_spring_rate * (knee_spring_preload + kn_thx);     // at the stop
-kn_sp_len = (knee_spring[2] + 1) * knee_spring[1];                // close-wound body
-kn_sp_id1 = (knee_spring[0] - knee_spring[1]) * knee_spring[2]
-            / (knee_spring[2] + (knee_spring_preload + kn_thx) / 360) - knee_spring[1];   // wound-up ID
-// Stop pin on the front face, below the shaft
-kn_pin_len = 15;
-kn_pin_out = 5.5;
-kn_hub_disc = [knee_stop_r + rod_d / 2 + 5, 6];              // [radius, thickness]
-kn_hub_y0  = -knee_bushing_flange[1] - 0.5;                    // disc back face
+kn_sw_z0 = kn_z0 + knee_switch_floor;                             // body's bottom edge
+kn_sw_hz = kn_sw_z0 + knee_switch_holes[1];                       // hole line
+kn_sw_cz = kn_sw_hz + knee_switch_op - knee_switch_press;         // lever's contact line at rest
+kn_sw_xf = kn_sx + kn_s * knee_switch_act;                        // lever's free end
+kn_sw_x0 = min(kn_sw_xf, kn_sw_xf - kn_s * kn_sw[0]);
+kn_sw_x1 = max(kn_sw_xf, kn_sw_xf - kn_s * kn_sw[0]);
+kn_sw_hx = [for (d = [-1, 1]) (kn_sw_x0 + kn_sw_x1) / 2 + d * knee_switch_holes[0] / 2];
+kn_cam_r = kn_sz - kn_sw_cz;                                      // cam radius on the dwell
+kn_cam_drop = 4;
+kn_cam_ramp = kn_cam_drop / kn_cam_r * 180 / PI;                  // ramp span, degrees
+kn_cam_a = kn_th_on - (knee_switch_press + knee_switch_md) / kn_cam_r * 180 / PI;   // ramp start
+kn_cam_b = kn_cam_a + kn_cam_ramp;
+kn_release = kn_cam_a + (knee_switch_press + knee_switch_md) / kn_cam_drop * kn_cam_ramp;
+kn_sw_sens = kn_L / kn_cam_r;                                     // knee mm per mm of switch height
+// Return spring: a compression spring standing in a housing on the front
+// face, beside the hub, away from the push. A crank on the hub reaches into
+// the housing; a steel pin across its tip bears on a cap on the spring. At
+// rest the spring holds the crank up against the rest screw in the roof;
+// at the hard stop the pin comes down onto the stop screw standing up
+// through the spring. The housing is closed on itself: only the knee's
+// push reaches the base, through the housing's tongue in a pocket.
+kn_cr = knee_crank_r > 0 ? knee_crank_r : kn_L * sqrt(knee_force_rate / knee_spring_rate);
+kn_f0 = knee_force_rest * kn_L / kn_cr;                 // spring force at rest
+kn_pre = kn_f0 / knee_spring_rate;                      // preload deflection
+kn_stroke = kn_cr * sin(kn_thx);                        // pin's drop at the stop
+function kn_fs(th) = kn_f0 + knee_spring_rate * kn_cr * sin(th);           // spring force, N
+function kn_fk(th) = kn_fs(th) * kn_cr * cos(th) / kn_L;                   // force at the knee, N
+kn_defl_x = kn_pre + kn_stroke;
+kn_pin_r = rod_d / 2;
+kn_ct  = 10;                                            // crank thickness
+kn_hub_y0 = -knee_bushing_flange[1] - 0.5;              // hub's back face
+kn_cy0 = kn_hub_y0 - kn_ct;                             // crank's front face
+kn_rb  = knee_spring[0] / 2 + 0.5;                      // housing bore radius
+kn_hw  = 2.5;                                           // housing walls
+kn_hyc = kn_hub_y0 - kn_ct / 2;                         // bore centre (Y), on the crank's plane
+kn_hy0 = kn_hyc - kn_rb - kn_hw;                        // housing front face
+kn_tg  = 2;                                             // tongue into the front face
+kn_hx  = kn_sx - kn_s * kn_cr * (1 + cos(kn_thx)) / 2;  // spring axis
+kn_hs  = kn_hx + kn_s * (kn_rb + kn_hw);                // housing's side toward the shaft
+kn_cap_t = 4;
+kn_arm_top = 14;                                        // crank's top above the pin centre
+kn_arm_bot = 1.4;                                       // crank's bottom below it (the pin stands 1 mm proud)
+kn_h_ft = kn_sz - kn_pin_r - kn_cap_t - (knee_spring[2] - kn_pre);   // floor's top (spring seat)
+kn_h_fb = kn_h_ft - 6;                                  // housing bottom
+kn_lift = kn_pre + 0.5;                                 // crank tip raised this much to go in over the cap
+kn_h_rb = kn_sz + kn_arm_top + kn_lift + 1.5;           // roof's underside
+kn_h_rt = kn_h_rb + 7;                                  // housing top
+kn_ear  = [10, 6, 8];                                   // screw ears on the shaft side [out, thickness, height]
+kn_ear_z = [kn_h_fb + kn_ear[2] / 2, kn_h_rt - kn_ear[2] / 2];
+kn_ear_x = kn_hs + kn_s * kn_ear[0] / 2;
+kn_stop_len = (kn_sz - kn_stroke - kn_pin_r) - kn_h_fb + 4.5;   // stop screw, with its jam nut
+kn_rest_len = kn_h_rt - (kn_sz + kn_arm_top) + 4.5;             // rest screw, with its jam nut
+kn_h_size = [kn_rb * 2 + 2 * kn_hw + kn_ear[0], kn_tg - kn_hy0];  // housing's footprint, printed
 kn_hub_boss = [knee_bar_square * sqrt(2) / 2 + 2 * knee_bar_clearance + 4, 26];
-kn_shaft_front = kn_hub_y0 - kn_hub_disc[1] - 6;               // shaft's front end
+kn_shaft_front = kn_cy0 + 1;                            // shaft's front end, inside the hub
 kn_shaft_len = kn_yf + knee_bushing[2] - kn_shaft_front;
 // Board, in the back of the bay against the divider, its long axis front
 // to back; a printed cover over it
@@ -1961,56 +2046,76 @@ if (has_knee && report) {
     echo("=== Knee controller ===");
     echo(str("Shaft: ", knee_shaft_d, " mm, axis ", knee_shaft_x, " mm from the divider and ",
              kn_sz - kn_z0, " mm above the bay floor; ", round(kn_shaft_len), " mm long"));
-    echo(str("Knee travel ", knee_travel, " mm at ", knee_bar_drop, " mm below the shaft: shaft turns ",
-             round(kn_th * 100) / 100, " deg (hard stop at ", round(kn_thx * 100) / 100, " deg, ",
-             knee_travel_max, " mm)"));
-    echo(str("Gears: module ", kn_m, ", pinion ", kn_zp, " teeth (pitch radius ", kn_rp, "), sector ",
-             kn_zs, "-tooth (pitch radius ", kn_rs, "), center distance ", kn_cd, ", ratio ", knee_ratio));
-    echo(str("Pot turns ", round(kn_pot_deg * 10) / 10, " deg over the travel (", round(kn_pot_degx * 10) / 10,
-             " at the stop): about ", round(kn_r_over), " kOhm of its ", knee_pot_r, " kOhm (target ",
-             knee_r_span, ")"));
-    echo(str("Switch releases about ", round(kn_release * 10) / 10, " deg into the swing (",
-             round(kn_release / kn_th * 100), "% of the travel; actuating point ", round(kn_act_r * 10) / 10,
-             " mm below the shaft)"));
+    echo(str("Knee travel at ", kn_L, " mm below the shaft: motor starts at ", knee_travel_on, " mm (shaft ",
+             round(kn_th_on * 100) / 100, " deg), full speed at ", knee_travel, " mm (", round(kn_th * 100) / 100,
+             " deg), hard stop at ", knee_travel_max, " mm (", round(kn_thx * 100) / 100, " deg)"));
+    echo(str("Gears: module ", kn_m, "; sector ", kn_zs, "-tooth (pitch radius ", kn_rs, ") to idler pinion ", kn_zp,
+             " teeth, ", knee_ratio, ":1; idler gear ", kn_z2, "-tooth (pitch radius ", kn_r2, ") to pot pinion ", kn_zp2,
+             " teeth, ", round(kn_ratio2 * 1000) / 1000, ":1; overall ", round(kn_rt * 100) / 100, ":1"));
+    echo(str("Pot turns ", round(kn_pot_deg * 10) / 10, " deg over the speed range: about ", round(kn_r_over),
+             " kOhm of its ", knee_pot_r, " kOhm (target ", knee_r_span, "); ", round(kn_pot_degx * 10) / 10,
+             " deg from rest to the stop, ", round(kn_pot_over * 10) / 10, " of them past full speed"));
+    echo(str("Switch: lever at ", round(kn_cam_r * 10) / 10, " mm below the shaft; the cam's ramp runs ",
+             round(kn_cam_a * 100) / 100, " to ", round(kn_cam_b * 100) / 100, " deg, releasing the switch at ",
+             round(kn_release * 100) / 100, " deg (", round(tan(kn_release) * kn_L), " mm at the knee); each 0.1 mm the switch is raised moves that about ",
+             round(kn_sw_sens * 0.1 * 10) / 10, " mm later"));
+    echo(str("Return spring: crank radius ", round(kn_cr * 10) / 10, " mm; spring ", round(kn_f0 * 10) / 10, " N at rest (",
+             round(kn_pre * 10) / 10, " mm down) to ", round(kn_fs(kn_thx) * 10) / 10, " N at the stop (", round(kn_defl_x * 10) / 10,
+             " mm, ", round(kn_defl_x / knee_spring_max * 100), "% of its rating)"));
+    echo(str("Knee force: ", round(kn_fk(0) / 4.448 * 100) / 100, " lb at rest, ", round(kn_fk(kn_th_on) / 4.448 * 100) / 100,
+             " at the motor's start, ", round(kn_fk(kn_th) / 4.448 * 100) / 100, " at full speed, ",
+             round(kn_fk(kn_thx) / 4.448 * 100) / 100, " at the stop (",
+             round(kn_fk(0) * 10) / 10, ", ", round(kn_fk(kn_th_on) * 10) / 10, ", ", round(kn_fk(kn_th) * 10) / 10, ", ",
+             round(kn_fk(kn_thx) * 10) / 10, " N)"));
+    echo(str("Spring housing: on the front face at X ", round(kn_hx * 10) / 10, ", ", round(kn_h_fb * 10) / 10, " to ",
+             round(kn_h_rt * 10) / 10, " mm above the bottom, standing ", round(-kn_hy0 * 10) / 10,
+             " mm out from the face; the hub and bar socket stand ", round(-(kn_cy0 - kn_hub_boss[1]) * 10) / 10, " mm out"));
     if (abs(kn_r_over - knee_r_span) > 0.25 * knee_r_span)
-        echo("NOTE: the pot's span over the travel is far from knee_r_span; change knee_ratio or the travel");
-    if (kn_pot_degx > knee_pot_travel / 2)
-        echo("WARNING: the pot turns more than half its electrical travel at the stop; check the rest setting");
-    if (kn_px + knee_pot_body / 2 > st_x1 - 1 || kn_pz - knee_pot_body / 2 < kn_z0 + 1
-        || kn_pz + knee_pot_body / 2 > kn_bz1)
-        echo("WARNING: the pot body runs into the bay wall, floor or above the bulkhead; change knee_pot_angle or knee_shaft_x");
-    if (kn_sz - kn_rs - kn_m < kn_z0 + 1 && knee_pot_angle - 2 * kn_tooth - kn_thx < -60)
-        echo("WARNING: the sector's teeth may reach the floor");
-    if (kn_sw_x0 - knee_switch_adjust < st_x0 + 0.5 || kn_sw_x1 + knee_switch_adjust > st_x1 - 0.5)
-        echo("WARNING: the switch and its adjusting slots run into the bay wall; change knee_shaft_x");
+        echo("NOTE: the pot's span over the speed range is far from knee_r_span; change the gear teeth or the travel");
+    if (kn_pot_degx > knee_pot_travel + (knee_pot_mech - knee_pot_travel) / 2 - 8)
+        echo("WARNING: the pot turns too far from rest to the stop; it may reach its mechanical stop");
+    if (kn_pot_over > (knee_pot_mech - knee_pot_travel) / 2 - 8)
+        echo("WARNING: the overtravel past full speed runs within 8 deg of the pot's mechanical stop");
+    if (kn_px + knee_pot_body / 2 > st_x1 - 1 || kn_px - knee_pot_body / 2 < st_x0 + 1
+        || kn_pz - knee_pot_body / 2 < kn_z0 + 1 || kn_pz + knee_pot_body / 2 > kn_bz1)
+        echo("WARNING: the pot body runs into the bay wall, floor or above the bulkhead; change knee_pot_angle or knee_idler_angle");
+    if (norm([kn_px - kn_sx, kn_pz - kn_sz]) < kn_boss_r + knee_pot_body * 0.71 + 0.5)
+        echo("WARNING: the pot body may run into the rear bushing's boss");
+    if (kn_iz + kn_ib_r > kn_bz1 - 1)
+        echo("WARNING: the idler pin's boss stands above the bulkhead; raise knee_bulkhead_above or lower knee_idler_angle");
+    for (a = [kn_ig_a0, kn_ig_a1]) if (kn_ix + (kn_r2 + kn_m) * cos(a) > st_x1 - 1 || kn_iz + (kn_r2 + kn_m) * sin(a) < kn_z0 + 1)
+        echo("WARNING: the idler gear's teeth reach the bay wall or floor; change knee_pot_angle or knee_idler_angle");
+    if (norm([kn_ix - kn_sx, kn_iz - kn_sz]) - (kn_r2 + kn_m) < kn_hub_r + 1)
+        echo("WARNING: the idler gear runs into the sector's hub");
+    if (kn_sw_x0 < st_x0 + 0.5 || kn_sw_x1 > st_x1 - 0.5)
+        echo("WARNING: the switch runs into the bay wall; change knee_shaft_x");
+    if (kn_cam_r - kn_cam_drop < kn_hub_r + 1)
+        echo("WARNING: the switch sits too high for the cam; lower knee_switch_floor");
+    if (kn_cam_a < 0.5)
+        echo("WARNING: the cam's ramp starts at rest; the switch may release early. Raise knee_travel_on");
     if (kn_pin_hub < 4)
         echo(str("WARNING: only ", kn_pin_hub, " mm of pot shaft for the pinion's hub"));
     if (kn_hub_back < 3)
         echo("WARNING: little room for the sector's hub behind it; move knee_bulkhead_pos back or shorten the pot bushing");
-    echo(str("Return spring: ", round(kn_sp_t0), " N-mm at rest, ", round(kn_sp_t1), " at the stop (",
-             round((knee_spring_preload + kn_thx) / knee_spring_max * 100), "% of its rating); about ",
-             round(kn_sp_t1 / knee_bar_drop * 100) / 100, " N at the knee; inside diameter ", round(kn_sp_id1 * 10) / 10,
-             " mm wound up"));
-    if (kn_sp_id1 < knee_shaft_d + 0.3)
-        echo("WARNING: the return spring closes onto the shaft when wound up; use a spring for a larger shaft");
-    if (knee_spring_preload + kn_thx > knee_spring_max)
-        echo("WARNING: the return spring is wound past its rated deflection at the stop");
-    if (kn_sp_t0 < 60)
-        echo("WARNING: under 60 N-mm of return torque at rest; the bar may not return against the pot and switch");
-    if (kn_sp_len > kn_ygf - st_y0 - 3)
-        echo("WARNING: the return spring is longer than the room in front of the sector");
-    if (kn_ygf - 12 < st_y0)
-        echo("WARNING: under 12 mm in front of the sector for the return spring; move knee_bulkhead_pos back");
+    if (kn_defl_x > knee_spring_max)
+        echo("WARNING: the return spring is compressed past its rated deflection at the stop; use a longer spring");
+    if (kn_h_fb < 1)
+        echo("WARNING: the spring housing reaches the base's bottom; use a shorter spring or raise knee_shaft_z");
+    if (kn_h_rt > top_z - 1)
+        echo("WARNING: the spring housing reaches above the base's top");
+    if ((kn_s > 0 ? kn_hx - kn_rb - kn_hw : kn_hx + kn_rb + kn_hw) < 1
+        || (kn_s > 0 ? kn_hx - kn_rb - kn_hw : kn_hx + kn_rb + kn_hw) > outer_length - 1)
+        echo("WARNING: the spring housing runs off the end of the front face; use a stiffer spring (shorter crank)");
     if (kn_bz1 > kn_z1 - 8)
         echo("WARNING: the bulkhead leaves under 8 mm under the lid for wires");
     if (kn_cv0.y < kn_yb + knee_pot_depth)
         echo("WARNING: the board cover runs into the pot; move knee_bulkhead_pos forward");
     if (!has_passthrough)
         echo("WARNING: no cord pass-through in the divider for the motor lead");
-    if (kn_release > 0.25 * kn_th)
-        echo("NOTE: the switch releases late in the swing; mount it with its lever's free end down, or reduce knee_switch_press");
-    echo(str("Pot setting: with the bar held at the hard stop, set the wiper at the pin-1 end (0 ohm) and clamp the pinion; at rest it then reads about ",
-             round(knee_pot_r * kn_pot_degx / knee_pot_travel), " kOhm"));
+    echo(str("Setting up: 1) rest screw (in the housing's roof) so the bar hangs where you want it at rest; 2) stop screw (up through the spring) so the pin meets it at ",
+             knee_travel_max, " mm; 3) turn the sector on the shaft so the switch releases at ", knee_travel_on,
+             " mm; 4) with the bar held at full speed (", knee_travel, " mm), turn the pot to its pin-1 end (0 ohm) and clamp its pinion. At rest it then reads about ",
+             round(knee_pot_r * kn_rt * kn_th / knee_pot_travel), " kOhm"));
     echo(str("Board: notched end ", kn_turn ? "toward the back" : "forward", ", spade tabs on the ",
              kn_turn ? "right" : "left", " at Y ", [for (p = kn_tabs) round(p.y * 10) / 10]));
     if (knee_power == "cordset") {
@@ -2124,19 +2229,22 @@ if (report && has_knee) {
     echo(str("Knee bushings: 2 x flanged bronze sleeve bearing, ", knee_bushing[0], " mm bore x ",
              knee_bushing[1], " mm OD x ", knee_bushing[2], " mm long, flange ", knee_bushing_flange[0],
              " x ", knee_bushing_flange[1], " mm"));
-    echo(str("Knee stop pin: 1 x ", frac16(rod_d / in + 1 / 32), " rod, cut to ", kn_pin_len,
-             " mm, pressed into the front face"));
+    echo(str("Knee pins: 3/16\" rod (", frac16(rod_d / in + 1 / 32), " stock), 1 x ", round(kn_ip_len), " mm (idler pin, pressed into the bulkhead) with a 3/16\" push-on retaining nut; 1 x 14 mm (crank pin, pressed through the crank's tip)"));
     echo(str("Knee bar: steel, ", round(knee_bar_square * 100) / 100, " mm square at the socket end, out from the hub, bent down ",
              knee_bar_drop, " mm"));
-    echo(str("Knee return spring: 1 x McMaster ", kn_s > 0 ? "9271K585 (left-hand wound)" : "9271K651 (right-hand wound)",
-             ", 90 deg, 0.499\" OD, 0.059\" wire, 4.25 coils, 2\" legs (pack of 6); trim the legs, bend the moving leg's end 4 mm along the shaft"));
+    echo(str("Knee return spring: 1 x compression spring, ", round(knee_spring[0] / in * 1000) / 1000, "\" OD, ",
+             round(knee_spring[2] / in * 1000) / 1000, "\" long, about ", round(knee_spring_rate / 4.448 * in), " lb/in, rated to ",
+             round(knee_spring_max * 10) / 10, " mm (McMaster 9001T46, or one like it: it is compressed ",
+             round(kn_defl_x * 10) / 10, " mm at the stop)"));
+    echo(str("Knee stops: 1 x M4 x ", stock_len("M4", kn_stop_len), " (hard stop, up through the spring) and 1 x M4 x ",
+             stock_len("M4", kn_rest_len), " (rest, down through the roof), each with a captive nut and a jam nut; 2 x M3 x 12 (housing to the front face)"));
     echo("Knee pot: Bourns 91A1A-B28-A25L (1 MOhm linear cermet, 1/4\" plastic slotted shaft, 3/8-32 bushing, lug), with its nut and lockwasher");
     echo("Knee off switch: Omron SS-5GL (hinge lever, SPDT, 5 A 125 VAC); 2 x M2 x 12 or #2-56 x 1/2\" screws, nuts and washers");
-    echo(str("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover)",
+    echo(str("Knee screws: 2 x M3 set screw x 6 + 2 M3 nuts (sector, hub); 1 x M3 x 10 + nut (pot pinion clamp); 1 x M3 x 6 + washer (board); 2 x M3 x 30 (cover)",
              knee_power == "bare" ? "; 2 x M3 x 12 (cord clamp)" : "",
              knee_power == "iec" && knee_earth ? "; 1 x M3 x 6 + ring terminal (earth strip)" : ""));
-    echo(str("Knee heat-set inserts: ", 3 + (knee_power == "bare" ? 2 : 0) + (knee_power == "iec" && knee_earth ? 1 : 0),
-             " x M3 (board boss, 2 cover bosses", knee_power == "bare" ? ", 2 cord-clamp bosses" : "",
+    echo(str("Knee heat-set inserts: ", 5 + (knee_power == "bare" ? 2 : 0) + (knee_power == "iec" && knee_earth ? 1 : 0),
+             " x M3 (board boss, 2 cover bosses, 2 in the front face for the spring housing", knee_power == "bare" ? ", 2 cord-clamp bosses" : "",
              knee_power == "iec" && knee_earth ? ", earth post" : "", ")"));
     if (knee_power == "cordset")
         echo("Knee power: a standard pedal controller cordset (molded entry and its steel clip), its two leads to the board's spade tabs, the off switch in one of them");
@@ -2255,10 +2363,16 @@ if (part == "assembly") {
     if (harness_rods && rod_plug_len > 0) rod_plugs();
 } else if (part == "knee_sector") {
     if (has_knee) knee_sector_part();
+} else if (part == "knee_idler") {
+    if (has_knee) knee_idler_part();
 } else if (part == "knee_pinion") {
     if (has_knee) knee_pinion_part();
 } else if (part == "knee_hub") {
     if (has_knee) knee_hub_part();
+} else if (part == "knee_spring_housing") {
+    if (has_knee) knee_spring_housing_part();
+} else if (part == "knee_spring_cap") {
+    if (has_knee) knee_spring_cap_part();
 } else if (part == "knee_cover") {
     if (has_knee) knee_cover_part();
 } else if (part == "knee_cord_clamp") {
@@ -2270,7 +2384,8 @@ if (part == "assembly") {
     if (has_knee) {
         color("SteelBlue") intersection() {
             base();
-            translate([st_x0 - 25, -1, -1]) cube([outer_length - st_x0 + 26, outer_width + 2, kn_bz1 + 1]);
+            translate([min(st_x0 - 25, kn_hx - kn_rb - kn_hw - 15), -1, -1])
+                cube([outer_length + 1 - min(st_x0 - 25, kn_hx - kn_rb - kn_hw - 15), outer_width + 2, kn_bz1 + 1]);
         }
         knee_in_place(knee_view * kn_thx);
     }
@@ -3463,9 +3578,12 @@ build_parts = concat(
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
     turn_button ? [["turn_button", "small", [turn_button_w + 1, tb_R + turn_button_w], []]] : [],
-    has_knee ? [["knee_sector", "small", [2 * (kn_rs + 2 * kn_m), kn_blade_r + kn_rs + 2 * kn_m], []],
-                ["knee_pinion", "small", [kn_rp * 2 + 4, kn_rp * 2 + 4], []],
-                ["knee_hub", "small", [2 * kn_hub_disc[0], 2 * kn_hub_disc[0]], []],
+    has_knee ? [["knee_sector", "small", [kn_hub_r + 2 + kn_rs + 2 * kn_m, kn_cam_r + 2 + kn_rs + 2 * kn_m], []],
+                ["knee_idler", "small", [2 * (kn_r2 + 2 * kn_m), 2 * (kn_r2 + 2 * kn_m)], []],
+                ["knee_pinion", "small", [kn_rp2 * 2 + 4, kn_rp2 * 2 + 4], []],
+                ["knee_hub", "small", [kn_cr + 4 + 13 + 2, 2 * 14 + 2], []],
+                ["knee_spring_housing", "small", kn_h_size, []],
+                ["knee_spring_cap", "small", [2 * kn_rb + 1, 2 * kn_rb + 1], []],
                 ["knee_cover", "small", [kn_cv1.x - kn_cv0.x + kn_cv_ear, kn_cv1.y - kn_cv0.y], []],
                 if (knee_power == "bare") ["knee_cord_clamp", "small", [8, 2 * kn_clamp_dy + 8], []]] : [],
     has_passthrough && passthrough_cover
@@ -3496,9 +3614,12 @@ module place_part(id) {
     else if (id == "passthrough_cover")
         translate([cord_hole_width / 2 + 3, 3, 0]) passthrough_cover_part();
     else if (id == "knee_sector")
-        translate([kn_rs + 2 * kn_m, kn_blade_r, 0]) knee_sector_part();
-    else if (id == "knee_pinion")  translate([kn_rp + 2, kn_rp + 2, 0]) knee_pinion_part();
-    else if (id == "knee_hub")     translate([kn_hub_disc[0], kn_hub_disc[0], 0]) knee_hub_part();
+        translate([kn_hub_r + 1, kn_cam_r + 1, 0]) knee_sector_part();
+    else if (id == "knee_idler")   translate([kn_r2 + 2 * kn_m, kn_r2 + 2 * kn_m, 0]) knee_idler_part();
+    else if (id == "knee_pinion")  translate([kn_rp2 + 2, kn_rp2 + 2, 0]) knee_pinion_part();
+    else if (id == "knee_hub")     translate([kn_s > 0 ? kn_cr + 5 : 14, 15, 0]) knee_hub_part();
+    else if (id == "knee_spring_housing") knee_spring_housing_part();
+    else if (id == "knee_spring_cap") translate([kn_rb + 0.5, kn_rb + 0.5, 0]) knee_spring_cap_part();
     else if (id == "knee_cover")   knee_cover_part();
     else if (id == "knee_cord_clamp") translate([4, kn_clamp_dy + 4, 0]) knee_cord_clamp_part();
     else if (id == "turn_button")
@@ -4181,31 +4302,37 @@ module kn_gear2d(m, z, a0 = 0, bl = 0, pa = 20, add = 1) {
     polygon(pts);
 }
 
-// Pinion outline generated by rolling it against the sector's gear (made
-// slightly fat, for backlash, and long in the tooth, for root clearance):
-// the conjugate profile, with the undercut a small pinion needs.
-module kn_pinion2d() {
-    ra = kn_rp + kn_m;
-    cs = knee_pot_angle + 180;                          // from the pinion to the shaft
-    sp = kn_cd * [cos(cs), sin(cs)];
+// Pinion outline generated by rolling it against its gear (made slightly
+// fat, for backlash, and long in the tooth, for root clearance): the
+// conjugate profile, with the undercut a small pinion needs. The gear is
+// children(), in its own frame, its centre at cd in direction cs from the
+// pinion; the pinion turns ratio times as fast.
+module kn_rolled2d(zp, ratio, cs, cd) {
+    ra = kn_m * zp / 2 + kn_m;
+    sp = cd * [cos(cs), sin(cs)];
     steps = 90;
     difference() {
-        circle(r = ra, $fn = 4 * kn_zp);
+        circle(r = ra, $fn = 4 * zp);
         for (i = [-steps : steps]) {
-            ph = i * 180 / (steps * knee_ratio);         // sector turn; pinion frame turns by ph * ratio
-            rotate(ph * knee_ratio) translate(sp) rotate(ph)
+            ph = i * 180 / (steps * ratio);              // gear turn; the pinion's frame turns by ph * ratio
+            rotate(ph * ratio) translate(sp) rotate(ph)
                 intersection() {
-                    kn_gear2d_cut();
-                    rotate(cs + 180 - ph) polygon([[0, 0], [60, -12], [60, 12]]);   // fixed on the line of centers
+                    children();
+                    rotate(cs + 180 - ph) polygon([[0, 0], [1.5 * cd, -0.3 * cd], [1.5 * cd, 0.3 * cd]]);   // fixed on the line of centers
                 }
         }
     }
 }
-// The sector's gear as a cutter: thickened by the backlash, teeth long by
-// the root clearance
-module kn_gear2d_cut() {
-    offset(delta = 0) kn_gear2d(kn_m, kn_zs, knee_pot_angle, -knee_gear_backlash, 20, 1.25);
-}
+// The gears as cutters: thickened by the backlash, teeth long by the root
+// clearance
+module kn_sector_cut() kn_gear2d(kn_m, kn_zs, knee_idler_angle, -knee_gear_backlash, 20, 1.25);
+module kn_idler_cut()  kn_gear2d(kn_m, kn_z2, knee_pot_angle, -knee_gear_backlash, 20, 1.25);
+module kn_idler_pinion2d() kn_rolled2d(kn_zp, knee_ratio, knee_idler_angle + 180, kn_cd) kn_sector_cut();
+module kn_pot_pinion2d()   kn_rolled2d(kn_zp2, kn_ratio2, knee_pot_angle + 180, kn_cd2) kn_idler_cut();
+
+// A fan from the centre out to r, from angle a0 to a1
+module kn_fan(a0, a1, r)
+    polygon(concat([[0, 0]], [for (i = [0 : 12]) let(a = a0 + (a1 - a0) * i / 12) r * [cos(a), sin(a)]]));
 
 // Arc slot of width w at radius r from angle a0 to a1
 module kn_arc_slot(r, a0, a1, w) {
@@ -4215,67 +4342,99 @@ module kn_arc_slot(r, a0, a1, w) {
             translate([r * cos(a), r * sin(a)]) circle(d = w, $fn = 24);
 }
 
-// Place a part built in its print frame (u, v across, w up) on the knee
-// shaft: (u, v) -> (X, Z) about the shaft, w -> +Y from y (mirror) or -Y.
+// Place a part built in its print frame (u, v across, w up) on an axis
+// running front to back: (u, v) -> (X, Z) about it, w -> +Y from y (back)
+// or -Y.
 module kn_on_axis(x, y, z, back = true) {
     multmatrix(back ? [[1, 0, 0, x], [0, 0, 1, y], [0, 1, 0, z], [0, 0, 0, 1]]
                     : [[1, 0, 0, x], [0, 0, -1, y], [0, 1, 0, z], [0, 0, 0, 1]])
         children();
 }
 
-// Sector: hub, toothed sector and the switch blade, in its print frame
-// (front face down). The hub and the blade's lug stand up from it, toward
-// the bulkhead. Set screw through a nut slot in the hub.
+// The switch cam's radius at knee angle th: a dwell holding the lever down,
+// then a ramp at about 45 degrees
+function kn_cam_rad(th) =
+    th <= kn_cam_a ? kn_cam_r
+  : th >= kn_cam_b ? kn_cam_r - kn_cam_drop
+  : kn_cam_r - kn_cam_drop * (th - kn_cam_a) / (kn_cam_b - kn_cam_a);
+// The cam in the sector's frame: at knee angle th the lever, straight below
+// the shaft, meets the cam where it was at -90 - kn_s * th at rest
+module kn_cam2d() {
+    n = 60;
+    th0 = -3;
+    th1 = kn_cam_b + 1.5;
+    polygon(concat(
+        [for (i = [0 : n]) let(th = th0 + (th1 - th0) * i / n, f = -90 - kn_s * th) kn_cam_rad(th) * [cos(f), sin(f)]],
+        [for (i = [n : -1 : 0]) let(th = th0 + (th1 - th0) * i / n, f = -90 - kn_s * th) (kn_hub_r - 1) * [cos(f), sin(f)]]));
+}
+
+// Sector: hub, toothed sector and the switch cam, in its print frame
+// (front face down). The hub and the cam stand up from it, toward the
+// bulkhead. Set screw through a nut slot in the hub, pointing up.
 module knee_sector_part() {
     t   = knee_gear_face;
     hb  = kn_hub_back;
-    lug = kn_yf - 0.8 - kn_ypb;                         // lug, to just short of the bulkhead
-    rs0 = kn_sz - (kn_sw_z0 + kn_sw[0] + 1);            // lug spans the switch's length
+    lug = kn_yf - 0.8 - kn_yaf;                         // cam, to just short of the bulkhead
     difference() {
         union() {
             linear_extrude(height = t) {
-                // toothed sector
                 intersection() {
-                    kn_gear2d(kn_m, kn_zs, knee_pot_angle, knee_gear_backlash);
-                    polygon(concat([[0, 0]],
-                        [for (i = [0 : 12]) let(a = kn_sec_a0 + (kn_sec_a1 - kn_sec_a0) * i / 12)
-                            (kn_rs + 2 * kn_m) * [cos(a), sin(a)]]));
+                    kn_gear2d(kn_m, kn_zs, knee_idler_angle, knee_gear_backlash);
+                    kn_fan(kn_sec_a0, kn_sec_a1, kn_rs + 2 * kn_m);
                 }
                 // web from the hub to the teeth
                 intersection() {
                     circle(r = kn_rs - 1.25 * kn_m + 0.01, $fn = 120);
-                    polygon(concat([[0, 0]],
-                        [for (i = [0 : 12]) let(a = kn_sec_a0 + 1 + (kn_sec_a1 - kn_sec_a0 - 2) * i / 12)
-                            (kn_rs + 2 * kn_m) * [cos(a), sin(a)]]));
+                    kn_fan(kn_sec_a0 + 1, kn_sec_a1 - 1, kn_rs + 2 * kn_m);
                 }
                 circle(r = kn_hub_r, $fn = 48);
-                // blade, pointing down at rest
-                translate([-kn_blade_t / 2, -kn_blade_r]) square([kn_blade_t, kn_blade_r]);
             }
             // hub behind the sector
             cylinder(r = kn_hub_r, h = t + hb, $fn = 48);
-            // lug on the blade, reaching back to the lever
-            translate([-kn_blade_t / 2, -kn_blade_r, 0])
-                cube([kn_blade_t, kn_blade_r - rs0, t + lug]);
+            // the switch cam, below the shaft, reaching back to the lever
+            linear_extrude(height = lug) kn_cam2d();
         }
         translate([0, 0, -1]) cylinder(d = knee_shaft_d + 0.15, h = t + hb + 2, $fn = 40);
-        // spring leg hole
-        translate([0, kn_hub_r - 2.5, -1]) cylinder(d = knee_spring[1] + 0.35, h = t + 2, $fn = 16);
         // set screw (M3) and its nut slot, from the top of the hub
-        translate([0, 0, (t + hb) / 2]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_r + 1, $fn = 20);
-        translate([knee_shaft_d / 2 + 1.2, -3.1, (t + hb) / 2 - 2.9])
-            cube([2.6, 6.2, t + hb]);
+        rotate(90) {
+            translate([0, 0, (t + hb) / 2]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_r + 1, $fn = 20);
+            translate([knee_shaft_d / 2 + 1.2, -3.1, (t + hb) / 2 - 2.9]) cube([2.6, 6.2, t + hb]);
+        }
     }
 }
 
-// Pinion with a split clamp hub, in its print frame (gear face down, hub up)
+// Idler: its gear (a sector) on a disc, and its pinion standing on the
+// disc; in its print frame, the gear down (toward the bulkhead in place).
+// It turns freely on its pin.
+module knee_idler_part() {
+    t = knee_gear_face;
+    difference() {
+        union() {
+            linear_extrude(height = t) {
+                intersection() {
+                    kn_gear2d(kn_m, kn_z2, knee_pot_angle, knee_gear_backlash);
+                    kn_fan(kn_ig_a0, kn_ig_a1, kn_r2 + 2 * kn_m);
+                }
+                intersection() {
+                    circle(r = kn_r2 - 1.25 * kn_m + 0.01, $fn = 120);
+                    kn_fan(kn_ig_a0 + 1, kn_ig_a1 - 1, kn_r2 + 2 * kn_m);
+                }
+                circle(r = kn_ig_disc, $fn = 48);
+            }
+            translate([0, 0, t - 0.01]) linear_extrude(height = t + 0.5 + 0.01) kn_idler_pinion2d();
+        }
+        translate([0, 0, -1]) cylinder(d = rod_d + 0.25, h = 2 * t + 3, $fn = 24);
+    }
+}
+
+// Pot pinion with a split clamp hub, in its print frame (gear face down, hub up)
 module knee_pinion_part() {
-    t  = knee_gear_face + 1;                            // 1 mm proud of the sector's front face
-    hl = max(4, kn_pin_hub - 1);
+    t  = knee_gear_face + 1;                            // 1 mm proud of the idler gear's front face
+    hl = max(4, kn_pin_hub);
     hr = 8.5;
     difference() {
         union() {
-            linear_extrude(height = t) kn_pinion2d();
+            linear_extrude(height = t) kn_pot_pinion2d();
             translate([0, 0, t]) cylinder(r = hr, h = hl, $fn = 48);
         }
         translate([0, 0, -1]) cylinder(d = knee_pot_shaft_d + 0.15, h = t + hl + 2, $fn = 40);
@@ -4289,31 +4448,100 @@ module knee_pinion_part() {
     }
 }
 
-// Knee hub, outside the front face: a disc with the stop slot, and a boss
-// with the bar's square socket. In its print frame (disc down).
+// The crank, seen from the front, about the shaft: from the hub out to the
+// pin, away from the push, flat-bottomed where it runs in the housing
+module kn_crank2d() mirror([kn_s > 0 ? 0 : 1, 0, 0]) {
+    xt = kn_s * (kn_hs - kn_sx) + 2;                    // flat bottom to 2 mm past the housing's side
+    offset(r = 1) offset(delta = -1)
+        polygon([[-kn_cr - 4, -kn_arm_bot], [xt, -kn_arm_bot], [-10, -12], [-10, 12], [-kn_cr - 4, kn_arm_top]]);
+    circle(r = 13, $fn = 64);
+}
+
+// Knee hub, outside the front face: the crank, and a boss with the bar's
+// square socket. In its print frame (back face down). The bar's torque goes
+// from the socket through the crank to the spring and the stops; the set
+// screw only turns the shaft for the sector.
 module knee_hub_part() {
-    R  = kn_hub_disc[0];
-    td = kn_hub_disc[1];
     bl = kn_hub_boss[1];
     sq = knee_bar_square + 2 * knee_bar_clearance;
-    sd = -kn_shaft_front + kn_hub_y0;                   // shaft depth into the hub
-    pin_a = -90;                                        // pin below the shaft
+    sd = kn_hub_y0 - kn_shaft_front;                    // shaft depth into the hub
     difference() {
         union() {
-            cylinder(r = R, h = td, $fn = 96);
-            cylinder(r = kn_hub_boss[0], h = td + bl, $fn = 64);
+            linear_extrude(height = kn_ct) kn_crank2d();
+            cylinder(r = kn_hub_boss[0], h = kn_ct + bl, $fn = 64);
         }
-        // stop slot: the pin's path over the swing
-        translate([0, 0, -1]) linear_extrude(height = td + 2)
-            kn_arc_slot(knee_stop_r, pin_a, pin_a - kn_s * kn_thx, rod_d + 0.6);
-        // shaft bore and set screw (M3) with a nut slot
+        // crank pin, standing 1 mm proud of the crank's bottom edge
+        translate([-kn_s * kn_cr, 0, -1]) cylinder(d = rod_d - 0.1, h = kn_ct + 2, $fn = 24);
+        // shaft bore and set screw (M3) with a nut slot, toward the push
         translate([0, 0, -1]) cylinder(d = knee_shaft_d + 0.15, h = sd + 1, $fn = 40);
-        translate([0, 0, sd - 3]) rotate([0, 90, 0]) cylinder(d = 3.4, h = kn_hub_boss[0] + 1, $fn = 20);
-        translate([knee_shaft_d / 2 + 1.5, -3.1, sd - 3 - 2.9]) cube([2.6, 6.2, td + bl]);
+        rotate(kn_s > 0 ? 0 : 180) {
+            translate([0, 0, sd - 3]) rotate([0, 90, 0]) cylinder(d = 3.4, h = 14, $fn = 20);
+            translate([knee_shaft_d / 2 + 1.5, -3.1, sd - 3 - 2.9]) cube([2.6, 6.2, 10]);
+        }
         // bar socket
-        translate([-sq / 2, -sq / 2, sd + 1]) cube([sq, sq, bl + td]);
-        translate([0, 0, td + bl - 1]) rotate(45)
+        translate([-sq / 2, -sq / 2, sd + 1]) cube([sq, sq, bl + kn_ct]);
+        translate([0, 0, kn_ct + bl - 1]) rotate(45)
             cylinder(d1 = sq * sqrt(2), d2 = (sq + 2) * sqrt(2), h = 1.01, $fn = 4);
+    }
+}
+
+// Spring housing, as it sits on the front face: a block with the spring's
+// bore, a slot in its side for the crank, the stop screw's captive nut in
+// the floor and the rest screw's in the roof, screw ears on the shaft side,
+// and a tongue on its back that sits in a pocket in the face.
+module knee_spring_housing_raw() {
+    x0 = kn_hx - kn_rb - kn_hw;
+    x1 = kn_hx + kn_rb + kn_hw;
+    sz0 = kn_sz - kn_stroke - kn_arm_bot - 1.5;         // slot's bottom: the crank's lowest, less a margin
+    id = knee_spring[0] - 2 * knee_spring[1];
+    difference() {
+        union() {
+            difference() {
+                union() {
+                    translate([x0, kn_hy0, kn_h_fb]) cube([x1 - x0, kn_tg - kn_hy0, kn_h_rt - kn_h_fb]);
+                    for (z = kn_ear_z)
+                        translate([kn_s > 0 ? kn_hs - 0.01 : kn_hs - kn_ear[0] + 0.01, -kn_ear[1], z - kn_ear[2] / 2])
+                            cube([kn_ear[0], kn_ear[1], kn_ear[2]]);
+                }
+                translate([kn_hx, kn_hyc, kn_h_ft]) cylinder(r = kn_rb, h = kn_h_rb - kn_h_ft, $fn = 64);
+                // slot for the crank, through the side toward the shaft
+                translate([kn_s > 0 ? kn_hx : x0 - 1, kn_cy0 - 0.5, sz0])
+                    cube([kn_rb + kn_hw + 1, kn_ct + 1, kn_h_rb - sz0 + 0.01]);
+                // opening at the front, for the crank going in (raised by
+                // kn_lift, over the cap at the spring's free length) when the
+                // hub goes onto the shaft
+                translate([kn_s > 0 ? kn_sx - kn_cr - 4.5 : x0 - 1, kn_hy0 - 1, kn_sz + kn_lift - kn_pin_r - 0.5])
+                    cube([kn_rb + kn_hw + 1 + (kn_s > 0 ? kn_hx - (kn_sx - kn_cr - 4.5) : (kn_sx + kn_cr + 4.5) - kn_hx),
+                          kn_cy0 - 0.5 - kn_hy0 + 1 + 0.01, kn_h_rb - (kn_sz + kn_lift - kn_pin_r - 0.5) + 0.01]);
+            }
+            // spigot centring the spring on the floor
+            translate([kn_hx, kn_hyc, kn_h_ft - 0.01]) cylinder(d = id - 0.6, h = 2, $fn = 48);
+        }
+        // stop screw (M4) up through the floor, its nut captive from below
+        translate([kn_hx, kn_hyc, kn_h_fb - 1]) cylinder(d = 4.5, h = kn_h_ft - kn_h_fb + 4, $fn = 24);
+        translate([kn_hx, kn_hyc, kn_h_fb - 0.01]) cylinder(d = 8.1, h = 3.6, $fn = 6);
+        // rest screw (M4) down through the roof onto the crank, over the pin; nut captive from above
+        translate([kn_sx - kn_s * kn_cr, kn_hyc, kn_h_rb - 1]) cylinder(d = 4.5, h = kn_h_rt - kn_h_rb + 2, $fn = 24);
+        translate([kn_sx - kn_s * kn_cr, kn_hyc, kn_h_rt - 3.6]) cylinder(d = 8.1, h = 3.61, $fn = 6);
+        // ear screws (M3) into heat-set inserts in the face
+        for (z = kn_ear_z)
+            translate([kn_ear_x, 1, z]) rotate([90, 0, 0]) cylinder(d = 3.4, h = kn_ear[1] + 2, $fn = 20);
+    }
+}
+// In its print frame: standing on its floor
+module knee_spring_housing_part()
+    translate([-(kn_s > 0 ? kn_hx - kn_rb - kn_hw : kn_hs - kn_ear[0]), -kn_hy0, -kn_h_fb]) knee_spring_housing_raw();
+
+// Spring cap: a disc sliding in the bore under the crank pin, with a
+// spigot into the spring and a hole for the stop screw; printed top down
+module knee_spring_cap_part() {
+    id = knee_spring[0] - 2 * knee_spring[1];
+    difference() {
+        union() {
+            cylinder(d = 2 * kn_rb - 0.6, h = kn_cap_t, $fn = 64);
+            cylinder(d = id - 0.6, h = kn_cap_t + 2.5, $fn = 48);
+        }
+        translate([0, 0, -1]) cylinder(d = 5.2, h = kn_cap_t + 4.5, $fn = 24);
     }
 }
 
@@ -4367,25 +4595,29 @@ module knee_cord_clamp_part() {
 // Solids added to the base: bulkhead, board posts, floor bosses, cord saddle,
 // spring post
 module knee_base_add() {
-    // Bulkhead across the bay, with the rear bushing's boss, the pot's hole
-    // and lug hole, and the switch's adjusting slots
+    // Bulkhead across the bay, with the rear bushing's boss, the idler pin's
+    // boss, the pot's hole and lug hole, and the switch's adjusting slots
     difference() {
         union() {
             translate([st_x0 - overlap, kn_yf, kn_z0 - overlap])
                 cube([st_x1 - st_x0 + 2 * overlap, knee_bulkhead_t, kn_bz1 - kn_z0 + overlap]);
             translate([kn_sx, kn_yf, kn_sz]) rotate([-90, 0, 0])
                 cylinder(r = kn_boss_r, h = knee_bushing[2], $fn = 48);
+            translate([kn_ix, kn_ypb + 0.5, kn_iz]) rotate([-90, 0, 0])
+                cylinder(r = kn_ib_r, h = kn_yf - kn_ypb - 0.5 + overlap, $fn = 32);
         }
         translate([kn_sx, kn_yf - 1, kn_sz]) rotate([-90, 0, 0])
             cylinder(d = knee_bushing_hole, h = knee_bushing[2] + 2, $fn = 48);
+        translate([kn_ix, kn_ypb, kn_iz]) rotate([-90, 0, 0])
+            cylinder(d = rod_d - 0.1, h = kn_yb - kn_ypb + 1, $fn = 24);
         translate([kn_px, kn_yf - 1, kn_pz]) rotate([-90, 0, 0])
             cylinder(d = knee_pot_hole, h = knee_bulkhead_t + 2, $fn = 40);
         translate([kn_px + knee_pot_lug_r * cos(knee_pot_lug_angle), kn_yf - 1,
                    kn_pz + knee_pot_lug_r * sin(knee_pot_lug_angle)]) rotate([-90, 0, 0])
             cylinder(d = knee_pot_lug_hole, h = knee_bulkhead_t + 2, $fn = 16);
-        for (z = kn_sw_hz)
-            hull() for (dx = [-knee_switch_adjust, knee_switch_adjust])
-                translate([kn_sw_hx + dx, kn_yf - 1, z]) rotate([-90, 0, 0])
+        for (x = kn_sw_hx)
+            hull() for (dz = [-knee_switch_adjust, knee_switch_adjust])
+                translate([x, kn_yf - 1, kn_sw_hz + dz]) rotate([-90, 0, 0])
                     cylinder(d = knee_switch_screw, h = knee_bulkhead_t + 2, $fn = 16);
     }
     // Board posts: screw boss (M3 heat-set), alignment peg, rest post
@@ -4415,9 +4647,6 @@ module knee_base_add() {
         for (dx = [3, 8, 13]) translate([dx, 0, kn_saddle + overlap]) rotate([-90, 0, 0])
             linear_extrude(height = knee_cord[0] + 2) polygon([[-1.2, 0], [1.2, 0], [0, -1]]);
     }
-    // Post for the return spring's fixed leg, beside the shaft in front of the sector
-    translate([kn_sx - kn_s * 13, (st_y0 + kn_ygf) / 2, kn_z0 - overlap])
-        cylinder(d = 5, h = kn_sz - 6 - kn_z0 + overlap, $fn = 24);
     // Earth post behind the shaft's end: an M3 insert in its front face, 6 mm
     // above the shaft, for a spring strip that bears on the shaft's end
     if (knee_power == "iec" && knee_earth)
@@ -4481,12 +4710,15 @@ module knee_entry_test_part() {
     }
 }
 
-// Holes cut into the base: front-wall bushing, stop-pin hole, mains cord
+// Holes cut into the base: front-wall bushing, the spring housing's pocket
+// and insert holes, mains cord
 module knee_base_cuts() {
     translate([kn_sx, -1, kn_sz]) rotate([-90, 0, 0])
         cylinder(d = knee_bushing_hole, h = st_y0 + 2, $fn = 48);
-    translate([kn_sx, -1, kn_sz - knee_stop_r]) rotate([-90, 0, 0])
-        cylinder(d = rod_d - 0.1, h = kn_pin_len - kn_pin_out + 1, $fn = 24);
+    translate([kn_hx - kn_rb - kn_hw - 0.3, -1, kn_h_fb - 0.3])
+        cube([2 * (kn_rb + kn_hw) + 0.6, kn_tg + 1.3, kn_h_rt - kn_h_fb + 0.6]);
+    for (z = kn_ear_z)
+        translate([kn_ear_x, -1, z]) rotate([-90, 0, 0]) cylinder(d = knee_insert_d, h = 8, $fn = 30);
     knee_power_cuts();
     // bare cord: a rounded slot through the end wall
     if (knee_power == "bare")
@@ -4500,10 +4732,15 @@ module knee_base_cuts() {
 // Parts in place, for the assembly views; hardware as stand-ins
 module knee_in_place(th = 0) {
     a = kn_s * th;
+    ac = (kn_s > 0 ? 180 : 0) + a;                      // crank's direction
+    pin = [kn_sx + kn_cr * cos(ac), kn_sz + kn_cr * sin(ac)];
     color("DarkSlateGray") {
-        kn_on_axis(kn_sx, kn_ygf, kn_sz, true) rotate(a) knee_sector_part();
-        kn_on_axis(kn_px, kn_ypb, kn_pz, false) rotate(-a * knee_ratio) knee_pinion_part();
+        kn_on_axis(kn_sx, kn_yaf, kn_sz, true) rotate(a) knee_sector_part();
+        kn_on_axis(kn_ix, kn_ypb, kn_iz, false) rotate(-a * knee_ratio) knee_idler_part();
+        kn_on_axis(kn_px, kn_ypb, kn_pz, false) rotate(a * kn_rt) knee_pinion_part();
         kn_on_axis(kn_sx, kn_hub_y0, kn_sz, false) rotate(a) knee_hub_part();
+        knee_spring_housing_raw();
+        translate([kn_hx, kn_hyc, pin.y - kn_pin_r]) mirror([0, 0, 1]) knee_spring_cap_part();
         translate([kn_cv0.x, kn_cv0.y, kn_z0]) knee_cover_raw();
         if (knee_power == "bare")
             translate([kn_clamp_x, kn_cord_y, kn_z0 + kn_clamp_bh + 4]) mirror([0, 0, 1]) knee_cord_clamp_part();
@@ -4512,8 +4749,18 @@ module knee_in_place(th = 0) {
     color("Silver") {
         translate([kn_sx, kn_shaft_front, kn_sz]) rotate([-90, 0, 0])
             cylinder(d = knee_shaft_d, h = kn_shaft_len, $fn = 32);
-        translate([kn_sx, -kn_pin_out, kn_sz - knee_stop_r]) rotate([-90, 0, 0])
-            cylinder(d = rod_d, h = kn_pin_len, $fn = 24);
+        translate([pin.x, kn_hyc - 7, pin.y]) rotate([-90, 0, 0]) cylinder(d = rod_d, h = 14, $fn = 24);
+        translate([kn_ix, kn_ip_y0, kn_iz]) rotate([-90, 0, 0]) cylinder(d = rod_d, h = kn_ip_len, $fn = 24);
+        // spring, cut away at the front
+        sb = pin.y - kn_pin_r - kn_cap_t;
+        translate([kn_hx, kn_hyc, kn_h_ft]) difference() {
+            cylinder(d = knee_spring[0], h = sb - kn_h_ft, $fn = 32);
+            translate([0, 0, -1]) cylinder(d = knee_spring[0] - 2 * knee_spring[1], h = sb, $fn = 32);
+            translate([-knee_spring[0], -knee_spring[0], -1]) cube([2 * knee_spring[0], knee_spring[0], sb]);
+        }
+        // stop and rest screws
+        translate([kn_hx, kn_hyc, kn_h_fb - 4]) cylinder(d = 4, h = kn_sz - kn_stroke - kn_pin_r - kn_h_fb + 4, $fn = 16);
+        translate([kn_sx - kn_s * kn_cr, kn_hyc, kn_sz + kn_arm_top]) cylinder(d = 4, h = kn_h_rt - kn_sz - kn_arm_top + 4, $fn = 16);
     }
     color("Goldenrod") for (y = [0, kn_yf]) {
         translate([kn_sx, y, kn_sz]) rotate([-90, 0, 0]) difference() {
@@ -4529,8 +4776,8 @@ module knee_in_place(th = 0) {
         translate([kn_px, kn_yb + 15.3 / 2, kn_pz]) cube([knee_pot_body, 15.3, knee_pot_body], center = true);
         translate([kn_px, kn_yb, kn_pz]) rotate([90, 0, 0]) cylinder(d = 9.5, h = knee_pot_bushing_len, $fn = 24);
         translate([kn_px, kn_yb, kn_pz]) rotate([90, 0, 0]) cylinder(d = knee_pot_shaft_d, h = knee_pot_shaft_len, $fn = 24);
-        // switch body against the bulkhead
-        translate([kn_sw_x0, kn_yf - kn_sw[2], kn_sw_z0]) cube([kn_sw_x1 - kn_sw_x0, kn_sw[2], kn_sw[0]]);
+        // switch body against the bulkhead, lying under the shaft
+        translate([kn_sw_x0, kn_yf - kn_sw[2], kn_sw_z0]) cube([kn_sw[0], kn_sw[2], kn_sw[1]]);
     }
     color("DarkGreen") translate([kn_bx0, kn_by0, kn_z0 + knee_board_h]) cube([knee_board[1], knee_board[0], 1.6]);
     color("DimGray") {

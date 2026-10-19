@@ -1,19 +1,21 @@
 # Knee controller
 
 *This chapter is a draft. The mechanism has been checked in the model but
-not yet built.*
+not yet built. The feel (force and travel) follows a Singer knee controller
+as measured; the pot's gearing is a placeholder until the board's speed
+against resistance has been measured.*
 
 With `compartment_option = "knee"`, the base's right bay becomes a knee
 speed control, in the manner of Singer's own knee-lever machines. A bar
 hangs down past the table edge. Pressing it with your knee turns a shaft
-running front to back in the bay. A gear sector on the shaft turns a
-potentiometer, which takes the place of the slide pot on an inexpensive
-foot-pedal speed-control board. A snap switch cuts the motor whenever the
-bar is at rest.
+running front to back in the bay. Gears on the shaft turn a potentiometer,
+which takes the place of the slide pot on an inexpensive foot-pedal
+speed-control board. A snap switch keeps the motor off for the first inch of
+travel.
 
 ![The knee controller in the right bay (part `knee_assembly`, a cutaway):
-the hub and bar socket on the front face, the shaft, the sector and pinion
-in front of the bulkhead, and the board cover at the back.](../images/renders/knee.png){width=90%}
+the spring housing and the hub's crank on the front face, the shaft, the
+gears in front of the bulkhead, and the board cover at the back.](../images/renders/knee.png){width=90%}
 
 > **Warning: mains voltage.** The donor board, the pot's pins, the switch's
 > terminals and every wire to them are live whenever the controller is
@@ -22,27 +24,56 @@ in front of the bulkhead, and the board cover at the back.](../images/renders/kn
 > for 300 V or more, and don't use a pot with a metal shaft (see below).
 > If you are not comfortable building mains equipment, don't build this part.
 
+## The feel
+
+The defaults follow a Singer knee controller, measured at the knee, 12.5"
+below the shaft (`knee_bar_drop`):
+
+| Knee travel | Force | What happens |
+|---|---|---|
+| 0 (rest) | about 1 lb | The spring's preload |
+| 0 to 1" | rising to about 2.5 lb | Dead travel: the switch holds the motor off |
+| 1" (`knee_travel_on`) | about 2.5 lb | The switch closes; the motor starts |
+| 1" to 2" | about 2.5 to 4 lb | The speed range |
+| 2" (`knee_travel`) | about 4 lb | Full speed |
+| 2.25" (`knee_travel_max`) | about 4.3 lb | Hard stop |
+
+The force rises in a straight line, about 1.5 lb per inch
+(`knee_force_rest`, `knee_force_rate`). The console's *Knee controller*
+block gives the figures for your settings, in pounds and newtons.
+
 ## How it works
 
 - **Bar and hub.** The steel bar's square end plugs into the printed hub on
-  the front face. The hub is fixed to the 8 mm shaft with a set screw. A
-  steel pin in the front face runs in an arc slot in the hub; the slot's
-  ends are the **hard stops**, at rest and at full travel. The knee's force
-  goes from the bar into the hub and the pin, not into the shaft and the
-  gears.
+  the front face. The hub's crank reaches sideways, away from the push, into
+  the spring housing beside it. The hub is fixed to the 8 mm shaft with a set
+  screw, but that screw only turns the shaft for the gears: the knee's force
+  goes from the bar through the hub's crank into the spring and the stops,
+  never into the shaft, its set screws or the gears.
+- **Spring and stops.** The housing, screwed to the front face, holds a
+  compression spring standing upright. A steel pin across the crank's tip
+  bears on a printed cap on top of the spring. At rest the spring pushes the
+  crank up against the **rest screw** in the housing's roof. At full travel
+  the pin comes down onto the **stop screw**, which stands up through the
+  middle of the spring from the housing's floor. Both are M4 screws in
+  captive nuts, with jam nuts, so rest and full travel are adjustable and
+  steel meets steel at the hard stop. The housing is a closed loop: the
+  spring's preload stays inside it, and only the knee's push reaches the base,
+  through a tongue on the housing's back that sits in a pocket in the face.
 - **Shaft.** The shaft runs in two flanged bronze bushings, one in the
-  front wall and one in a bulkhead across the bay. A torsion spring on the
-  shaft returns the bar to rest. One leg bears on a post on the floor, the
-  other goes into a hole in the sector's hub.
-- **Gears.** The sector on the shaft drives a pinion on the pot's own shaft,
-  4:1 by default (`knee_ratio`). The pot's bushing is the pinion's bearing.
-  The model generates the pinion by rolling it against the sector, so the
-  16-tooth pinion has the undercut a small pinion needs and the pair runs
-  with a little backlash.
-- **Switch.** A blade on the sector holds the switch's lever in at rest, so
-  its normally-closed contact is open and the motor is off. The blade swings
-  clear in the first couple of degrees of travel. The switch is wired in
-  series with the motor.
+  front wall and one in a bulkhead across the bay.
+- **Gears.** Two stages, about 11.75:1 overall. A 64-tooth sector on the
+  shaft drives a 16-tooth pinion on an idler, 4:1 (`knee_ratio`); a 47-tooth
+  sector on the same idler drives a 16-tooth pinion on the pot's own shaft,
+  2.94:1 (`knee_gear2_teeth`, `knee_pinion2_teeth`). The idler turns on a
+  3/16" steel pin pressed into the bulkhead; the pot's bushing is its
+  pinion's bearing. The model generates each pinion by rolling it against
+  its gear, so the 16-tooth pinions have the undercut a small pinion needs
+  and each pair runs with a little backlash.
+- **Switch.** The switch lies on the bulkhead under the shaft, lever up. A
+  cam on the sector holds its lever down at rest, so its normally-closed
+  contact is open and the motor is off. A ramp on the cam lets the lever up
+  at 1" of knee travel. The switch is wired in series with the motor.
 
 For why this controller behaves as it does (an open-loop triac phase
 control, like a good stock pedal, that holds no speed under load), and for
@@ -51,9 +82,10 @@ Control of Universal Motors in Sewing Machines*
 ([`docs/motor-control/`](../motor-control/11-vsm-base.md)).
 
 The console's *Knee controller* block gives the numbers for your settings:
-how far the shaft and the pot turn, how much of the pot's resistance that
-spans, where the switch releases, and warnings if anything runs into the
-bay's walls or the bulkhead.
+the shaft's angles, the gearing, how far the pot turns and how much of its
+resistance that spans, where the switch releases, the spring's load, the
+knee force along the travel, and warnings if anything runs into the bay's
+walls, the floor, the bulkhead or the ends of the front face.
 
 ## What you need
 
@@ -64,19 +96,23 @@ The hardware list in the console has the full list, with lengths.
 | Speed-control board | XWW KB3151C "speed controller" pedal board, 75 × 35 mm | BT136-600E triac, DB3 diac, two 0.1 µF X2 capacitors, 2 MΩ min-speed trimmer (VR2); 110–120 V, 1.0 A |
 | Pot | Bourns 91A1A-B28-A25L | 1 MΩ linear cermet; plastic slotted 1/4" shaft, 7/8" long; 3/8-32 bushing with nut and lockwasher; anti-rotation lug |
 | Off switch | Omron SS-5GL (Digi-Key) | Hinge lever, SPDT, 5 A at 125 VAC; the standard 0.49 N version, not the low-force SS-5GL-F |
-| Shaft | 8 mm steel rod, about 80 mm | File two small flats for the set screws |
+| Shaft | 8 mm steel rod, about 77 mm | File two small flats for the set screws |
 | Bushings | 2 × flanged bronze sleeve bearing, 8 × 12 × 10 mm, flange 16 × 2 mm | Pressed into the front wall and the bulkhead |
-| Stop pin | `rod_d` rod (3/16"), 15 mm | The same rod as the harness rods |
-| Return spring | McMaster 9271K585 (left-hand wound) for a knee that pushes right; 9271K651 (right-hand) for one that pushes left | 90°, 0.499" OD, 0.059" wire, 4.25 coils, 2" legs, 4.5 in·lbf; pack of 6 |
+| Pins | `rod_d` rod (3/16"): 24 mm for the idler, 14 mm for the crank | The same rod as the harness rods; a 3/16" push-on retaining nut for the idler |
+| Return spring | McMaster 9001T46, or one like it [5] | Compression spring, 0.6" OD, 0.072" wire, 1.25" long, 45 lb/in, rated 26 lb at 0.668" |
+| Stop screws | 1 × M4 × 35 (stop), 1 × M4 × 14 (rest), each with 2 nuts | One nut of each is captive in the housing, the other a jam nut |
 | Bar | Steel, 3/8" square at the hub end | Out from the hub, bent down 12.5" (`knee_bar_drop`) |
-| Screws | M3 set screws, M3 screws and nuts, M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | |
+| Screws | M3 set screws, M3 screws and nuts, M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | 2 × M3 × 12 hold the spring housing |
 | Power, `cordset` | A standard pedal controller cordset | Its molded entry and steel clip fit the base's entry |
 | Power, `iec` | Schurter KE16.5100.107 fused C14 inlet (1-pole, snap-in, 2 mm panel), its fuse drawer, a T2A 5 × 20 mm fuse; 3 Wago 221-413 lever connectors | Earth strip (brass or phosphor bronze) for the shaft |
 
-Print the knee parts (`knee_sector`, `knee_pinion`, `knee_hub`,
-`knee_cover`, and `knee_cord_clamp` for a bare cord) in PETG or ASA. They
-are on the print plates with the other small parts. Print `knee_entry_test`
-first if you are using a cordset.
+Print the knee parts (`knee_sector`, `knee_idler`, `knee_pinion`,
+`knee_hub`, `knee_spring_housing`, `knee_spring_cap`, `knee_cover`, and
+`knee_cord_clamp` for a bare cord) in PETG. They are on the print plates with
+the other small parts. The hub prints back face down, with the crank flat on
+the bed, so the crank's bending runs along the layers. The spring housing
+prints standing on its floor. Print `knee_entry_test` first if you are using
+a cordset.
 
 ## The pot
 
@@ -89,10 +125,13 @@ place as a two-terminal variable resistor. In the board's own terms:
 - a jumper joins the old **pin-3** pad to the pin-2 pad, which puts RV2
   across the pot.
 
-Over the knee's travel it should sweep about the same resistance as the
-slide pot did, about 0–220 kΩ (`knee_r_span`). At the defaults the shaft
-turns 13.5° to the hard stop, so the pot turns 54°, about 225 kΩ of its
-1 MΩ.
+Over the speed range, from 1" to 2" of knee travel, it should sweep about
+the same resistance as the slide pot did, about 220 kΩ (`knee_r_span`). The
+shaft turns only 4.5° over that inch, so the gearing is high: the pot turns
+about 53°, about 221 kΩ of its 1 MΩ. This is a linear placeholder. The
+board's speed is far from linear in resistance (low speed is crowded into
+the high-resistance end), so the gearing, or the gear shapes, will change
+once the board's speed against resistance has been measured.
 
 From the Bourns datasheet [1]:
 
@@ -105,7 +144,7 @@ From the Bourns datasheet [1]:
   voltage is 1,500 VAC between the element and the bushing. Rotational life
   is 100,000 cycles.
 
-The plastic shaft matters. The bar, hub, shaft and sector are things you
+The plastic shaft matters. The bar, hub, shaft and gears are things you
 touch. The pot's plastic shaft and the printed pinion are what keep them
 apart from mains, together with the pot's 1,500 VAC rating between element
 and bushing. **Don't substitute a pot with a metal shaft.**
@@ -115,11 +154,12 @@ The pot mounts from behind the bulkhead, with its bushing through the
 beside the main one; `knee_pot_lug_angle` sets where that hole is, so you
 can turn the pot to put its pins where the wiring is easiest.
 
-**Setting the pot.** Set it at the hard stop. Hold the bar against the
-stop, turn the pot's shaft until the wiper reads about 0 Ω to the pin-1
-end, and tighten the pinion's clamp screw. At rest it then reads about
-225 kΩ (the console gives the figure for your settings), and full speed
-comes at the stop. The pot's mechanical stop is about 30° beyond its
+**Setting the pot.** Set it at full speed. Hold the bar at 2" of travel,
+turn the pot's shaft until the wiper just reaches 0 Ω to the pin-1 end, and
+tighten the pinion's clamp screw. At rest it then reads about 445 kΩ (the
+console gives the figure for your settings). From full speed to the hard
+stop the pot turns another 13° into the dead zone past its electrical end,
+where the resistance stays at 0; its mechanical stop is about 30° beyond the
 electrical end, so the pot is never the hard stop.
 
 ## The switch
@@ -137,19 +177,26 @@ From the Omron SS datasheet [2]:
 - The lever's actuating point is 14.5 mm from its pivot end, about 5.3 mm
   from its free end (`knee_switch_act`).
 
-The switch screws to the front face of the bulkhead, below the shaft,
-through two slots that let it move ±1.5 mm toward or away from the blade.
-Mount it with the lever's free end toward the floor; the blade then meets
-the lever far from the shaft, and the switch releases early in the swing
-(about 2° of the shaft's 11°, by default).
+The switch screws to the front face of the bulkhead, lying under the
+shaft, lever up and its free end toward the push, so that the actuating
+point is straight below the shaft. Its two slots let it move ±1.5 mm up and
+down. The cam on the sector has a dwell, a stretch at a constant radius that
+holds the lever down at rest, then a ramp at about 45° that lets it rise.
+The switch releases at 1" of travel (`knee_travel_on`), about 4.6° of the
+shaft's swing. Past the ramp the cam still rests lightly on the lever, well
+above its release point.
 
-To adjust it: with the bar at rest, slide the switch toward the blade
-until it clicks off, then a little further (`knee_switch_press`, 0.3 mm),
-and tighten the screws. Check with a meter that the normally-closed
-contact opens at rest and closes as soon as the knee starts to move.
+To adjust it: with the bar at rest, slide the switch up until it clicks
+off, then a little further (`knee_switch_press`, 0.3 mm), and tighten the
+screws. Then set where it releases by turning the sector on the shaft:
+loosen its set screw, hold the bar at 1" of travel, turn the sector until a
+meter across the normally-closed contact just shows it closing, and tighten
+the set screw. Turning the sector is the fine adjustment (each degree moves
+the release point about 5.5 mm at the knee); the switch's height is coarse
+(each 0.1 mm moves it about 1.9 mm).
 
 **Wiring.** Put the switch's normally-closed contact in series with the
-motor lead. With the bar at rest the motor is then fully off, rather than
+motor lead. Through the dead travel the motor is then fully off, rather than
 creeping at the minimum speed set by the board's trimmer.
 
 If the switch's contacts were ever to weld, the motor would creep at the
@@ -158,26 +205,25 @@ still start keeps that creep small.
 
 ## The return spring
 
-The spring is McMaster's 9271K585 [5]: spring steel, 0.499" (12.7 mm)
-outside diameter, 0.059" (1.5 mm) wire, 4.25 coils, rated 4.5 in·lbf at
-90°, for a 0.312" shaft. On the 8 mm shaft its inside diameter stays above
-9 mm even wound up to the stop, since the knee uses only about two thirds
-of its rated deflection.
+The spring is a compression spring standing in the housing: by default
+McMaster's 9001T46 [5], 0.6" (15.24 mm) outside diameter, 0.072" (1.83 mm)
+wire, 1.25" (31.75 mm) long, 45 lb/in (7.88 N/mm), rated 26 lb at 0.668"
+long (14.8 mm of deflection). Any spring of about that size and rate will
+do; set `knee_spring`, `knee_spring_rate` and `knee_spring_max` to its
+figures.
 
-A torsion spring should be loaded so that it winds up, its coils closing.
-Seen from the front, a knee that pushes right turns the shaft
-counterclockwise, which winds up a left-hand spring with its fixed leg in
-front: hence 9271K585. For a knee that pushes left, use the right-hand
-9271K651.
+The model sets the crank's length from the spring's rate so that the knee
+feels `knee_force_rate`: with this spring, 58 mm (`knee_crank_r`; set it to
+fix the length instead). The spring is preloaded 3.1 mm at rest, 24 N, which
+gives the 1 lb at the knee, and compressed 13.4 mm at the hard stop, 105 N,
+90% of its rating. The crank's lever arm is what turns a 45 lb/in spring
+into 1.5 lb/in at the knee: the knee is 5.5 times as far from the shaft as
+the crank pin.
 
-Put it on the shaft in front of the sector, the fixed leg against the post
-on the floor and the moving leg's end bent 4 mm along the shaft into the
-hole in the sector's hub. Trim the legs as needed; the 2" legs are longer
-than the bay needs. Bend the fixed leg so the spring is wound about 45°
-when the bar is at rest (`knee_spring_preload`). The console then gives the
-torque: about 250 N·mm at rest and 330 N·mm at the stop, about 1 N at the
-knee. That is over four times what it takes to turn the pot (Bourns'
-maximum running torque, through the 4:1 gearing) and hold the switch in.
+The housing stands beside the hub, on the side away from the push (to the
+left of the hub for a knee that pushes right). The console warns if the
+housing would run off the end of the front face, reach the base's bottom or
+top, or if the spring is compressed past its rating.
 
 ## The board
 
@@ -255,29 +301,41 @@ a printed clamp bar (part `knee_cord_clamp`) over a ridged saddle.
 
 ## Assembly order
 
-1. Fit the heat-set inserts: the board boss, the two cover bosses, and the
-   earth post or cord-clamp bosses if you have them.
+1. Fit the heat-set inserts: the board boss, the two cover bosses, the two
+   in the front face for the spring housing, and the earth post or
+   cord-clamp bosses if you have them.
 2. Press the two bushings in, flanges forward: one into the front wall from
    outside, one into the bulkhead from the front.
-3. Press the stop pin into the hole in the front face below the bushing,
-   5.5 mm proud.
-4. Mount the switch on the bulkhead, lever's free end down; leave the
-   screws loose.
+3. Press the idler pin into the bulkhead from the front, through its boss,
+   flush with the bulkhead's back face.
+4. Mount the switch on the bulkhead, lying under the shaft, lever up; leave
+   the screws loose.
 5. Mount the pot behind the bulkhead (lug in its hole, nut and lockwasher
    on the front) and solder its leads.
-6. Slide the shaft in from the front through the front bushing, the spring
-   and the sector (blade down, hub toward the bulkhead), and into the
-   bulkhead's bushing. Put the spring's legs on the floor post and in the
-   sector's hole. Tighten the sector's set screw on its flat.
-7. Fit the hub on the shaft's front end, the pin in its slot, and tighten
-   its set screw. Check that the spring brings the hub back to the rest
-   stop.
-8. Fit the pinion on the pot's shaft, set the rest position (above), and
-   tighten its clamp.
-9. Adjust the switch (above).
-10. Wire the board and the power entry; screw the board down and fit the
+6. Slide the idler onto its pin, gear toward the bulkhead, and push the
+   retaining nut on in front of it.
+7. Slide the shaft in from the front through the front bushing and the
+   sector (teeth toward the idler, cam down, hub toward the bulkhead), and
+   into the bulkhead's bushing. Snug the sector's set screw on its flat.
+8. Put the captive nuts in the spring housing (from below in the floor,
+   from above in the roof) and run the stop screw up from below; leave the
+   rest screw out. Drop the spring onto the floor's spigot and the cap onto
+   the spring, spigot down. Screw the housing to the front face, its tongue
+   in the pocket.
+9. Press the crank pin through the hub's crank, centered, standing about
+   1 mm proud of the crank's bottom edge. Fit the hub onto the shaft's front
+   end with the crank tilted up a few degrees, so that its tip goes in
+   through the housing's front opening above the cap, and tighten the hub's
+   set screw. The spring now pushes the crank up.
+10. Run the rest screw down through the roof until it holds the crank where
+    you want the bar to rest (the spring's preload).
+11. Set the stop screw so the pin meets it at 2.25" of knee travel, and lock
+    both screws with their jam nuts.
+12. Adjust the switch and the sector (above), then fit the pot's pinion and
+    set the pot (above).
+13. Wire the board and the power entry; screw the board down and fit the
     cover. For `iec`, wire the junction under the bed.
-11. Plug the bar into the hub.
+14. Plug the bar into the hub.
 
 ## Settings
 
@@ -285,14 +343,20 @@ The settings are in the *Knee controller* section. The ones you are most
 likely to change:
 
 - **`knee_push`**: which way the knee pushes the bar (right by default).
-  The switch moves to the other side of the blade, and the sector's teeth
-  and the stop slot follow.
-- **`knee_bar_drop`, `knee_travel`, `knee_travel_max`**: the bar's drop
-  below the shaft (12.5"), the knee travel for full speed (2.5") and at the
-  hard stop (3").
-- **`knee_ratio`**, **`knee_pinion_teeth`**: the gearing.
-- **`knee_pot_angle`**: where the pot sits around the shaft (20° below the
-  horizontal by default, which keeps the pot clear of the right wall).
+  The spring housing moves to the other side of the hub, and the switch,
+  the cam and the gears' teeth follow.
+- **`knee_bar_drop`, `knee_travel_on`, `knee_travel`, `knee_travel_max`**:
+  the bar's drop below the shaft (12.5"), and the knee travel where the
+  motor starts (1"), for full speed (2") and at the hard stop (2.25").
+- **`knee_force_rest`, `knee_force_rate`**: the knee force at rest and how
+  fast it rises.
+- **`knee_spring`, `knee_spring_rate`, `knee_spring_max`, `knee_crank_r`**:
+  the return spring and the crank.
+- **`knee_ratio`, `knee_gear2_teeth`, `knee_pinion2_teeth`**: the gearing.
+- **`knee_idler_angle`, `knee_pot_angle`**: where the idler sits around the
+  shaft (10° above the horizontal), and the pot around the idler (120° below
+  the horizontal, toward the shaft), which keeps the pot clear of the right
+  wall and the floor.
 - **`knee_board_screw`**, **`knee_board_turn`**: the board's posts and
   orientation.
 - **`knee_power`**: cordset, IEC inlet or bare cord; **`knee_entry_pos`**
@@ -317,5 +381,5 @@ likely to change:
    (dimension drawings).
 4. WAGO 221-413 lever connector, 3-conductor, 18.8 × 18.8 × 8.6 mm, 0.2–4 mm²
    (24–12 AWG): [automa.net](https://automa.net/wago/221-413).
-5. McMaster-Carr torsion springs, 9271K585 and 9271K651:
-   [mcmaster.com](https://www.mcmaster.com/products/torsion-springs/).
+5. McMaster-Carr precision compression springs, 9001T46:
+   [mcmaster.com](https://www.mcmaster.com/precision-compression-springs).
