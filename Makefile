@@ -45,6 +45,7 @@ docs/guide/90-parameters.md: $(MODEL) tools/extract_params.py
 images:
 	sh tools/render_images.sh
 	python3 tools/make_speed_chart.py
+	sh tools/export_schematic.sh
 
 pdf: $(PDF) $(MC_PDF)
 

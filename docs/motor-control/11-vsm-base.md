@@ -38,6 +38,14 @@ minimum speed. The knee mechanism improves the command, not the regulation:
   the 10.2° swing. With it in series with the motor, the motor is fully off
   through the dead travel instead of creeping at the minimum set by VR2.
 
+![The donor board, KB3151C, traced from photos (KiCad source in
+`hardware/triac-board/`). The timing network runs from MT2 through the slide
+pot RV1 and R2 to C2; when C2 reaches the DB3's breakover it fires the
+BT136 through R1. The trimmer RV2 lies across RV1's whole track, which caps
+the timing resistance and so sets the slowest speed. R3 and C1 are the
+snubber across the triac. Points marked VERIFY are still to be checked with a
+meter.](../images/diagrams/kb3151c-schematic.svg){width=100%}
+
 **The board is a two-terminal series device.** It has only two spade tabs
 and sits in series in one leg of the motor circuit; it has no separate mains
 input or motor output. In the original pedal, only this control loop enters
