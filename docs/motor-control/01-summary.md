@@ -1,5 +1,12 @@
 # Summary
 
+*About this paper.* The text, analysis and figures were written by Claude,
+an AI model made by Anthropic, at the direction of Robert Drzyzgula, who set
+its scope and questions, supplied the measurements, photographs and
+hardware, made the design decisions for the VSM Base controllers, and
+reviewed it. The sources it draws on are listed in the last section; please
+report errors as issues on the project's GitHub repository.
+
 A sewing machine's universal motor is a series-wound machine whose speed
 depends strongly on load, so the controller matters as much as the motor. A
 pedal that only lowers the voltage (rheostat, carbon pile, variac, simple
