@@ -1,5 +1,11 @@
 # Introduction
 
+*About this guide.* VSM Base was designed and tested by Robert Drzyzgula.
+This guide was written by Claude, an AI model made by Anthropic, at his
+direction, from the design, his measurements and photographs, and his
+builds. Claude also wrote most of the OpenSCAD code, again at his direction.
+Please report errors as issues on the project's GitHub repository.
+
 VSM Base is a parametric model of a portable, hinged base for vintage
 flatbed sewing machines. You give it measurements of your machine's bed
 casting; it produces a base whose seat, hinge recesses and clearances fit

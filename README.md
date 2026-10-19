@@ -136,6 +136,13 @@ the guide and the motor-control paper into `build/`. Both need pandoc 3.1.2 or l
 to a GitHub release (see
 [`.github/workflows/release.yml`](.github/workflows/release.yml)).
 
+## Credits
+
+Designed and tested by Robert Drzyzgula. The OpenSCAD code, the User's
+Guide and the motor-control paper were written by Claude (Anthropic) at his
+direction, with Claude contributing engineering background and research
+along the way.
+
 ## License
 
 MIT; see [LICENSE](LICENSE). Copyright © 2026 Robert Drzyzgula.
