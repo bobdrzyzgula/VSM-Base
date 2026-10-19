@@ -34,7 +34,7 @@ one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes; the turn button; pin or molded extension pegs; the
+the freestanding boxes, and the standalone bobbin box; the turn button; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.

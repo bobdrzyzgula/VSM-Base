@@ -48,3 +48,10 @@
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic
 class 15/66 bobbins.](../images/photos/bobbin-stack.jpg){width=55%}
+
+**A standalone bobbin box.** The corner bay and its bobbin trays also come
+as a separate, self-contained model, `standalone/bobbin-box/bobbin_box.scad`:
+a small lidded box with the five-tray stack, which needs nothing from the
+main model. It is a way to try a small piece of the project, or to give
+someone the box without the base. It has its own settings (trays, lid type,
+bobbin size, hinge and lid fit) and test parts; see its README.
