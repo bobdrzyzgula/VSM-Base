@@ -180,13 +180,22 @@
 // recesses, nut traps, checks or hardware; the back-wall tunnels run the
 // whole back wall. The back rim stays as wide as with hinges unless
 // back_rim_width is set, so extensions are shared.
+//
+// v34: hinge_type "printed", a hinge to print for machines without usable
+// hinges: a printed arm carries a steel pin into the bed's hinge hole and
+// turns on a steel pivot rod held in a printed block, which sits in a
+// recess in the back rim on the hinge screw and nut trap. The pin is set at
+// the bed hole's height whatever the machine. A stop face on the block
+// holds the machine at ph_stop_angle when tilted back. Parts
+// printed_hinges (two arms and two blocks) and printed_hinge_test (rod
+// fits); the back extension's lip is notched around the hinges.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -224,7 +233,7 @@ compartment_option = "storage"; // [none, storage, outlet, knee, jack]
 // How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now)
 compartment_mount = "built-in"; // [built-in, attached]
 // Hinge type
-hinge_type = "lollipop"; // [lollipop, none]
+hinge_type = "lollipop"; // [lollipop, printed, none]
 // Split into two dovetailed halves for printing
 split = true;
 
@@ -603,6 +612,41 @@ hinge_pin_sweep_depth = 1; // [0 : 0.1 : 4]
 hinge_mounting_hole_diameter = 5; // [2 : 0.1 : 10]
 // Mounting hole center, inward from the flange's back edge
 hinge_mounting_hole_offset = 9.5;
+
+/* [Printed hinge] */
+// Steel pin into the bed's hinge hole: diameter, just under the hole's (the 99's holes are 1/4")
+ph_pin_d = 6.35; // [3 : 0.01 : 12]
+// How far the pin enters the bed's hole
+ph_pin_engage = 12; // [4 : 0.5 : 30]
+// Length of the pin pressed into the arm
+ph_pin_embed = 16; // [8 : 0.5 : 30]
+// Steel pivot rod, running along the back through the block and the arm: diameter
+ph_pivot_d = 6.35; // [3 : 0.01 : 12]
+// Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test)
+ph_press = 0; // [-0.4 : 0.05 : 0.4]
+// Running fit: the arm's pivot hole is this much larger than the rod
+ph_slip = 0.3; // [0 : 0.05 : 1]
+// Plastic around the rods in the arm
+ph_wall = 4; // [2.5 : 0.5 : 8]
+// Arm width (X)
+ph_arm_w = 14; // [8 : 0.5 : 30]
+// Block cheeks either side of the arm (X)
+ph_cheek = 6; // [3 : 0.5 : 15]
+// Clearance between the moving arm and the block
+ph_clear = 0.4; // [0.2 : 0.05 : 1.5]
+// Base web left between the bed seat and the hinge recess
+ph_web = 4; // [2 : 0.5 : 10]
+// Block floor under the arm
+ph_floor = 3; // [2 : 0.5 : 8]
+// Fit of the block in its recess, each side
+ph_recess_clear = 0.2; // [0 : 0.05 : 0.6]
+// Tilt-back stop: the arm comes to rest on a face of the block at about this angle (0 = no stop, 45 to 110)
+ph_stop_angle = 60; // [0 : 1 : 110]
+// Stop wall height above the arm's top
+ph_stop_h = 6; // [2 : 0.5 : 20]
+// Screw head counterbore in the top of the block: diameter and depth
+ph_head_d = 9; // [6 : 0.1 : 14]
+ph_head_h = 3.5; // [0 : 0.1 : 8]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -1246,6 +1290,29 @@ mc_x1 = seat_x1 - bed_ledge;
 mc_y0 = seat_y0 + bed_ledge;
 mc_y1 = seat_y1 - bed_ledge;
 
+function ph_updown(d) = str(round(abs(d) * 10) / 10, d >= 0 ? " mm above" : " mm below");
+// Printed hinge (hinge-local frame: origin on the pivot axis, -Y toward
+// the bed, the arm tilting front-up). The arm is a bar with a round end
+// about the pivot; the pin enters its front face, short of the pivot hole.
+ph_R    = max(ph_pin_d, ph_pivot_d) / 2 + ph_wall;      // arm half-height, knuckle radius
+ph_pin_web = 2.5;                                        // between pin end and pivot hole
+ph_Lf   = ph_pin_embed + ph_pin_web + (ph_pivot_d + ph_slip) / 2;  // pivot to arm front
+ph_fc   = sqrt(ph_Lf * ph_Lf + ph_R * ph_R) - ph_Lf + ph_clear;    // arm front swing + clearance
+ph_bw   = ph_arm_w + 2 * ph_clear + 2 * ph_cheek;        // block width (X) = pivot rod length
+ph_stop = ph_stop_angle > 0;
+ph_th   = ph_stop ? ph_stop_angle : 135;                 // arm sweep cut into the block
+assert(!ph_stop || (ph_stop_angle >= 45 && ph_stop_angle <= 110),
+       "ph_stop_angle: 0 (no stop) or 45 to 110");
+// Stop face: the arm's top face at the stop angle, n . p = R + clearance
+function ph_plane_y(z) = (ph_R + ph_clear - z * cos(ph_th)) / sin(ph_th);
+ph_top  = ph_stop ? ph_R + ph_stop_h : ph_R;             // block top over the screw
+ph_sdy  = max(ph_R + ph_clear + hinge_mounting_hole_diameter / 2 + 2,
+              ph_stop ? max(ph_plane_y(ph_R), ph_plane_y(ph_top)) + ph_head_d / 2 + 1.5
+                      : ph_R + ph_clear + ph_head_d / 2 + 1);
+ph_back = ph_sdy + ph_head_d / 2 + 2.5;                  // block back face
+ph_front = -(ph_Lf + ph_fc);                             // block front face
+ph_bot  = -(ph_R + ph_clear + ph_floor);                 // block bottom
+
 // Hinge geometry, by type. Each function describes the hinge's footprint
 // relative to the hinge center; a new hinge type adds a branch to each and
 // a cutter module.
@@ -1262,18 +1329,26 @@ function hinge_offset_y() =
     hinge_sized == "lollipop"
         ? hinge_flange_diameter / 2
           + (hinge_pin_square_projection - hinge_pin_allowed_projection)
+  : hinge_sized == "printed" ? ph_web + ph_recess_clear - ph_front
         : undef;
 function hinge_rear() =
-    hinge_sized == "lollipop" ? hinge_flange_diameter / 2 : undef;
+    hinge_sized == "lollipop" ? hinge_flange_diameter / 2
+  : hinge_sized == "printed" ? ph_back + ph_recess_clear : undef;
 function hinge_half_x() =
     hinge_sized == "lollipop"
         ? max(hinge_flange_diameter,
-              1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance)) / 2 : undef;
+              1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance)) / 2
+  : hinge_sized == "printed"
+        ? max(ph_bw / 2 + ph_recess_clear,
+              1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance) / 2) : undef;
+// The printed hinge's pin is set at the bed hole's height
 function hinge_pin_z() =
-    hinge_sized == "lollipop" ? hinge_pin_height / 2 : undef;
+    hinge_sized == "lollipop" ? hinge_pin_height / 2
+  : hinge_sized == "printed" ? top_z - hole_axis_z : undef;
 function hinge_screw_dy() =
     hinge_sized == "lollipop"
-        ? hinge_flange_diameter / 2 - hinge_mounting_hole_offset : undef;
+        ? hinge_flange_diameter / 2 - hinge_mounting_hole_offset
+  : hinge_sized == "printed" ? ph_sdy : undef;
 
 
 // Attached bay: the base ends at base_len, its own right end wall; the bay
@@ -1337,6 +1412,13 @@ bed_top_z     = bed_bottom_z + bed_plate_thickness;
 hole_axis_z   = bed_top_z - hinge_hole_drop;
 pin_axis_z    = top_z - hinge_pin_z();
 
+// Printed hinge in place (Z), and the screw head's seat for any hinge type
+ph_az   = hole_axis_z;                                   // pivot and pin axis
+ph_zb   = ph_az + ph_bot;                                // block bottom = recess floor
+ph_seat = ph_az + ph_top - ph_head_h;                    // screw head seat
+hinge_head_z = hinge_sized == "printed" ? ph_seat : top_z;
+ph_pin_len = ph_pin_embed + (hinge_y - ph_Lf - (seat_y1 - bed_clearance)) + ph_pin_engage;
+
 // Casting reliefs as boxes [edge, [x0,y0,z0], [x1,y1,z1]]: the full ledge
 // width, from the seat wall to the cavity, down to below the casting.
 relief_boxes = [for (rl = bed_reliefs) let(
@@ -1371,7 +1453,7 @@ plate_ys = !split || plate_count <= 0 ? [] :
 // Screw length suggestions (flat head length includes the head)
 plate_screw_len = (floor_z - plate_nut_trap_depth + nut_t(plate_nut_spec))
                 - (plate_pocket_depth - plate_thickness) + 1.5;
-hinge_screw_len = hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
+hinge_screw_len = hinge_head_z - top_z + hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
 
 // Back-wall tunnels: two runs, hinge1..split and split..hinge2
 tunnel_y0     = mc_y1 - overlap;
@@ -1842,7 +1924,20 @@ if (report && has_hinges) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 -
          "hinge centers ", hinge_hole_spacing, " mm apart, pin axis ", top_z - pin_axis_z,
          " mm below the coupon top"));
 if (report && has_hinges) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
-         hinge_screw_len / in, " in), measured from the top surface"));
+         hinge_screw_len / in, " in), measured from ",
+         hinge_type == "printed" ? "the head's seat in the block" : "the top surface"));
+if (report && hinge_type == "printed") {
+    echo(str("Printed hinge: block ", ph_bw, " x ", ph_back - ph_front, " x ", ph_top - ph_bot,
+             " mm, arm ", ph_arm_w, " x ", ph_Lf + ph_R, " x ", 2 * ph_R,
+             " mm; pivot ", hinge_y - seat_y1, " mm behind the seat, ", top_z - ph_az, " mm below the top"));
+    echo(str("Printed hinge: arm and cheeks top ", ph_updown(ph_az + ph_R - top_z), " the rim",
+             ph_stop ? str(", the stop wall's top ", ph_updown(ph_az + ph_top - top_z), " the rim and ",
+                           ph_updown(ph_az + ph_top - bed_top_z), " the bed's top") : ""));
+    echo(str("Printed hinge: steel rod, 2 pins ", ph_pin_d, " mm x ", round(ph_pin_len * 10) / 10,
+             " mm and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 10) / 10, " mm"));
+    if (ph_stop) echo(str("Printed hinge: the machine stops at about ", ph_stop_angle, " degrees of tilt"));
+    else echo("NOTE: printed hinge without a stop: the machine tilts back until something else stops it");
+}
 if (report) echo(str("Dovetail keys at Y: ", keys, "  head width ", key_head,
          "  pull-apart play ~", key_play, " mm"));
 if (report) echo(str("Keys clear of plate pockets by ", key_plate_gap,
@@ -1927,6 +2022,11 @@ if (harness_rods && nt_x1 > end_wall - 2)
 if (harness_rods && notch_ys[0][1] > hh_y0 - rod_stop - 3)
     if (report) echo("WARNING: rod notch runs into the handhold zone");
 
+if (hinge_type == "printed" && top_z - hinge_nut_depth > ph_zb - 3)
+    if (report) echo(str("WARNING: the hinge nut trap is within 3 mm of the printed hinge's recess floor; set hinge_nut_depth to at least ",
+             top_z - ph_zb + 3));
+if (hinge_type == "printed" && ph_zb < floor_z)
+    if (report) echo("WARNING: the printed hinge's recess reaches below the floor's top; the base may be too shallow for it");
 if (has_hinges && back_rim < hinge_offset_y() + hinge_rear() + 2)
     if (report) echo("WARNING: back rim leaves under 2 mm behind the hinge");
 if (has_hinges && abs(hole_axis_z - pin_axis_z) > 0.25)
@@ -2299,7 +2399,7 @@ function frac16(x_in) =
            : str(w > 0 ? str(w, " ") : "", n / g, "/", 16 / g, "\"");
 
 // Screw needs: through the nut plus 0.5 mm
-hinge_screw_need = hinge_nut_depth + nut_t(hinge_nut_spec) + 0.5;
+hinge_screw_need = hinge_head_z - top_z + hinge_nut_depth + nut_t(hinge_nut_spec) + 0.5;
 plate_screw_need = (floor_z - plate_nut_trap_depth + nut_t(plate_nut_spec))
                  - (plate_pocket_depth - plate_thickness) + 0.5;
 n_plate_screws   = plate_count * len(plate_holes);
@@ -2309,7 +2409,11 @@ plate_w_label    = is_metric(plate_nut_spec) ? str(plate_width, " mm")
                                              : frac16(plate_width / in + 1 / 32);
 
 if (report) echo("=== Hardware for this configuration ===");
-if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type));
+if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type,
+         hinge_type == "printed" ? " (part printed_hinges)" : ""));
+if (report && hinge_type == "printed")
+    echo(str("Hinge rods: steel, 2 x ", ph_pin_d, " mm x ", round(ph_pin_len * 2) / 2,
+             " mm (pins) + 2 x ", ph_pivot_d, " mm x ", round(ph_bw * 2) / 2, " mm (pivots)"));
 if (report && has_hinges) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
          stock_len(hinge_nut_spec, hinge_screw_need),
          " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts"));
@@ -2399,6 +2503,7 @@ if (report) echo("=======================================");
 
 if (part == "assembly") {
     color("SteelBlue") base();
+    if (hinge_type == "printed") for (hx = [hinge_x1, hinge_x2]) ph_in_place(hx);
     if (attached) color("CadetBlue") right_bay();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
     if (turn_button) color("LightSteelBlue") turn_button_part();
@@ -2532,6 +2637,33 @@ if (part == "assembly") {
     else if (report) echo("WARNING: attach_test needs compartment_mount = \"attached\"");
 } else if (part == "hinge_nut_tool") {
     hinge_nut_tool();
+} else if (part == "printed_hinges") {
+    if (hinge_type == "printed") printed_hinges();
+    else if (report) echo("WARNING: printed_hinges needs hinge_type = \"printed\"");
+} else if (part == "printed_hinge_test") {
+    printed_hinge_test();
+} else if (part == "printed_hinge_view") {
+    // Side views, cut through the middle: at rest, and tilted to the stop,
+    // with a stub of the bed's back edge on the pin
+    yb = seat_y1 - bed_clearance - hinge_y;            // bed's back face
+    for (i = [0, 1]) translate([0, i * 95, 0]) {
+        a = i * (ph_stop ? ph_stop_angle : 90);
+        color("DarkOrange") difference() {
+            ph_block();
+            translate([0, -100, -100]) cube([200, 200, 200]);
+        }
+        color("Orange") rotate([-a, 0, 0]) difference() {
+            ph_arm();
+            translate([ph_arm_w / 4, -100, -100]) cube([200, 200, 200]);
+        }
+        ph_rods(a);
+        color("DimGray", 0.85) rotate([-a, 0, 0]) difference() {
+            translate([-ph_bw / 2, yb - 40, -ph_pin_d / 2 - 4])
+                cube([ph_bw, 40, bed_top_z - ph_az + ph_pin_d / 2 + 4]);
+            translate([0, yb + overlap, 0]) rotate([90, 0, 0])
+                cylinder(h = ph_pin_engage + 1, d = ph_pin_d + 0.4, $fn = 32);
+        }
+    }
 } else if (part == "split_test") {
     if (split) split_test();
     else if (report) echo("WARNING: split_test needs split = true");
@@ -2788,8 +2920,169 @@ module base_body() {
 module hinge_cutter(x, y) {
     if (hinge_sized == "lollipop")
         lollipop_hinge_cutter(x, y);
+    else if (hinge_sized == "printed")
+        printed_hinge_cutter(x, y);
     else
         assert(false, str("Unknown hinge_type: ", hinge_type));
+}
+
+// Recess for one printed hinge block, centered on the pivot (x, y): the
+// block's footprint down to its floor, a slot from the recess through the
+// web and into the seat for the pin (open at the top, so the pin swings
+// up), and the screw hole and nut trap below.
+module printed_hinge_cutter(x, y) {
+    c  = ph_recess_clear;
+    nut_top_z = top_z - hinge_nut_depth;
+    sw = ph_pin_d + 2 * ph_clear;
+    translate([x, y, 0]) {
+        translate([-ph_bw / 2 - c, ph_front - c, ph_zb])
+            cube([ph_bw + 2 * c, ph_back - ph_front + 2 * c, top_z - ph_zb + overlap]);
+        y_far = seat_y1 - bed_clearance - ph_pin_engage - 1 - y;
+        translate([-sw / 2, y_far, ph_az - ph_pin_d / 2 - ph_clear])
+            cube([sw, ph_front - y_far + overlap,
+                  top_z - (ph_az - ph_pin_d / 2 - ph_clear) + overlap]);
+    }
+    translate([x, y + ph_sdy, nut_top_z + hinge_nut_bridge])
+        cylinder(h = ph_zb - nut_top_z - hinge_nut_bridge + overlap,
+                 d = hinge_mounting_hole_diameter);
+    translate([x, y + ph_sdy, -overlap])
+        nut_trap_inline(nut_top_z + overlap, hinge_nut_spec,
+                        nutwidth = hinge_nut_width > 0 ? hinge_nut_width : undef,
+                        anchor = BOTTOM, $slop = nut_clearance);
+}
+
+// Printed hinge parts, in the hinge-local frame (pivot axis on X through
+// the origin, bed toward -Y).
+// Arm outline in YZ, grown by g: a bar from its front face to the pivot,
+// rounded about the pivot behind
+module ph_arm_2d(g = 0) {
+    hull() {
+        circle(r = ph_R + g, $fn = 64);
+        translate([-ph_Lf - g, -ph_R - g]) square([ph_Lf + g, 2 * (ph_R + g)]);
+    }
+}
+// YZ outline -> 3D across X (width w, centered)
+module ph_yz(w) {
+    rotate([90, 0, 90]) linear_extrude(height = w, center = true) children();
+}
+// Room the arm sweeps from rest (0) to angle a, grown by the clearance
+module ph_arm_sweep(a) {
+    n = max(1, ceil(a / 5));
+    ph_yz(ph_arm_w + 2 * ph_clear)
+        for (i = [0 : n - 1])
+            hull() {
+                rotate(-i * a / n) ph_arm_2d(ph_clear);
+                rotate(-(i + 1) * a / n) ph_arm_2d(ph_clear);
+            }
+}
+// Teardrop hole along X, pointing up in print: toward +Z for the block
+// (printed upright), toward +Y for the arm (printed on its front face)
+module ph_hole_x(d, w, to_y = false) {
+    ph_yz(w) rotate(to_y ? -90 : 0) teardrop_2d(d);
+}
+
+// The arm: pin hole in from the front face (chamfered), pivot hole across
+module ph_arm() {
+    pd = ph_pin_d + ph_press;
+    difference() {
+        ph_yz(ph_arm_w) ph_arm_2d();
+        translate([0, -ph_Lf - overlap, 0]) rotate([-90, 0, 0]) {
+            cylinder(h = ph_pin_embed + 0.5 + overlap, d = pd, $fn = 48);
+            cylinder(h = 0.6 + overlap, d1 = pd + 1.2 + 2 * overlap, d2 = pd, $fn = 48);
+        }
+        ph_hole_x(ph_pivot_d + ph_slip, ph_arm_w + 2 * overlap, true);
+    }
+}
+
+// The block: cheeks holding the pivot rod (press fit), a floor under the
+// arm, the stop wall behind it, and the screw hole with its counterbore
+module ph_block() {
+    w = ph_bw;
+    difference() {
+        union() {
+            translate([-w / 2, ph_front, ph_bot]) cube([w, ph_back - ph_front, ph_R - ph_bot]);
+            if (ph_stop)
+                intersection() {
+                    translate([-w / 2, ph_front, ph_R - overlap])
+                        cube([w, ph_back - ph_front, ph_stop_h + overlap]);
+                    // behind the stop plane
+                    rotate([-ph_th, 0, 0]) translate([-w, -100, ph_R + ph_clear])
+                        cube([2 * w, 200, 100]);
+                }
+        }
+        ph_arm_sweep(ph_th);
+        // the arm's channel runs out through the front, where the pin leaves
+        translate([-ph_arm_w / 2 - ph_clear, ph_front - overlap, -ph_R - ph_clear])
+            cube([ph_arm_w + 2 * ph_clear, -ph_front, 2 * ph_R + ph_clear + overlap]);
+        ph_hole_x(ph_pivot_d + ph_press, w + 2 * overlap);
+        translate([0, ph_sdy, ph_bot - overlap]) {
+            cylinder(h = ph_top - ph_bot + 2 * overlap, d = hinge_mounting_hole_diameter, $fn = 32);
+            translate([0, 0, ph_top - ph_bot - ph_head_h + overlap])
+                cylinder(h = ph_head_h + overlap, d = ph_head_d, $fn = 48);
+        }
+        // ease the vertical edges, so the block drops into a square recess
+        for (sx = [-1, 1], yy = [ph_front, ph_back])
+            translate([sx * w / 2, yy, ph_bot - overlap])
+                linear_extrude(height = ph_top - ph_bot + 2 * overlap)
+                    rotate(45) square(1.2, center = true);
+    }
+}
+
+// Steel rods, for views
+module ph_rods(tilt = 0) {
+    color("Silver") {
+        rotate([-tilt, 0, 0]) translate([0, -ph_Lf + ph_pin_embed, 0]) rotate([90, 0, 0])
+            cylinder(h = ph_pin_len, d = ph_pin_d, $fn = 32);
+        rotate([0, 90, 0]) cylinder(h = ph_bw, d = ph_pivot_d, center = true, $fn = 32);
+    }
+}
+
+// One hinge in place at hinge center x, arm tilted by `tilt`
+module ph_in_place(x, tilt = 0) {
+    translate([x, hinge_y, ph_az]) {
+        color("DarkOrange") ph_block();
+        color("Orange") rotate([-tilt, 0, 0]) ph_arm();
+        ph_rods(tilt);
+    }
+}
+
+// Print plate: two blocks upright and two arms standing on their front faces
+ph_arm_print_h = ph_Lf + ph_R;
+module printed_hinges() {
+    g = 6;
+    for (i = [0, 1]) {
+        translate([ph_bw / 2 + i * (ph_bw + g), -ph_front, -ph_bot]) ph_block();
+        translate([ph_arm_w / 2 + i * (ph_arm_w + g), ph_back - ph_front + g + ph_R, ph_Lf])
+            rotate([90, 0, 0]) ph_arm();
+    }
+}
+
+// Rod-fit test: a bar with five vertical pin holes (as the arm prints
+// them) and five horizontal pivot holes (as the block prints them), at
+// ph_press -0.2 .. +0.2 left to right, and a sixth horizontal hole at the
+// arm's running fit (marked by a notch on top)
+pt_steps = [-0.2, -0.1, 0, 0.1, 0.2];
+pt_pitch = max(ph_pin_d, ph_pivot_d) + 6;
+module printed_hinge_test() {
+    L = 7 * pt_pitch;
+    hz = ph_pivot_d / 2 + 4;                     // pivot-hole row height
+    H = ph_pivot_d + 8 + 13;                     // pin holes 12 deep from the top, clear of it
+    D = max(ph_pin_d + 8, 14);
+    difference() {
+        cube([L, D, H]);
+        for (i = [0 : 4]) {
+            x = (i + 1) * pt_pitch;
+            translate([x, D / 2, H - 12]) cylinder(h = 12 + overlap, d = ph_pin_d + ph_press + pt_steps[i], $fn = 48);
+            translate([x, -overlap, hz]) rotate([-90, 0, 0])
+                linear_extrude(height = D + 2 * overlap) rotate(180) teardrop_2d(ph_pivot_d + ph_press + pt_steps[i]);
+            // one notch per step on the front top edge: 1 = tightest
+            for (k = [0 : i]) translate([x - 4 + 2 * k, -overlap, H - 1]) cube([1, 1.5, 1 + overlap]);
+        }
+        x6 = 6 * pt_pitch;
+        translate([x6, -overlap, hz]) rotate([-90, 0, 0])
+            linear_extrude(height = D + 2 * overlap) rotate(180) teardrop_2d(ph_pivot_d + ph_slip);
+        translate([x6 - 3, D / 2 - 0.5, H - 1]) cube([6, 1, 1 + overlap]);
+    }
 }
 
 // Recess for one lollipop hinge, centered on (x, y), flush with the top,
@@ -3030,6 +3323,12 @@ module back_ext_part() {
         if (has_corner)
             corner_tongues(ext_dt_clearance, -overlap, ext_top_z + 2 * overlap);
         back_trench_cut();
+        // Printed hinges stand above the rim: notch the lip around them
+        if (hinge_type == "printed")
+            for (hx = [hinge_x1, hinge_x2])
+                translate([hx - hinge_half_x() - 1, hinge_y + ph_front - ph_recess_clear - 1, lip_z0 - 1])
+                    cube([2 * hinge_half_x() + 2, ph_back - ph_front + 2 * ph_recess_clear + 2,
+                          ext_top_z - lip_z0 + 2]);
     }
 }
 
@@ -3299,11 +3598,13 @@ module corner_box() ext_box("corner", [cn_x0, cn_y0], [cn_x1, cn_y1], cn_rab);
 // Hinge coupon: the left hinge's recess in a block whose front edge is the
 // back wall of the bed seat, with countersunk corner holes for wood screws.
 // It tests the hinge fit, and doubles as a hinge insert for a wooden base.
-hc_x0 = hinge_x1 - hinge_flange_diameter / 2 - hinge_coupon_margin;
-hc_x1 = hinge_x1 + hinge_flange_diameter / 2 + hinge_coupon_margin;
+hc_half = hinge_sized == "lollipop" ? hinge_flange_diameter / 2 : hinge_half_x();
+hc_x0 = hinge_x1 - hc_half - hinge_coupon_margin;
+hc_x1 = hinge_x1 + hc_half + hinge_coupon_margin;
 hc_y0 = seat_y1;
-hc_y1 = hinge_y + hinge_flange_diameter / 2 + hinge_coupon_margin;
-hc_t  = max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth) + hinge_coupon_floor;
+hc_y1 = hinge_y + hinge_rear() + hinge_coupon_margin;
+hc_t  = (hinge_sized == "printed" ? top_z - ph_zb
+         : max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth)) + hinge_coupon_floor;
 hc_z0 = top_z - hc_t;
 module hinge_coupon() {
     ins = hinge_coupon_margin / 2;
@@ -3765,6 +4066,9 @@ build_parts = concat(
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
     has_hinges ? [["hinge_nut_tool", "small", [22, 22], []]] : [],
+    hinge_type == "printed"
+        ? [["printed_hinges", "small",
+            [2 * ph_bw + 6, ph_back - ph_front + 6 + 2 * ph_R], []]] : [],
     turn_button ? [["turn_button", "small", [turn_button_w + 1, tb_R + turn_button_w], []]] : [],
     has_knee ? [["knee_sector", "small", [kn_hub_r + 2 + kn_rs + 2 * kn_m, kn_cam_r + 2 + kn_rs + 2 * kn_m], []],
                 ["knee_idler", "small", [2 * (kn_r2 + 2 * kn_m), 2 * (kn_r2 + 2 * kn_m)], []],
@@ -3788,6 +4092,7 @@ module place_part(id) {
         translate([0, tb_sw, 0]) base();
     else if (id == "right_bay")  translate([-base_x1, 0, 0]) right_bay();
     else if (id == "hinge_nut_tool") translate([11, 11, 0]) hinge_nut_tool();
+    else if (id == "printed_hinges") printed_hinges();
     else if (id == "back_ext")   translate([-bk_x0, -seat_y1, 0]) back_ext_part();
     else if (id == "left_ext")   translate([-lf_x0, -lf_y0, 0]) left_ext_part();
     else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();

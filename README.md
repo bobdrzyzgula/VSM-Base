@@ -42,7 +42,7 @@ one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the turn button; pin or molded extension pegs; the
+the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; the turn button; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
@@ -70,7 +70,10 @@ fit on your printer, and then print a base that fits.
   clearances under thickened parts of the casting are all computed from
   measurements of the bed, not copied from an old base.
 - **Lollipop hinge recesses** with the pin axis checked against the bed's
-  hinge holes; other hinge types can be added.
+  hinge holes, or a **printed hinge** for machines without usable hinges:
+  a printed arm and block with two pieces of steel rod each, a tilt-back
+  stop, and the pin set at the bed hole's height automatically. Other hinge
+  types can be added.
 - **Prints in two halves** on a 256 mm printer, joined by dovetail keys and
   three recessed steel mending plates with captive nuts.
 - **Optional side compartment**: storage; a mount for the machine's
@@ -144,7 +147,9 @@ and others) are welcome; see the guide.
   material, so the real figure depends on your walls and infill; your
   slicer will tell you.
 - Hardware for the base:
-  - 2 lollipop hinges
+  - 2 lollipop hinges (or, with `hinge_type = "printed"`, steel rod for the
+    printed hinges: 2 pins and 2 pivots, 1/4" for a 99, lengths in the
+    console's hardware list)
   - 3 flat steel mending plates, 4" × 5/8", countersunk for #8
     (McMaster-Carr 1394A34 or similar)
   - 12 #8-32 × 1/2" flat-head machine screws and 12 #8-32 hex nuts

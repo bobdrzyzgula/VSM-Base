@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 423 parameters; 421 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 440 parameters; 438 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -31,7 +31,7 @@ There are 423 parameters; 421 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
 | `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
-| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, none.* |
+| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, printed, none.* |
 | `split` | `true` | Split into two dovetailed halves for printing |
 
 ## Machine
@@ -262,6 +262,28 @@ There are 423 parameters; 421 of them appear in the Customizer. The rest are lis
 | `hinge_pin_sweep_depth` | `1` | Extra depth below the pin for its corner to sweep through *Range 0 to 4, step 0.1.* |
 | `hinge_mounting_hole_diameter` | `5` | Hinge mounting hole diameter *Range 2 to 10, step 0.1.* |
 | `hinge_mounting_hole_offset` | `9.5` | Mounting hole center, inward from the flange's back edge |
+
+## Printed hinge
+
+| Parameter | Default | Description |
+|---|---|---|
+| `ph_pin_d` | `6.35` | Steel pin into the bed's hinge hole: diameter, just under the hole's (the 99's holes are 1/4") *Range 3 to 12, step 0.01.* |
+| `ph_pin_engage` | `12` | How far the pin enters the bed's hole *Range 4 to 30, step 0.5.* |
+| `ph_pin_embed` | `16` | Length of the pin pressed into the arm *Range 8 to 30, step 0.5.* |
+| `ph_pivot_d` | `6.35` | Steel pivot rod, running along the back through the block and the arm: diameter *Range 3 to 12, step 0.01.* |
+| `ph_press` | `0` | Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
+| `ph_slip` | `0.3` | Running fit: the arm's pivot hole is this much larger than the rod *Range 0 to 1, step 0.05.* |
+| `ph_wall` | `4` | Plastic around the rods in the arm *Range 2.5 to 8, step 0.5.* |
+| `ph_arm_w` | `14` | Arm width (X) *Range 8 to 30, step 0.5.* |
+| `ph_cheek` | `6` | Block cheeks either side of the arm (X) *Range 3 to 15, step 0.5.* |
+| `ph_clear` | `0.4` | Clearance between the moving arm and the block *Range 0.2 to 1.5, step 0.05.* |
+| `ph_web` | `4` | Base web left between the bed seat and the hinge recess *Range 2 to 10, step 0.5.* |
+| `ph_floor` | `3` | Block floor under the arm *Range 2 to 8, step 0.5.* |
+| `ph_recess_clear` | `0.2` | Fit of the block in its recess, each side *Range 0 to 0.6, step 0.05.* |
+| `ph_stop_angle` | `60` | Tilt-back stop: the arm comes to rest on a face of the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
+| `ph_stop_h` | `6` | Stop wall height above the arm's top *Range 2 to 20, step 0.5.* |
+| `ph_head_d` | `9` | Screw head counterbore in the top of the block: diameter and depth *Range 6 to 14, step 0.1.* |
+| `ph_head_h` | `3.5` |  *Range 0 to 8, step 0.1.* |
 
 ## Hinge coupon
 

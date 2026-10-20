@@ -13,6 +13,10 @@
   snap-in hinge in your filament.
 - Extension pegs (`part = "ext_pegs"`): printed lying down, never standing
   up; print a few spares.
+- Printed hinges (`part = "printed_hinges"`, in PETG): two blocks printed
+  upright and two arms standing on their front faces, so the pin's hole is
+  vertical and the pin's load lies along the layers; no supports. The
+  pivot holes are teardrops with their points up.
 - Features removed after printing: knock-out walls under the handholds, sacrificial membranes over screw holes.
 
 > **Note: lid hinges in PLA and PETG.** The hinge defaults

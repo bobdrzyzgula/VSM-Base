@@ -123,8 +123,13 @@ below the flat plate, in a thickened boss.](../images/diagrams/bed-section.svg){
 
 ### Hole diameter
 
-Measure the hinge holes' diameter. It isn't a model parameter, but it is
-the diameter of the hinge pins you need. On the 99 the holes are 1/4".
+Measure the hinge holes' diameter. For lollipop hinges it isn't a model
+parameter, but it is the diameter of the hinge pins you need. For the
+printed hinge it sets `ph_pin_d`, the steel pin's diameter: choose rod just
+under the hole's size, so the pin slides in without play. On the 99 the
+holes are 1/4". Measure how deep the holes go too, if you can: the printed
+hinge's pin enters them by `ph_pin_engage` (12 mm), which must not be more
+than their depth.
 
 ### Bed cushions, `bed_cushion_in`
 

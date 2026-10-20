@@ -13,6 +13,14 @@
 - Center slice: the front-wall serrations, and which half goes on first
   (lower the right half onto the left).
 - Rod plugs: press fit in the end strip's rod holes.
+- Printed-hinge rod fit (its own part, `part = "printed_hinge_test"`): a bar
+  with five vertical holes for the pin, printed as the arm prints them, and
+  five horizontal teardrop holes for the pivot rod, printed as the block
+  prints them, from `ph_press` − 0.2 mm to + 0.2 mm left to right (one to
+  five notches on the top edge mark them), and a sixth horizontal hole at
+  the arm's running fit, `ph_slip`, marked with a dash. Press your rod into
+  each and set `ph_press` to the step that holds it firmly without
+  splitting the plastic; the rod should turn freely in the sixth.
 - Cordset entry test (its own part, `part = "knee_entry_test"`, knee controller only): the 4.4 mm wall with the cordset's entry hole, the dimple for its clip and the clip's guides, to try the cordset's molded entry and steel clip.
 - Attached-bay joint test (its own part, `part = "attach_test"`, attached bay only): the base's end wall and the bay's inner wall around one screw and one dowel, each printed upright as in its part. Fit an M5 heat-set insert, press in a dowel, and try the screw and the fit of the two faces.
 - Split test (its own part, `part = "split_test"`, not in the test set): just the front of the split joint, both halves, with the front-wall serrations and the first dovetail key, for a quick check of a serrated joint. The wall stubs are `split_test_h` tall (30 mm; 0 for full height).

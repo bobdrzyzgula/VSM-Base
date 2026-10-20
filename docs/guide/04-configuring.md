@@ -21,6 +21,43 @@
 > cavity (an attached bay's screws, say), lift the machine out. Decide at
 > print time: hinge recesses can't be added well to a printed base later.
 >
+> **Note: the printed hinge.** `hinge_type = "printed"` is a hinge to print,
+> for a machine whose hinges are missing or broken, or which came in a
+> molded base whose hinges went with it (most portable Kenmores, for one).
+> Each hinge is a printed **arm**, a printed **block** and two pieces of
+> cut steel rod. The machine's hinge holes run straight into the back of
+> the bed, so the machine can't tip back on pins fixed in them; like the
+> lollipop hinge, which has a knuckle inside its round body, the printed
+> hinge's arm turns. A steel **pin**, pressed into the arm's front face,
+> goes into the bed's hole; the arm turns on a steel **pivot rod** that runs
+> across the back, pressed into the block's two cheeks; and the block sits
+> in a square recess in the back rim on the same screw and nut trap as a
+> lollipop hinge, so the nut tool serves for it too. The pivot is set at the
+> bed hole's height from your measurements, so the pin always lines up.
+> The arm, cheeks and stop wall stand a few millimetres above the rim (the
+> console gives how far); the back extension's lip is notched around them.
+> The block and the base's recess are larger than the lollipop's, so the
+> back rim is about 10 mm wider.
+>
+> ![The printed hinge, cut through the middle: at rest, with the pin in
+> the bed's hole (left), and tilted back to its stop
+> (right).](../images/renders/printed-hinge.png){width=100%}
+>
+> When the machine is tipped back, the top of the arm comes to rest on a
+> sloping face of the block's back wall, so the machine stops at about
+> `ph_stop_angle` (60°) instead of falling back onto the table. The stop
+> takes the machine's weight leaning back through the pins, and the
+> further past upright the machine leans, the harder it presses: a 30 lb
+> machine at 60° presses each stop with a few hundred newtons, which the
+> parts are sized for, but don't let the machine drop onto the stop. Set
+> `ph_stop_angle` between 45° and 110°, or 0 for no stop. Check that
+> nothing on your machine (a motor behind the arm, say) reaches the base's
+> back rim before the stop. Print the hinges in PETG or another tough
+> filament; their rods are cut-to-length steel rod or dowel pins, 1/4" for
+> a 99 (`ph_pin_d`, `ph_pivot_d`). The console's *Printed hinge* lines give
+> the sizes, the rod lengths, and how far the parts stand above the rim.
+> The printed hinge is new in v34 and hasn't been printed yet.
+>
 > **Note: an attached bay.** A bed much over 12" is too long to print as
 > two halves with the side compartment built in. With
 > `compartment_mount = "attached"` the compartment becomes its own part,
