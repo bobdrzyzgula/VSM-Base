@@ -2083,7 +2083,7 @@ if (report && has_hinges) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 -
          " mm below the coupon top"));
 if (report && has_hinges) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
          hinge_screw_len / in, " in), measured from ",
-         hinge_type == "printed" ? "the head's seat in the block" : "the top surface"));
+         hinge_type == "printed" ? "the roof of the trap under the block" : "the top surface"));
 if (report && lip_recessed)
     echo(str("Lips recessed: the bed stands ", round((ext_top_z - top_z) * 10) / 10,
              " mm above the rim, so the rim is cut ", round((top_z - rim_cut_z) * 10) / 10,
@@ -3983,8 +3983,10 @@ hc_x0 = hinge_x1 - hc_half - hinge_coupon_margin;
 hc_x1 = hinge_x1 + hc_half + hinge_coupon_margin;
 hc_y0 = seat_y1;
 hc_y1 = hinge_y + hinge_rear() + hinge_coupon_margin;
-hc_t  = (hinge_sized == "printed" ? top_z - ph_zb
-         : max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth)) + hinge_coupon_floor;
+// (for the printed hinge, as deep as the base's screw trap, so the same
+// screw serves, its head under the coupon)
+hc_t  = hinge_sized == "printed" ? max(ph_trap_depth, top_z - ph_zb + hinge_coupon_floor)
+      : max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth) + hinge_coupon_floor;
 hc_z0 = top_z - hc_t;
 module hinge_coupon() {
     ins = hinge_coupon_margin / 2;
