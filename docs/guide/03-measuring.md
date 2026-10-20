@@ -227,7 +227,16 @@ underside of the machine and see that nothing touches.
 A machine that stands on cast feet under the casting can be carried on
 them instead (see *a bed set flush, or standing on its feet* in
 Configuring the model): stand it on a flat surface and measure from the
-surface to the plate's underside, for `custom_foot_height_mm`. Everything
+surface to the plate's underside, for `custom_foot_height_mm`. To find
+where the feet are, print the foot-locating rig (`foot_rig_left` and
+`foot_rig_right`, bolted together with eight M3 bolts through the splice
+tabs): a thin box 80 mm tall that fits round the bed, with a narrow floor
+rim and an open bottom. Screw it to a board over a sheet of paper, mark the
+paper through the six small holes in the floor rim (each 5 mm in from the
+bed's edges, at the corners and at the split; the console lists their
+exact positions), ink the feet, and lower the machine into the box. Measure
+each foot's print from the marks. The rig is cut for the machine profile in
+use, with a notch for its cords if it has a cord slot. Everything
 else under the bed must then be shorter than the feet; the Kenmore 158's
 feet are 63 mm. Note, too, anything that leaves the casting through its
 edge, such as a cord, for `custom_cord_slot`.

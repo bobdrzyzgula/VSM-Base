@@ -206,7 +206,7 @@ include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -667,6 +667,27 @@ ph_stop_angle = 60; // [0 : 1 : 110]
 ph_tail = 12; // [6 : 0.5 : 25]
 // Least plastic over the rods where the arm and cheeks are cut down to the rim
 ph_min_cover = 2.5; // [1.5 : 0.25 : 5]
+
+/* [Foot-locating rig] */
+// Parts foot_rig_left and foot_rig_right: a thin box that fits round the bed, to stand the machine on paper and print its inked feet. Wall height
+rig_height = 80; // [30 : 1 : 150]
+// Wall thickness
+rig_wall = 2.4; // [1.2 : 0.2 : 5]
+// Floor rim, inward from the wall (it lies under the bed's edge)
+rig_rim = 10; // [5 : 0.5 : 25]
+// Floor rim thickness
+rig_floor = 2; // [1 : 0.2 : 5]
+// Overlap of the splice tabs past the split, each way
+rig_lap = 15; // [8 : 1 : 30]
+// Splice bolt holes (M3)
+rig_bolt_d = 3.4; // [2 : 0.1 : 5]
+// Screw holes through the floor rim, to fix the rig to a board
+rig_screw_d = 3.5; // [2 : 0.1 : 6]
+// Marking holes in the floor rim, this far in from the bed's edges at each corner and at the split, for a pencil or awl
+rig_mark_in = 5; // [3 : 0.5 : 9]
+rig_mark_d = 1.6; // [0.8 : 0.1 : 3]
+// A floor bar across the split, to keep each half square before it is on the board (it covers the paper there)
+rig_crossbar = false;
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -2057,6 +2078,11 @@ if (report && bed_on_feet)
              " mm pads; floor ", round(inner_depth_eff * 10) / 10, " mm below the rim (inner_depth not used); the ledge sits ",
              bed_feet_gap, " mm under the plate"));
 if (report && bed_flush) echo("Bed flush with the rim");
+if (report && (part == "foot_rig" || part == "foot_rig_left" || part == "foot_rig_right")) {
+    echo(str("Foot rig: ", rig_x1 - rig_x0, " x ", rig_y1 - rig_y0, " x ", rig_height,
+             " mm, in two halves of about ", rig_sx - rig_x0 + rig_wall, " and ", rig_x1 - rig_sx, " mm; 4 M3 bolts per tab, 8 in all"));
+    echo(str("Foot rig marking holes (X from the bed's left end, Y from its front edge, mm): ", rig_marks));
+}
 if (report && hinge_type == "printed") {
     echo(str("Printed hinge: block ", ph_bw, " x ", ph_back - ph_front, " x ", ph_atop - ph_bot,
              " mm, arm ", ph_arm_w, " x ", ph_Lf + (ph_Lt > 0 ? ph_Lt : ph_R), " x ", ph_R + ph_atop,
@@ -2777,6 +2803,13 @@ if (part == "assembly") {
     else if (report) echo("WARNING: printed_hinges needs hinge_type = \"printed\"");
 } else if (part == "printed_hinge_test") {
     printed_hinge_test();
+} else if (part == "foot_rig") {
+    color("Peru") foot_rig_half(false);
+    color("BurlyWood") foot_rig_half(true);
+} else if (part == "foot_rig_left") {
+    translate([-rig_x0 + rig_wall, -rig_y0 + rig_wall, 0]) foot_rig_half(false);
+} else if (part == "foot_rig_right") {
+    translate([-rig_sx, -rig_y0, 0]) foot_rig_half(true);
 } else if (part == "back_trim") {
     if (back_cut) rim_trim_print("back");
     else if (report) echo("WARNING: back_trim: no rim cut (the lips aren't recessed, or back_ext is off)");
@@ -3287,6 +3320,70 @@ module printed_hinges() {
         translate([ph_bw / 2 + i * (ph_bw + g), -ph_front, -ph_bot]) ph_block();
         translate([ph_arm_w / 2 + i * (ph_arm_w + g), ph_back - ph_front + g + ph_R, ph_Lf])
             rotate([90, 0, 0]) ph_arm();
+    }
+}
+
+// Foot-locating rig, in bed coordinates: the bed's front-left corner at
+// the origin, X along the bed, Y toward the back, Z = 0 on the board. The
+// walls stand bed_clearance off the bed's edges; the floor rim reaches
+// rig_rim in under the bed's edges, with marking holes rig_mark_in in from
+// the bed's edges (so their positions are known exactly), and screw holes
+// for the board. Two halves, split at the bed's middle, joined by tabs on
+// the left half's front and back walls bolted through the right half's.
+rig_c  = bed_clearance;
+rig_L  = bed_length; rig_W = bed_width;
+rig_sx = rig_L / 2;                                  // split
+rig_x0 = -rig_c - rig_wall; rig_x1 = rig_L + rig_c + rig_wall;
+rig_y0 = -rig_c - rig_wall; rig_y1 = rig_W + rig_c + rig_wall;
+rig_marks = [for (x = [rig_mark_in, rig_sx, rig_L - rig_mark_in],
+                  y = [rig_mark_in, rig_W - rig_mark_in]) [x, y]];
+rig_screws = [for (x = [rig_L * 0.12, rig_sx - rig_lap - 12, rig_sx + rig_lap + 12, rig_L * 0.88],
+                   y = [-rig_c + (rig_rim - rig_c) / 2 - rig_wall / 2, rig_W + rig_c - (rig_rim - rig_c) / 2 + rig_wall / 2]) [x, y]];
+rig_bolt_zs = [rig_height * 0.3, rig_height * 0.75];
+module foot_rig_whole() {
+    difference() {
+        union() {
+            // walls
+            difference() {
+                translate([rig_x0, rig_y0, 0]) cube([rig_x1 - rig_x0, rig_y1 - rig_y0, rig_height]);
+                translate([-rig_c, -rig_c, -1]) cube([rig_L + 2 * rig_c, rig_W + 2 * rig_c, rig_height + 2]);
+            }
+            // floor rim
+            difference() {
+                translate([rig_x0, rig_y0, 0]) cube([rig_x1 - rig_x0, rig_y1 - rig_y0, rig_floor]);
+                translate([rig_rim - rig_c, rig_rim - rig_c, -1])
+                    cube([rig_L - 2 * (rig_rim - rig_c), rig_W - 2 * (rig_rim - rig_c), rig_floor + 2]);
+            }
+            // cross bar at the split, so each half keeps its shape
+            if (rig_crossbar) translate([rig_sx - 5, -rig_c, 0]) cube([10, rig_W + 2 * rig_c, rig_floor]);
+        }
+        for (m = rig_marks) translate([m.x, m.y, -1]) cylinder(h = rig_floor + 2, d = rig_mark_d, $fn = 16);
+        // cord notch, where the base has a cord slot
+        if (has_cord_slot)
+            translate([cord_slot[0] - cs_w / 2, rig_W - 1, foot_height + bed_plate_thickness - cord_slot[2]])
+                cube([cs_w, rig_c + rig_wall + 2, rig_height]);
+    }
+}
+module foot_rig_half(right) {
+    t = rig_wall;
+    difference() {
+        union() {
+            intersection() {
+                foot_rig_whole();
+                translate(right ? [rig_sx, -50, -1] : [rig_x0 - 1, -50, -1])
+                    cube([right ? rig_x1 - rig_sx + 1 : rig_sx - rig_x0 + 1, rig_W + 100, rig_height + 2]);
+            }
+            // splice tabs on the left half, outside the front and back walls
+            if (!right)
+                for (y = [rig_y0 - t, rig_y1])
+                    translate([rig_sx - rig_lap, y, 0]) cube([2 * rig_lap, t, rig_height]);
+        }
+        for (y = [rig_y0 - t - 1, rig_y1 - t - 1], dx = [-rig_lap / 2, rig_lap / 2], z = rig_bolt_zs)
+            translate([rig_sx + dx, y, z]) rotate([-90, 0, 0])
+                cylinder(h = 2 * t + 2, d = rig_bolt_d, $fn = 20);
+        for (sc = rig_screws)
+            if (right ? sc.x > rig_sx : sc.x < rig_sx)
+                translate([sc.x, sc.y, -1]) cylinder(h = rig_floor + 2, d = rig_screw_d, $fn = 20);
     }
 }
 

@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 446 parameters; 444 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 456 parameters; 454 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -288,6 +288,21 @@ There are 446 parameters; 444 of them appear in the Customizer. The rest are lis
 | `ph_stop_angle` | `60` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
 | `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
 | `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
+
+## Foot-locating rig
+
+| Parameter | Default | Description |
+|---|---|---|
+| `rig_height` | `80` | Parts foot_rig_left and foot_rig_right: a thin box that fits round the bed, to stand the machine on paper and print its inked feet. Wall height *Range 30 to 150, step 1.* |
+| `rig_wall` | `2.4` | Wall thickness *Range 1.2 to 5, step 0.2.* |
+| `rig_rim` | `10` | Floor rim, inward from the wall (it lies under the bed's edge) *Range 5 to 25, step 0.5.* |
+| `rig_floor` | `2` | Floor rim thickness *Range 1 to 5, step 0.2.* |
+| `rig_lap` | `15` | Overlap of the splice tabs past the split, each way *Range 8 to 30, step 1.* |
+| `rig_bolt_d` | `3.4` | Splice bolt holes (M3) *Range 2 to 5, step 0.1.* |
+| `rig_screw_d` | `3.5` | Screw holes through the floor rim, to fix the rig to a board *Range 2 to 6, step 0.1.* |
+| `rig_mark_in` | `5` | Marking holes in the floor rim, this far in from the bed's edges at each corner and at the split, for a pencil or awl *Range 3 to 9, step 0.5.* |
+| `rig_mark_d` | `1.6` |  *Range 0.8 to 3, step 0.1.* |
+| `rig_crossbar` | `false` | A floor bar across the split, to keep each half square before it is on the board (it covers the paper there) |
 
 ## Hinge coupon
 
