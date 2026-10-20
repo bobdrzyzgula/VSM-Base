@@ -23,7 +23,11 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   keys and mending plates, the storage compartment, the handholds and
   harness rods;
 - the back, left and corner extensions with their hinged lids, the printed
-  extension pegs, and the extended back lip;
+  extension pegs (tapped into the lips with a hammer; they then mate with
+  the base's holes), and the extended back lip;
+- the lollipop hinges, mounted with 1" #8-32 screws and nylon-insert
+  locknuts in the nut traps; the mending plates fit their pockets (their
+  screws are still to be tried);
 - the organizer insert test parts (`bobbin_test`, `notion_test`) and the
   full stack of five bobbin trays; a spool tray and a divided notion tray
   for the back bay. On the spool tray, in silk PLA, a curb split from the

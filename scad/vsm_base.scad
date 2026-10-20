@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 31
+// Singer 99 base, version 32
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -172,13 +172,16 @@
 // handhold and harness rods so the whole carries as one. The base keeps a
 // handhold, rods and right-rim peg holes of its own. Storage only for now;
 // its lid defaults to none. Parts right_bay and attach_test.
+//
+// v32: part hinge_nut_tool, a rod with a tapered tip that holds a nut in
+// its trap from below while the hinge screw is started from above.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -615,6 +618,8 @@ hinge_nut_width = 0; // [0 : 0.05 : 20]
 hinge_nut_depth = 21; // [8 : 0.5 : 60]
 // Sacrificial bridge over the nut trap (0 = none; drill through after printing)
 hinge_nut_bridge = 0.2;
+// Nut tool (part hinge_nut_tool): tip diameter, to fit the nut's bore (a nylon-insert locknut's insert: 1/8")
+hinge_nut_tool_tip = 3.0; // [1.5 : 0.05 : 6]
 
 /* [Mending plates] */
 // Number of plates across the split (0 = none)
@@ -2513,6 +2518,8 @@ if (part == "assembly") {
 } else if (part == "attach_test") {
     if (attached) attach_test();
     else if (report) echo("WARNING: attach_test needs compartment_mount = \"attached\"");
+} else if (part == "hinge_nut_tool") {
+    hinge_nut_tool();
 } else if (part == "split_test") {
     if (split) split_test();
     else if (report) echo("WARNING: split_test needs split = true");
@@ -3744,6 +3751,7 @@ build_parts = concat(
     ext_peg_style == "insert" && n_ext_pegs > 0
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
+    [["hinge_nut_tool", "small", [22, 22], []]],
     turn_button ? [["turn_button", "small", [turn_button_w + 1, tb_R + turn_button_w], []]] : [],
     has_knee ? [["knee_sector", "small", [kn_hub_r + 2 + kn_rs + 2 * kn_m, kn_cam_r + 2 + kn_rs + 2 * kn_m], []],
                 ["knee_idler", "small", [2 * (kn_r2 + 2 * kn_m), 2 * (kn_r2 + 2 * kn_m)], []],
@@ -3766,6 +3774,7 @@ module place_part(id) {
     else if (id == "base_whole")
         translate([0, tb_sw, 0]) base();
     else if (id == "right_bay")  translate([-base_x1, 0, 0]) right_bay();
+    else if (id == "hinge_nut_tool") translate([11, 11, 0]) hinge_nut_tool();
     else if (id == "back_ext")   translate([-bk_x0, -seat_y1, 0]) back_ext_part();
     else if (id == "left_ext")   translate([-lf_x0, -lf_y0, 0]) left_ext_part();
     else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();
@@ -3928,6 +3937,30 @@ module base_box(mn, mx, halves) {
 // the base; lower the right piece onto the left.
 split_test_y1 = min(keys) + key_head / 2 + 6;
 split_test_z1 = split_test_h > 0 ? max(split_test_h, floor_z + 2) : outer_depth + 1;
+// Hinge nut tool: a nut pushed onto the tip rides up the nut trap from
+// the underside and is held at its seat while the screw is started from
+// above; once the screw has caught, the tool comes out. A handle at the
+// bottom; the shaft, round, passes the hex trap; the shoulder pushes the
+// nut, and the tapered tip holds it by its bore. The shaft is long enough to
+// seat a nut 3 mm thick or more. Printed standing on the handle.
+ntool_af = nut_w(hinge_nut_spec, hinge_nut_width);
+ntool_d  = ntool_af - 1.2;                         // shaft
+ntool_l  = top_z - hinge_nut_depth - 3;            // shaft length, handle to shoulder
+module hinge_nut_tool() {
+    hd = 20; hh = 16;                              // handle
+    tp = hinge_nut_tool_tip;
+    difference() {
+        cylinder(h = hh, d = hd, $fn = 48);
+        for (a = [0 : 30 : 359]) rotate(a) translate([hd / 2 + 0.6, 0, -1]) cylinder(h = hh + 2, d = 3, $fn = 16);
+    }
+    translate([0, 0, hh]) cyl(h = ntool_l, d = ntool_d, chamfer2 = 0.6, anchor = BOTTOM, $fn = 40);
+    // tip: tapered so the bore grips it, pointed so it finds the bore
+    translate([0, 0, hh + ntool_l - overlap]) {
+        cylinder(h = 3 + overlap, d1 = tp + 0.3, d2 = tp - 0.3, $fn = 24);
+        translate([0, 0, 3]) cylinder(h = 1, d1 = tp - 0.3, d2 = tp - 1.2, $fn = 24);
+    }
+}
+
 // Attached-bay joint test: the base's end wall and the bay's inner wall
 // around the front lower screw and the front dowel, each printed upright as
 // in its part, side by side. Fit an insert, a dowel and a screw.
