@@ -31,6 +31,18 @@
 > in, do the opposite. Try changes on `lid_hinge_test`, which prints in a
 > few minutes, before printing a full lid.
 
+> **Note: infill near the hinges.** The base has been printed at 15%
+> infill without trouble, and that is enough at the hinges too: around the
+> screw holes, the hinge recesses and the nut traps, the load is carried by
+> the walls the slicer lays round every hole and face, not by the infill.
+> What matters is enough of them: use 4 wall loops rather than 2, and 5 or
+> more top and bottom shell layers, so the recess floors and the traps'
+> roofs are solid skins. For more margin, add a modifier in the slicer over
+> each hinge (in Bambu Studio, right-click the part, *Add modifier → Box*,
+> and move it over the recess and the trap below), with 40–50% infill and 5
+> or 6 walls; the halves print separately, so it is one box per hinge. The
+> printed hinge's arm and block are better printed denser throughout.
+
 > **Note: supports under the lips and trenches.** The extension lips and the
 > bobbin-plate trenches in the lids need supports. Standard (not tree)
 > supports, with a separate support material printed on the interface
