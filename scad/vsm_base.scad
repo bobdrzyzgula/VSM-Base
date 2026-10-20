@@ -250,7 +250,7 @@ split = true;
 
 /* [Machine] */
 // Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead.
-machine = "Singer 99K"; // [Singer 99K, Kenmore 158.14001, Custom]
+machine = "Singer 99K"; // [Singer 99K, Kenmore 158, Custom]
 // Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet
 bed_cushion_in = 0.0625;
 
@@ -696,8 +696,8 @@ rig_crossbar = false;
 // Breakaway tie across each half's open end at the split, holding the walls while printing; snap it off at its thin necks before bolting the halves together
 rig_tie = true;
 rig_tie_w = 6; // [3 : 0.5 : 12]
-// Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after
-rig_ears = true;
+// Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after. Off by default: a slicer's own mouse-ear brim (Bambu Studio's brim type "Mouse ear") does the same without brims round the discs
+rig_ears = false;
 rig_ear_d = 16; // [8 : 1 : 30]
 rig_ear_h = 0.4; // [0.2 : 0.1 : 1]
 
@@ -1303,9 +1303,16 @@ custom_settings = [
     ["cord_slot",              custom_cord_slot]
 ];
 
-profile_found = machine == "Custom" || !is_undef(struct_val(profiles, machine));
+// A profile is found by its full name, or by the start of it (the
+// Customizer's menu shows short names, and may rewrite numbers in them)
+function prefix_of(a, b) = len(a) <= len(b) && len([for (i = [0 : 1 : len(a) - 1]) if (a[i] != b[i]) i]) == 0;
+profile_names = [for (pr = profiles) pr[0]];
+profile_name  = machine == "Custom" ? "Custom"
+              : !is_undef(struct_val(profiles, machine)) ? machine
+              : let(m = [for (n = profile_names) if (prefix_of(machine, n)) n]) len(m) > 0 ? m[0] : undef;
+profile_found = !is_undef(profile_name);
 use_custom    = machine == "Custom" || !profile_found;
-active_profile = use_custom ? custom_settings : struct_val(profiles, machine);
+active_profile = use_custom ? custom_settings : struct_val(profiles, profile_name);
 function mach(key) =
     let(v = struct_val(active_profile, key))
     is_undef(v) ? struct_val(custom_settings, key) : v;
@@ -1327,11 +1334,11 @@ base_lid_notch         = mach("base_lid_notch");
 
 if (!profile_found)
     if (report) echo(str("WARNING: no profile named \"", machine,
-             "\"; using the Custom machine settings"));
+             "\"; using the Custom machine settings. Profiles: ", profile_names));
 if (use_custom) {
     if (report) echo("Machine: Custom (using the Custom machine settings)");
 } else {
-    if (report) echo(str("Machine: ", machine, " profile. The Custom machine settings are ignored."));
+    if (report) echo(str("Machine: ", profile_name, " profile. The Custom machine settings are ignored."));
     differs = [for (kv = custom_settings)
                   if (struct_val(active_profile, kv[0]) != kv[1]) kv[0] == "bed_reliefs" ? "custom_relief_1 to 6" : str("custom_", kv[0])];
     if (len(differs) > 0)

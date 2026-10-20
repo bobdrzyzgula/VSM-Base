@@ -38,7 +38,7 @@ There are 464 parameters; 462 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158.14001, Custom.* |
+| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158, Custom.* |
 | `bed_cushion_in` | `0.0625` | Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet |
 
 ## Custom machine: IGNORED unless machine = Custom
@@ -308,7 +308,7 @@ There are 464 parameters; 462 of them appear in the Customizer. The rest are lis
 | `rig_crossbar` | `false` | A floor bar across the split as well (it covers the paper there) |
 | `rig_tie` | `true` | Breakaway tie across each half's open end at the split, holding the walls while printing; snap it off at its thin necks before bolting the halves together |
 | `rig_tie_w` | `6` |  *Range 3 to 12, step 0.5.* |
-| `rig_ears` | `true` | Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after |
+| `rig_ears` | `false` | Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after. Off by default: a slicer's own mouse-ear brim (Bambu Studio's brim type "Mouse ear") does the same without brims round the discs |
 | `rig_ear_d` | `16` |  *Range 8 to 30, step 1.* |
 | `rig_ear_h` | `0.4` |  *Range 0.2 to 1, step 0.1.* |
 
