@@ -9,6 +9,26 @@
 - Choosing a side compartment, extensions, trenches and lid hinges.
 - Organizer inserts: bobbin trays (corner bay), notion trays and the spool tray (back or left bay, chosen with `ot_bay`), the stack-height budget the console reports, and the `*_assembly` views.
 
+> **Note: an attached bay.** A bed much over 12" is too long to print as
+> two halves with the side compartment built in. With
+> `compartment_mount = "attached"` the compartment becomes its own part,
+> `right_bay`, screwed to the base's right end. Four M5 socket-head screws go
+> through the base's end wall from inside the machine cavity (tip the machine
+> back on its hinges to reach them) into heat-set inserts in the bay's inner
+> wall, and two 3/16" dowels locate it, so its top sits flush with the base's.
+> The bay has its own handhold and harness rods at its outer end, so the
+> machine carries with the bay on; the base keeps its own right handhold,
+> rods and right-rim peg holes for when it is off. The bay's lid defaults to
+> none (`attached_lid_type`), since cords from the machine may lie over its
+> edge; hinged and lift-out lids are offered too. For now the attached bay is
+> storage only; the outlet and the knee controller are to follow. Print
+> `attach_test` first to try the inserts, dowels and screws. The console's
+> *Attached bay* lines give the sizes and the joint's positions, and warn if a
+> screw would run into a casting relief.
+>
+> ![An attached bay, pulled clear of the base (part `exploded`, with
+> `compartment_mount = "attached"`).](../images/renders/attached-bay.png){width=80%}
+>
 > **Note: an outlet base used for storage first.** Set
 > `compartment_option = "outlet"` and `passthrough_knockouts = true`: the
 > base gets the outlet's curbs and screw hole, but the cord pass-through is

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 30
+// Singer 99 base, version 31
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -163,13 +163,22 @@
 // foot of the long walls of every notion tray and the spool tray's curbs,
 // where a thin wall meets the floor at a single layer line; the spool
 // tray's curb is 14 mm tall (was 10), to stiffen its floor along its length.
+//
+// v31: the small compartment can be an attached bay (compartment_mount):
+// a separate part screwed to the base's right end, for beds too long to
+// print with a built-in compartment. Four M5 screws from inside the machine
+// cavity into heat-set inserts in the bay's inner wall, and two rod_d
+// dowels, hold it; its top is flush with the base, and it has its own
+// handhold and harness rods so the whole carries as one. The base keeps a
+// handhold, rods and right-rim peg holes of its own. Storage only for now;
+// its lid defaults to none. Parts right_bay and attach_test.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -204,6 +213,8 @@ plate_gap = 8; // [2 : 1 : 30]
 /* [Options] */
 // Small-compartment option ("none" = base fitted to the bed alone)
 compartment_option = "storage"; // [none, storage, outlet, knee, jack]
+// How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now)
+compartment_mount = "built-in"; // [built-in, attached]
 // Hinge type
 hinge_type = "lollipop"; // [lollipop]
 // Split into two dovetailed halves for printing
@@ -286,6 +297,32 @@ outer_rounding = 5; // [0 : 0.5 : 10]
 storage_inner_length = 70;
 // Lid ledge width around the small compartment
 lid_ledge = 10; // [5 : 0.5 : 20]
+/* [Attached bay] */
+// Attached bay's lid: none (the default, since cords from the machine may lie over the bay's edge), hinged (on the edge set by base_lid_hinge), or lift-out
+attached_lid_type = "none"; // [none, hinged, lift-out]
+// Joint screws: socket-head cap screws through the base's right end wall, from inside the machine cavity, into heat-set inserts in the bay's inner wall
+attach_screw_spec = "M5";
+// Joint screw clearance hole
+attach_screw_hole = 5.5; // [3 : 0.1 : 8]
+// Joint screw head counterbore, in the base's end wall from the cavity side
+attach_head_d = 9.5; // [5 : 0.1 : 14]
+// Wall left under each screw head
+attach_head_seat = 8; // [4 : 0.5 : 15]
+// Heat-set insert hole in the bay's inner wall (M5)
+attach_insert_d = 6.4; // [3 : 0.05 : 9]
+// Heat-set insert hole depth
+attach_insert_depth = 10; // [5 : 0.5 : 14]
+// Joint screws: distance in from the machine cavity's front and back walls
+attach_screw_inset = 12; // [6 : 0.5 : 40]
+// Dowels (rod_d rod, two): depth into each part
+attach_dowel_depth = 10; // [5 : 0.5 : 13]
+// Dowel hole in the base: press fit (diameter under rod_d)
+attach_dowel_press = 0.1; // [0 : 0.05 : 0.5]
+// Dowel hole in the bay: slip fit (diameter over rod_d)
+attach_dowel_slip = 0.2; // [0 : 0.05 : 0.6]
+// Bay's top web between the joint and its lid rabbet
+attach_web = 4; // [2 : 0.5 : 10]
+
 /* [Cord pass-through] */
 // Cord pass-through width (wide enough for both plugs' cords side by side)
 cord_hole_width = 46;
@@ -1225,8 +1262,15 @@ function hinge_screw_dy() =
         ? hinge_flange_diameter / 2 - hinge_mounting_hole_offset : undef;
 
 
+// Attached bay: the base ends at base_len, its own right end wall; the bay
+// runs from there to outer_length
+attached = has_compartment && compartment_mount == "attached";
+assert(!attached || compartment_option == "storage",
+       "An attached bay is storage only for now: set compartment_option = \"storage\" or compartment_mount = \"built-in\"");
+base_len = attached ? seat_x1 + max(rim_width, end_wall - bed_ledge) : undef;
+
 // Small compartment and its lid rabbet, same Y extent as the bed seat
-lid_x0 = seat_x1 + divider_web;
+lid_x0 = attached ? base_len + attach_web : seat_x1 + divider_web;
 st_x0  = lid_x0 + lid_ledge;
 st_x1  = st_x0 + storage_inner_length;
 lid_x1 = st_x1 + lid_ledge;
@@ -1249,6 +1293,7 @@ ol_cb = ol_through && outlet_screw_cap ? outlet_cap_t : 0;   // cap recess depth
 cord_hole_y = has_outlet ? ol_yc : (st_y0 + st_y1) / 2;
 
 outer_length = (has_compartment ? lid_x1 : seat_x1) + right_rim;
+base_x1 = attached ? base_len : outer_length;     // the base part's right end
 auto_back_rim = hinge_offset_y() + hinge_rear() + hinge_back_skin;
 back_rim      = back_rim_width > 0 ? back_rim_width : auto_back_rim;
 outer_width   = seat_y1 + back_rim;
@@ -1259,7 +1304,7 @@ divider_x1        = st_x0;
 divider_thickness = divider_x1 - divider_x0;
 
 // Split line, along Y at the center in X
-cut_x = outer_length / 2;
+cut_x = base_x1 / 2;
 
 // Bed edges (the bed is centered in its seat)
 bed_x0 = seat_x0 + bed_clearance;
@@ -1367,6 +1412,17 @@ notch_ys = [[notch_inset, notch_inset + notch_len],
 rod_runs = [[0, hh_y0 - rod_stop], [hh_y1 + rod_stop, outer_width]];
 rod_len  = rod_runs[0][1] - rod_runs[0][0] - max(0, rod_plug_len);
 
+// Attached bay's joint: screws near the corners of the base's right end
+// face, clear of the rod notches and the handhold; dowels between them
+att_hr   = attach_head_d / 2;
+att_ys   = [mc_y0 + attach_screw_inset, mc_y1 - attach_screw_inset];
+att_zs   = [max(floor_z + att_hr + 3, nt_z1 + nt_x1 + att_hr + 2), seat_floor_z - att_hr - 4];
+att_screws = [for (y = att_ys, z = att_zs) [y, z]];
+att_dowels = [[outer_width / 4, (floor_z + seat_floor_z) / 2],
+              [3 * outer_width / 4, (floor_z + seat_floor_z) / 2]];
+att_screw_len = attach_head_seat + attach_insert_depth - 2;
+n_rods = attached ? 6 : 4;                        // harness rods: two per end
+
 // Serrations: ridge start positions along Y in the front wall
 serr_wall = mc_y0;                                  // front wall thickness
 serr_n    = floor((serr_wall - 2 * serration_setback) / serration_pitch);
@@ -1420,7 +1476,7 @@ lf_lip = [[lf_x1 - overlap, bed_y0],
 
 peg_back_y = (seat_y1 + outer_width) / 2;
 peg_left_x = seat_x0 / 2 + 0.5;
-peg_right_x = outer_length - right_rim / 2 - 0.5;
+peg_right_x = attached ? base_x1 - (base_x1 - seat_x1) / 2 - 0.5 : outer_length - right_rim / 2 - 0.5;
 back_pegs  = [for (x = back_peg_xs) if (x - peg_d >= bk_x0 && x + peg_d <= bk_lip_x1) x];
 left_pegs  = [for (y = left_peg_ys) if (y - peg_d >= lf_lip[0].y && y + peg_d <= lf_lip[1].y) y];
 
@@ -1711,9 +1767,9 @@ if (report && ins_in(part, ot_parts)) {
 bk_size = [bk_lip_x1 - bk_x0, bk_y1 - seat_y1, ext_top_z];
 lf_size = [seat_x0 - lf_x0, lf_y1 - lf_y0, ext_top_z];
 cn_size = [cn_x1 - cn_x0 + ext_dt_depth, cn_y1 - cn_y0 + ext_dt_depth, ext_top_z];
-half_x  = max(cut_x + key_depth, outer_length - cut_x);
+half_x  = max(cut_x + key_depth, base_x1 - cut_x);
 base_size = split ? [half_x, outer_width, outer_depth]
-                  : [outer_length, outer_width, outer_depth];
+                  : [base_x1, outer_width, outer_depth];
 function fits(sz) = sz.x <= printer_size.x - 2 * printer_margin
                     && sz.y <= printer_size.y - 2 * printer_margin
                     && sz.z <= printer_size.z;
@@ -1725,6 +1781,21 @@ function near_split(x) = x > cut_x - peg_hole_d && x < cut_x + key_depth + peg_h
 
 if (report) echo(str("Outer size: ", outer_length, " x ", outer_width, " x ",
          outer_depth));
+if (report && attached) {
+    echo(str("Attached bay: the base is ", base_x1, " long, the bay ", outer_length - base_x1,
+             " (", outer_length, " together); bay inside ", st_x1 - st_x0, " x ", st_y1 - st_y0,
+             "; lid ", attached_lid_type));
+    echo(str("Joint: 4 x ", attach_screw_spec, " screws at Y ", att_ys, ", Z ", att_zs,
+             " (heads in the machine cavity, ", attach_head_seat, " mm of wall under them), into heat-set inserts in the bay; 2 dowels at Y ",
+             [for (q = att_dowels) round(q[0] * 10) / 10], ", Z ", att_dowels[0][1]));
+    for (rl = relief_boxes) if (rl[0] == "right")
+        for (q = att_screws)
+            if (q[0] + att_hr > rl[1].y && q[0] - att_hr < rl[2].y && q[1] + att_hr > rl[1].z)
+                echo(str("WARNING: the joint screw at Y ", q[0], ", Z ", q[1],
+                         " runs into a casting relief on the bed's right edge; change attach_screw_inset"));
+    if (att_zs[1] - att_zs[0] < 20)
+        echo("WARNING: the joint's screws are under 20 mm apart vertically; the joint will be weak in bending");
+}
 if (report) echo(str("Bed seat: ", seat_length, " x ", seat_width));
 if (report) echo(str("Machine cavity: ", mc_x1 - mc_x0, " x ", mc_y1 - mc_y0));
 if (has_compartment) {
@@ -1828,11 +1899,11 @@ if (report) echo(str("Back-wall tunnel runs: ", tunnel_runs));
 
 if (ext_peg_holes && len(right_peg_ys) > 0)
     if (report) echo(str("Right-rim peg holes at X ", peg_right_x, ", Y ", right_peg_ys,
-             " (rim ", right_rim, " wide)"));
+             " (rim ", attached ? base_x1 - seat_x1 : right_rim, " wide", attached ? ", on the base's own right rim; the attached bay doesn't use them" : "", ")"));
 if (report) echo(str("End walls: ", end_wall, " (rims L ", left_rim, ", R ", right_rim, ")"));
 if (harness_rods)
     if (report) echo(str("Harness rods: ", rod_d, " mm dia, ", rod_len, " mm (",
-             rod_len / in, " in) long, 4 needed; hole ", rod_hole_d));
+             rod_len / in, " in) long, ", n_rods, " needed", attached ? " (2 in the base's right end, 2 in the bay)" : "", "; hole ", rod_hole_d));
 if (handholds && handhold_depth > end_wall - 2)
     if (report) echo("WARNING: handhold leaves under 2 mm toward the cavity");
 if (harness_rods && nt_x1 > end_wall - 2)
@@ -2235,10 +2306,10 @@ if (split && plate_count > 0) {
              " mm), + ", n_plate_screws, " hex nuts"));
 }
 if (harness_rods)
-    if (report) echo(str("Harness rods: 4 x ", frac16(rod_d / in + 1 / 32), " (", rod_d,
+    if (report) echo(str("Harness rods: ", n_rods, " x ", frac16(rod_d / in + 1 / 32), " (", rod_d,
              " mm) rod, cut to ", round(rod_len * 10) / 10, " mm (",
              frac16(rod_len / in), "); steel, 303 stainless or lead-free brass",
-             rod_plug_len > 0 ? "; + 4 printed plugs (part rod_plugs)" : ""));
+             rod_plug_len > 0 ? str("; + ", n_rods, " printed plugs (part rod_plugs)") : ""));
 if (has_outlet) {
     if (report) echo(str("Outlet: 1 x dual sewing-machine outlet, about ", ol_L, " x ", ol_W, " x ", ol_T,
              " mm, center hole drilled through"));
@@ -2258,6 +2329,12 @@ if (report && n_ext_pegs > 0 && ext_peg_style == "pin")
 if (report && n_ext_pegs > 0 && ext_peg_style == "insert")
     echo(str("Extension pegs: ", n_ext_pegs, " printed (part ext_pegs, printed lying down), ",
              ext_peg_len, " mm long, pressed into the lips flush with the top; print spares"));
+if (report && attached)
+    echo(str("Attached bay joint: 4 x ", attach_screw_spec, " x ", stock_len(attach_screw_spec, att_screw_len),
+             " socket-head cap screws (heads in the machine cavity) and 4 x ", attach_screw_spec,
+             " heat-set inserts (in the bay's inner wall, ", attach_insert_depth, " mm holes); 2 x ",
+             frac16(rod_d / in + 1 / 32), " rod dowels, cut to ", 2 * attach_dowel_depth,
+             " mm, pressed into the base's right end face"));
 if (report && turn_button)
     echo(str("Turn button screw: 1 x ", turn_button_nut_spec, " x ",
              stock_len(turn_button_nut_spec, tb_screw_need), " pan head (at least ",
@@ -2306,6 +2383,7 @@ if (report) echo("=======================================");
 
 if (part == "assembly") {
     color("SteelBlue") base();
+    if (attached) color("CadetBlue") right_bay();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
     if (turn_button) color("LightSteelBlue") turn_button_part();
     if (has_knee) knee_in_place();
@@ -2326,6 +2404,7 @@ if (part == "assembly") {
 } else if (part == "exploded") {
     // Base (split if `split` is set) with every other part pulled clear
     color("SteelBlue") base_halves();
+    if (attached) color("CadetBlue") translate([explode + (split ? split_spread / 2 : 0), 0, 0]) right_bay();
     if (harness_rods && rod_plug_len > 0)
         color("LightSteelBlue") translate([0, -explode, 0]) rod_plugs();
     if (ol_cb > 0)
@@ -2428,6 +2507,12 @@ if (part == "assembly") {
         }
         knee_in_place(knee_view * kn_thx);
     }
+} else if (part == "right_bay") {
+    if (attached) translate([-base_x1, 0, 0]) right_bay();
+    else if (report) echo("WARNING: right_bay needs compartment_mount = \"attached\"");
+} else if (part == "attach_test") {
+    if (attached) attach_test();
+    else if (report) echo("WARNING: attach_test needs compartment_mount = \"attached\"");
 } else if (part == "split_test") {
     if (split) split_test();
     else if (report) echo("WARNING: split_test needs split = true");
@@ -2518,8 +2603,8 @@ module handhold_knockouts() {
     if (handholds && handhold_knockout) {
         x0 = handhold_lip_round + 0.4;
         len = handhold_bottom_len - 2 * handhold_height;   // lip length at its height
-        for (side = [0, 1])
-            translate(side == 0 ? [0, 0, 0] : [outer_length, 0, 0])
+        for (side = attached ? [0, 1, 2] : [0, 1])
+            translate(side == 0 ? [0, 0, 0] : [side == 1 ? outer_length : base_x1, 0, 0])
                 mirror(side == 0 ? [0, 0, 0] : [1, 0, 0])
                     union() {
                         translate([x0, hh_y - len / 2 + 0.5, 0])
@@ -2548,7 +2633,46 @@ module handhold_knockouts() {
     }
 }
 
+// The base part: the whole body, or with an attached bay, the body left of
+// the joint
 module base() {
+    if (attached)
+        intersection() {
+            base_body();
+            translate([-BIG / 2, -BIG / 2, -BIG / 2]) cube([BIG / 2 + base_x1, BIG, BIG]);
+        }
+    else base_body();
+}
+// The attached bay, in place: the body right of the joint
+module right_bay() {
+    if (attached)
+        intersection() {
+            base_body();
+            translate([base_x1, -BIG / 2, -BIG / 2]) cube([BIG, BIG, BIG]);
+        }
+}
+// Holes for the attached bay's joint: screws (counterbored from the cavity,
+// through the base's end wall, into insert holes in the bay's inner wall)
+// and dowels (press fit in the base, slip fit in the bay). Horizontal
+// holes are teardrops, point up, except the inserts'.
+module attach_cuts() {
+    for (q = att_screws) {
+        teardrop_x(mc_x1 - 1, q[0], q[1], base_x1 - attach_head_seat - mc_x1 + 1, attach_head_d);
+        teardrop_x(mc_x1 - 1, q[0], q[1], base_x1 - mc_x1 + 1 + overlap, attach_screw_hole);
+        translate([base_x1 - overlap, q[0], q[1]]) rotate([0, 90, 0])
+            cylinder(h = attach_insert_depth + overlap, d = attach_insert_d, $fn = 32);
+    }
+    for (q = att_dowels) {
+        teardrop_x(base_x1 - attach_dowel_depth - 0.5, q[0], q[1], attach_dowel_depth + 0.5 + overlap,
+                   rod_d - attach_dowel_press);
+        teardrop_x(base_x1 - overlap, q[0], q[1], attach_dowel_depth + 0.5 + overlap, rod_d + attach_dowel_slip);
+    }
+}
+module teardrop_x(x0, y, z, len, d) {
+    translate([x0, y, z]) rotate([0, 90, 0]) linear_extrude(height = len) rotate(90) teardrop_2d(d);
+}
+
+module base_body() {
     handhold_knockouts();
     if (has_outlet) outlet_curbs();
     if (has_knee) knee_base_add();
@@ -2615,8 +2739,10 @@ module base() {
         // Small-compartment lid hinge sockets
         if (has_compartment) lid_frame_cuts("base");
 
-        // Handholds and harness-rod notches under each end
-        for (side = [0, 1]) end_cuts(side);
+        // Handholds and harness-rod notches under each end (and under the
+        // base's own right end, with an attached bay)
+        for (side = attached ? [0, 1, 2] : [0, 1]) end_cuts(side);
+        if (attached) attach_cuts();
 
         // Peg holes for the extensions
         if (ext_peg_holes) {
@@ -3207,7 +3333,7 @@ module outlet_cap() {
 
 // Cord pass-through: its cross-section (Y across, Z up, from the tunnel's
 // floor centre), knock-out walls at both ends, and a removable cover.
-has_passthrough = has_compartment && compartment_option != "storage";
+has_passthrough = has_compartment && compartment_option != "storage" && !attached;
 module pt_profile(grow = 0) {
     w = cord_hole_width;
     h = cord_hole_height;
@@ -3321,7 +3447,8 @@ module outlet_slots() {
 function lid_info(which) =
     which == "base"   ? [[[lid_x0, seat_y0], [lid_x1, seat_y1]], top_z,
                          rabbit_depth, has_outlet ? outlet_lid_hinge : base_lid_hinge,
-                         base_lid_type, base_lid_style, base_lid_grip, base_lid_tab_edge]
+                         attached ? attached_lid_type : base_lid_type,
+                         base_lid_style, base_lid_grip, base_lid_tab_edge]
   : which == "back"   ? [bk_rab, ext_top_z, ext_lid_thickness, back_lid_hinge,
                          back_lid_type, back_lid_style, back_lid_grip, back_lid_tab_edge]
   : which == "left"   ? [lf_rab, ext_top_z, ext_lid_thickness, left_lid_hinge,
@@ -3331,7 +3458,7 @@ function lid_info(which) =
                          corner_lid_tab_edge];
 // Outer faces around a lid's compartment: [[x0, y0], [x1, y1]]
 function lid_body(which) =
-    which == "base" ? [[0, 0], [outer_length, outer_width]]
+    which == "base" ? [[attached ? base_x1 : 0, 0], [outer_length, outer_width]]
   : which == "back" ? [[bk_x0, bk_y0], [bk_x1, bk_y1]]
   : which == "left" ? [[lf_x0, lf_y0], [lf_x1, lf_y1]]
   :                   [[cn_x0, cn_y0], [cn_x1, cn_y1]];
@@ -3600,8 +3727,9 @@ function tab_pad(w) = (lid_on(w) && has_tab(w) ? 2 * (grip_D(w) + grip_tab_over 
 // [id, kind, [w, h], support layers]
 build_parts = concat(
     split ? [["base_left",  "base", [cut_x + key_depth + 0.5, outer_width + tb_sw], []],
-             ["base_right", "base", [outer_length - cut_x, outer_width + tb_sw], []]]
-          : [["base_whole", "base", [outer_length, outer_width + tb_sw], []]],
+             ["base_right", "base", [base_x1 - cut_x, outer_width + tb_sw], []]]
+          : [["base_whole", "base", [base_x1, outer_width + tb_sw], []]],
+    attached ? [["right_bay", "extension", [outer_length - base_x1, outer_width], []]] : [],
     has_back   ? [["back_ext",   "extension", [bk_size.x, bk_size.y], ext_support("back")]] : [],
     has_left   ? [["left_ext",   "extension", [lf_size.x, lf_size.y], ext_support("left")]] : [],
     has_corner ? [["corner_ext", "extension", [cn_size.x, cn_size.y], []]] : [],
@@ -3611,7 +3739,7 @@ build_parts = concat(
     [for (w = ["base", "back", "left", "corner"]) if (lid_on(w))
         [str("lid_", w), "lid", lid_size(w) + [tab_pad(w), tab_pad(w)], lid_support(w)]],
     harness_rods && rod_plug_len > 0
-        ? [["rod_plugs", "small", [4 * (rod_hole_d + 5), rod_hole_d + 2], []]] : [],
+        ? [["rod_plugs", "small", [n_rods * (rod_hole_d + 5), rod_hole_d + 2], []]] : [],
     ol_cb > 0 ? [["outlet_cap", "small", [outlet_cap_d + 1.4, outlet_cap_d + 1.4], []]] : [],
     ext_peg_style == "insert" && n_ext_pegs > 0
         ? [["ext_pegs", "small",
@@ -3637,6 +3765,7 @@ module place_part(id) {
         translate([-cut_x, tb_sw, 0]) difference() { base(); split_mask(split_clearance); }
     else if (id == "base_whole")
         translate([0, tb_sw, 0]) base();
+    else if (id == "right_bay")  translate([-base_x1, 0, 0]) right_bay();
     else if (id == "back_ext")   translate([-bk_x0, -seat_y1, 0]) back_ext_part();
     else if (id == "left_ext")   translate([-lf_x0, -lf_y0, 0]) left_ext_part();
     else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();
@@ -3753,7 +3882,7 @@ if (report) {
                      " layers (Z ", p[3], "): more filament changes; ",
                      p[1] == "extension" ? "use ext_peg_style insert or pin" : "check the design"));
     }
-    if (split && fits([outer_length, outer_width + tb_sw, outer_depth]))
+    if (split && fits([base_x1, outer_width + tb_sw, outer_depth]))
         echo("NOTE: the whole base fits this bed inside the margin; split = false would print it in one piece, with no mending plates, screws or nut traps");
 }
 
@@ -3799,6 +3928,24 @@ module base_box(mn, mx, halves) {
 // the base; lower the right piece onto the left.
 split_test_y1 = min(keys) + key_head / 2 + 6;
 split_test_z1 = split_test_h > 0 ? max(split_test_h, floor_z + 2) : outer_depth + 1;
+// Attached-bay joint test: the base's end wall and the bay's inner wall
+// around the front lower screw and the front dowel, each printed upright as
+// in its part, side by side. Fit an insert, a dowel and a screw.
+att_t_y = [att_ys[0] - att_hr - 6, att_dowels[0][0] + rod_d / 2 + 6];
+att_t_z = [att_zs[0] - att_hr - 5, att_dowels[0][1] + rod_d / 2 + 5];
+module attach_test() {
+    lo = [mc_x1 - 1, att_t_y[0], att_t_z[0]];
+    hi = [st_x0, att_t_y[1], att_t_z[1]];
+    translate([-lo.x, -lo.y, -lo.z]) intersection() {
+        base();
+        translate(lo) cube([base_x1 - lo.x, hi.y - lo.y, hi.z - lo.z]);
+    }
+    translate([base_x1 - lo.x + 10 - base_x1, -lo.y, -lo.z]) intersection() {
+        right_bay();
+        translate([base_x1, lo.y, lo.z]) cube([hi.x - base_x1, hi.y - lo.y, hi.z - lo.z]);
+    }
+}
+
 module split_test() {
     x0 = cut_x - split_test_w;
     translate([-x0, 1, 0])
@@ -3994,7 +4141,7 @@ module rod_plug() {
 
 module rod_plugs() {
     sp = rod_hole_d + 5;
-    for (i = [0 : 3]) translate([i * sp, 0, 0]) rod_plug();
+    for (i = [0 : n_rods - 1]) translate([i * sp, 0, 0]) rod_plug();
 }
 
 // Cuts in one end (side 0 = left, 1 = right), built for the left end and
@@ -4002,7 +4149,11 @@ module rod_plugs() {
 module end_cuts(side) {
     module place() {
         if (side == 0) children();
-        else translate([outer_length, 0, 0]) mirror([1, 0, 0]) children();
+        else if (side == 1) translate([outer_length, 0, 0]) mirror([1, 0, 0]) children();
+        else intersection() {            // the base's own right end: keep out of the bay
+            translate([base_x1, 0, 0]) mirror([1, 0, 0]) children();
+            translate([-BIG / 2, -BIG / 2, -BIG / 2]) cube([BIG / 2 + base_x1, BIG, BIG]);
+        }
     }
     place() {
         if (handholds) {

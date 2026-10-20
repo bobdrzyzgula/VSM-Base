@@ -38,7 +38,7 @@ one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes, the standalone bobbin box, and the motor test rig; the turn button; pin or molded extension pegs; the
+the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; the turn button; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
@@ -73,7 +73,9 @@ fit on your printer, and then print a base that fits.
   light-and-motor outlet with cord slots in its lid; a **knee controller**
   (draft) built around an inexpensive pedal speed-control board, with a
   geared pot, an off switch and hard stops; or a base fitted to the bed
-  alone.
+  alone. For beds too long to print with the compartment built in, it can
+  be a separate bay screwed to the base's right end, with its own handhold
+  and harness rods (storage only, for now).
 - **Handholds** under each end, after the original wooden bases, and steel
   rods for a carrying harness.
 - **Removable extensions** that sit level with the bed: a back compartment

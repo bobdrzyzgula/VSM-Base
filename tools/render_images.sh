@@ -36,3 +36,4 @@ render end-underside   "-170,-60,-90,15,110,20"    -D 'part="base"' -D 'split=fa
 render split           "211,108,41,60,0,20,800"   -D 'part="base"'
 # Knee controller: cutaway of the right bay with the mechanism in place
 preview knee            "360,85,30,50,0,25,440"    -D 'part="knee_assembly"' -D 'compartment_option="knee"'
+render attached-bay       "260,110,40,55,0,25,820"   -D 'part="exploded"' -D 'compartment_mount="attached"' -D back_ext=false -D left_ext=false -D corner_ext=false -D split=false

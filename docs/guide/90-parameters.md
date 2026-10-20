@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 409 parameters; 407 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 422 parameters; 420 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -30,6 +30,7 @@ There are 409 parameters; 407 of them appear in the Customizer. The rest are lis
 | Parameter | Default | Description |
 |---|---|---|
 | `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
+| `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
 | `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop.* |
 | `split` | `true` | Split into two dovetailed halves for printing |
 
@@ -92,6 +93,23 @@ There are 409 parameters; 407 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `storage_inner_length` | `70` | Inner length of the small compartment (X) |
 | `lid_ledge` | `10` | Lid ledge width around the small compartment *Range 5 to 20, step 0.5.* |
+
+## Attached bay
+
+| Parameter | Default | Description |
+|---|---|---|
+| `attached_lid_type` | `"none"` | Attached bay's lid: none (the default, since cords from the machine may lie over the bay's edge), hinged (on the edge set by base_lid_hinge), or lift-out *Choices: none, hinged, lift-out.* |
+| `attach_screw_spec` | `"M5"` | Joint screws: socket-head cap screws through the base's right end wall, from inside the machine cavity, into heat-set inserts in the bay's inner wall |
+| `attach_screw_hole` | `5.5` | Joint screw clearance hole *Range 3 to 8, step 0.1.* |
+| `attach_head_d` | `9.5` | Joint screw head counterbore, in the base's end wall from the cavity side *Range 5 to 14, step 0.1.* |
+| `attach_head_seat` | `8` | Wall left under each screw head *Range 4 to 15, step 0.5.* |
+| `attach_insert_d` | `6.4` | Heat-set insert hole in the bay's inner wall (M5) *Range 3 to 9, step 0.05.* |
+| `attach_insert_depth` | `10` | Heat-set insert hole depth *Range 5 to 14, step 0.5.* |
+| `attach_screw_inset` | `12` | Joint screws: distance in from the machine cavity's front and back walls *Range 6 to 40, step 0.5.* |
+| `attach_dowel_depth` | `10` | Dowels (rod_d rod, two): depth into each part *Range 5 to 13, step 0.5.* |
+| `attach_dowel_press` | `0.1` | Dowel hole in the base: press fit (diameter under rod_d) *Range 0 to 0.5, step 0.05.* |
+| `attach_dowel_slip` | `0.2` | Dowel hole in the bay: slip fit (diameter over rod_d) *Range 0 to 0.6, step 0.05.* |
+| `attach_web` | `4` | Bay's top web between the joint and its lid rabbet *Range 2 to 10, step 0.5.* |
 
 ## Cord pass-through
 

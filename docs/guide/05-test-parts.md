@@ -14,6 +14,7 @@
   (lower the right half onto the left).
 - Rod plugs: press fit in the end strip's rod holes.
 - Cordset entry test (its own part, `part = "knee_entry_test"`, knee controller only): the 4.4 mm wall with the cordset's entry hole, the dimple for its clip and the clip's guides, to try the cordset's molded entry and steel clip.
+- Attached-bay joint test (its own part, `part = "attach_test"`, attached bay only): the base's end wall and the bay's inner wall around one screw and one dowel, each printed upright as in its part. Fit an M5 heat-set insert, press in a dowel, and try the screw and the fit of the two faces.
 - Split test (its own part, `part = "split_test"`, not in the test set): just the front of the split joint, both halves, with the front-wall serrations and the first dovetail key, for a quick check of a serrated joint. The wall stubs are `split_test_h` tall (30 mm; 0 for full height).
 - Outlet block (outlet compartment only): curbs, screw height, and the
   insert or through-screw hole, with your outlet and plugs in place.
