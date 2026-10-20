@@ -199,7 +199,12 @@
 // tied to the lid rabbet. Lips recessed into the rim when the bed stands
 // less than lip_min_t above it, with trims (back_trim, left_trim) for use
 // without extensions; cord_slot through the back rim, with cord_slot_trim.
-// Kenmore 158.14001 profile (measured by Bob Drzyzgula).
+// Kenmore 158-14001 profile (measured by Bob Drzyzgula).
+//
+// v40: Kenmore profile named 158-14001: the Customizer reads a number
+// such as 158.14001 in a menu entry as a number and shortens it, so
+// profile names use a dash. Profiles are still found by the start of the
+// name.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -250,7 +255,7 @@ split = true;
 
 /* [Machine] */
 // Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead.
-machine = "Singer 99K"; // [Singer 99K, Kenmore 158, Custom]
+machine = "Singer 99K"; // [Singer 99K, Kenmore 158-14001, Custom]
 // Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet
 bed_cushion_in = 0.0625;
 
@@ -635,7 +640,7 @@ hinge_mounting_hole_diameter = 5; // [2 : 0.1 : 10]
 hinge_mounting_hole_offset = 9.5;
 
 /* [Printed hinge] */
-// Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158)
+// Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001)
 ph_pin_d = 0; // [0 : 0.01 : 12]
 // How far the pin enters the bed's hole; 0 = from the machine profile
 ph_pin_engage = 0; // [0 : 0.5 : 30]
@@ -1218,6 +1223,9 @@ key_play = split_clearance + split_clearance / sin(key_flare_angle);
 // the `machine` list in the Customizer section at the top. Keys are the
 // "Custom machine" settings without "custom_". Measure your own casting
 // before trusting a profile: castings vary, even within a model.
+// Name profiles with a dash, not a decimal point, in model numbers
+// ("Kenmore 158-14001"): the Customizer's menu reads 158.14001 as a number
+// and shortens it.
 // ---------------------------------------------------------------------------
 
 profiles = [
@@ -1245,7 +1253,7 @@ profiles = [
         ["foot_height_mm",         0],
         ["cord_slot",              [0, 0, 0, 0]]
     ]],
-    ["Kenmore 158.14001", [
+    ["Kenmore 158-14001", [
         // 425 x 185 mm bed, 7 mm plate, sitting flush in its base on three
         // cast feet 63 mm below the plate; bobbin cover hinged, so no
         // trenches. Hinge holes 6 mm, 90 mm from each end, 6.75 mm below

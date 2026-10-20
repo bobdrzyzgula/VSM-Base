@@ -37,7 +37,7 @@
 > at the bed hole's height from your measurements, so the pin always lines
 > up. The arm and cheeks are cut down flush with the rim wherever that
 > leaves `ph_min_cover` (2.5 mm) of plastic over the rods: on the
-> Kenmore 158, whose holes are 6.75 mm down, the whole hinge is flush; on
+> Kenmore 158-14001, whose holes are 6.75 mm down, the whole hinge is flush; on
 > the 99K, whose holes are only 4 mm down, the arm stands 1.7 mm proud, and
 > the back extension's lip is notched around it. The block and the base's
 > recess are larger than the lollipop's, so the back rim is about 8 mm
@@ -61,7 +61,7 @@
 > back rim before the stop. Print the hinges in PETG or another tough
 > filament; their rods are cut-to-length steel rod or dowel pins. The pin's
 > diameter and how far it goes into the hole come from the machine profile
-> (1/4" and 12 mm for the 99K, 6 mm and 16 mm for the Kenmore 158), unless
+> (1/4" and 12 mm for the 99K, 6 mm and 16 mm for the Kenmore 158-14001), unless
 > you set `ph_pin_d` and `ph_pin_engage`; the pivot is `ph_pivot_d` (1/4").
 > The console's *Printed hinge* lines give the sizes, the rod lengths, and
 > where the parts stand against the rim. The printed hinge is new in v34
@@ -95,7 +95,7 @@
 > that will never have extensions. On the 99K nothing changes.
 >
 > **Note: a cord slot.** Where a machine's cords leave the casting at the
-> back (the Kenmore 158's foot-control connector, 50 mm from the right
+> back (the Kenmore 158-14001's foot-control connector, 50 mm from the right
 > end), the profile's `cord_slot` cuts a slot through the back rim from the
 > top down to the cords' height. Unplug the connector, lay the cords into
 > the slot, and plug it back in; then press part `cord_slot_trim` into the

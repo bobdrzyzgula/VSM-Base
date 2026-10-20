@@ -42,7 +42,7 @@ one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158.14001 profile; the turn button; pin or molded extension pegs; the
+the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158-14001 profile; the turn button; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
@@ -77,7 +77,7 @@ fit on your printer, and then print a base that fits.
 - **Beds set flush or standing on their feet**, as on 1960s Kenmores, with
   the extensions' lips recessed into the rim and trim strips to fill the
   cuts when the extensions are off, and a slot for cords that leave the
-  casting. Profiles for the Singer 99K and the Kenmore 158.14001.
+  casting. Profiles for the Singer 99K and the Kenmore 158-14001.
 - **Prints in two halves** on a 256 mm printer, joined by dovetail keys and
   three recessed steel mending plates with captive nuts.
 - **Optional side compartment**: storage; a mount for the machine's

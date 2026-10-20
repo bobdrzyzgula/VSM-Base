@@ -2,8 +2,7 @@
 
 *This chapter is an outline, still to be written. It will cover:*
 
-- The profiles so far: the Singer 99K, and the Kenmore 158.14001 ("Kenmore 158"
-  in the Customizer's menu; a
+- The profiles so far: the Singer 99K, and the Kenmore 158-14001 (a
   425 × 185 mm bed set flush and carried on its three feet, 6 mm hinge
   holes, a cord slot at the back), measured by Bob Drzyzgula. The Kenmore's
   bed is too long for halves with the side compartment built in: use

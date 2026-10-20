@@ -127,7 +127,7 @@ Measure the hinge holes' diameter. For lollipop hinges it isn't a model
 parameter, but it is the diameter of the hinge pins you need. For the
 printed hinge it sets the steel pin's diameter (`custom_hinge_pin_d_mm`):
 choose rod just under the hole's size, so the pin slides in without play.
-On the 99 the holes are 1/4"; on the Kenmore 158, 6 mm. Measure how deep
+On the 99 the holes are 1/4"; on the Kenmore 158-14001, 6 mm. Measure how deep
 the holes go too, if you can, or how far the old hinge's pins went in: the
 printed hinge's pin enters them by `custom_hinge_pin_engage_mm` (12 mm on
 the 99K, 16 mm on the Kenmore), which must not be more than their depth.
@@ -243,7 +243,7 @@ bed's edges, at the corners and at the split; the console lists their
 exact positions), ink the feet, and lower the machine into the box. Measure
 each foot's print from the marks. The rig is cut for the machine profile in
 use, with a notch for its cords if it has a cord slot. Everything
-else under the bed must then be shorter than the feet; the Kenmore 158's
+else under the bed must then be shorter than the feet; the Kenmore 158-14001's
 feet are 63 mm. Note, too, anything that leaves the casting through its
 edge, such as a cord, for `custom_cord_slot`.
 

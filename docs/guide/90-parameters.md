@@ -38,7 +38,7 @@ There are 464 parameters; 462 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158, Custom.* |
+| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158-14001, Custom.* |
 | `bed_cushion_in` | `0.0625` | Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet |
 
 ## Custom machine: IGNORED unless machine = Custom
@@ -272,7 +272,7 @@ There are 464 parameters; 462 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158) *Range 0 to 12, step 0.01.* |
+| `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001) *Range 0 to 12, step 0.01.* |
 | `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile *Range 0 to 30, step 0.5.* |
 | `ph_pin_embed` | `16` | Length of the pin pressed into the arm *Range 8 to 30, step 0.5.* |
 | `ph_pivot_d` | `6.35` | Steel pivot rod, running along the back through the block and the arm: diameter *Range 3 to 12, step 0.01.* |
