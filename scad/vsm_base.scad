@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 32
+// Singer 99 base, version 33
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -175,6 +175,11 @@
 //
 // v32: part hinge_nut_tool, a rod with a tapered tip that holds a nut in
 // its trap from below while the hinge screw is started from above.
+//
+// v33: hinge_type "none", a base for a machine without hinges: no hinge
+// recesses, nut traps, checks or hardware; the back-wall tunnels run the
+// whole back wall. The back rim stays as wide as with hinges unless
+// back_rim_width is set, so extensions are shared.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -219,7 +224,7 @@ compartment_option = "storage"; // [none, storage, outlet, knee, jack]
 // How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now)
 compartment_mount = "built-in"; // [built-in, attached]
 // Hinge type
-hinge_type = "lollipop"; // [lollipop]
+hinge_type = "lollipop"; // [lollipop, none]
 // Split into two dovetailed halves for printing
 split = true;
 
@@ -1249,21 +1254,25 @@ mc_y1 = seat_y1 - bed_ledge;
 //   hinge_half_x   : half the footprint width (X)
 //   hinge_pin_z    : pin axis below the top surface
 //   hinge_screw_dy : screw hole behind the hinge center (Y)
+// "none" keeps the lollipop's footprint for sizing (the back rim), so a
+// base without hinges matches one with them and shares its extensions
+has_hinges  = hinge_type != "none";
+hinge_sized = hinge_type == "none" ? "lollipop" : hinge_type;
 function hinge_offset_y() =
-    hinge_type == "lollipop"
+    hinge_sized == "lollipop"
         ? hinge_flange_diameter / 2
           + (hinge_pin_square_projection - hinge_pin_allowed_projection)
         : undef;
 function hinge_rear() =
-    hinge_type == "lollipop" ? hinge_flange_diameter / 2 : undef;
+    hinge_sized == "lollipop" ? hinge_flange_diameter / 2 : undef;
 function hinge_half_x() =
-    hinge_type == "lollipop"
+    hinge_sized == "lollipop"
         ? max(hinge_flange_diameter,
               1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance)) / 2 : undef;
 function hinge_pin_z() =
-    hinge_type == "lollipop" ? hinge_pin_height / 2 : undef;
+    hinge_sized == "lollipop" ? hinge_pin_height / 2 : undef;
 function hinge_screw_dy() =
-    hinge_type == "lollipop"
+    hinge_sized == "lollipop"
         ? hinge_flange_diameter / 2 - hinge_mounting_hole_offset : undef;
 
 
@@ -1380,11 +1389,11 @@ tunnel_blocks = concat(
     [[cut_x - split_keepout, cut_x + split_keepout]],
     [for (rl = relief_boxes) if (rl[0] == "back")
         [rl[1].x - hinge_tunnel_margin, rl[2].x + hinge_tunnel_margin]]);
-tunnel_runs = [for (r = cut_runs([[hinge_x1 + hinge_keepout,
-                                   hinge_x2 - hinge_keepout]], tunnel_blocks))
+tunnel_runs = [for (r = cut_runs(has_hinges ? [[hinge_x1 + hinge_keepout, hinge_x2 - hinge_keepout]]
+                                            : [[mc_x0 + tunnel_web, mc_x1 - tunnel_web]], tunnel_blocks))
                   if (r[1] - r[0] >= tunnel_width / 2) r];
 // Behind the small compartment, clear of the right hinge
-st_tunnel_x0  = max(st_x0, hinge_x2 + hinge_keepout);
+st_tunnel_x0  = has_hinges ? max(st_x0, hinge_x2 + hinge_keepout) : st_x0;
 st_tunnel_y0  = st_y1 - overlap;
 st_tunnel_len = (outer_width - back_skin) - st_tunnel_y0;
 
@@ -1780,8 +1789,8 @@ function fits(sz) = sz.x <= printer_size.x - 2 * printer_margin
                     && sz.z <= printer_size.z;
 
 // Peg holes vs hinges and the split
-function near_hinge(x) = abs(x - hinge_x1) < hinge_keepout
-                      || abs(x - hinge_x2) < hinge_keepout;
+function near_hinge(x) = has_hinges && (abs(x - hinge_x1) < hinge_keepout
+                      || abs(x - hinge_x2) < hinge_keepout);
 function near_split(x) = x > cut_x - peg_hole_d && x < cut_x + key_depth + peg_hole_d;
 
 if (report) echo(str("Outer size: ", outer_length, " x ", outer_width, " x ",
@@ -1809,11 +1818,13 @@ if (has_compartment) {
 } else
     if (report) echo("No side compartment");
 if (report) echo(str("Hinge: ", hinge_type, "  back rim: ", back_rim,
-         back_rim_width > 0 ? " (set)" : " (from hinge)"));
-if (report) echo(str("Hinge centers X: ", hinge_x1, ", ", hinge_x2,
+         back_rim_width > 0 ? " (set)" : has_hinges ? " (from hinge)" : " (as for a lollipop hinge, so extensions match; set back_rim_width for a narrower rim)"));
+if (report && has_hinges) echo(str("Hinge centers X: ", hinge_x1, ", ", hinge_x2,
          "  spacing: ", hinge_hole_spacing, "  Y: ", hinge_y));
+if (report && !has_hinges)
+    echo("NOTE: no hinges: nothing holds the machine in its seat, so carry the machine and base separately or strap them; reach the cavity by lifting the machine out");
 if (report) echo(str("Bed top above base top: ", bed_top_z - top_z));
-if (report) echo(str("Bed hole axis Z: ", hole_axis_z, "  pin axis Z: ", pin_axis_z));
+if (report && has_hinges) echo(str("Bed hole axis Z: ", hole_axis_z, "  pin axis Z: ", pin_axis_z));
 if (report) echo(str("Mending plates at Y: ", plate_ys));
 if (report) echo(str("Plate screw length (flat head) ~", plate_screw_len, " mm (",
          plate_screw_len / in, " in)"));
@@ -1825,12 +1836,12 @@ if (report && turn_button)
              (tb_x - tb_Lt / 2 - turn_button_ease < cut_x + key_depth + 3
               && tb_x + tb_Lt / 2 + turn_button_ease > cut_x - 3)
                  ? "  WARNING: the pad crosses the split" : ""));
-if (report) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 - hc_x0, " x ", hc_y1 - hc_y0,
+if (report && has_hinges) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 - hc_x0, " x ", hc_y1 - hc_y0,
          " x ", hc_t, " mm. In a wooden base, mortise it flush, its front edge on the back wall of the ",
          "bed opening; its top goes ", bed_top_z - top_z, " mm below the bed top, ",
          "hinge centers ", hinge_hole_spacing, " mm apart, pin axis ", top_z - pin_axis_z,
          " mm below the coupon top"));
-if (report) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
+if (report && has_hinges) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
          hinge_screw_len / in, " in), measured from the top surface"));
 if (report) echo(str("Dovetail keys at Y: ", keys, "  head width ", key_head,
          "  pull-apart play ~", key_play, " mm"));
@@ -1916,9 +1927,9 @@ if (harness_rods && nt_x1 > end_wall - 2)
 if (harness_rods && notch_ys[0][1] > hh_y0 - rod_stop - 3)
     if (report) echo("WARNING: rod notch runs into the handhold zone");
 
-if (back_rim < hinge_offset_y() + hinge_rear() + 2)
+if (has_hinges && back_rim < hinge_offset_y() + hinge_rear() + 2)
     if (report) echo("WARNING: back rim leaves under 2 mm behind the hinge");
-if (abs(hole_axis_z - pin_axis_z) > 0.25)
+if (has_hinges && abs(hole_axis_z - pin_axis_z) > 0.25)
     if (report) echo(str("WARNING: hinge pin axis is off the bed hole axis by ",
              pin_axis_z - hole_axis_z, " mm"));
 if (split && key_plate_gap < 1)
@@ -2298,8 +2309,8 @@ plate_w_label    = is_metric(plate_nut_spec) ? str(plate_width, " mm")
                                              : frac16(plate_width / in + 1 / 32);
 
 if (report) echo("=== Hardware for this configuration ===");
-if (report) echo(str("Hinges: 2 x ", hinge_type));
-if (report) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
+if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type));
+if (report && has_hinges) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
          stock_len(hinge_nut_spec, hinge_screw_need),
          " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts"));
 if (split && plate_count > 0) {
@@ -2479,7 +2490,8 @@ if (part == "assembly") {
 } else if (part == "corner_box") {
     translate([-cn_x0, -cn_y0, 0]) corner_box();
 } else if (part == "hinge_coupon") {
-    hinge_coupon();
+    if (has_hinges) hinge_coupon();
+    else if (report) echo("WARNING: hinge_coupon needs a hinge_type other than none");
 } else if (part == "outlet_cap") {
     if (ol_cb > 0) outlet_cap();
 } else if (part == "rod_plugs") {
@@ -2736,8 +2748,9 @@ module base_body() {
         }
 
         // Hinge recesses and nut traps
-        for (hx = [hinge_x1, hinge_x2])
-            hinge_cutter(hx, hinge_y);
+        if (has_hinges)
+            for (hx = [hinge_x1, hinge_x2])
+                hinge_cutter(hx, hinge_y);
 
         // Mending plates across the split
         for (py = plate_ys)
@@ -2773,7 +2786,7 @@ module base_body() {
 
 // Recess for one hinge of the selected type, centered on (x, y).
 module hinge_cutter(x, y) {
-    if (hinge_type == "lollipop")
+    if (hinge_sized == "lollipop")
         lollipop_hinge_cutter(x, y);
     else
         assert(false, str("Unknown hinge_type: ", hinge_type));
@@ -3751,7 +3764,7 @@ build_parts = concat(
     ext_peg_style == "insert" && n_ext_pegs > 0
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
-    [["hinge_nut_tool", "small", [22, 22], []]],
+    has_hinges ? [["hinge_nut_tool", "small", [22, 22], []]] : [],
     turn_button ? [["turn_button", "small", [turn_button_w + 1, tb_R + turn_button_w], []]] : [],
     has_knee ? [["knee_sector", "small", [kn_hub_r + 2 + kn_rs + 2 * kn_m, kn_cam_r + 2 + kn_rs + 2 * kn_m], []],
                 ["knee_idler", "small", [2 * (kn_r2 + 2 * kn_m), 2 * (kn_r2 + 2 * kn_m)], []],
@@ -4064,6 +4077,7 @@ module test_parts() {
     hx0 = hinge_x1 - test_hinge_w / 2;
     hy0 = seat_y1 - 15;
     x_hg = x_sl + test_slice_w + test_split_gap + g;
+    if (has_hinges)
     translate([x_hg - hx0, row3 - hy0, 0])
         base_box([hx0, hy0, -1], [hinge_x1 + test_hinge_w / 2, W + 1, outer_depth + 1],
                  false);
@@ -4102,7 +4116,7 @@ module test_parts() {
     }
 
     // Hinge coupon, above the plugs
-    translate([x_en + end_wall + 3 + g, row3 + 30, 0]) hinge_coupon();
+    if (has_hinges) translate([x_en + end_wall + 3 + g, row3 + 30, 0]) hinge_coupon();
 
     // Turn button: a slice of the front rim with the pad and nut slot, and the button
     if (turn_button) {

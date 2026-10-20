@@ -9,6 +9,18 @@
 - Choosing a side compartment, extensions, trenches and lid hinges.
 - Organizer inserts: bobbin trays (corner bay), notion trays and the spool tray (back or left bay, chosen with `ot_bay`), the stack-height budget the console reports, and the `*_assembly` views.
 
+> **Note: a base without hinges.** `hinge_type = "none"` makes a base for
+> a machine to sit in, for a machine without hinges or for anyone who
+> doesn't want them: no hinge recesses or nut traps, no hinge checks or
+> hardware in the console, and no hinge test parts; the back-wall tunnels run
+> the whole back wall, and the hinge-hole measurements are ignored. The back
+> rim stays as wide as it would be with lollipop hinges, so the extensions
+> are the same for both; set `back_rim_width` (9 matches the front rim) for a
+> base about 32 mm shallower. Nothing holds the machine in its seat, so carry
+> the machine and base separately, or strap them together; to reach the
+> cavity (an attached bay's screws, say), lift the machine out. Decide at
+> print time: hinge recesses can't be added well to a printed base later.
+>
 > **Note: an attached bay.** A bed much over 12" is too long to print as
 > two halves with the side compartment built in. With
 > `compartment_mount = "attached"` the compartment becomes its own part,

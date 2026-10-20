@@ -31,7 +31,7 @@ There are 423 parameters; 421 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
 | `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
-| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop.* |
+| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, none.* |
 | `split` | `true` | Split into two dovetailed halves for printing |
 
 ## Machine

@@ -77,6 +77,10 @@ how deep the hinge pins must sit in the base, so it has to be right.
 
 ## The hinge holes
 
+*If your machine has no hinges, or you'd rather build a plain base for it
+to sit in, set `hinge_type = "none"` and skip this section; see the note on
+bases without hinges in Configuring the model.*
+
 The machine pivots on two pins that enter holes in the rear skirt of the
 bed. The model places the hinge recesses so that the pins line up with
 those holes exactly, both along the back and in height.
