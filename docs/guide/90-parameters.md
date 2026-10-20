@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 459 parameters; 457 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 464 parameters; 462 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -306,6 +306,11 @@ There are 459 parameters; 457 of them appear in the Customizer. The rest are lis
 | `rig_bar_w` | `10` | Floor bar width, and the height of the stiffening rib along it *Range 5 to 20, step 0.5.* |
 | `rig_bar_rib` | `5` |  *Range 0 to 15, step 0.5.* |
 | `rig_crossbar` | `false` | A floor bar across the split as well (it covers the paper there) |
+| `rig_tie` | `true` | Breakaway tie across each half's open end at the split, holding the walls while printing; snap it off at its thin necks before bolting the halves together |
+| `rig_tie_w` | `6` |  *Range 3 to 12, step 0.5.* |
+| `rig_ears` | `true` | Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after |
+| `rig_ear_d` | `16` |  *Range 8 to 30, step 1.* |
+| `rig_ear_h` | `0.4` |  *Range 0.2 to 1, step 0.1.* |
 
 ## Hinge coupon
 

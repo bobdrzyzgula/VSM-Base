@@ -693,6 +693,13 @@ rig_bar_w = 10; // [5 : 0.5 : 20]
 rig_bar_rib = 5; // [0 : 0.5 : 15]
 // A floor bar across the split as well (it covers the paper there)
 rig_crossbar = false;
+// Breakaway tie across each half's open end at the split, holding the walls while printing; snap it off at its thin necks before bolting the halves together
+rig_tie = true;
+rig_tie_w = 6; // [3 : 0.5 : 12]
+// Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after
+rig_ears = true;
+rig_ear_d = 16; // [8 : 1 : 30]
+rig_ear_h = 0.4; // [0.2 : 0.1 : 1]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -2817,9 +2824,9 @@ if (part == "assembly") {
     color("Peru") foot_rig_half(false);
     color("BurlyWood") foot_rig_half(true);
 } else if (part == "foot_rig_left") {
-    translate([-rig_x0 + rig_wall, -rig_y0 + rig_wall, 0]) foot_rig_half(false);
+    translate([-rig_x0 + rig_ear_d / 2, -rig_y0 + rig_wall + rig_ear_d / 2, 0]) foot_rig_half(false);
 } else if (part == "foot_rig_right") {
-    translate([-rig_sx, -rig_y0, 0]) foot_rig_half(true);
+    translate([-rig_sx + rig_ear_d / 2, -rig_y0 + rig_ear_d / 2, 0]) foot_rig_half(true);
 } else if (part == "back_trim") {
     if (back_cut) rim_trim_print("back");
     else if (report) echo("WARNING: back_trim: no rim cut (the lips aren't recessed, or back_ext is off)");
@@ -3392,6 +3399,20 @@ module foot_rig_half(right) {
             if (!right)
                 for (y = [rig_y0 - t, rig_y1])
                     translate([rig_sx - rig_lap, y, 0]) cube([2 * rig_lap, t, rig_height]);
+            // breakaway tie across the open end, joined to the floor rims by thin necks
+            if (rig_tie) {
+                tx = right ? rig_sx + 1 : rig_sx - 1 - rig_tie_w;
+                ri = rig_rim - rig_c;                  // floor rim's inner edge, in from the bed edge
+                neck = 1.5;
+                translate([tx, ri + neck, 0]) cube([rig_tie_w, rig_W - 2 * ri - 2 * neck, rig_floor]);
+                for (y = [ri - overlap, rig_W - ri - neck - overlap])
+                    translate([tx, y, 0]) cube([rig_tie_w, neck + 2 * overlap, 0.6]);
+            }
+            // mouse ears at the corners
+            if (rig_ears)
+                for (x = right ? [rig_sx, rig_x1] : [rig_x0, rig_sx + rig_lap],
+                     y = right ? [rig_y0, rig_y1] : [rig_y0 - t, rig_y1 + t])
+                    translate([x, y, 0]) cylinder(h = rig_ear_h, d = rig_ear_d, $fn = 32);
         }
         for (y = [rig_y0 - t - 1, rig_y1 - t - 1], dx = [-rig_lap / 2, rig_lap / 2], z = rig_bolt_zs)
             translate([rig_sx + dx, y, z]) rotate([-90, 0, 0])
