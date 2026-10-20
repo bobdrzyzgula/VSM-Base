@@ -31,21 +31,27 @@
 > hinge's arm turns. A steel **pin**, pressed into the arm's front face,
 > goes into the bed's hole; the arm turns on a steel **pivot rod** that runs
 > across the back, pressed into the block's two cheeks; and the block sits
-> in a square recess in the back rim on the same screw and nut trap as a
-> lollipop hinge, so the nut tool serves for it too. The pivot is set at the
-> bed hole's height from your measurements, so the pin always lines up.
-> The arm, cheeks and stop wall stand a few millimetres above the rim (the
-> console gives how far); the back extension's lip is notched around them.
-> The block and the base's recess are larger than the lollipop's, so the
-> back rim is about 10 mm wider.
+> in a square recess in the back rim. It is held by one screw driven up
+> from under the base, through the same kind of trap a lollipop hinge's nut
+> sits in, into a nut pressed into the block's underside. The pivot is set
+> at the bed hole's height from your measurements, so the pin always lines
+> up. The arm and cheeks are cut down flush with the rim wherever that
+> leaves `ph_min_cover` (2.5 mm) of plastic over the rods: on the
+> Kenmore 158, whose holes are 6.75 mm down, the whole hinge is flush; on
+> the 99K, whose holes are only 4 mm down, the arm stands 1.7 mm proud, and
+> the back extension's lip is notched around it. The block and the base's
+> recess are larger than the lollipop's, so the back rim is about 8 mm
+> wider.
 >
 > ![The printed hinge, cut through the middle: at rest, with the pin in
 > the bed's hole (left), and tilted back to its stop
 > (right).](../images/renders/printed-hinge.png){width=100%}
 >
-> When the machine is tipped back, the top of the arm comes to rest on a
-> sloping face of the block's back wall, so the machine stops at about
-> `ph_stop_angle` (60°) instead of falling back onto the table. The stop
+> The arm runs on past the pivot into a short tail (`ph_tail`, 12 mm). When
+> the machine is tipped back, the tail swings down into a pocket in the
+> block and comes to rest on its floor, so the machine stops at about
+> `ph_stop_angle` (60°) instead of falling back onto the table; nothing of
+> the stop stands above the arm. The stop
 > takes the machine's weight leaning back through the pins, and the
 > further past upright the machine leans, the harder it presses: a 30 lb
 > machine at 60° presses each stop with a few hundred newtons, which the
@@ -53,10 +59,50 @@
 > `ph_stop_angle` between 45° and 110°, or 0 for no stop. Check that
 > nothing on your machine (a motor behind the arm, say) reaches the base's
 > back rim before the stop. Print the hinges in PETG or another tough
-> filament; their rods are cut-to-length steel rod or dowel pins, 1/4" for
-> a 99 (`ph_pin_d`, `ph_pivot_d`). The console's *Printed hinge* lines give
-> the sizes, the rod lengths, and how far the parts stand above the rim.
-> The printed hinge is new in v34 and hasn't been printed yet.
+> filament; their rods are cut-to-length steel rod or dowel pins. The pin's
+> diameter and how far it goes into the hole come from the machine profile
+> (1/4" and 12 mm for the 99K, 6 mm and 16 mm for the Kenmore 158), unless
+> you set `ph_pin_d` and `ph_pin_engage`; the pivot is `ph_pivot_d` (1/4").
+> The console's *Printed hinge* lines give the sizes, the rod lengths, and
+> where the parts stand against the rim. The printed hinge is new in v34
+> (its tail stop in v35) and hasn't been printed yet.
+>
+> **Note: a bed set flush, or standing on its feet.** Some machines sit
+> with the bed's top level with the base's rim: the Kenmores of the 1960s,
+> whose bobbin covers lift on hinges rather than sliding out over the
+> edge, sat that way in their molded bases. A profile with `bed_flush` sets
+> the seat as deep as the plate (plus its cushions). Some of those machines
+> also stand on cast feet under the casting, and their bases carried them
+> on the feet; a profile with `foot_height_mm` sets the floor from the
+> feet (the plate's underside to the feet's bottoms, plus `bed_cushion_in`
+> for pads under them), and the ledge round the cavity then sits 1 mm
+> under the plate and only locates the bed. `inner_depth` isn't used then.
+> For a Custom machine these are `custom_bed_flush` and
+> `custom_foot_height_mm`.
+>
+> **Note: recessed lips and trim strips.** The extensions hold on with
+> lips that lie on the base's rim, and a lip is only as thick as the bed
+> stands above the rim: 5.3 mm on the 99K, nothing at all on a flush bed.
+> Where the bed stands less than `lip_min_t` (5.4 mm) above the rim, the
+> rim is cut down under each lip so the lip keeps that thickness and its
+> top stays level with the bed: the left rim, and the back rim along the
+> back lip's length, with a full-height island left round each hinge, which
+> the lip goes round. With the extensions off, trim strips (parts
+> `back_trim` and `left_trim`) drop into the cuts and fill them back to the
+> rim, held by the same peg inserts in the same holes; they print flat,
+> without supports. The cuts are made only for the extensions you have
+> turned on, and none at all with `ext_peg_holes = false`, for a base
+> that will never have extensions. On the 99K nothing changes.
+>
+> **Note: a cord slot.** Where a machine's cords leave the casting at the
+> back (the Kenmore 158's foot-control connector, 50 mm from the right
+> end), the profile's `cord_slot` cuts a slot through the back rim from the
+> top down to the cords' height. Unplug the connector, lay the cords into
+> the slot, and plug it back in; then press part `cord_slot_trim` into the
+> top of the slot, which leaves a channel for the cords underneath. When
+> the machine tips back, the connector swings forward inside the base and
+> draws the cords in through the channel, so leave a little slack inside.
+> The console warns if the slot falls behind the back extension.
 >
 > **Note: an attached bay.** A bed much over 12" is too long to print as
 > two halves with the side compartment built in. With

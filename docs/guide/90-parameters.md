@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 440 parameters; 438 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 446 parameters; 444 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -38,8 +38,8 @@ There are 440 parameters; 438 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Custom.* |
-| `bed_cushion_in` | `0.0625` | Bed cushion thickness, compressed, in inches (1/16") |
+| `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158.14001, Custom.* |
+| `bed_cushion_in` | `0.0625` | Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet |
 
 ## Custom machine: IGNORED unless machine = Custom
 
@@ -50,6 +50,11 @@ There are 440 parameters; 438 of them appear in the Customizer. The rest are lis
 | `custom_bed_plate_thickness_in` | `0.3125` | IGNORED unless machine = Custom. Thickness of the flat bed plate, inches (99K: 5/16") |
 | `custom_hinge_hole_inset_in` | `1.4375` | IGNORED unless machine = Custom. Hinge hole center from each end of the bed, inches (99K: 1 7/16") |
 | `custom_hinge_hole_drop_in` | `0.375` | IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8") |
+| `custom_hinge_pin_d_mm` | `6.35` | IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4") |
+| `custom_hinge_pin_engage_mm` | `12` | IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth) |
+| `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
+| `custom_foot_height_mm` | `0` | IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead) |
+| `custom_cord_slot` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none |
 | `custom_back_trench` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none |
 | `custom_left_trench` | `[83.34, 57.6, 40, 2.5]` | IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none |
 | `custom_base_lid_notch` | `[8, 23]` | IGNORED unless machine = Custom. Notch in the base lid's left edge clearing the motor boss as the lid opens, mm: [depth, width]; [0, 0] = none |
@@ -267,8 +272,8 @@ There are 440 parameters; 438 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `ph_pin_d` | `6.35` | Steel pin into the bed's hinge hole: diameter, just under the hole's (the 99's holes are 1/4") *Range 3 to 12, step 0.01.* |
-| `ph_pin_engage` | `12` | How far the pin enters the bed's hole *Range 4 to 30, step 0.5.* |
+| `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158) *Range 0 to 12, step 0.01.* |
+| `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile *Range 0 to 30, step 0.5.* |
 | `ph_pin_embed` | `16` | Length of the pin pressed into the arm *Range 8 to 30, step 0.5.* |
 | `ph_pivot_d` | `6.35` | Steel pivot rod, running along the back through the block and the arm: diameter *Range 3 to 12, step 0.01.* |
 | `ph_press` | `0` | Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
@@ -280,10 +285,9 @@ There are 440 parameters; 438 of them appear in the Customizer. The rest are lis
 | `ph_web` | `4` | Base web left between the bed seat and the hinge recess *Range 2 to 10, step 0.5.* |
 | `ph_floor` | `3` | Block floor under the arm *Range 2 to 8, step 0.5.* |
 | `ph_recess_clear` | `0.2` | Fit of the block in its recess, each side *Range 0 to 0.6, step 0.05.* |
-| `ph_stop_angle` | `60` | Tilt-back stop: the arm comes to rest on a face of the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
-| `ph_stop_h` | `6` | Stop wall height above the arm's top *Range 2 to 20, step 0.5.* |
-| `ph_head_d` | `9` | Screw head counterbore in the top of the block: diameter and depth *Range 6 to 14, step 0.1.* |
-| `ph_head_h` | `3.5` |  *Range 0 to 8, step 0.1.* |
+| `ph_stop_angle` | `60` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
+| `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
+| `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
 
 ## Hinge coupon
 
@@ -377,6 +381,8 @@ There are 440 parameters; 438 of them appear in the Customizer. The rest are lis
 | `left_ext_width` | `100` | Left extension body width (X), left of the base |
 | `ext_gap` | `0.3` | Gap between an extension body and the base or another extension |
 | `lip_clearance` | `0.2` | Clearance between the lip and the base top |
+| `lip_min_t` | `5.4` | Least lip thickness: where the bed stands less than this above the rim (a bed set flush, say), the rim is cut down under the lips so they keep it, and trim strips (parts back_trim, left_trim) fill the cuts when the extensions are off *Range 3 to 10, step 0.1.* |
+| `lip_cut_clearance` | `0.25` | Clearance around the recessed lips and the trims, per side *Range 0.1 to 0.6, step 0.05.* |
 | `ext_top_adjust` | `0` | Trim to the extensions' top plane (lids, lips, trenches) against the real bed, mm; negative lowers it *Range -3 to 3, step 0.1.* |
 | `ext_floor` | `3` | Extension floor thickness *Range 1.5 to 8, step 0.1.* |
 | `ext_frame` | `4` | Frame width around each lid, at the top *Range 2 to 10, step 0.1.* |

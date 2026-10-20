@@ -189,13 +189,24 @@
 // holds the machine at ph_stop_angle when tilted back. Parts
 // printed_hinges (two arms and two blocks) and printed_hinge_test (rod
 // fits); the back extension's lip is notched around the hinges.
+//
+// v35: printed hinge: the stop is a tail on the arm behind the pivot,
+// landing in a pocket in the block, and the block is held by a screw from
+// below into a nut pressed into its underside; the arm and cheeks are cut
+// flush with the rim where ph_min_cover allows. Pin diameter and depth
+// come from the profile. Machines set flush (bed_flush) or standing on
+// their feet (foot_height_mm, which sets the floor); seat depth no longer
+// tied to the lid rabbet. Lips recessed into the rim when the bed stands
+// less than lip_min_t above it, with trims (back_trim, left_trim) for use
+// without extensions; cord_slot through the back rim, with cord_slot_trim.
+// Kenmore 158.14001 profile (measured by Bob Drzyzgula).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -239,8 +250,8 @@ split = true;
 
 /* [Machine] */
 // Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead.
-machine = "Singer 99K"; // [Singer 99K, Custom]
-// Bed cushion thickness, compressed, in inches (1/16")
+machine = "Singer 99K"; // [Singer 99K, Kenmore 158.14001, Custom]
+// Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet
 bed_cushion_in = 0.0625;
 
 /* [Custom machine: IGNORED unless machine = Custom] */
@@ -254,6 +265,16 @@ custom_bed_plate_thickness_in = 0.3125;
 custom_hinge_hole_inset_in = 1.4375;
 // IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8")
 custom_hinge_hole_drop_in = 0.375;
+// IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4")
+custom_hinge_pin_d_mm = 6.35;
+// IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth)
+custom_hinge_pin_engage_mm = 12;
+// IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K)
+custom_bed_flush = false;
+// IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead)
+custom_foot_height_mm = 0;
+// IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none
+custom_cord_slot = [0, 0, 0, 0];
 // IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none
 custom_back_trench = [0, 0, 0, 0];
 // IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none
@@ -614,10 +635,10 @@ hinge_mounting_hole_diameter = 5; // [2 : 0.1 : 10]
 hinge_mounting_hole_offset = 9.5;
 
 /* [Printed hinge] */
-// Steel pin into the bed's hinge hole: diameter, just under the hole's (the 99's holes are 1/4")
-ph_pin_d = 6.35; // [3 : 0.01 : 12]
-// How far the pin enters the bed's hole
-ph_pin_engage = 12; // [4 : 0.5 : 30]
+// Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158)
+ph_pin_d = 0; // [0 : 0.01 : 12]
+// How far the pin enters the bed's hole; 0 = from the machine profile
+ph_pin_engage = 0; // [0 : 0.5 : 30]
 // Length of the pin pressed into the arm
 ph_pin_embed = 16; // [8 : 0.5 : 30]
 // Steel pivot rod, running along the back through the block and the arm: diameter
@@ -640,13 +661,12 @@ ph_web = 4; // [2 : 0.5 : 10]
 ph_floor = 3; // [2 : 0.5 : 8]
 // Fit of the block in its recess, each side
 ph_recess_clear = 0.2; // [0 : 0.05 : 0.6]
-// Tilt-back stop: the arm comes to rest on a face of the block at about this angle (0 = no stop, 45 to 110)
+// Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110)
 ph_stop_angle = 60; // [0 : 1 : 110]
-// Stop wall height above the arm's top
-ph_stop_h = 6; // [2 : 0.5 : 20]
-// Screw head counterbore in the top of the block: diameter and depth
-ph_head_d = 9; // [6 : 0.1 : 14]
-ph_head_h = 3.5; // [0 : 0.1 : 8]
+// Tail length behind the pivot (longer: less force on the stop, deeper block)
+ph_tail = 12; // [6 : 0.5 : 25]
+// Least plastic over the rods where the arm and cheeks are cut down to the rim
+ph_min_cover = 2.5; // [1.5 : 0.25 : 5]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -769,6 +789,10 @@ left_ext_width = 100;
 ext_gap = 0.3;
 // Clearance between the lip and the base top
 lip_clearance = 0.2;
+// Least lip thickness: where the bed stands less than this above the rim (a bed set flush, say), the rim is cut down under the lips so they keep it, and trim strips (parts back_trim, left_trim) fill the cuts when the extensions are off
+lip_min_t = 5.4; // [3 : 0.1 : 10]
+// Clearance around the recessed lips and the trims, per side
+lip_cut_clearance = 0.25; // [0.1 : 0.05 : 0.6]
 // Trim to the extensions' top plane (lids, lips, trenches) against the real bed, mm; negative lowers it
 ext_top_adjust = 0; // [-3 : 0.1 : 3]
 // Extension floor thickness
@@ -1181,7 +1205,39 @@ profiles = [
         ["back_trench", [0, 0, 0, 0]],
         ["left_trench", [83.34, 57.6, 40, 2.5]],
         // The base lid's left edge clears the motor boss as the lid opens
-        ["base_lid_notch", [8, 23]]
+        ["base_lid_notch", [8, 23]],
+        ["hinge_pin_d_mm",         6.35],
+        ["hinge_pin_engage_mm",    12],
+        ["bed_flush",              false],
+        ["foot_height_mm",         0],
+        ["cord_slot",              [0, 0, 0, 0]]
+    ]],
+    ["Kenmore 158.14001", [
+        // 425 x 185 mm bed, 7 mm plate, sitting flush in its base on three
+        // cast feet 63 mm below the plate; bobbin cover hinged, so no
+        // trenches. Hinge holes 6 mm, 90 mm from each end, 6.75 mm below
+        // the top; its own pins went 16 mm in. Measured by Bob Drzyzgula.
+        ["bed_length_in",          425 / 25.4],
+        ["bed_width_in",           185 / 25.4],
+        ["bed_plate_thickness_in", 7 / 25.4],
+        ["hinge_hole_inset_in",    90 / 25.4],
+        ["hinge_hole_drop_in",     6.75 / 25.4],
+        // Back: the left hinge boss (22 mm) and the hook-shaft bump beside
+        // it toward the left end, one relief from 63 to 101 mm; the right
+        // hinge boss; the cord connector's narrow end (20 mm, 50 mm from
+        // the right end, reaching about 55 mm below the plate)
+        ["bed_reliefs", [["back", 82, 38, 25], ["back", 335, 22, 25],
+                         ["back", 375, 20, 63]]],
+        ["back_trench", [0, 0, 0, 0]],
+        ["left_trench", [0, 0, 0, 0]],
+        ["base_lid_notch", [0, 0]],
+        ["hinge_pin_d_mm",         6],
+        ["hinge_pin_engage_mm",    16],
+        ["bed_flush",              true],
+        ["foot_height_mm",         63],
+        // Two lamp cords, 12 x 3 mm together, leave the connector 50 mm
+        // below the plate and run straight back
+        ["cord_slot",              [375, 14, 60, 5]]
     ]]
 ];
 
@@ -1206,7 +1262,12 @@ custom_settings = [
     ["bed_reliefs",            custom_bed_reliefs],
     ["back_trench",            custom_back_trench],
     ["left_trench",            custom_left_trench],
-    ["base_lid_notch",         custom_base_lid_notch]
+    ["base_lid_notch",         custom_base_lid_notch],
+    ["hinge_pin_d_mm",         custom_hinge_pin_d_mm],
+    ["hinge_pin_engage_mm",    custom_hinge_pin_engage_mm],
+    ["bed_flush",              custom_bed_flush],
+    ["foot_height_mm",         custom_foot_height_mm],
+    ["cord_slot",              custom_cord_slot]
 ];
 
 profile_found = machine == "Custom" || !is_undef(struct_val(profiles, machine));
@@ -1222,6 +1283,11 @@ bed_plate_thickness_in = mach("bed_plate_thickness_in");
 hinge_hole_inset_in    = mach("hinge_hole_inset_in");
 hinge_hole_drop_in     = mach("hinge_hole_drop_in");
 bed_reliefs            = mach("bed_reliefs");
+hinge_pin_d_mm         = mach("hinge_pin_d_mm");
+hinge_pin_engage_mm    = mach("hinge_pin_engage_mm");
+bed_flush              = mach("bed_flush");
+foot_height            = mach("foot_height_mm");
+cord_slot              = mach("cord_slot");
 back_trench            = trench_or_none(mach("back_trench"));
 left_trench            = trench_or_none(mach("left_trench"));
 base_lid_notch         = mach("base_lid_notch");
@@ -1268,10 +1334,21 @@ hinge_hole_spacing  = bed_length - 2 * hinge_hole_inset;
 seat_length = bed_length + 2 * bed_clearance;
 seat_width  = bed_width + 2 * bed_clearance;
 
-outer_depth   = bottom_thickness + inner_depth;
+// How the bed sits. bed_bot_drop: the plate's underside below the rim.
+// Flush: the bed's top level with the rim. On its feet: the ledge sits
+// bed_feet_gap under the plate (it only locates the bed), and the floor
+// is set by the feet and their pads; otherwise the bed rests on its
+// cushions on the ledge, rabbit_depth below the rim.
+bed_on_feet   = foot_height > 0;
+bed_feet_gap  = 1;
+bed_bot_drop  = bed_flush ? bed_plate_thickness
+              : bed_on_feet ? rabbit_depth - bed_feet_gap : rabbit_depth - bed_cushion;
+seat_depth    = bed_bot_drop + (bed_on_feet ? bed_feet_gap : bed_cushion);
+inner_depth_eff = bed_on_feet ? bed_bot_drop + foot_height + bed_cushion : inner_depth;
+outer_depth   = bottom_thickness + inner_depth_eff;
 top_z         = outer_depth;
 floor_z       = bottom_thickness;
-seat_floor_z  = top_z - rabbit_depth;
+seat_floor_z  = top_z - seat_depth;
 
 // Bed seat (rabbet the machine sits in)
 has_compartment = compartment_option != "none";
@@ -1292,26 +1369,38 @@ mc_y1 = seat_y1 - bed_ledge;
 
 function ph_updown(d) = str(round(abs(d) * 10) / 10, d >= 0 ? " mm above" : " mm below");
 // Printed hinge (hinge-local frame: origin on the pivot axis, -Y toward
-// the bed, the arm tilting front-up). The arm is a bar with a round end
-// about the pivot; the pin enters its front face, short of the pivot hole.
-ph_R    = max(ph_pin_d, ph_pivot_d) / 2 + ph_wall;      // arm half-height, knuckle radius
+// the bed, the arm tilting front-up). The arm is a bar from its front face
+// back past the pivot into a tail; the pin enters its front face, short of
+// the pivot hole. Tilted back, the tail swings down into a pocket in the
+// block and comes to rest on its floor: that is the stop. The block is
+// held by a screw from below, through the base's nut trap (the screw's
+// head where the nut would be) into a nut pressed into the block's
+// underside, under the front of the arm.
+ph_pd   = ph_pin_d > 0 ? ph_pin_d : hinge_pin_d_mm;                // pin diameter
+ph_pe   = ph_pin_engage > 0 ? ph_pin_engage : hinge_pin_engage_mm;  // into the hole
+ph_R    = max(ph_pd, ph_pivot_d) / 2 + ph_wall;         // arm half-height
 ph_pin_web = 2.5;                                        // between pin end and pivot hole
 ph_Lf   = ph_pin_embed + ph_pin_web + (ph_pivot_d + ph_slip) / 2;  // pivot to arm front
 ph_fc   = sqrt(ph_Lf * ph_Lf + ph_R * ph_R) - ph_Lf + ph_clear;    // arm front swing + clearance
 ph_bw   = ph_arm_w + 2 * ph_clear + 2 * ph_cheek;        // block width (X) = pivot rod length
 ph_stop = ph_stop_angle > 0;
-ph_th   = ph_stop ? ph_stop_angle : 135;                 // arm sweep cut into the block
+ph_th   = ph_stop ? ph_stop_angle : 150;                 // arm sweep cut into the block
 assert(!ph_stop || (ph_stop_angle >= 45 && ph_stop_angle <= 110),
        "ph_stop_angle: 0 (no stop) or 45 to 110");
-// Stop face: the arm's top face at the stop angle, n . p = R + clearance
-function ph_plane_y(z) = (ph_R + ph_clear - z * cos(ph_th)) / sin(ph_th);
-ph_top  = ph_stop ? ph_R + ph_stop_h : ph_R;             // block top over the screw
-ph_sdy  = max(ph_R + ph_clear + hinge_mounting_hole_diameter / 2 + 2,
-              ph_stop ? max(ph_plane_y(ph_R), ph_plane_y(ph_top)) + ph_head_d / 2 + 1.5
-                      : ph_R + ph_clear + ph_head_d / 2 + 1);
-ph_back = ph_sdy + ph_head_d / 2 + 2.5;                  // block back face
+ph_Lt   = ph_stop ? ph_tail : 0;                         // tail behind the pivot
+ph_tr   = sqrt(ph_Lt * ph_Lt + ph_R * ph_R);             // tail corner's radius
+// Deepest the tail reaches over the sweep
+ph_tdeep = !ph_stop ? ph_R
+         : ph_th >= 90 - atan(ph_R / ph_Lt) ? ph_tr
+         : ph_Lt * sin(ph_th) + ph_R * cos(ph_th);
+ph_nut_w = nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance;
+ph_nut_t = nut_t(hinge_nut_spec);
+ph_bot1 = -max(ph_R, ph_tdeep) - ph_clear - ph_floor;
+ph_back = (ph_stop ? ph_tr : ph_R) + ph_clear + 3;       // block back face
 ph_front = -(ph_Lf + ph_fc);                             // block front face
-ph_bot  = -(ph_R + ph_clear + ph_floor);                 // block bottom
+ph_sdy  = ph_front + ph_nut_w / 2 / cos(30) + 2;         // screw, under the arm's front
+// floor under the arm there: nut pocket plus 2 mm (deepen the block if needed)
+ph_bot  = min(ph_bot1, -(ph_R + ph_clear) - ph_nut_t - 0.3 - 2.5);   // block bottom
 
 // Hinge geometry, by type. Each function describes the hinge's footprint
 // relative to the hinge center; a new hinge type adds a branch to each and
@@ -1407,17 +1496,31 @@ hinge_hole_y = hinge_y + hinge_screw_dy();
 hinge_keepout = hinge_half_x() + hinge_tunnel_margin;
 
 // Height checks: bed hinge holes vs hinge pin axis
-bed_bottom_z  = seat_floor_z + bed_cushion;
+bed_bottom_z  = top_z - bed_bot_drop;
 bed_top_z     = bed_bottom_z + bed_plate_thickness;
 hole_axis_z   = bed_top_z - hinge_hole_drop;
 pin_axis_z    = top_z - hinge_pin_z();
 
-// Printed hinge in place (Z), and the screw head's seat for any hinge type
+// Cord slot through the back rim: [center from the bed's left end, width,
+// bottom below the bed's top, cord channel height]
+has_cord_slot = is_list(cord_slot) && len(cord_slot) >= 3 && cord_slot[1] > 0;
+cs_x  = has_cord_slot ? bed_x0 + cord_slot[0] : 0;
+cs_w  = has_cord_slot ? cord_slot[1] : 0;
+cs_zb = has_cord_slot ? bed_top_z - cord_slot[2] : 0;
+cs_ch = has_cord_slot && len(cord_slot) >= 4 ? cord_slot[3] : 5;
+
+// Printed hinge in place (Z). The arm's and cheeks' top: flush with the
+// rim where that leaves ph_min_cover over the rods, else as low as that
 ph_az   = hole_axis_z;                                   // pivot and pin axis
 ph_zb   = ph_az + ph_bot;                                // block bottom = recess floor
-ph_seat = ph_az + ph_top - ph_head_h;                    // screw head seat
-hinge_head_z = hinge_sized == "printed" ? ph_seat : top_z;
-ph_pin_len = ph_pin_embed + (hinge_y - ph_Lf - (seat_y1 - bed_clearance)) + ph_pin_engage;
+ph_atop = min(ph_R, max(top_z - ph_az, max(ph_pd, ph_pivot_d) / 2 + ph_min_cover));
+ph_pin_len = ph_pin_embed + (hinge_y - ph_Lf - (seat_y1 - bed_clearance)) + ph_pe;
+// The base's trap sits at least 8 mm under the recess floor; the screw's
+// head bears where a lollipop's nut would, and its tip stops 1.5 mm short
+// of the floor under the arm
+ph_trap_depth = max(hinge_nut_depth, top_z - ph_zb + 8);
+ph_screw_need = (ph_zb - (top_z - ph_trap_depth)) + ph_nut_t + 0.3 + 0.5;
+ph_tip_room   = (-(ph_R + ph_clear) - 1.5) - (ph_bot + ph_nut_t + 0.3);
 
 // Casting reliefs as boxes [edge, [x0,y0,z0], [x1,y1,z1]]: the full ledge
 // width, from the seat wall to the cavity, down to below the casting.
@@ -1453,7 +1556,7 @@ plate_ys = !split || plate_count <= 0 ? [] :
 // Screw length suggestions (flat head length includes the head)
 plate_screw_len = (floor_z - plate_nut_trap_depth + nut_t(plate_nut_spec))
                 - (plate_pocket_depth - plate_thickness) + 1.5;
-hinge_screw_len = hinge_head_z - top_z + hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
+hinge_screw_len = hinge_sized == "printed" ? ph_screw_need + 1 : hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
 
 // Back-wall tunnels: two runs, hinge1..split and split..hinge2
 tunnel_y0     = mc_y1 - overlap;
@@ -1531,8 +1634,15 @@ serr_top  = seat_floor_z - serration_top_gap;
 
 base_peg_hole_d = ext_peg_style == "pin" ? rod_d + 0.2 : peg_hole_d;
 ext_top_z  = bed_top_z + ext_top_adjust;      // lids and lips level with the bed
-lip_z0     = top_z + lip_clearance;           // lip underside
+// Lips: on the rim, or recessed into it where the bed doesn't stand high
+// enough for lip_min_t (within 0.5 mm, so the 99K's 5.3 mm lips stay put)
+lip_nat    = ext_top_z - top_z - lip_clearance;
+lip_recessed = ext_peg_holes && lip_nat < lip_min_t - 0.5;
+lip_z0     = lip_recessed ? ext_top_z - lip_min_t : top_z + lip_clearance;   // lip underside
 lip_t      = ext_top_z - lip_z0;
+rim_cut_z  = lip_z0 - lip_clearance;            // floor of the rim cut
+back_cut   = lip_recessed && back_ext;
+left_cut   = lip_recessed && left_ext;
 dt_extra   = ext_dt_depth + ext_dt_clearance; // extra wall where a socket goes
 has_back   = back_ext;
 has_left   = left_ext;
@@ -1926,15 +2036,37 @@ if (report && has_hinges) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 -
 if (report && has_hinges) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
          hinge_screw_len / in, " in), measured from ",
          hinge_type == "printed" ? "the head's seat in the block" : "the top surface"));
+if (report && lip_recessed)
+    echo(str("Lips recessed: the bed stands ", round((ext_top_z - top_z) * 10) / 10,
+             " mm above the rim, so the rim is cut ", round((top_z - rim_cut_z) * 10) / 10,
+             " mm down under the ", back_cut && left_cut ? "back and left lips" : back_cut ? "back lip" : "left lip",
+             " (", lip_t, " mm thick); trims ", back_cut ? "back_trim " : "", left_cut ? "left_trim " : "",
+             "fill the cuts with the extensions off"));
+if (report && ext_peg_holes && !lip_recessed && lip_nat < lip_min_t)
+    echo(str("NOTE: lips are ", round(lip_nat * 100) / 100, " mm thick, a little under lip_min_t; left on the rim"));
+if (report && has_cord_slot)
+    echo(str("Cord slot: ", cs_w, " mm wide through the back rim at X ", cs_x, ", down to ",
+             round((top_z - cs_zb) * 10) / 10, " mm below the rim; part cord_slot_trim fills it above a ",
+             cs_ch, " mm channel"));
+if (has_cord_slot && back_ext && cs_x - cs_w / 2 < max(bk_x1, bk_lip_x1))
+    if (report) echo("WARNING: the cord slot is behind the back extension; shorten back_ext_length or notch the extension");
+if (has_cord_slot && len([for (r = tunnel_runs) if (cs_x + cs_w / 2 > r[0] && cs_x - cs_w / 2 < r[1]) r]) > 0)
+    if (report) echo("WARNING: the cord slot cuts into a back-wall tunnel");
+if (report && bed_on_feet)
+    echo(str("Bed on its feet: ", foot_height, " mm under the plate, on ", bed_cushion,
+             " mm pads; floor ", round(inner_depth_eff * 10) / 10, " mm below the rim (inner_depth not used); the ledge sits ",
+             bed_feet_gap, " mm under the plate"));
+if (report && bed_flush) echo("Bed flush with the rim");
 if (report && hinge_type == "printed") {
-    echo(str("Printed hinge: block ", ph_bw, " x ", ph_back - ph_front, " x ", ph_top - ph_bot,
-             " mm, arm ", ph_arm_w, " x ", ph_Lf + ph_R, " x ", 2 * ph_R,
+    echo(str("Printed hinge: block ", ph_bw, " x ", ph_back - ph_front, " x ", ph_atop - ph_bot,
+             " mm, arm ", ph_arm_w, " x ", ph_Lf + (ph_Lt > 0 ? ph_Lt : ph_R), " x ", ph_R + ph_atop,
              " mm; pivot ", hinge_y - seat_y1, " mm behind the seat, ", top_z - ph_az, " mm below the top"));
-    echo(str("Printed hinge: arm and cheeks top ", ph_updown(ph_az + ph_R - top_z), " the rim",
-             ph_stop ? str(", the stop wall's top ", ph_updown(ph_az + ph_top - top_z), " the rim and ",
-                           ph_updown(ph_az + ph_top - bed_top_z), " the bed's top") : ""));
-    echo(str("Printed hinge: steel rod, 2 pins ", ph_pin_d, " mm x ", round(ph_pin_len * 10) / 10,
-             " mm and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 10) / 10, " mm"));
+    echo(str("Printed hinge: arm and cheeks top ", ph_updown(ph_az + ph_atop - top_z), " the rim; ",
+             round((ph_atop - ph_pd / 2) * 10) / 10, " mm of plastic over the pin"));
+    echo(str("Printed hinge: steel rod, 2 pins ", ph_pd, " mm x ", round(ph_pin_len * 10) / 10,
+             " mm (", ph_pe, " mm into the bed's hole) and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 10) / 10, " mm"));
+    echo(str("Printed hinge: screws from below, through the base's traps into ", hinge_nut_spec,
+             " nuts pressed into the blocks' undersides"));
     if (ph_stop) echo(str("Printed hinge: the machine stops at about ", ph_stop_angle, " degrees of tilt"));
     else echo("NOTE: printed hinge without a stop: the machine tilts back until something else stops it");
 }
@@ -2022,9 +2154,11 @@ if (harness_rods && nt_x1 > end_wall - 2)
 if (harness_rods && notch_ys[0][1] > hh_y0 - rod_stop - 3)
     if (report) echo("WARNING: rod notch runs into the handhold zone");
 
-if (hinge_type == "printed" && top_z - hinge_nut_depth > ph_zb - 3)
-    if (report) echo(str("WARNING: the hinge nut trap is within 3 mm of the printed hinge's recess floor; set hinge_nut_depth to at least ",
-             top_z - ph_zb + 3));
+if (hinge_type == "printed" && ph_trap_depth > hinge_nut_depth)
+    if (report) echo(str("NOTE: the printed hinge's recess is deep, so its screw traps are ", ph_trap_depth,
+             " mm below the top (hinge_nut_depth is ", hinge_nut_depth, ")"));
+if (hinge_type == "printed" && ph_tip_room < 1.5)
+    if (report) echo("WARNING: the printed hinge's screw has little room past its nut; increase ph_floor");
 if (hinge_type == "printed" && ph_zb < floor_z)
     if (report) echo("WARNING: the printed hinge's recess reaches below the floor's top; the base may be too shallow for it");
 if (has_hinges && back_rim < hinge_offset_y() + hinge_rear() + 2)
@@ -2399,7 +2533,7 @@ function frac16(x_in) =
            : str(w > 0 ? str(w, " ") : "", n / g, "/", 16 / g, "\"");
 
 // Screw needs: through the nut plus 0.5 mm
-hinge_screw_need = hinge_head_z - top_z + hinge_nut_depth + nut_t(hinge_nut_spec) + 0.5;
+hinge_screw_need = hinge_sized == "printed" ? ph_screw_need : hinge_nut_depth + nut_t(hinge_nut_spec) + 0.5;
 plate_screw_need = (floor_z - plate_nut_trap_depth + nut_t(plate_nut_spec))
                  - (plate_pocket_depth - plate_thickness) + 0.5;
 n_plate_screws   = plate_count * len(plate_holes);
@@ -2412,11 +2546,12 @@ if (report) echo("=== Hardware for this configuration ===");
 if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type,
          hinge_type == "printed" ? " (part printed_hinges)" : ""));
 if (report && hinge_type == "printed")
-    echo(str("Hinge rods: steel, 2 x ", ph_pin_d, " mm x ", round(ph_pin_len * 2) / 2,
+    echo(str("Hinge rods: steel, 2 x ", ph_pd, " mm x ", round(ph_pin_len * 2) / 2,
              " mm (pins) + 2 x ", ph_pivot_d, " mm x ", round(ph_bw * 2) / 2, " mm (pivots)"));
 if (report && has_hinges) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
          stock_len(hinge_nut_spec, hinge_screw_need),
-         " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts"));
+         " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts",
+         hinge_type == "printed" ? " (pan or socket heads, driven from below)" : ""));
 if (split && plate_count > 0) {
     if (report) echo(str("Mending plates: ", plate_count, " x ", plate_len_label, " x ",
              plate_w_label, ", countersunk, hole pattern as plate_holes"));
@@ -2642,6 +2777,15 @@ if (part == "assembly") {
     else if (report) echo("WARNING: printed_hinges needs hinge_type = \"printed\"");
 } else if (part == "printed_hinge_test") {
     printed_hinge_test();
+} else if (part == "back_trim") {
+    if (back_cut) rim_trim_print("back");
+    else if (report) echo("WARNING: back_trim: no rim cut (the lips aren't recessed, or back_ext is off)");
+} else if (part == "left_trim") {
+    if (left_cut) rim_trim_print("left");
+    else if (report) echo("WARNING: left_trim: no rim cut (the lips aren't recessed, or left_ext is off)");
+} else if (part == "cord_slot_trim") {
+    if (has_cord_slot) cord_slot_trim_print();
+    else if (report) echo("WARNING: cord_slot_trim: this machine profile has no cord slot");
 } else if (part == "printed_hinge_view") {
     // Side views, cut through the middle: at rest, and tilted to the stop,
     // with a stub of the bed's back edge on the pin
@@ -2658,10 +2802,10 @@ if (part == "assembly") {
         }
         ph_rods(a);
         color("DimGray", 0.85) rotate([-a, 0, 0]) difference() {
-            translate([-ph_bw / 2, yb - 40, -ph_pin_d / 2 - 4])
-                cube([ph_bw, 40, bed_top_z - ph_az + ph_pin_d / 2 + 4]);
+            translate([-ph_bw / 2, yb - 40, -ph_pd / 2 - 4])
+                cube([ph_bw, 40, bed_top_z - ph_az + ph_pd / 2 + 4]);
             translate([0, yb + overlap, 0]) rotate([90, 0, 0])
-                cylinder(h = ph_pin_engage + 1, d = ph_pin_d + 0.4, $fn = 32);
+                cylinder(h = ph_pe + 1, d = ph_pd + 0.4, $fn = 32);
         }
     }
 } else if (part == "split_test") {
@@ -2839,7 +2983,7 @@ module base_body() {
 
         // Bed seat
         translate([seat_x0, seat_y0, seat_floor_z])
-            cube([seat_length, seat_width, rabbit_depth + overlap]);
+            cube([seat_length, seat_width, seat_depth + overlap]);
 
         // Reliefs under thickened parts of the casting
         for (rl = relief_boxes)
@@ -2847,7 +2991,7 @@ module base_body() {
 
         // Machine cavity
         translate([mc_x0, mc_y0, floor_z])
-            cube([mc_x1 - mc_x0, mc_y1 - mc_y0, inner_depth + overlap]);
+            cube([mc_x1 - mc_x0, mc_y1 - mc_y0, inner_depth_eff + overlap]);
 
         if (has_compartment) {
             // Lid rabbet over the small compartment
@@ -2856,7 +3000,7 @@ module base_body() {
 
             // Small compartment
             translate([st_x0, st_y0, floor_z])
-                cube([st_x1 - st_x0, st_y1 - st_y0, inner_depth + overlap]);
+                cube([st_x1 - st_x0, st_y1 - st_y0, inner_depth_eff + overlap]);
 
             // Outlet screw: heat-set insert hole, or a countersunk through hole
             if (has_outlet && outlet_mount == "insert")
@@ -2896,13 +3040,23 @@ module base_body() {
         for (side = attached ? [0, 1, 2] : [0, 1]) end_cuts(side);
         if (attached) attach_cuts();
 
-        // Peg holes for the extensions
+        // Rim cut under recessed lips
+        if (back_cut || left_cut)
+            translate([0, 0, rim_cut_z]) linear_extrude(height = top_z - rim_cut_z + overlap)
+                rim_cut_2d();
+
+        // Cord slot through the back rim
+        if (has_cord_slot)
+            translate([cs_x - cs_w / 2, mc_y1 - overlap, cs_zb])
+                cube([cs_w, outer_width - mc_y1 + 2 * overlap, top_z - cs_zb + overlap]);
+
+        // Peg holes for the extensions (from the rim cut's floor, where cut)
         if (ext_peg_holes) {
-            for (x = back_peg_xs)
-                translate([x, peg_back_y, top_z - peg_hole_depth])
+            for (x = back_peg_xs) let(zt = back_cut && x <= bk_lip_x1 ? rim_cut_z : top_z)
+                translate([x, peg_back_y, zt - peg_hole_depth])
                     cylinder(h = peg_hole_depth + overlap, d = base_peg_hole_d);
-            for (y = left_peg_ys)
-                translate([peg_left_x, y, top_z - peg_hole_depth])
+            for (y = left_peg_ys) let(zt = left_cut ? rim_cut_z : top_z)
+                translate([peg_left_x, y, zt - peg_hole_depth])
                     cylinder(h = peg_hole_depth + overlap, d = base_peg_hole_d);
             for (y = right_peg_ys)
                 translate([peg_right_x, y, top_z - peg_hole_depth])
@@ -2914,6 +3068,86 @@ module base_body() {
             for (run = tunnel_runs)
                 tunnel_run(run[0], run[1], tunnel_y0, tunnel_len);
     }
+}
+
+// Full-height islands about the hinges, left standing in a rim cut
+module hinge_islands_2d() {
+    for (hx = [hinge_x1, hinge_x2])
+        translate([hx - hinge_half_x() - 3, seat_y1 - 1])
+            square([2 * hinge_half_x() + 6,
+                    min(hinge_y + hinge_rear() + 3, outer_width + 1) - seat_y1 + 1]);
+}
+// Plan of the rim cut: each recessed lip's footprint plus clearance, less
+// the hinge islands
+module rim_cut_2d(shrink = 0) {
+    c = lip_cut_clearance;
+    difference() {
+        union() {
+            if (back_cut) offset(delta = -shrink) {
+                if (bk_lip_ext)
+                    intersection() {
+                        offset(delta = c) back_lip_plan();
+                        translate([-1, seat_y1]) square([outer_length + 2, outer_width - seat_y1 + 1]);
+                    }
+                else
+                    translate([-1, seat_y1]) square([bk_lip_x1 + c + 1, outer_width - seat_y1 + 1]);
+            }
+            if (left_cut) offset(delta = -shrink)
+                translate([-1, bed_y0 - c])
+                    square([seat_x0 + 1 + overlap,
+                            (back_cut ? seat_y1 + overlap : outer_width + 1) - bed_y0 + c]);
+        }
+        if (has_hinges) offset(delta = shrink) hinge_islands_2d();
+    }
+}
+// Trim strip filling one rim cut, cut floor down, outer edges rounded as
+// the base's; peg holes through it, as in the lip
+module rim_trim(which) {
+    c = lip_cut_clearance;
+    intersection() {
+        cuboid([outer_length, outer_width, outer_depth],
+               rounding = outer_rounding, except = BOTTOM, anchor = LEFT + FRONT + BOTTOM);
+        difference() {
+            translate([0, 0, rim_cut_z]) linear_extrude(height = top_z - rim_cut_z)
+                intersection() {
+                    rim_cut_2d(c);
+                    if (which == "back")
+                        translate([-1, seat_y1 - overlap]) square([outer_length + 2, outer_width]);
+                    else
+                        translate([-1, -1]) square([seat_x0 + 1 + overlap, seat_y1 - c + 1]);
+                }
+            if (which == "back")
+                for (x = back_peg_xs) if (x <= bk_lip_x1) ext_trim_peg_hole(x, peg_back_y);
+            if (which == "left")
+                for (y = left_peg_ys) ext_trim_peg_hole(peg_left_x, y);
+        }
+    }
+}
+module ext_trim_peg_hole(x, y) {
+    translate([x, y, rim_cut_z - overlap])
+        cylinder(h = top_z - rim_cut_z + 2 * overlap,
+                 d = ext_peg_style == "pin" ? rod_d - pin_lip_interference
+                                            : peg_d + peg_lip_clearance, $fn = 32);
+}
+// Trims in print position (cut floor down, at the origin)
+module rim_trim_print(which) {
+    b = which == "back" ? [0, seat_y1] : [0, bed_y0];
+    translate([-b.x, -b.y, -rim_cut_z]) rim_trim(which);
+}
+
+// Cord slot trim: fills the slot through the rim (not the ledge under the
+// bed) from just above the cords' channel to the rim's top, a push fit
+cs_trim_c = 0.15;
+module cord_slot_trim() {
+    intersection() {
+        cuboid([outer_length, outer_width, outer_depth],
+               rounding = outer_rounding, except = BOTTOM, anchor = LEFT + FRONT + BOTTOM);
+        translate([cs_x - cs_w / 2 + cs_trim_c, seat_y1 + cs_trim_c, cs_zb + cs_ch])
+            cube([cs_w - 2 * cs_trim_c, outer_width - seat_y1, top_z - cs_zb - cs_ch]);
+    }
+}
+module cord_slot_trim_print() {
+    translate([-(cs_x - cs_w / 2), -seat_y1, -(cs_zb + cs_ch)]) cord_slot_trim();
 }
 
 // Recess for one hinge of the selected type, centered on (x, y).
@@ -2929,36 +3163,43 @@ module hinge_cutter(x, y) {
 // Recess for one printed hinge block, centered on the pivot (x, y): the
 // block's footprint down to its floor, a slot from the recess through the
 // web and into the seat for the pin (open at the top, so the pin swings
-// up), and the screw hole and nut trap below.
+// up), and the screw's trap and hole from below (the screw's head bears
+// on the trap's roof).
 module printed_hinge_cutter(x, y) {
     c  = ph_recess_clear;
-    nut_top_z = top_z - hinge_nut_depth;
-    sw = ph_pin_d + 2 * ph_clear;
+    trap_top = top_z - ph_trap_depth;
+    sw = ph_pd + 2 * ph_clear;
     translate([x, y, 0]) {
         translate([-ph_bw / 2 - c, ph_front - c, ph_zb])
             cube([ph_bw + 2 * c, ph_back - ph_front + 2 * c, top_z - ph_zb + overlap]);
-        y_far = seat_y1 - bed_clearance - ph_pin_engage - 1 - y;
-        translate([-sw / 2, y_far, ph_az - ph_pin_d / 2 - ph_clear])
+        y_far = seat_y1 - bed_clearance - ph_pe - 1 - y;
+        translate([-sw / 2, y_far, ph_az - ph_pd / 2 - ph_clear])
             cube([sw, ph_front - y_far + overlap,
-                  top_z - (ph_az - ph_pin_d / 2 - ph_clear) + overlap]);
+                  top_z - (ph_az - ph_pd / 2 - ph_clear) + overlap]);
     }
-    translate([x, y + ph_sdy, nut_top_z + hinge_nut_bridge])
-        cylinder(h = ph_zb - nut_top_z - hinge_nut_bridge + overlap,
+    translate([x, y + ph_sdy, trap_top + hinge_nut_bridge])
+        cylinder(h = ph_zb - trap_top - hinge_nut_bridge + overlap,
                  d = hinge_mounting_hole_diameter);
     translate([x, y + ph_sdy, -overlap])
-        nut_trap_inline(nut_top_z + overlap, hinge_nut_spec,
+        nut_trap_inline(trap_top + overlap, hinge_nut_spec,
                         nutwidth = hinge_nut_width > 0 ? hinge_nut_width : undef,
                         anchor = BOTTOM, $slop = nut_clearance);
 }
 
 // Printed hinge parts, in the hinge-local frame (pivot axis on X through
 // the origin, bed toward -Y).
-// Arm outline in YZ, grown by g: a bar from its front face to the pivot,
-// rounded about the pivot behind
+// Arm outline in YZ, grown by g: a bar from its front face back to the
+// tail (or, with no stop, rounded about the pivot), its top cut to ph_atop
 module ph_arm_2d(g = 0) {
-    hull() {
-        circle(r = ph_R + g, $fn = 64);
-        translate([-ph_Lf - g, -ph_R - g]) square([ph_Lf + g, 2 * (ph_R + g)]);
+    intersection() {
+        if (ph_Lt > 0)
+            translate([-ph_Lf - g, -ph_R - g]) square([ph_Lf + ph_Lt + 2 * g, 2 * (ph_R + g)]);
+        else
+            hull() {
+                circle(r = ph_R + g, $fn = 64);
+                translate([-ph_Lf - g, -ph_R - g]) square([ph_Lf + g, 2 * (ph_R + g)]);
+            }
+        translate([-100, -100]) square([200, 100 + ph_atop + g]);
     }
 }
 // YZ outline -> 3D across X (width w, centered)
@@ -2983,7 +3224,7 @@ module ph_hole_x(d, w, to_y = false) {
 
 // The arm: pin hole in from the front face (chamfered), pivot hole across
 module ph_arm() {
-    pd = ph_pin_d + ph_press;
+    pd = ph_pd + ph_press;
     difference() {
         ph_yz(ph_arm_w) ph_arm_2d();
         translate([0, -ph_Lf - overlap, 0]) rotate([-90, 0, 0]) {
@@ -2995,35 +3236,27 @@ module ph_arm() {
 }
 
 // The block: cheeks holding the pivot rod (press fit), a floor under the
-// arm, the stop wall behind it, and the screw hole with its counterbore
+// arm with the tail's pocket behind (whose floor is the stop), and a nut
+// pressed into the underside under the front of the arm
 module ph_block() {
     w = ph_bw;
     difference() {
-        union() {
-            translate([-w / 2, ph_front, ph_bot]) cube([w, ph_back - ph_front, ph_R - ph_bot]);
-            if (ph_stop)
-                intersection() {
-                    translate([-w / 2, ph_front, ph_R - overlap])
-                        cube([w, ph_back - ph_front, ph_stop_h + overlap]);
-                    // behind the stop plane
-                    rotate([-ph_th, 0, 0]) translate([-w, -100, ph_R + ph_clear])
-                        cube([2 * w, 200, 100]);
-                }
-        }
+        translate([-w / 2, ph_front, ph_bot]) cube([w, ph_back - ph_front, ph_atop - ph_bot]);
         ph_arm_sweep(ph_th);
         // the arm's channel runs out through the front, where the pin leaves
         translate([-ph_arm_w / 2 - ph_clear, ph_front - overlap, -ph_R - ph_clear])
-            cube([ph_arm_w + 2 * ph_clear, -ph_front, 2 * ph_R + ph_clear + overlap]);
+            cube([ph_arm_w + 2 * ph_clear, -ph_front, ph_R + ph_clear + ph_atop + overlap]);
         ph_hole_x(ph_pivot_d + ph_press, w + 2 * overlap);
+        // nut pocket from below, and the screw's hole on up (blind)
         translate([0, ph_sdy, ph_bot - overlap]) {
-            cylinder(h = ph_top - ph_bot + 2 * overlap, d = hinge_mounting_hole_diameter, $fn = 32);
-            translate([0, 0, ph_top - ph_bot - ph_head_h + overlap])
-                cylinder(h = ph_head_h + overlap, d = ph_head_d, $fn = 48);
+            rotate(30) cylinder(h = ph_nut_t + 0.3 + overlap, r = ph_nut_w / 2 / cos(30), $fn = 6);
+            cylinder(h = -(ph_R + ph_clear) - 1.5 - ph_bot + overlap,
+                     d = hinge_mounting_hole_diameter, $fn = 32);
         }
         // ease the vertical edges, so the block drops into a square recess
         for (sx = [-1, 1], yy = [ph_front, ph_back])
             translate([sx * w / 2, yy, ph_bot - overlap])
-                linear_extrude(height = ph_top - ph_bot + 2 * overlap)
+                linear_extrude(height = ph_atop - ph_bot + 2 * overlap)
                     rotate(45) square(1.2, center = true);
     }
 }
@@ -3032,7 +3265,7 @@ module ph_block() {
 module ph_rods(tilt = 0) {
     color("Silver") {
         rotate([-tilt, 0, 0]) translate([0, -ph_Lf + ph_pin_embed, 0]) rotate([90, 0, 0])
-            cylinder(h = ph_pin_len, d = ph_pin_d, $fn = 32);
+            cylinder(h = ph_pin_len, d = ph_pd, $fn = 32);
         rotate([0, 90, 0]) cylinder(h = ph_bw, d = ph_pivot_d, center = true, $fn = 32);
     }
 }
@@ -3062,17 +3295,17 @@ module printed_hinges() {
 // ph_press -0.2 .. +0.2 left to right, and a sixth horizontal hole at the
 // arm's running fit (marked by a notch on top)
 pt_steps = [-0.2, -0.1, 0, 0.1, 0.2];
-pt_pitch = max(ph_pin_d, ph_pivot_d) + 6;
+pt_pitch = max(ph_pd, ph_pivot_d) + 6;
 module printed_hinge_test() {
     L = 7 * pt_pitch;
     hz = ph_pivot_d / 2 + 4;                     // pivot-hole row height
     H = ph_pivot_d + 8 + 13;                     // pin holes 12 deep from the top, clear of it
-    D = max(ph_pin_d + 8, 14);
+    D = max(ph_pd + 8, 14);
     difference() {
         cube([L, D, H]);
         for (i = [0 : 4]) {
             x = (i + 1) * pt_pitch;
-            translate([x, D / 2, H - 12]) cylinder(h = 12 + overlap, d = ph_pin_d + ph_press + pt_steps[i], $fn = 48);
+            translate([x, D / 2, H - 12]) cylinder(h = 12 + overlap, d = ph_pd + ph_press + pt_steps[i], $fn = 48);
             translate([x, -overlap, hz]) rotate([-90, 0, 0])
                 linear_extrude(height = D + 2 * overlap) rotate(180) teardrop_2d(ph_pivot_d + ph_press + pt_steps[i]);
             // one notch per step on the front top edge: 1 = tightest
@@ -3323,12 +3556,11 @@ module back_ext_part() {
         if (has_corner)
             corner_tongues(ext_dt_clearance, -overlap, ext_top_z + 2 * overlap);
         back_trench_cut();
-        // Printed hinges stand above the rim: notch the lip around them
-        if (hinge_type == "printed")
-            for (hx = [hinge_x1, hinge_x2])
-                translate([hx - hinge_half_x() - 1, hinge_y + ph_front - ph_recess_clear - 1, lip_z0 - 1])
-                    cube([2 * hinge_half_x() + 2, ph_back - ph_front + 2 * ph_recess_clear + 2,
-                          ext_top_z - lip_z0 + 2]);
+        // Printed hinges stand above the rim, and a recessed lip goes round
+        // the full-height islands left about the hinges: notch the lip
+        if (has_hinges && (hinge_type == "printed" || lip_recessed))
+            translate([0, 0, lip_z0 - 1]) linear_extrude(height = lip_t + 2)
+                offset(delta = lip_cut_clearance) hinge_islands_2d();
     }
 }
 
@@ -3359,7 +3591,7 @@ module back_lip_plan() {
 }
 
 module back_lip() {
-    r  = lip_edge_round;
+    r  = lip_recessed ? 0 : lip_edge_round;
     R  = lip_fillet;
     y0 = seat_y1;
     y1 = bk_y0;
@@ -4065,7 +4297,10 @@ build_parts = concat(
     ext_peg_style == "insert" && n_ext_pegs > 0
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
-    has_hinges ? [["hinge_nut_tool", "small", [22, 22], []]] : [],
+    hinge_type == "lollipop" ? [["hinge_nut_tool", "small", [22, 22], []]] : [],
+    back_cut ? [["back_trim", "small", [bk_lip_x1 + 2, outer_width - seat_y1 + 1], []]] : [],
+    left_cut ? [["left_trim", "small", [seat_x0 + 2, seat_y1 - bed_y0 + 1], []]] : [],
+    has_cord_slot ? [["cord_slot_trim", "small", [cs_w, outer_width - seat_y1], []]] : [],
     hinge_type == "printed"
         ? [["printed_hinges", "small",
             [2 * ph_bw + 6, ph_back - ph_front + 6 + 2 * ph_R], []]] : [],
@@ -4093,6 +4328,9 @@ module place_part(id) {
     else if (id == "right_bay")  translate([-base_x1, 0, 0]) right_bay();
     else if (id == "hinge_nut_tool") translate([11, 11, 0]) hinge_nut_tool();
     else if (id == "printed_hinges") printed_hinges();
+    else if (id == "back_trim") rim_trim_print("back");
+    else if (id == "left_trim") rim_trim_print("left");
+    else if (id == "cord_slot_trim") cord_slot_trim_print();
     else if (id == "back_ext")   translate([-bk_x0, -seat_y1, 0]) back_ext_part();
     else if (id == "left_ext")   translate([-lf_x0, -lf_y0, 0]) left_ext_part();
     else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();

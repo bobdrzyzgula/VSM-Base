@@ -17,6 +17,8 @@
   upright and two arms standing on their front faces, so the pin's hole is
   vertical and the pin's load lies along the layers; no supports. The
   pivot holes are teardrops with their points up.
+- Trim strips (`back_trim`, `left_trim`) print flat on their undersides,
+  and `cord_slot_trim` upright, all without supports.
 - Features removed after printing: knock-out walls under the handholds, sacrificial membranes over screw holes.
 
 > **Note: lid hinges in PLA and PETG.** The hinge defaults

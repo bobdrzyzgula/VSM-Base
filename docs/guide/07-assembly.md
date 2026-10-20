@@ -15,12 +15,17 @@
   and trap depths is in `standalone/nut-tool/`.
 - Printed hinges: cut the pins and pivots to the console's lengths and
   deburr them. Press a pin into each arm's front face to the bottom of its
-  hole (a vise works). Set the arm between the block's cheeks and press the
-  pivot rod through cheek, arm and cheek until its ends are flush with the
-  block's sides; the arm should swing freely. Drop the block into its
-  recess, pin toward the bed, and screw it down through the counterbore in
-  its back wall into the nut trap. The recess walls keep the pivot rod from
-  working out.
+  hole (a vise works), and a nut into the hex pocket in each block's
+  underside. Set the arm between the block's cheeks and press the pivot rod
+  through cheek, arm and cheek until its ends are flush with the block's
+  sides; the arm should swing freely. Drop the block into its recess, pin
+  toward the bed, and drive the screw up from under the base, through the
+  trap (its head bears on the trap's roof), into the block's nut. The
+  recess walls keep the pivot rod from working out.
+- Trim strips, with the extensions off: tap the peg inserts into the
+  trims' holes, as into the lips, and press the trims into the rim cuts.
+  The cord slot's trim presses into the top of the slot once the cords are
+  in.
 - Harness rods and carrying.
 - An attached bay: inserts into its inner wall, dowels into the base's end face, then the four screws from inside the machine cavity.
 - Extensions on their pegs, the corner piece's dovetails, and snapping in the lids.

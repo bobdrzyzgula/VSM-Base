@@ -125,11 +125,12 @@ below the flat plate, in a thickened boss.](../images/diagrams/bed-section.svg){
 
 Measure the hinge holes' diameter. For lollipop hinges it isn't a model
 parameter, but it is the diameter of the hinge pins you need. For the
-printed hinge it sets `ph_pin_d`, the steel pin's diameter: choose rod just
-under the hole's size, so the pin slides in without play. On the 99 the
-holes are 1/4". Measure how deep the holes go too, if you can: the printed
-hinge's pin enters them by `ph_pin_engage` (12 mm), which must not be more
-than their depth.
+printed hinge it sets the steel pin's diameter (`custom_hinge_pin_d_mm`):
+choose rod just under the hole's size, so the pin slides in without play.
+On the 99 the holes are 1/4"; on the Kenmore 158, 6 mm. Measure how deep
+the holes go too, if you can, or how far the old hinge's pins went in: the
+printed hinge's pin enters them by `custom_hinge_pin_engage_mm` (12 mm on
+the 99K, 16 mm on the Kenmore), which must not be more than their depth.
 
 ### Bed cushions, `bed_cushion_in`
 
@@ -222,6 +223,14 @@ add a relief.
 The center slice in the test parts (see the chapter on test parts) has the
 full inside profile of the base, and is the best check: slide it along the
 underside of the machine and see that nothing touches.
+
+A machine that stands on cast feet under the casting can be carried on
+them instead (see *a bed set flush, or standing on its feet* in
+Configuring the model): stand it on a flat surface and measure from the
+surface to the plate's underside, for `custom_foot_height_mm`. Everything
+else under the bed must then be shorter than the feet; the Kenmore 158's
+feet are 63 mm. Note, too, anything that leaves the casting through its
+edge, such as a cord, for `custom_cord_slot`.
 
 ## The bobbin cover, `left_trench` and `back_trench`
 
