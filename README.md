@@ -93,6 +93,9 @@ fit on your printer, and then print a base that fits.
   and custom heights, plain or divided into compartments; and a spool tray
   that holds each spool with its bobbin on top. Others can be designed
   against a published list of bay sizes; see [docs/inserts.md](docs/inserts.md).
+- **A nut tool**: a printed rod for holding a nut in a trap while the
+  screw is started, for common inch and metric nuts; see
+  [standalone/nut-tool/](standalone/nut-tool/).
 - **A motor test rig** for the knee controller work: a plywood board of
   printed modules for measuring a sewing motor (resistance, inductance,
   speed, torque with a Prony brake) and the triac board; see
