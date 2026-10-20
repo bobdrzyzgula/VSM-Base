@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 456 parameters; 454 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 459 parameters; 457 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -302,7 +302,10 @@ There are 456 parameters; 454 of them appear in the Customizer. The rest are lis
 | `rig_screw_d` | `3.5` | Screw holes through the floor rim, to fix the rig to a board *Range 2 to 6, step 0.1.* |
 | `rig_mark_in` | `5` | Marking holes in the floor rim, this far in from the bed's edges at each corner and at the split, for a pencil or awl *Range 3 to 9, step 0.5.* |
 | `rig_mark_d` | `1.6` |  *Range 0.8 to 3, step 0.1.* |
-| `rig_crossbar` | `false` | A floor bar across the split, to keep each half square before it is on the board (it covers the paper there) |
+| `rig_bar_in` | `100` | Floor bars across the rig, this far in from each end of the bed (mm), to keep each half square; set them where no foot can land (0 = none) *Range 0 to 250, step 1.* |
+| `rig_bar_w` | `10` | Floor bar width, and the height of the stiffening rib along it *Range 5 to 20, step 0.5.* |
+| `rig_bar_rib` | `5` |  *Range 0 to 15, step 0.5.* |
+| `rig_crossbar` | `false` | A floor bar across the split as well (it covers the paper there) |
 
 ## Hinge coupon
 

@@ -231,7 +231,9 @@ surface to the plate's underside, for `custom_foot_height_mm`. To find
 where the feet are, print the foot-locating rig (`foot_rig_left` and
 `foot_rig_right`, bolted together with eight M3 bolts through the splice
 tabs): a thin box 80 mm tall that fits round the bed, with a narrow floor
-rim and an open bottom. Screw it to a board over a sheet of paper, mark the
+rim, an open bottom, and a floor bar across each half to keep it square,
+`rig_bar_in` (100 mm) in from each end of the bed; set that where no foot
+can land. Screw it to a board over a sheet of paper, mark the
 paper through the six small holes in the floor rim (each 5 mm in from the
 bed's edges, at the corners and at the split; the console lists their
 exact positions), ink the feet, and lower the machine into the box. Measure

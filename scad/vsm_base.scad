@@ -686,7 +686,12 @@ rig_screw_d = 3.5; // [2 : 0.1 : 6]
 // Marking holes in the floor rim, this far in from the bed's edges at each corner and at the split, for a pencil or awl
 rig_mark_in = 5; // [3 : 0.5 : 9]
 rig_mark_d = 1.6; // [0.8 : 0.1 : 3]
-// A floor bar across the split, to keep each half square before it is on the board (it covers the paper there)
+// Floor bars across the rig, this far in from each end of the bed (mm), to keep each half square; set them where no foot can land (0 = none)
+rig_bar_in = 100; // [0 : 1 : 250]
+// Floor bar width, and the height of the stiffening rib along it
+rig_bar_w = 10; // [5 : 0.5 : 20]
+rig_bar_rib = 5; // [0 : 0.5 : 15]
+// A floor bar across the split as well (it covers the paper there)
 rig_crossbar = false;
 
 /* [Hinge coupon] */
@@ -2082,6 +2087,11 @@ if (report && (part == "foot_rig" || part == "foot_rig_left" || part == "foot_ri
     echo(str("Foot rig: ", rig_x1 - rig_x0, " x ", rig_y1 - rig_y0, " x ", rig_height,
              " mm, in two halves of about ", rig_sx - rig_x0 + rig_wall, " and ", rig_x1 - rig_sx, " mm; 4 M3 bolts per tab, 8 in all"));
     echo(str("Foot rig marking holes (X from the bed's left end, Y from its front edge, mm): ", rig_marks));
+    if (rig_bar_in > 0)
+        echo(str("Foot rig: floor bars ", rig_bar_w, " mm wide at X ", rig_bar_in, " and ", rig_L - rig_bar_in,
+                 ", with a ", rig_bar_rib, " mm rib; keep them clear of the feet"));
+    if (rig_bar_in > 0 && (rig_bar_in + rig_bar_w / 2 > rig_sx))
+        echo("WARNING: rig_bar_in puts the bars past the split");
 }
 if (report && hinge_type == "printed") {
     echo(str("Printed hinge: block ", ph_bw, " x ", ph_back - ph_front, " x ", ph_atop - ph_bot,
@@ -3355,7 +3365,12 @@ module foot_rig_whole() {
                     cube([rig_L - 2 * (rig_rim - rig_c), rig_W - 2 * (rig_rim - rig_c), rig_floor + 2]);
             }
             // cross bar at the split, so each half keeps its shape
-            if (rig_crossbar) translate([rig_sx - 5, -rig_c, 0]) cube([10, rig_W + 2 * rig_c, rig_floor]);
+            for (bx = concat(rig_bar_in > 0 ? [rig_bar_in, rig_L - rig_bar_in] : [],
+                             rig_crossbar ? [rig_sx] : [])) {
+                translate([bx - rig_bar_w / 2, -rig_c, 0]) cube([rig_bar_w, rig_W + 2 * rig_c, rig_floor]);
+                if (rig_bar_rib > 0)
+                    translate([bx - 1.5, -rig_c, 0]) cube([3, rig_W + 2 * rig_c, rig_floor + rig_bar_rib]);
+            }
         }
         for (m = rig_marks) translate([m.x, m.y, -1]) cylinder(h = rig_floor + 2, d = rig_mark_d, $fn = 16);
         // cord notch, where the base has a cord slot
