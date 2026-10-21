@@ -285,7 +285,7 @@ There are 465 parameters; 463 of them appear in the Customizer. The rest are lis
 | `ph_web` | `4` | Base web left between the bed seat and the hinge recess *Range 2 to 10, step 0.5.* |
 | `ph_floor` | `3` | Block floor under the arm *Range 2 to 8, step 0.5.* |
 | `ph_recess_clear` | `0.2` | Fit of the block in its recess, each side *Range 0 to 0.6, step 0.05.* |
-| `ph_stop_angle` | `60` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
+| `ph_stop_angle` | `100` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110). 100 matches a Singer lollipop hinge's knuckle; the machine passes its balance point (about 55 degrees on a 99K) well before, and past about 75 degrees the base itself starts to tip up unless the machine is held or braced *Range 0 to 110, step 1.* |
 | `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
 | `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
 | `ph_test_step` | `0.1` | Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_press (0.05 for a finer second bar) *Range 0.02 to 0.2, step 0.01.* |

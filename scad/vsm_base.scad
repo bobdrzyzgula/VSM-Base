@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 48
+// VSM Base, version 49
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -232,6 +232,10 @@
 //
 // v48: an arrow engraved in the printed hinge arm's bottom face, pointing
 // to the pin, since the arm isn't symmetrical top to bottom.
+//
+// v49: printed hinge's stop at 100 degrees, where a lollipop hinge's
+// knuckle stops a 99K (measured by Bob), so the machine tips back far
+// enough to service; the stop's load is bounded by the base tipping up.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -693,8 +697,8 @@ ph_web = 4; // [2 : 0.5 : 10]
 ph_floor = 3; // [2 : 0.5 : 8]
 // Fit of the block in its recess, each side
 ph_recess_clear = 0.2; // [0 : 0.05 : 0.6]
-// Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110)
-ph_stop_angle = 60; // [0 : 1 : 110]
+// Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110). 100 matches a Singer lollipop hinge's knuckle; the machine passes its balance point (about 55 degrees on a 99K) well before, and past about 75 degrees the base itself starts to tip up unless the machine is held or braced
+ph_stop_angle = 100; // [0 : 1 : 110]
 // Tail length behind the pivot (longer: less force on the stop, deeper block)
 ph_tail = 12; // [6 : 0.5 : 25]
 // Least plastic over the rods where the arm and cheeks are cut down to the rim

@@ -63,15 +63,19 @@
 > The arm runs on past the pivot into a short tail (`ph_tail`, 12 mm). When
 > the machine is tipped back, the tail swings down into a pocket in the
 > block and comes to rest on its floor, so the machine stops at about
-> `ph_stop_angle` (60°) instead of falling back onto the table; nothing of
-> the stop stands above the arm. The stop
-> takes the machine's weight leaning back through the pins, and the
-> further past upright the machine leans, the harder it presses: a 30 lb
-> machine at 60° presses each stop with a few hundred newtons, which the
-> parts are sized for, but don't let the machine drop onto the stop. Set
-> `ph_stop_angle` between 45° and 110°, or 0 for no stop. Check that
-> nothing on your machine (a motor behind the arm, say) reaches the base's
-> back rim before the stop. Print the hinges in PETG or another tough
+> `ph_stop_angle` (100°), where a Singer lollipop hinge's knuckle stops a
+> 99K; nothing of the stop stands above the arm. That is far enough to
+> service the machine's underside at about 90°. On the way there the
+> machine passes its balance point (about 55° on a 99K), where it takes the
+> least effort to hold, and past about 75° the machine's weight behind the
+> base outweighs the base, so the base starts to tip up unless you hold the
+> machine or brace its arm (on a 99K at 90°, about 6" above the table
+> behind). Because the base tips first, the stop never has to hold more
+> than a few newton-metres, well within the pins and the plastic; don't
+> drop the machine onto it all the same. Set `ph_stop_angle` between 45°
+> and 110°, or 0 for no stop. Check that nothing on your machine reaches
+> the base's back rim before the stop. Print the hinges in PETG or another
+> tough
 > filament; their rods are cut-to-length steel rod or dowel pins. The pin's
 > diameter and how far it goes into the hole come from the machine profile
 > (1/4" and 12 mm for the 99K, 6 mm and 16 mm for the Kenmore 158-14001), unless
