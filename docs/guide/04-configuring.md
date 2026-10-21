@@ -184,13 +184,17 @@
 >   straight out the front wall.
 > - `rear`: both go out the back. The controller cord drops from the
 >   outlet's front end into a channel in the floor, turns through a
->   180-degree bend (about 27 mm radius) and runs back along the divider,
+>   180-degree bend (about 27 mm radius on the 99K) and runs back along the divider,
 >   under the machine's cords where they come through the pass-through,
 >   and out through the back wall beside the power cord. The channel holds
 >   two-wire lamp cord standing on edge (`outlet_channel_w`,
 >   `outlet_channel_depth`), so the bend is an easy flat bend; small lips
 >   along its edges, on alternate sides, let the cord press in and keep it
->   down. The floor labels move over beside the channel.
+>   down. The floor labels move over beside the channel, smaller to fit.
+>   The cords are taken to leave the outlet's ends at its centre, 1/8" up
+>   from its back, as on the usual cordset outlet (`outlet_cord_z` and
+>   `outlet_cord_x` if yours differ), and the bend is as wide as the room
+>   in front of the outlet allows.
 >
 > Each wall slot runs from the top of the wall down to its cord. With the
 > cord in place, a trim (part `outlet_trims`, one per slot) presses into
