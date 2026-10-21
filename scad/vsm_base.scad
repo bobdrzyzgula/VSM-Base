@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 43
+// VSM Base, version 44
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -213,13 +213,18 @@
 // v43: in the "all" view, each plate is as wide as the bed or its widest
 // part, so a base printed whole no longer runs into the next plate. The
 // header's version number tracks again.
+//
+// v44: part "tools": the things printed to help build or measure rather
+// than parts of the base: the hinge nut tool, the printed hinge's rod-fit
+// test and the foot-locating rig's two halves. test_parts stays for pieces
+// of the base for trying fits.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -2121,7 +2126,10 @@ if (report && bed_on_feet)
              " mm pads; floor ", round(inner_depth_eff * 10) / 10, " mm below the rim (inner_depth not used); the ledge sits ",
              bed_feet_gap, " mm under the plate"));
 if (report && bed_flush) echo("Bed flush with the rim");
-if (report && (part == "foot_rig" || part == "foot_rig_left" || part == "foot_rig_right")) {
+if (report && part == "tools")
+    echo(str("Tools: hinge_nut_tool, printed_hinge_test, foot_rig_left, foot_rig_right (each also its own part); ",
+             "the foot rig is cut for the ", use_custom ? "Custom" : profile_name, " machine"));
+if (report && (part == "foot_rig" || part == "foot_rig_left" || part == "foot_rig_right" || part == "tools")) {
     echo(str("Foot rig: ", rig_x1 - rig_x0, " x ", rig_y1 - rig_y0, " x ", rig_height,
              " mm, in two halves of about ", rig_sx - rig_x0 + rig_wall, " and ", rig_x1 - rig_sx, " mm; 4 M3 bolts per tab, 8 in all"));
     echo(str("Foot rig marking holes (X from the bed's left end, Y from its front edge, mm): ", rig_marks));
@@ -2855,9 +2863,9 @@ if (part == "assembly") {
     color("Peru") foot_rig_half(false);
     color("BurlyWood") foot_rig_half(true);
 } else if (part == "foot_rig_left") {
-    translate([-rig_x0 + rig_ear_d / 2, -rig_y0 + rig_wall + rig_ear_d / 2, 0]) foot_rig_half(false);
+    foot_rig_print(false);
 } else if (part == "foot_rig_right") {
-    translate([-rig_sx + rig_ear_d / 2, -rig_y0 + rig_ear_d / 2, 0]) foot_rig_half(true);
+    foot_rig_print(true);
 } else if (part == "back_trim") {
     if (back_cut) rim_trim_print("back");
     else if (report) echo("WARNING: back_trim: no rim cut (the lips aren't recessed, or back_ext is off)");
@@ -2894,6 +2902,8 @@ if (part == "assembly") {
     else if (report) echo("WARNING: split_test needs split = true");
 } else if (part == "test_parts") {
     test_parts();
+} else if (part == "tools") {
+    tools();
 } else if (ins_in(part, bb_parts)) {
     assert(bb_have, "The bobbin trays need the corner bay: turn on back_ext, left_ext and corner_ext, or set make_corner_box");
     bobbin_insert(part);
@@ -3452,6 +3462,29 @@ module foot_rig_half(right) {
             if (right ? sc.x > rig_sx : sc.x < rig_sx)
                 translate([sc.x, sc.y, -1]) cylinder(h = rig_floor + 2, d = rig_screw_d, $fn = 20);
     }
+}
+
+// Foot rig halves in print position, inside [0, w] x [0, d]
+rig_print_w = [(rig_sx + rig_lap) - rig_x0 + rig_ear_d, rig_x1 - rig_sx + rig_ear_d];
+rig_print_d = [rig_y1 - rig_y0 + 2 * rig_wall + rig_ear_d, rig_y1 - rig_y0 + rig_ear_d];
+module foot_rig_print(right) {
+    if (right) translate([-rig_sx + rig_ear_d / 2, -rig_y0 + rig_ear_d / 2, 0]) foot_rig_half(true);
+    else translate([-rig_x0 + rig_ear_d / 2, -rig_y0 + rig_wall + rig_ear_d / 2, 0]) foot_rig_half(false);
+}
+
+// Tools: things printed to help build or measure, not parts of the base
+// or pieces of it for trying fits (those are test_parts). In a row: the
+// hinge nut tool, the printed hinge's rod-fit test, and the two halves of
+// the foot-locating rig.
+module tools() {
+    g = 12;
+    x1 = 22 + g;
+    x2 = x1 + 7 * pt_pitch + g;
+    x3 = x2 + rig_print_w[0] + g;
+    translate([11, 11, 0]) hinge_nut_tool();
+    translate([x1, 0, 0]) printed_hinge_test();
+    translate([x2, 0, 0]) foot_rig_print(false);
+    translate([x3, 0, 0]) foot_rig_print(true);
 }
 
 // Rod-fit test: a bar with five vertical pin holes (as the arm prints
