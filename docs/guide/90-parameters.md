@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 465 parameters; 463 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 470 parameters; 468 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -55,6 +55,7 @@ There are 465 parameters; 463 of them appear in the Customizer. The rest are lis
 | `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
 | `custom_foot_height_mm` | `0` | IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead) |
 | `custom_cord_slot` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none |
+| `custom_tilt_prop_mm` | `[0, 0]` | IGNORED unless machine = Custom. Tilt prop, mm: [height of the arm's underside above the table with the machine tipped back to 90 degrees, cradle radius]; [0, 0] = not measured |
 | `custom_back_trench` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none |
 | `custom_left_trench` | `[83.34, 57.6, 40, 2.5]` | IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none |
 | `custom_base_lid_notch` | `[8, 23]` | IGNORED unless machine = Custom. Notch in the base lid's left edge clearing the motor boss as the lid opens, mm: [depth, width]; [0, 0] = none |
@@ -312,6 +313,15 @@ There are 465 parameters; 463 of them appear in the Customizer. The rest are lis
 | `rig_ears` | `false` | Mouse ears: thin discs at each half's corners, to hold them down while printing; cut off after. Off by default: a slicer's own mouse-ear brim (Bambu Studio's brim type "Mouse ear") does the same without brims round the discs |
 | `rig_ear_d` | `16` |  *Range 8 to 30, step 1.* |
 | `rig_ear_h` | `0.4` |  *Range 0.2 to 1, step 0.1.* |
+
+## Tilt prop
+
+| Parameter | Default | Description |
+|---|---|---|
+| `tilt_prop_h` | `0` | Part tilt_prop: a stand on the table behind the base that catches the machine's arm when it is tipped back to about 90 degrees, for hands-free servicing. Height of the arm's underside above the table there, mm; 0 = from the machine profile (99K: 6") *Range 0 to 300, step 1.* |
+| `tilt_prop_r` | `0` | Cradle radius (the arm's radius plus a little), mm; 0 = from the profile (99K: 1") *Range 0 to 60, step 0.5.* |
+| `tilt_prop_w` | `38.1` | Cradle width, along the arm (1.5") *Range 20 to 80, step 0.5.* |
+| `tilt_prop_foot` | `[80, 110]` | Foot: width along the arm, and depth front to back *Range 40 to 200, step 1.* |
 
 ## Hinge coupon
 

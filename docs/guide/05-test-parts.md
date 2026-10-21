@@ -7,8 +7,8 @@
   fits; `tools` gives the things printed to help build or measure, which
   aren't part of the base: the hinge nut tool (`hinge_nut_tool`), the
   printed hinge's rod-fit test (`printed_hinge_test`), and the two halves
-  of the foot-locating rig (`foot_rig_left`, `foot_rig_right`). Each tool
-  is also a part of its own.
+  of the foot-locating rig (`foot_rig_left`, `foot_rig_right`), and the
+  tilt prop (`tilt_prop`). Each tool is also a part of its own.
 - Top slice of the base: does the bed drop in and sit flat, and do the hinge pins line up?
 - Dovetail coupon: joint clearance (`split_clearance`, `key_flare_angle`) and the plate-pocket bridge.
 - Center slice: all three dovetails with the plates installed, the front seam, and clearance under the machine.

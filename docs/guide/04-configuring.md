@@ -70,7 +70,14 @@
 > least effort to hold, and past about 75° the machine's weight behind the
 > base outweighs the base, so the base starts to tip up unless you hold the
 > machine or brace its arm (on a 99K at 90°, about 6" above the table
-> behind). Because the base tips first, the stop never has to hold more
+> behind). The tilt prop (part `tilt_prop`, one of the tools) does the
+> bracing: a stand on the table behind the base whose cradle, lined with
+> felt, catches the arm at 90°, so you can work with both hands while the
+> machine's weight goes into the table instead of tipping the base. Its
+> height and the cradle's radius come from the machine profile (6" and 1"
+> for the 99K; `custom_tilt_prop_mm`, or `tilt_prop_h` and `tilt_prop_r`,
+> for others): tip the machine back to 90° on a level gauge and measure
+> from the table to the underside of the arm. Because the base tips first, the stop never has to hold more
 > than a few newton-metres, well within the pins and the plastic; don't
 > drop the machine onto it all the same. Set `ph_stop_angle` between 45°
 > and 110°, or 0 for no stop. Check that nothing on your machine reaches

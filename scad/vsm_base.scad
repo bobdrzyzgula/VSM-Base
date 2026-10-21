@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 49
+// VSM Base, version 50
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -236,13 +236,17 @@
 // v49: printed hinge's stop at 100 degrees, where a lollipop hinge's
 // knuckle stops a 99K (measured by Bob), so the machine tips back far
 // enough to service; the stop's load is bounded by the base tipping up.
+//
+// v50: part tilt_prop (also in tools): a stand behind the base whose
+// cradle catches the machine's arm tipped back to 90 degrees; profile key
+// tilt_prop_mm (99K: arm 6" above the table, 1" cradle radius, from Bob).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -311,6 +315,8 @@ custom_bed_flush = false;
 custom_foot_height_mm = 0;
 // IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none
 custom_cord_slot = [0, 0, 0, 0];
+// IGNORED unless machine = Custom. Tilt prop, mm: [height of the arm's underside above the table with the machine tipped back to 90 degrees, cradle radius]; [0, 0] = not measured
+custom_tilt_prop_mm = [0, 0];
 // IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none
 custom_back_trench = [0, 0, 0, 0];
 // IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none
@@ -738,6 +744,16 @@ rig_tie_w = 6; // [3 : 0.5 : 12]
 rig_ears = false;
 rig_ear_d = 16; // [8 : 1 : 30]
 rig_ear_h = 0.4; // [0.2 : 0.1 : 1]
+
+/* [Tilt prop] */
+// Part tilt_prop: a stand on the table behind the base that catches the machine's arm when it is tipped back to about 90 degrees, for hands-free servicing. Height of the arm's underside above the table there, mm; 0 = from the machine profile (99K: 6")
+tilt_prop_h = 0; // [0 : 1 : 300]
+// Cradle radius (the arm's radius plus a little), mm; 0 = from the profile (99K: 1")
+tilt_prop_r = 0; // [0 : 0.5 : 60]
+// Cradle width, along the arm (1.5")
+tilt_prop_w = 38.1; // [20 : 0.5 : 80]
+// Foot: width along the arm, and depth front to back
+tilt_prop_foot = [80, 110]; // [40 : 1 : 200]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -1284,7 +1300,10 @@ profiles = [
         ["hinge_pin_engage_mm",    12],
         ["bed_flush",              false],
         ["foot_height_mm",         0],
-        ["cord_slot",              [0, 0, 0, 0]]
+        ["cord_slot",              [0, 0, 0, 0]],
+        // Tipped back to 90 degrees, the arm (1.75-2" across) is 6" above
+        // the table, its centerline about 5" behind the base
+        ["tilt_prop_mm",           [152.4, 25.4]]
     ]],
     ["Kenmore 158-14001", [
         // 425 x 185 mm bed, 7 mm plate, sitting flush in its base on three
@@ -1311,7 +1330,8 @@ profiles = [
         ["foot_height_mm",         63],
         // Two lamp cords, 12 x 3 mm together, leave the connector 50 mm
         // below the plate and run straight back
-        ["cord_slot",              [375, 14, 60, 5]]
+        ["cord_slot",              [375, 14, 60, 5]],
+        ["tilt_prop_mm",           [0, 0]]
     ]]
 ];
 
@@ -1341,7 +1361,8 @@ custom_settings = [
     ["hinge_pin_engage_mm",    custom_hinge_pin_engage_mm],
     ["bed_flush",              custom_bed_flush],
     ["foot_height_mm",         custom_foot_height_mm],
-    ["cord_slot",              custom_cord_slot]
+    ["cord_slot",              custom_cord_slot],
+    ["tilt_prop_mm",           custom_tilt_prop_mm]
 ];
 
 // A number to 8 decimal places, trailing zeros dropped (str() gives only
@@ -1377,6 +1398,7 @@ hinge_pin_engage_mm    = mach("hinge_pin_engage_mm");
 bed_flush              = mach("bed_flush");
 foot_height            = mach("foot_height_mm");
 cord_slot              = mach("cord_slot");
+tilt_prop_mm           = mach("tilt_prop_mm");
 back_trench            = trench_or_none(mach("back_trench"));
 left_trench            = trench_or_none(mach("left_trench"));
 base_lid_notch         = mach("base_lid_notch");
@@ -2147,8 +2169,11 @@ if (report && bed_on_feet)
              " mm pads; floor ", round(inner_depth_eff * 10) / 10, " mm below the rim (inner_depth not used); the ledge sits ",
              bed_feet_gap, " mm under the plate"));
 if (report && bed_flush) echo("Bed flush with the rim");
+if (report && (part == "tilt_prop" || part == "tools") && tp_ok)
+    echo(str("Tilt prop: cradle ", tp_r, " mm radius, ", tilt_prop_w, " mm wide, its bottom ", tp_h,
+             " mm above the table; stand it behind the base under the arm, the machine tipped back to 90 degrees. Line the cradle with felt"));
 if (report && part == "tools")
-    echo(str("Tools: hinge_nut_tool, printed_hinge_test, foot_rig_left, foot_rig_right (each also its own part); ",
+    echo(str("Tools: hinge_nut_tool, printed_hinge_test, foot_rig_left, foot_rig_right", tp_ok ? ", tilt_prop" : "", " (each also its own part); ",
              "the foot rig is cut for the ", use_custom ? "Custom" : profile_name, " machine"));
 if (report && (part == "foot_rig" || part == "foot_rig_left" || part == "foot_rig_right" || part == "tools")) {
     echo(str("Foot rig: ", rig_x1 - rig_x0, " x ", rig_y1 - rig_y0, " x ", rig_height,
@@ -2925,6 +2950,9 @@ if (part == "assembly") {
     test_parts();
 } else if (part == "tools") {
     tools();
+} else if (part == "tilt_prop") {
+    if (tp_ok) tilt_prop();
+    else if (report) echo("WARNING: tilt_prop: this machine profile has no tilt prop measurements; set tilt_prop_h and tilt_prop_r");
 } else if (ins_in(part, bb_parts)) {
     assert(bb_have, "The bobbin trays need the corner bay: turn on back_ext, left_ext and corner_ext, or set make_corner_box");
     bobbin_insert(part);
@@ -3513,10 +3541,49 @@ module tools() {
     x1 = 22 + g;
     x2 = x1 + 7 * pt_pitch + g;
     x3 = x2 + rig_print_w[0] + g;
+    x4 = x3 + rig_print_w[1] + g;
     translate([11, 11, 0]) hinge_nut_tool();
     translate([x1, 0, 0]) printed_hinge_test();
     translate([x2, 0, 0]) foot_rig_print(false);
     translate([x3, 0, 0]) foot_rig_print(true);
+    if (tp_ok) translate([x4, 0, 0]) tilt_prop();
+}
+
+// Tilt prop: a cradle on a tapered post and a broad foot, standing on the
+// table behind the base, to catch the machine's arm tipped back to about
+// 90 degrees. X is along the arm; the cradle's axis runs along X at the
+// height of the arm's centre (its underside at tp_h).
+tp_h  = tilt_prop_h > 0 ? tilt_prop_h : tilt_prop_mm[0];
+tp_r  = tilt_prop_r > 0 ? tilt_prop_r : tilt_prop_mm[1];
+tp_ok = tp_h > 0 && tp_r > 0;
+module tilt_prop() {
+    w  = tilt_prop_w;
+    fx = max(tilt_prop_foot[0], w);
+    fy = tilt_prop_foot[1];
+    ft = 5;                                   // foot thickness
+    hy = 2 * tp_r + 8;                        // cradle head depth (Y)
+    hz0 = tp_h - 8;                           // head's underside
+    hz1 = tp_h + 0.6 * tp_r;                  // cradle's lips
+    translate([fx / 2, fy / 2, 0]) difference() {
+        union() {
+            // foot, corners rounded
+            linear_extrude(height = ft)
+                offset(r = 6) offset(delta = -6) square([fx, fy], center = true);
+            // tapered post, from the foot's width to the head's
+            hull() {
+                translate([-w / 2, -fy / 2 + 10, 0]) cube([w, fy - 20, ft]);
+                translate([-w / 2, -hy / 2, hz0 - 1]) cube([w, hy, 1]);
+            }
+            // cradle head
+            translate([-w / 2, -hy / 2, hz0]) cube([w, hy, hz1 - hz0]);
+        }
+        // the cradle: the arm's radius plus 1 mm, axis along X
+        translate([-w / 2 - 1, 0, tp_h + tp_r]) rotate([0, 90, 0])
+            cylinder(h = w + 2, r = tp_r + 1, $fn = 96);
+        // ease the lips
+        for (sy = [-1, 1]) translate([-w / 2 - 1, sy * hy / 2, hz1]) rotate([45, 0, 0])
+            cube([w + 2, 2, 2], center = false);
+    }
 }
 
 // Rod-fit test: a bar with five vertical pin holes (as the arm prints
