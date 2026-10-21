@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 47
+// VSM Base, version 48
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -229,6 +229,9 @@
 //
 // v47: rod-fit test: a plus, not a dash, over the sixth (running-fit) hole,
 // and the step between holes is ph_test_step (0.1; finer for a second bar).
+//
+// v48: an arrow engraved in the printed hinge arm's bottom face, pointing
+// to the pin, since the arm isn't symmetrical top to bottom.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -3337,6 +3340,11 @@ module ph_arm() {
             cylinder(h = 0.6 + overlap, d1 = pd + 1.2 + 2 * overlap, d2 = pd, $fn = 48);
         }
         ph_hole_x(ph_pivot_d + ph_slip, ph_arm_w + 2 * overlap, true);
+        // the arm isn't symmetrical top to bottom: an arrow engraved in its
+        // bottom face, pointing to the pin (this face down, arrow to the bed)
+        translate([0, -ph_Lf / 2 + 4, -ph_R - overlap])
+            linear_extrude(height = 0.6 + overlap)
+                polygon([[-3, 0], [3, 0], [3, -5], [5, -5], [0, -10], [-5, -5], [-3, -5]]);
     }
 }
 

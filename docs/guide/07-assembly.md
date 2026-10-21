@@ -29,8 +29,9 @@ traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){
   hole (a vise works). Slide a nut into the slot in each block's front
   face, under the arm's channel, until it lines up with the screw hole. Set
   the arm between the block's cheeks and press the pivot rod through cheek,
-  arm and cheek until its ends are flush with the block's sides; the arm
-  should swing freely. Drop the block into its recess, pin toward the bed;
+  arm and cheek until its ends are flush with the block's sides, with the
+  arm's engraved arrow on its bottom face, pointing toward the pin (the arm
+  isn't symmetrical top to bottom); the arm should swing freely. Drop the block into its recess, pin toward the bed;
   the recess's front wall closes the nut's slot. Drive the screw (#8-32 ×
   5/8", pan or socket head) up from under the base, through the trap (its
   head bears on the trap's roof), into the block's nut. The recess walls
