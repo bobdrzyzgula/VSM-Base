@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 472 parameters; 470 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 481 parameters; 479 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -163,6 +163,15 @@ There are 472 parameters; 470 of them appear in the Customizer. The rest are lis
 | `outlet_slot_w` | `9` | Cord slot width *Range 4 to 20, step 0.5.* |
 | `outlet_slot_depth` | `25` | Cord slot depth in from the lid edge |
 | `outlet_slot_chamfer` | `1.5` | Chamfer on the slot's top edges, easing a cord pulled over them |
+| `outlet_cord_exit` | `"lid"` | Where the outlet's two cords leave the compartment: through the lid's slots (lid); through slots in the walls, the power cord (from the outlet's back end) out the back and the controller cord (from its front end) out the front (front_rear); or both out the back, the controller cord running back in a channel in the floor (rear). The wall slots take trims (part outlet_trims) that leave an eased opening for the cord *Choices: lid, front_rear, rear.* |
+| `outlet_cord_z` | `0` | Where the cords leave the outlet's ends: height above the floor, and distance in from its face; 0 = half its height, half its thickness *Range 0 to 60, step 0.5.* |
+| `outlet_cord_x` | `0` |  *Range 0 to 40, step 0.5.* |
+| `outlet_wall_slot_w` | `9` | Wall slots: width, and the opening left under the trim for the cord *Range 5 to 16, step 0.5.* |
+| `outlet_cord_gap` | `7` |  *Range 4 to 14, step 0.5.* |
+| `outlet_channel_w` | `3.8` | Floor channel for the controller cord (rear): width and depth, for two-wire lamp cord standing on edge (about 3 x 6 mm) *Range 2.5 to 8, step 0.1.* |
+| `outlet_channel_depth` | `7` |  *Range 4 to 10, step 0.5.* |
+| `outlet_clip` | `0.7` | Retention lips along the channel, alternate sides: overhang, and spacing along the path *Range 0.3 to 1.5, step 0.1.* |
+| `outlet_clip_pitch` | `25` |  *Range 10 to 60, step 1.* |
 
 ## Knee controller
 

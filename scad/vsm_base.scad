@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 52
+// VSM Base, version 53
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -245,13 +245,20 @@
 //
 // v52: tilt prop with a flat, level top for machines without a round arm:
 // a profile cradle radius of 0, or tilt_prop_top = "flat".
+//
+// v53: outlet compartment: the cords can leave through slots in the walls
+// (outlet_cord_exit): the power cord out the back and the controller cord
+// out the front, or both out the back, the controller cord round a
+// 180-degree bend into a channel in the floor, with retention lips; trims
+// (part outlet_trims) fill the slots above the cords, with eased openings.
+// The tunnel behind the compartment stops short of the slots.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -485,6 +492,20 @@ outlet_slot_w = 9; // [4 : 0.5 : 20]
 outlet_slot_depth = 25;
 // Chamfer on the slot's top edges, easing a cord pulled over them
 outlet_slot_chamfer = 1.5;
+// Where the outlet's two cords leave the compartment: through the lid's slots (lid); through slots in the walls, the power cord (from the outlet's back end) out the back and the controller cord (from its front end) out the front (front_rear); or both out the back, the controller cord running back in a channel in the floor (rear). The wall slots take trims (part outlet_trims) that leave an eased opening for the cord
+outlet_cord_exit = "lid"; // [lid, front_rear, rear]
+// Where the cords leave the outlet's ends: height above the floor, and distance in from its face; 0 = half its height, half its thickness
+outlet_cord_z = 0; // [0 : 0.5 : 60]
+outlet_cord_x = 0; // [0 : 0.5 : 40]
+// Wall slots: width, and the opening left under the trim for the cord
+outlet_wall_slot_w = 9; // [5 : 0.5 : 16]
+outlet_cord_gap = 7; // [4 : 0.5 : 14]
+// Floor channel for the controller cord (rear): width and depth, for two-wire lamp cord standing on edge (about 3 x 6 mm)
+outlet_channel_w = 3.8; // [2.5 : 0.1 : 8]
+outlet_channel_depth = 7; // [4 : 0.5 : 10]
+// Retention lips along the channel, alternate sides: overhang, and spacing along the path
+outlet_clip = 0.7; // [0.3 : 0.1 : 1.5]
+outlet_clip_pitch = 25; // [10 : 1 : 60]
 
 /* [Knee controller] */
 // The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay. A crank on the bar's hub, outside the front face, pushes a compression spring in a housing beside it; steel screws in the housing set the rest and the hard stop, so the knee's force stays out of the shaft and gears. Inside, two gear stages turn a pot standing in for the donor board's slide pot, and a cam on the sector works a switch that cuts the motor for the first part of the travel. See the User's Guide before building: the board is live at mains voltage.
@@ -1592,6 +1613,26 @@ ol_through = has_outlet && outlet_mount == "through";
 ol_cb = ol_through && outlet_screw_cap ? outlet_cap_t : 0;   // cap recess depth
 cord_hole_y = has_outlet ? ol_yc : (st_y0 + st_y1) / 2;
 
+// Outlet cords leaving through the walls. ol_cx, ol_cz: where they leave
+// the outlet's ends. With "rear", the controller cord runs from in front of
+// the outlet's front curb round a 180-degree bend into a floor channel back
+// along the divider (oc_xr) and out through the back wall.
+ol_wall_exit = has_outlet && outlet_cord_exit != "lid";
+ol_cx  = ol_x0 + (outlet_cord_x > 0 ? outlet_cord_x : ol_T / 2);
+ol_czf = outlet_cord_z > 0 ? outlet_cord_z : ol_W / 2;      // above the floor
+ol_chan = has_outlet && outlet_cord_exit == "rear";
+oc_w  = outlet_channel_w;
+oc_d  = outlet_channel_depth;
+oc_xr = st_x0 + oc_w / 2 + 3;                    // the run back, along the divider
+oc_R  = (ol_cx - oc_xr) / 2;                     // the bend's radius (centreline)
+oc_xc = oc_xr + oc_R;
+oc_y0 = ol_yc - ol_L / 2 - ol_c - outlet_curb_w; // in front of the front curb
+oc_ys = oc_y0 - 1;                               // the bend's centre
+ol_slots = [                                     // [x, front?, bottom z, is channel]
+    if (ol_wall_exit) [ol_cx, false, 0, false],
+    if (has_outlet && outlet_cord_exit == "front_rear") [ol_cx, true, 0, false],
+    if (ol_chan) [oc_xr, false, 0, true]];
+
 outer_length = (has_compartment ? lid_x1 : seat_x1) + right_rim;
 base_x1 = attached ? base_len : outer_length;     // the base part's right end
 auto_back_rim = hinge_offset_y() + hinge_rear() + hinge_back_skin;
@@ -2334,6 +2375,17 @@ if (has_outlet) {
         if (outlet_label_depth > floor_z - 1)
             echo("WARNING: outlet_label_depth leaves under 1 mm of floor");
     }
+    if (ol_wall_exit && report)
+        echo(str("Outlet cords: the power cord out the back wall at X ", ol_cx,
+                 outlet_cord_exit == "front_rear" ? ", the controller cord out the front wall beside it"
+                 : str(", the controller cord round a ", round(oc_R), " mm bend into the floor channel and out the back at X ", oc_xr),
+                 "; slots ", outlet_wall_slot_w, " mm wide, ", outlet_cord_gap, " mm openings under the trims (part outlet_trims)"));
+    if (ol_chan && oc_ys - oc_R - oc_w / 2 < st_y0 + 1)
+        if (report) echo("WARNING: the outlet cord channel's bend runs into the compartment's front wall; move the outlet back (outlet_y_offset)");
+    if (ol_chan && oc_R < 15)
+        if (report) echo(str("WARNING: the outlet cord channel's bend is tight (", oc_R, " mm radius)"));
+    if (ol_wall_exit && back_ext && st_x0 < max(bk_x1, bk_lip_x1))
+        if (report) echo("WARNING: the outlet's back cord slots are behind the back extension");
     if (abs(outlet_y_offset) + ol_L / 2 + ol_c + outlet_curb_w > (st_y1 - st_y0) / 2)
         if (report) echo("WARNING: the outlet's curbs run into the compartment's front or back wall");
     if (ol_zc + outlet_insert_d / 2 > seat_floor_z - 3)
@@ -2778,6 +2830,7 @@ if (report) echo("=======================================");
 if (part == "assembly") {
     color("SteelBlue") base();
     if (hinge_type == "printed") for (hx = [hinge_x1, hinge_x2]) ph_in_place(hx);
+    if (ol_wall_exit) color("LightSteelBlue") for (sl = ol_slots) ol_trim(sl);
     if (attached) color("CadetBlue") right_bay();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
     if (turn_button) color("LightSteelBlue") turn_button_part();
@@ -2959,6 +3012,9 @@ if (part == "assembly") {
     else if (report) echo("WARNING: split_test needs split = true");
 } else if (part == "test_parts") {
     test_parts();
+} else if (part == "outlet_trims") {
+    if (ol_wall_exit) outlet_trims();
+    else if (report) echo("WARNING: outlet_trims needs compartment_option = \"outlet\" and outlet_cord_exit front_rear or rear");
 } else if (part == "tools") {
     tools();
 } else if (part == "tilt_prop") {
@@ -3121,6 +3177,7 @@ module teardrop_x(x0, y, z, len, d) {
 module base_body() {
     handhold_knockouts();
     if (has_outlet) outlet_curbs();
+    if (ol_chan) outlet_channel_clips();
     if (has_knee) knee_base_add();
     if (has_passthrough && passthrough_knockouts) passthrough_knockout_walls();
     difference() {
@@ -3160,6 +3217,7 @@ module base_body() {
             if (has_outlet && outlet_mount == "through")
                 outlet_through_hole();
             if (has_outlet && outlet_labels) outlet_label_cuts();
+            if (ol_wall_exit) outlet_wall_cuts();
             if (has_knee) knee_base_cuts();
 
             // Cord pass-through in the divider
@@ -3171,7 +3229,9 @@ module base_body() {
 
             // Tunnel behind the small compartment
             if (lighten_back_wall)
-                tunnel_run(st_tunnel_x0, st_x1, st_tunnel_y0, st_tunnel_len);
+                for (r = cut_runs([[st_tunnel_x0, st_x1]],
+                                  [for (sl = ol_slots) if (!sl[1]) [sl[0] - outlet_wall_slot_w / 2 - 4, sl[0] + outlet_wall_slot_w / 2 + 4]]))
+                    if (r[1] - r[0] >= tunnel_width / 2) tunnel_run(r[0], r[1], st_tunnel_y0, st_tunnel_len);
         }
 
         // Hinge recesses and nut traps
@@ -4266,7 +4326,7 @@ module outlet_curbs() {
 // outlet's front curb, each centered on its receptacle and set toward the
 // outlet face, reading from the front
 ol_lab_x1 = ol_x0 - ol_c - outlet_curb_w - 2;    // right end of the words
-ol_lab_x0 = st_x0 + 2;                            // farthest left they may reach
+ol_lab_x0 = ol_chan ? oc_xr + oc_w / 2 + 3 : st_x0 + 2;   // farthest left they may reach
 ol_lab_light_y = ol_yc + (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
 ol_lab_motor_y = ol_yc - (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
 // rough width of a word in bold sans capitals
@@ -4278,6 +4338,92 @@ module outlet_label_cuts() {
                 linear_extrude(height = outlet_label_depth + overlap)
                     text(l[0], size = outlet_label_size, font = "Liberation Sans:style=Bold",
                          halign = "right", valign = "center");
+}
+
+// Outlet cords through the walls. Each wall slot runs through the wall
+// from the top down to the cord; a trim fills it above the cord.
+function ol_slot_zb(sl) = sl[3] ? floor_z : floor_z + ol_czf - outlet_cord_gap / 2;
+function ol_slot_y(sl) = sl[1] ? [-overlap, st_y0 + overlap] : [st_y1 - overlap, outer_width + overlap];
+// the channel's path: points along the floor, from in front of the curb
+oc_path = concat(
+    [[ol_cx, oc_y0 + 0.5]],
+    [for (a = [0 : -10 : -180]) [oc_xc + oc_R * cos(a), oc_ys + oc_R * sin(a)]],
+    [[oc_xr, st_y1 + overlap]]);
+module outlet_wall_cuts() {
+    w = outlet_wall_slot_w;
+    for (sl = ol_slots) {
+        yy = ol_slot_y(sl);
+        translate([sl[0] - w / 2, yy[0], ol_slot_zb(sl)])
+            cube([w, yy[1] - yy[0], top_z - ol_slot_zb(sl) + overlap]);
+    }
+    if (ol_chan) {
+        // the channel along its path, and on through the back wall
+        for (i = [0 : len(oc_path) - 2])
+            hull() for (p = [oc_path[i], oc_path[i + 1]])
+                translate([p.x, p.y, floor_z - oc_d]) cylinder(h = oc_d + overlap, d = oc_w, $fn = 16);
+        translate([oc_xr - oc_w / 2, st_y1 - overlap, floor_z - oc_d])
+            cube([oc_w, outer_width - st_y1 + 2 * overlap, oc_d + overlap]);
+    }
+}
+// Lips over the channel's edges, alternate sides, at outlet_clip_pitch
+// along the path: the cord presses in past them and stays down
+module oc_clip(p, dir, side) {
+    translate([p.x, p.y, floor_z]) rotate(dir) rotate([90, 0, 0])
+        linear_extrude(height = 6, center = true)
+            polygon([[side * (oc_w / 2 + overlap), 0], [side * (oc_w / 2 - outlet_clip), 0],
+                     [side * (oc_w / 2 + overlap), -outlet_clip - overlap]]);
+}
+oc_seg_len = [for (i = [0 : len(oc_path) - 2]) norm(oc_path[i + 1] - oc_path[i])];
+module outlet_channel_clips() {
+    // walk the path, a clip every pitch, starting half a pitch in
+    function cum(i) = i == 0 ? 0 : cum(i - 1) + oc_seg_len[i - 1];
+    total = cum(len(oc_path) - 1) - (outer_width - st_y1) - 6;
+    n = floor((total - outlet_clip_pitch / 2) / outlet_clip_pitch) + 1;
+    for (k = [0 : n - 1]) {
+        d = outlet_clip_pitch / 2 + k * outlet_clip_pitch;
+        i = max([for (j = [0 : len(oc_path) - 2]) if (cum(j) <= d) j]);
+        t = (d - cum(i)) / oc_seg_len[i];
+        p = oc_path[i] + t * (oc_path[i + 1] - oc_path[i]);
+        v = oc_path[i + 1] - oc_path[i];
+        oc_clip(p, atan2(v.y, v.x) - 90, k % 2 == 0 ? 1 : -1);
+    }
+}
+// Trim for one wall slot: fills it from just above the cord to the lid's
+// ledge (over the ledge) and the rim's top (over the rim), its bottom edges
+// rounded where the cord bends over them; rounded on the outside as the base
+ol_trim_c = 0.15;
+module ol_trim(sl) {
+    w  = outlet_wall_slot_w - 2 * ol_trim_c;
+    zb = ol_slot_zb(sl) + (sl[3] ? 0 : outlet_cord_gap);
+    yo = sl[1] ? 0 : outer_width;                 // outer face
+    yi = sl[1] ? st_y0 : st_y1;                   // inner face
+    ye = sl[1] ? seat_y0 : seat_y1;               // the lid ledge meets the rim
+    y0 = min(yo, yi); y1 = max(yo, yi);
+    r  = 2;
+    intersection() {
+        cuboid([outer_length, outer_width, outer_depth],
+               rounding = outer_rounding, except = BOTTOM, anchor = LEFT + FRONT + BOTTOM);
+        translate([sl[0] - w / 2, 0, 0]) rotate([90, 0, 90]) linear_extrude(height = w)
+            difference() {
+                hull() {
+                    translate([y0 + r, zb + r]) circle(r = r, $fn = 24);
+                    translate([y1 - r, zb + r]) circle(r = r, $fn = 24);
+                    translate([y0, zb + r]) square([y1 - y0, top_z - zb - r]);
+                }
+                // over the ledge, down to the lid's seat
+                translate([min(yi, ye), top_z - rabbit_depth]) square([abs(ye - yi), rabbit_depth + 1]);
+            }
+    }
+}
+// All the trims, lying on their sides, in a row
+function ol_trim_y0(sl) = sl[1] ? 0 : st_y1;
+function ol_trim_d(sl) = sl[1] ? st_y0 : outer_width - st_y1;
+ol_trims_d = [for (i = [0 : 1 : len(ol_slots)]) i == 0 ? 0
+              : sum_x([for (j = [0 : i - 1]) ol_trim_d(ol_slots[j]) + 8])];
+module outlet_trims() {
+    for (i = [0 : len(ol_slots) - 1]) let(sl = ol_slots[i])
+        translate([0, ol_trims_d[i] - ol_trim_y0(sl), outlet_wall_slot_w / 2 - ol_trim_c])
+            translate([top_z, 0, 0]) rotate([0, -90, 0]) translate([-sl[0], 0, 0]) ol_trim(sl);
 }
 
 // Cord slots in the outlet-compartment lid. Each is open at its lid edge,
@@ -4548,7 +4694,7 @@ module lid_part(which) {
             }
             if (which == "back") back_trench_cut();
             if (which == "left") left_trench_cut();
-            if (outlet_lid) outlet_slots();
+            if (outlet_lid && !ol_wall_exit) outlet_slots();
             if (which == "base" && !(li[3] == "left" && li[4] == "hinged"))
                 base_lid_notch_cut();
         }
@@ -4616,6 +4762,7 @@ build_parts = concat(
     harness_rods && rod_plug_len > 0
         ? [["rod_plugs", "small", [n_rods * (rod_hole_d + 5), rod_hole_d + 2], []]] : [],
     ol_cb > 0 ? [["outlet_cap", "small", [outlet_cap_d + 1.4, outlet_cap_d + 1.4], []]] : [],
+    ol_wall_exit ? [["outlet_trims", "small", [top_z, ol_trims_d[len(ol_slots)]], []]] : [],
     ext_peg_style == "insert" && n_ext_pegs > 0
         ? [["ext_pegs", "small",
             [ext_peg_len, (n_ext_pegs + peg_spares) * (peg_d + 4)], []]] : [],
@@ -4650,6 +4797,7 @@ module place_part(id) {
     else if (id == "right_bay")  translate([-base_x1, 0, 0]) right_bay();
     else if (id == "hinge_nut_tool") translate([11, 11, 0]) hinge_nut_tool();
     else if (id == "printed_hinges") printed_hinges();
+    else if (id == "outlet_trims") outlet_trims();
     else if (id == "back_trim") rim_trim_print("back");
     else if (id == "left_trim") rim_trim_print("left");
     else if (id == "cord_slot_trim") cord_slot_trim_print();

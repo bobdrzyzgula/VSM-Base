@@ -174,6 +174,30 @@
 > in with the always-on side and the cord to the back. The words, size and
 > depth are settings; `outlet_labels = false` leaves them off.
 >
+> **Note: the outlet's cords out through the walls.** By default the
+> outlet's two cords leave through slots in the compartment's lid. With
+> `outlet_cord_exit`, they can leave through slots in the walls instead,
+> which suits a table where the cords should drop down behind or in front:
+>
+> - `front_rear`: the power cord, from the outlet's back end, goes straight
+>   out the back wall, and the controller cord, from its front end,
+>   straight out the front wall.
+> - `rear`: both go out the back. The controller cord drops from the
+>   outlet's front end into a channel in the floor, turns through a
+>   180-degree bend (about 27 mm radius) and runs back along the divider,
+>   under the machine's cords where they come through the pass-through,
+>   and out through the back wall beside the power cord. The channel holds
+>   two-wire lamp cord standing on edge (`outlet_channel_w`,
+>   `outlet_channel_depth`), so the bend is an easy flat bend; small lips
+>   along its edges, on alternate sides, let the cord press in and keep it
+>   down. The floor labels move over beside the channel.
+>
+> Each wall slot runs from the top of the wall down to its cord. With the
+> cord in place, a trim (part `outlet_trims`, one per slot) presses into
+> the slot from above, flush with the rim and with the lid's ledge, and
+> leaves an eased opening under it for the cord. The lid then has no cord
+> slots. The tunnel lightening the back wall stops short of the slots.
+>
 > **Note: insert trays need their bay.** The bobbin trays need the corner
 > bay and the notion and spool trays need the bay named by `ot_bay`. The bay
 > can be the attached extension or its freestanding box (`make_corner_box`

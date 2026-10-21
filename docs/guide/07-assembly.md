@@ -40,6 +40,10 @@ traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){
   trims' holes, as into the lips, and press the trims into the rim cuts.
   The cord slot's trim presses into the top of the slot once the cords are
   in.
+- Outlet cords through the walls: with the outlet in place, lay each cord
+  down into its wall slot (with `rear`, press the controller cord on edge
+  into the floor channel first, past its lips, starting at the bend), then
+  press the trims in from above.
 - Harness rods and carrying.
 - An attached bay: inserts into its inner wall, dowels into the base's end face, then the four screws from inside the machine cavity.
 - Extensions on their pegs, the corner piece's dovetails, and snapping in the lids.
