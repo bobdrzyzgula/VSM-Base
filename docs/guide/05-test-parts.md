@@ -19,6 +19,12 @@
 - Center slice: the front-wall serrations, and which half goes on first
   (lower the right half onto the left).
 - Rod plugs: press fit in the end strip's rod holes.
+- Compartment test (its own part, `part = "compartment_test"`, built-in
+  compartment only): the base's whole right end, from just left of the
+  divider, so both ends of the cord pass-through and their knock-out walls
+  are included, to the right end wall with its handhold and harness rods.
+  It prints as the base does, and is the way to build and try the outlet
+  (or any other) compartment by itself.
 - Printed-hinge rod fit (its own part, `part = "printed_hinge_test"`): a bar
   with five vertical holes for the pin, printed as the arm prints them, and
   five horizontal teardrop holes for the pivot rod, printed as the block

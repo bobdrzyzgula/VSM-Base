@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 55
+// VSM Base, version 56
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -260,13 +260,17 @@
 // bed's hole by what's left past the arm) and ph_pivot_len (the block's
 // cheeks follow); the profile's hinge_hole_depth_mm (Kenmore 22) bounds
 // the pin, and the console gives the lengths that fit.
+//
+// v56: part compartment_test: the base's right end, from just left of the
+// divider (both ends of the pass-through) to the end wall with its
+// handhold and rods, to build and try the compartment by itself.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -2254,6 +2258,9 @@ if (report && (part == "tilt_prop" || part == "tools") && tp_ok)
     echo(str("Tilt prop: ", tp_flat ? str("flat top ", tilt_prop_w, " x ", tilt_prop_flat, " mm, ", tp_h, " mm")
                                     : str("cradle ", tp_r, " mm radius, ", tilt_prop_w, " mm wide, its bottom ", tp_h, " mm"),
              " above the table; stand it behind the base under the arm, the machine tipped back to 90 degrees. Line it with felt"));
+if (report && part == "compartment_test" && has_compartment && !attached)
+    echo(str("Compartment test: the base's right ", round(outer_length - divider_x0 + 3), " mm, from just left of the divider (X ",
+             divider_x0 - 3, ") to the right end, ", round(outer_width), " x ", round(outer_depth), " mm"));
 if (report && part == "tools")
     echo(str("Tools: hinge_nut_tool, printed_hinge_test, foot_rig_left, foot_rig_right", tp_ok ? ", tilt_prop" : "", " (each also its own part); ",
              "the foot rig is cut for the ", use_custom ? "Custom" : profile_name, " machine"));
@@ -3051,6 +3058,13 @@ if (part == "assembly") {
     else if (report) echo("WARNING: split_test needs split = true");
 } else if (part == "test_parts") {
     test_parts();
+} else if (part == "compartment_test") {
+    // the right end of the base: the end wall with its handhold and rods,
+    // the compartment, and the divider with both ends of the pass-through
+    if (has_compartment && !attached)
+        translate([-(divider_x0 - 3), 0, 0])
+            base_box([divider_x0 - 3, -1, -1], [outer_length + 1, outer_width + 1, outer_depth + 1], false);
+    else if (report) echo("WARNING: compartment_test needs a built-in compartment (compartment_option other than none, compartment_mount built-in); with an attached bay, print right_bay");
 } else if (part == "outlet_trims") {
     if (ol_wall_exit) outlet_trims();
     else if (report) echo("WARNING: outlet_trims needs compartment_option = \"outlet\" and outlet_cord_exit front_rear or rear");
