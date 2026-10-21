@@ -35,9 +35,9 @@ VERSION  ?=
 LABEL    := $(if $(VERSION),Version $(VERSION),Development build)
 IMAGES   := $(wildcard docs/images/*/*)
 
-.PHONY: all params images pdf html docs clean
+.PHONY: presets all params images pdf html docs clean
 
-all: params images docs
+all: params presets images docs
 
 docs: pdf html
 
@@ -45,6 +45,12 @@ params: docs/guide/90-parameters.md
 
 docs/guide/90-parameters.md: $(MODEL) tools/extract_params.py
 	python3 tools/extract_params.py $(MODEL) > $@
+
+# Customizer presets, one per machine profile "(as Custom)"
+presets: scad/vsm_base.json
+
+scad/vsm_base.json: $(MODEL) tools/make_presets.py
+	python3 tools/make_presets.py $(MODEL)
 
 images:
 	sh tools/render_images.sh

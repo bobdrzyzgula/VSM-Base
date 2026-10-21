@@ -205,6 +205,10 @@
 // such as 158.14001 in a menu entry as a number and shortens it, so
 // profile names use a dash. Profiles are still found by the start of the
 // name.
+//
+// v42: Customizer presets "<profile> (as Custom)" in vsm_base.json, built
+// by tools/make_presets.py from the profiles; the console prints profile
+// values to 8 decimals for them.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1311,6 +1315,14 @@ custom_settings = [
     ["cord_slot",              custom_cord_slot]
 ];
 
+// A number to 8 decimal places, trailing zeros dropped (str() gives only
+// six figures); anything else as str() gives it
+function fmt_frac(f, n) = n == 0 || f < 0.5e-8 ? "" : str(floor(f * 10), fmt_frac(f * 10 - floor(f * 10), n - 1));
+function fmt_num(v) =
+    !is_num(v) ? str(v)
+  : v < 0 ? str("-", fmt_num(-v))
+  : let(r = round(v * 1e8) / 1e8, w = floor(r), fr = fmt_frac(r - w, 8))
+    fr == "" ? str(w) : str(w, ".", fr);
 // A profile is found by its full name, or by the start of it (the
 // Customizer's menu shows short names, and may rewrite numbers in them)
 function prefix_of(a, b) = len(a) <= len(b) && len([for (i = [0 : 1 : len(a) - 1]) if (a[i] != b[i]) i]) == 0;
@@ -1352,10 +1364,10 @@ if (use_custom) {
     if (len(differs) > 0)
         if (report) echo(str("NOTE: these Custom machine settings differ from the profile and are being ignored: ",
                  differs));
-    if (report) echo("To start a Custom machine from this profile, copy these lines into the Custom machine settings:");
+    if (report) echo("To start a Custom machine from this profile, choose its preset \"(as Custom)\" at the top of the Customizer, or copy these lines into the Custom machine settings:");
     for (kv = custom_settings)
         if (kv[0] != "bed_reliefs")
-            if (report) echo(str("  custom_", kv[0], " = ", mach(kv[0]), ";"));
+            if (report) echo(str("  custom_", kv[0], " = ", fmt_num(mach(kv[0])), ";"));
     pr = mach("bed_reliefs");
     for (i = [0 : 5])
         if (i < len(pr)) {

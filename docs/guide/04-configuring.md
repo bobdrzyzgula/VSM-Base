@@ -9,6 +9,18 @@
 - Choosing a side compartment, extensions, trenches and lid hinges.
 - Organizer inserts: bobbin trays (corner bay), notion trays and the spool tray (back or left bay, chosen with `ot_bay`), the stack-height budget the console reports, and the `*_assembly` views.
 
+> **Note: starting a Custom machine from a profile.** The Customizer's
+> preset menu, at the top of its panel, has a preset for each machine
+> profile, named for it with "(as Custom)" (`Singer 99K (as Custom)`, say).
+> It sets `machine = "Custom"` and fills every Custom machine setting with
+> that profile's values, so you can change what differs on your casting
+> and save the result as a preset of your own. The presets live in
+> `scad/vsm_base.json`, which OpenSCAD reads alongside the model; presets
+> you save go into the same file, and are kept when it is rebuilt. If `git
+> pull` stops because that file has changes of yours, run `git stash`, `git
+> pull`, `git stash pop`. To override just the printed hinge's pin, you
+> don't need Custom: set `ph_pin_d` and `ph_pin_engage`.
+>
 > **Note: a base without hinges.** `hinge_type = "none"` makes a base for
 > a machine to sit in, for a machine without hinges or for anyone who
 > doesn't want them: no hinge recesses or nut traps, no hinge checks or
