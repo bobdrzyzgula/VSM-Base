@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 45
+// VSM Base, version 46
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -221,6 +221,11 @@
 //
 // v45: no model changes; the guide's title page gives this version number
 // for development builds ("Development Build v45").
+//
+// v46: printed hinge: the block's nut slides into a slot from its front
+// face, with plastic under it, so the screw from below clamps the block
+// (the nut in an open pocket underneath was drawn out of it, clamping
+// nothing); the recess's front wall closes the slot. From Bob's review.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1446,8 +1451,8 @@ function ph_updown(d) = str(round(abs(d) * 10) / 10, d >= 0 ? " mm above" : " mm
 // the pivot hole. Tilted back, the tail swings down into a pocket in the
 // block and comes to rest on its floor: that is the stop. The block is
 // held by a screw from below, through the base's nut trap (the screw's
-// head where the nut would be) into a nut pressed into the block's
-// underside, under the front of the arm.
+// head where the nut would be), into a nut slid into a slot from the
+// block's front face, under the front of the arm.
 ph_pd   = ph_pin_d > 0 ? ph_pin_d : hinge_pin_d_mm;                // pin diameter
 ph_pe   = ph_pin_engage > 0 ? ph_pin_engage : hinge_pin_engage_mm;  // into the hole
 ph_R    = max(ph_pd, ph_pivot_d) / 2 + ph_wall;         // arm half-height
@@ -1472,7 +1477,8 @@ ph_back = (ph_stop ? ph_tr : ph_R) + ph_clear + 3;       // block back face
 ph_front = -(ph_Lf + ph_fc);                             // block front face
 ph_sdy  = ph_front + ph_nut_w / 2 / cos(30) + 2;         // screw, under the arm's front
 // floor under the arm there: nut pocket plus 2 mm (deepen the block if needed)
-ph_bot  = min(ph_bot1, -(ph_R + ph_clear) - ph_nut_t - 0.3 - 2.5);   // block bottom
+ph_nut_under = 2.5;                                      // block plastic under the nut
+ph_bot  = min(ph_bot1, -(ph_R + ph_clear) - 2 - ph_nut_t - 0.3 - ph_nut_under);   // block bottom
 
 // Hinge geometry, by type. Each function describes the hinge's footprint
 // relative to the hinge center; a new hinge type adds a branch to each and
@@ -1591,8 +1597,8 @@ ph_pin_len = ph_pin_embed + (hinge_y - ph_Lf - (seat_y1 - bed_clearance)) + ph_p
 // head bears where a lollipop's nut would, and its tip stops 1.5 mm short
 // of the floor under the arm
 ph_trap_depth = max(hinge_nut_depth, top_z - ph_zb + 8);
-ph_screw_need = (ph_zb - (top_z - ph_trap_depth)) + ph_nut_t + 0.3 + 0.5;
-ph_tip_room   = (-(ph_R + ph_clear) - 1.5) - (ph_bot + ph_nut_t + 0.3);
+ph_screw_need = (ph_zb - (top_z - ph_trap_depth)) + ph_nut_under + ph_nut_t + 0.3 + 0.5;
+ph_tip_room   = (-(ph_R + ph_clear) - 1.5) - (ph_bot + ph_nut_under + ph_nut_t + 0.3);
 
 // Casting reliefs as boxes [edge, [x0,y0,z0], [x1,y1,z1]]: the full ledge
 // width, from the seat wall to the cavity, down to below the casting.
@@ -2150,8 +2156,8 @@ if (report && hinge_type == "printed") {
              round((ph_atop - ph_pd / 2) * 10) / 10, " mm of plastic over the pin"));
     echo(str("Printed hinge: steel rod, 2 pins ", ph_pd, " mm x ", round(ph_pin_len * 10) / 10,
              " mm (", ph_pe, " mm into the bed's hole) and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 10) / 10, " mm"));
-    echo(str("Printed hinge: screws from below, through the base's traps into ", hinge_nut_spec,
-             " nuts pressed into the blocks' undersides"));
+    echo(str("Printed hinge: screws (pan or socket head) from below, through the base's traps into ", hinge_nut_spec,
+             " nuts slid into slots in the blocks' front faces"));
     if (ph_stop) echo(str("Printed hinge: the machine stops at about ", ph_stop_angle, " degrees of tilt"));
     else echo("NOTE: printed hinge without a stop: the machine tilts back until something else stops it");
 }
@@ -3341,12 +3347,18 @@ module ph_block() {
         translate([-ph_arm_w / 2 - ph_clear, ph_front - overlap, -ph_R - ph_clear])
             cube([ph_arm_w + 2 * ph_clear, -ph_front, ph_R + ph_clear + ph_atop + overlap]);
         ph_hole_x(ph_pivot_d + ph_press, w + 2 * overlap);
-        // nut pocket from below, and the screw's hole on up (blind)
-        translate([0, ph_sdy, ph_bot - overlap]) {
-            rotate(30) cylinder(h = ph_nut_t + 0.3 + overlap, r = ph_nut_w / 2 / cos(30), $fn = 6);
+        // nut slot from the front face, ph_nut_under above the block's
+        // bottom (the nut bears on that plastic; the recess's front wall
+        // closes the slot), and the screw's hole from the bottom on up (blind)
+        translate([0, ph_sdy, ph_bot + ph_nut_under])
+            hull() {
+                rotate(30) cylinder(h = ph_nut_t + 0.3, r = ph_nut_w / 2 / cos(30), $fn = 6);
+                translate([-ph_nut_w / 2, ph_front - ph_sdy - overlap, 0])
+                    cube([ph_nut_w, overlap, ph_nut_t + 0.3]);
+            }
+        translate([0, ph_sdy, ph_bot - overlap])
             cylinder(h = -(ph_R + ph_clear) - 1.5 - ph_bot + overlap,
                      d = hinge_mounting_hole_diameter, $fn = 32);
-        }
         // ease the vertical edges, so the block drops into a square recess
         for (sx = [-1, 1], yy = [ph_front, ph_back])
             translate([sx * w / 2, yy, ph_bot - overlap])

@@ -26,13 +26,15 @@ traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){
   and trap depths is in `standalone/nut-tool/`.
 - Printed hinges: cut the pins and pivots to the console's lengths and
   deburr them. Press a pin into each arm's front face to the bottom of its
-  hole (a vise works), and a nut into the hex pocket in each block's
-  underside. Set the arm between the block's cheeks and press the pivot rod
-  through cheek, arm and cheek until its ends are flush with the block's
-  sides; the arm should swing freely. Drop the block into its recess, pin
-  toward the bed, and drive the screw up from under the base, through the
-  trap (its head bears on the trap's roof), into the block's nut. The
-  recess walls keep the pivot rod from working out.
+  hole (a vise works). Slide a nut into the slot in each block's front
+  face, under the arm's channel, until it lines up with the screw hole. Set
+  the arm between the block's cheeks and press the pivot rod through cheek,
+  arm and cheek until its ends are flush with the block's sides; the arm
+  should swing freely. Drop the block into its recess, pin toward the bed;
+  the recess's front wall closes the nut's slot. Drive the screw (#8-32 ×
+  5/8", pan or socket head) up from under the base, through the trap (its
+  head bears on the trap's roof), into the block's nut. The recess walls
+  keep the pivot rod from working out.
 - Trim strips, with the extensions off: tap the peg inserts into the
   trims' holes, as into the lips, and press the trims into the rim cuts.
   The cord slot's trim presses into the top of the slot once the cords are
