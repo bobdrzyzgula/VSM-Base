@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 50
+// VSM Base, version 51
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -240,6 +240,8 @@
 // v50: part tilt_prop (also in tools): a stand behind the base whose
 // cradle catches the machine's arm tipped back to 90 degrees; profile key
 // tilt_prop_mm (99K: arm 6" above the table, 1" cradle radius, from Bob).
+//
+// v51: the tilt prop's post is opened up into two legs, front and back.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -3577,6 +3579,13 @@ module tilt_prop() {
             // cradle head
             translate([-w / 2, -hy / 2, hz0]) cube([w, hy, hz1 - hz0]);
         }
+        // a window through the post along X, leaving two tapered legs front
+        // and back; its top is gabled, so it prints without a bridge
+        let(lt = 10, yb = (fy - 20) / 2 - lt, yt = hy / 2 - lt,
+            zt = hz0 - 6 - yt, zb = ft)
+            if (zt > zb + 10)
+                rotate([90, 0, 90]) linear_extrude(height = w + 2, center = true)
+                    polygon([[-yb, zb], [yb, zb], [yt, zt], [0, zt + yt], [-yt, zt]]);
         // the cradle: the arm's radius plus 1 mm, axis along X
         translate([-w / 2 - 1, 0, tp_h + tp_r]) rotate([0, 90, 0])
             cylinder(h = w + 2, r = tp_r + 1, $fn = 96);
