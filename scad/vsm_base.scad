@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 53
+// VSM Base, version 54
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -252,6 +252,9 @@
 // 180-degree bend into a channel in the floor, with retention lips; trims
 // (part outlet_trims) fill the slots above the cords, with eased openings.
 // The tunnel behind the compartment stops short of the slots.
+//
+// v54: the outlet's cords leave its ends 4.7 mm in from its back (the
+// end-wall side), per Bob; slots beside the end wall sit flush with it.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -494,9 +497,9 @@ outlet_slot_depth = 25;
 outlet_slot_chamfer = 1.5;
 // Where the outlet's two cords leave the compartment: through the lid's slots (lid); through slots in the walls, the power cord (from the outlet's back end) out the back and the controller cord (from its front end) out the front (front_rear); or both out the back, the controller cord running back in a channel in the floor (rear). The wall slots take trims (part outlet_trims) that leave an eased opening for the cord
 outlet_cord_exit = "lid"; // [lid, front_rear, rear]
-// Where the cords leave the outlet's ends: height above the floor, and distance in from its face; 0 = half its height, half its thickness
+// Where the cords leave the outlet's ends: height above the floor (0 = half the outlet's height), and the cord's centre from the outlet's back, against the end wall (0 = 4.7: a cordset outlet's cords leave its ends at the center, 1/8" up from its back)
 outlet_cord_z = 0; // [0 : 0.5 : 60]
-outlet_cord_x = 0; // [0 : 0.5 : 40]
+outlet_cord_x = 0; // [0 : 0.1 : 40]
 // Wall slots: width, and the opening left under the trim for the cord
 outlet_wall_slot_w = 9; // [5 : 0.5 : 16]
 outlet_cord_gap = 7; // [4 : 0.5 : 14]
@@ -1618,19 +1621,21 @@ cord_hole_y = has_outlet ? ol_yc : (st_y0 + st_y1) / 2;
 // the outlet's front curb round a 180-degree bend into a floor channel back
 // along the divider (oc_xr) and out through the back wall.
 ol_wall_exit = has_outlet && outlet_cord_exit != "lid";
-ol_cx  = ol_x0 + (outlet_cord_x > 0 ? outlet_cord_x : ol_T / 2);
+ol_cx  = st_x1 - (outlet_cord_x > 0 ? outlet_cord_x : 4.7);
 ol_czf = outlet_cord_z > 0 ? outlet_cord_z : ol_W / 2;      // above the floor
 ol_chan = has_outlet && outlet_cord_exit == "rear";
 oc_w  = outlet_channel_w;
 oc_d  = outlet_channel_depth;
-oc_xr = st_x0 + oc_w / 2 + 3;                    // the run back, along the divider
-oc_R  = (ol_cx - oc_xr) / 2;                     // the bend's radius (centreline)
-oc_xc = oc_xr + oc_R;
 oc_y0 = ol_yc - ol_L / 2 - ol_c - outlet_curb_w; // in front of the front curb
 oc_ys = oc_y0 - 1;                               // the bend's centre
+// the bend as wide as the compartment allows, between the divider and the
+// front wall; the run back goes where the bend puts it
+oc_R  = min((ol_cx - (st_x0 + oc_w / 2 + 3)) / 2, oc_ys - (st_y0 + oc_w / 2 + 1.5));
+oc_xr = ol_cx - 2 * oc_R;                        // the run back, toward the divider
+oc_xc = oc_xr + oc_R;
 ol_slots = [                                     // [x, front?, bottom z, is channel]
-    if (ol_wall_exit) [ol_cx, false, 0, false],
-    if (has_outlet && outlet_cord_exit == "front_rear") [ol_cx, true, 0, false],
+    if (ol_wall_exit) [min(ol_cx, st_x1 - outlet_wall_slot_w / 2), false, 0, false],
+    if (has_outlet && outlet_cord_exit == "front_rear") [min(ol_cx, st_x1 - outlet_wall_slot_w / 2), true, 0, false],
     if (ol_chan) [oc_xr, false, 0, true]];
 
 outer_length = (has_compartment ? lid_x1 : seat_x1) + right_rim;
@@ -2367,8 +2372,8 @@ if (has_outlet) {
     if (outlet_labels && report) {
         echo(str("Outlet labels: ", outlet_light_label, " by the ", outlet_light_side, " receptacle, ",
                  outlet_motor_label, " by the ", outlet_light_side == "back" ? "front" : "back",
-                 ", ", outlet_label_size, " mm letters recessed ", outlet_label_depth, " mm"));
-        if (max(ol_lab_w(outlet_light_label), ol_lab_w(outlet_motor_label)) > ol_lab_x1 - ol_lab_x0)
+                 ", ", round(ol_lab_size * 10) / 10, " mm letters recessed ", outlet_label_depth, " mm"));
+        if (max(ol_lab_w(outlet_light_label, ol_lab_size), ol_lab_w(outlet_motor_label, ol_lab_size)) > ol_lab_x1 - ol_lab_x0 + 0.01)
             echo("WARNING: an outlet label is too long for the floor in front of the outlet; shorten it or lower outlet_label_size");
         if (outlet_label_size > outlet_receptacle_spacing - 3)
             echo("WARNING: the outlet labels are too tall for the receptacle spacing; lower outlet_label_size");
@@ -4329,14 +4334,18 @@ ol_lab_x1 = ol_x0 - ol_c - outlet_curb_w - 2;    // right end of the words
 ol_lab_x0 = ol_chan ? oc_xr + oc_w / 2 + 3 : st_x0 + 2;   // farthest left they may reach
 ol_lab_light_y = ol_yc + (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
 ol_lab_motor_y = ol_yc - (outlet_light_side == "back" ? 1 : -1) * outlet_receptacle_spacing / 2;
-// rough width of a word in bold sans capitals
-function ol_lab_w(t) = 0.72 * outlet_label_size * len(t);
+// width of a word in bold sans capitals (up to about one letter height
+// per letter, measured); beside the cord channel the words shrink to fit
+function ol_lab_w(t, sz = outlet_label_size) = 1.0 * sz * len(t);
+ol_lab_size = ol_chan
+    ? min(outlet_label_size, (ol_lab_x1 - ol_lab_x0) / max(len(outlet_light_label), len(outlet_motor_label), 1))
+    : outlet_label_size;
 module outlet_label_cuts() {
     for (l = [[outlet_light_label, ol_lab_light_y], [outlet_motor_label, ol_lab_motor_y]])
         if (len(l[0]) > 0)
             translate([ol_lab_x1, l[1], floor_z - outlet_label_depth])
                 linear_extrude(height = outlet_label_depth + overlap)
-                    text(l[0], size = outlet_label_size, font = "Liberation Sans:style=Bold",
+                    text(l[0], size = ol_lab_size, font = "Liberation Sans:style=Bold",
                          halign = "right", valign = "center");
 }
 

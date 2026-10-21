@@ -164,8 +164,8 @@ There are 481 parameters; 479 of them appear in the Customizer. The rest are lis
 | `outlet_slot_depth` | `25` | Cord slot depth in from the lid edge |
 | `outlet_slot_chamfer` | `1.5` | Chamfer on the slot's top edges, easing a cord pulled over them |
 | `outlet_cord_exit` | `"lid"` | Where the outlet's two cords leave the compartment: through the lid's slots (lid); through slots in the walls, the power cord (from the outlet's back end) out the back and the controller cord (from its front end) out the front (front_rear); or both out the back, the controller cord running back in a channel in the floor (rear). The wall slots take trims (part outlet_trims) that leave an eased opening for the cord *Choices: lid, front_rear, rear.* |
-| `outlet_cord_z` | `0` | Where the cords leave the outlet's ends: height above the floor, and distance in from its face; 0 = half its height, half its thickness *Range 0 to 60, step 0.5.* |
-| `outlet_cord_x` | `0` |  *Range 0 to 40, step 0.5.* |
+| `outlet_cord_z` | `0` | Where the cords leave the outlet's ends: height above the floor (0 = half the outlet's height), and the cord's centre from the outlet's back, against the end wall (0 = 4.7: a cordset outlet's cords leave its ends at the center, 1/8" up from its back) *Range 0 to 60, step 0.5.* |
+| `outlet_cord_x` | `0` |  *Range 0 to 40, step 0.1.* |
 | `outlet_wall_slot_w` | `9` | Wall slots: width, and the opening left under the trim for the cord *Range 5 to 16, step 0.5.* |
 | `outlet_cord_gap` | `7` |  *Range 4 to 14, step 0.5.* |
 | `outlet_channel_w` | `3.8` | Floor channel for the controller cord (rear): width and depth, for two-wire lamp cord standing on edge (about 3 x 6 mm) *Range 2.5 to 8, step 0.1.* |
