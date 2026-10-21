@@ -5,6 +5,9 @@
 - Clearing the membranes and knock-out walls.
 - Nuts into the plate and hinge nut traps.
 - Joining the halves: dovetails, then the mending plates from below.
+- Tip: once the nuts are in their traps in the cavity floor, put a strip of
+  masking tape over them. Then they stay put when you turn the base over to
+  drive the plate screws in from below; peel the tape off afterward.
 
 ![The joined halves from below: three mending plates across the split,
 each with four 1/2" #8-32 flat-head screws.](../images/photos/plates-underside.jpg){width=80%}
