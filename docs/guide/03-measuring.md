@@ -128,9 +128,11 @@ parameter, but it is the diameter of the hinge pins you need. For the
 printed hinge it sets the steel pin's diameter (`custom_hinge_pin_d_mm`):
 choose rod just under the hole's size, so the pin slides in without play.
 On the 99 the holes are 1/4"; on the Kenmore 158-14001, 6 mm. Measure how deep
-the holes go too, if you can, or how far the old hinge's pins went in: the
-printed hinge's pin enters them by `custom_hinge_pin_engage_mm` (12 mm on
-the 99K, 16 mm on the Kenmore), which must not be more than their depth.
+the holes go too (`custom_hinge_hole_depth_mm`; the shallower one, if they
+differ): that limits how long the printed hinge's pin may be, and the
+console then gives the pin lengths that fit. Without a stock length, the
+pin enters the holes by `custom_hinge_pin_engage_mm` (12 mm on the 99K, 16
+mm on the Kenmore).
 
 ### Bed cushions, `bed_cushion_in`
 

@@ -89,6 +89,16 @@
 > diameter and how far it goes into the hole come from the machine profile
 > (1/4" and 12 mm for the 99K, 6 mm and 16 mm for the Kenmore 158-14001), unless
 > you set `ph_pin_d` and `ph_pin_engage`; the pivot is `ph_pivot_d` (1/4").
+> Hardened dowel pins make good rods and save cutting: set `ph_pin_len` to
+> a stock pin's length, and the pin goes into the bed's hole by whatever
+> is left past the arm; the console gives the range of lengths that fit,
+> from 8 mm into the hole up to just short of its depth
+> (`hinge_hole_depth_mm` in the profile: 22 mm on the Kenmore, so its pins
+> may be 30.5–43 mm long; a 6 × 40 mm pin goes 17.5 mm in). Set
+> `ph_pivot_len` to a stock pivot's length (1 1/8", 28.575 mm, say) and the
+> block's cheeks widen or narrow to suit. Precision dowel pins are made a
+> few hundredths of a millimetre over size (an m6 6 mm pin is 6.004–6.012
+> mm), so try one in the bed's hole before buying a set.
 > The console's *Printed hinge* lines give the sizes, the rod lengths, and
 > where the parts stand against the rim. The printed hinge is new in v34
 > (its tail stop in v35) and hasn't been printed yet.

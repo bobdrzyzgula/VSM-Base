@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 54
+// VSM Base, version 55
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -255,6 +255,11 @@
 //
 // v54: the outlet's cords leave its ends 4.7 mm in from its back (the
 // end-wall side), per Bob; slots beside the end wall sit flush with it.
+//
+// v55: printed hinge rods from stock: ph_pin_len (the pin goes into the
+// bed's hole by what's left past the arm) and ph_pivot_len (the block's
+// cheeks follow); the profile's hinge_hole_depth_mm (Kenmore 22) bounds
+// the pin, and the console gives the lengths that fit.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -324,6 +329,8 @@ custom_hinge_hole_drop_in = 0.375;
 custom_hinge_pin_d_mm = 6.35;
 // IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth)
 custom_hinge_pin_engage_mm = 12;
+// IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be
+custom_hinge_hole_depth_mm = 0;
 // IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K)
 custom_bed_flush = false;
 // IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead)
@@ -708,8 +715,12 @@ hinge_mounting_hole_offset = 9.5;
 /* [Printed hinge] */
 // Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001)
 ph_pin_d = 0; // [0 : 0.01 : 12]
-// How far the pin enters the bed's hole; 0 = from the machine profile
+// How far the pin enters the bed's hole; 0 = from the machine profile. Ignored when ph_pin_len is set
 ph_pin_engage = 0; // [0 : 0.5 : 30]
+// Stock length of the pins, for a bought dowel pin (0 = cut to the length the console gives): the pin goes into the bed's hole by whatever is left past the arm; the console gives the lengths that fit the hole's depth
+ph_pin_len = 0; // [0 : 0.5 : 80]
+// Stock length of the pivot rods, for a bought dowel pin (0 = the block's width, set by ph_cheek): the block's cheeks are widened or narrowed to suit
+ph_pivot_len = 0; // [0 : 0.025 : 60]
 // Length of the pin pressed into the arm
 ph_pin_embed = 16; // [8 : 0.5 : 30]
 // Steel pivot rod, running along the back through the block and the arm: diameter
@@ -1331,6 +1342,7 @@ profiles = [
         ["base_lid_notch", [8, 23]],
         ["hinge_pin_d_mm",         6.35],
         ["hinge_pin_engage_mm",    12],
+        ["hinge_hole_depth_mm",    0],
         ["bed_flush",              false],
         ["foot_height_mm",         0],
         ["cord_slot",              [0, 0, 0, 0]],
@@ -1360,6 +1372,8 @@ profiles = [
         ["base_lid_notch", [0, 0]],
         ["hinge_pin_d_mm",         6],
         ["hinge_pin_engage_mm",    16],
+        // one hole runs through the boss, the other is 22 mm deep
+        ["hinge_hole_depth_mm",    22],
         ["bed_flush",              true],
         ["foot_height_mm",         63],
         // Two lamp cords, 12 x 3 mm together, leave the connector 50 mm
@@ -1393,6 +1407,7 @@ custom_settings = [
     ["base_lid_notch",         custom_base_lid_notch],
     ["hinge_pin_d_mm",         custom_hinge_pin_d_mm],
     ["hinge_pin_engage_mm",    custom_hinge_pin_engage_mm],
+    ["hinge_hole_depth_mm",    custom_hinge_hole_depth_mm],
     ["bed_flush",              custom_bed_flush],
     ["foot_height_mm",         custom_foot_height_mm],
     ["cord_slot",              custom_cord_slot],
@@ -1429,6 +1444,7 @@ hinge_hole_drop_in     = mach("hinge_hole_drop_in");
 bed_reliefs            = mach("bed_reliefs");
 hinge_pin_d_mm         = mach("hinge_pin_d_mm");
 hinge_pin_engage_mm    = mach("hinge_pin_engage_mm");
+hinge_hole_depth_mm    = mach("hinge_hole_depth_mm");
 bed_flush              = mach("bed_flush");
 foot_height            = mach("foot_height_mm");
 cord_slot              = mach("cord_slot");
@@ -1527,7 +1543,9 @@ ph_R    = max(ph_pd, ph_pivot_d) / 2 + ph_wall;         // arm half-height
 ph_pin_web = 2.5;                                        // between pin end and pivot hole
 ph_Lf   = ph_pin_embed + ph_pin_web + (ph_pivot_d + ph_slip) / 2;  // pivot to arm front
 ph_fc   = sqrt(ph_Lf * ph_Lf + ph_R * ph_R) - ph_Lf + ph_clear;    // arm front swing + clearance
-ph_bw   = ph_arm_w + 2 * ph_clear + 2 * ph_cheek;        // block width (X) = pivot rod length
+ph_cheek_w = ph_pivot_len > 0 ? (ph_pivot_len - ph_arm_w - 2 * ph_clear) / 2 : ph_cheek;
+ph_bw   = ph_arm_w + 2 * ph_clear + 2 * ph_cheek_w;      // block width (X) = pivot rod length
+assert(ph_cheek_w >= 3, "ph_pivot_len leaves the block's cheeks under 3 mm; use a longer pivot");
 ph_stop = ph_stop_angle > 0;
 ph_th   = ph_stop ? ph_stop_angle : 150;                 // arm sweep cut into the block
 assert(!ph_stop || (ph_stop_angle >= 45 && ph_stop_angle <= 110),
@@ -1682,7 +1700,14 @@ cs_ch = has_cord_slot && len(cord_slot) >= 4 ? cord_slot[3] : 5;
 ph_az   = hole_axis_z;                                   // pivot and pin axis
 ph_zb   = ph_az + ph_bot;                                // block bottom = recess floor
 ph_atop = min(ph_R, max(top_z - ph_az, max(ph_pd, ph_pivot_d) / 2 + ph_min_cover));
-ph_pin_len = ph_pin_embed + (hinge_y - ph_Lf - (seat_y1 - bed_clearance)) + ph_pe;
+// The pin: ph_pin_embed in the arm, across the gap to the bed's back face,
+// and into the hole; a stock length decides how far in. The hole's depth
+// (profile hinge_hole_depth_mm, 0 = not measured) bounds it.
+ph_gap  = hinge_y - ph_Lf - (seat_y1 - bed_clearance);
+ph_pe_eff = ph_pin_len > 0 ? ph_pin_len - ph_pin_embed - ph_gap : ph_pe;
+ph_pin_l  = ph_pin_len > 0 ? ph_pin_len : ph_pin_embed + ph_gap + ph_pe;
+ph_pin_lmin = ph_pin_embed + ph_gap + 8;
+ph_pin_lmax = hinge_hole_depth_mm > 0 ? ph_pin_embed + ph_gap + hinge_hole_depth_mm - 1 : 0;
 // The base's trap sits at least 8 mm under the recess floor; the screw's
 // head bears where a lollipop's nut would, and its tip stops 1.5 mm short
 // of the floor under the arm
@@ -2248,8 +2273,12 @@ if (report && hinge_type == "printed") {
              " mm; pivot ", hinge_y - seat_y1, " mm behind the seat, ", top_z - ph_az, " mm below the top"));
     echo(str("Printed hinge: arm and cheeks top ", ph_updown(ph_az + ph_atop - top_z), " the rim; ",
              round((ph_atop - ph_pd / 2) * 10) / 10, " mm of plastic over the pin"));
-    echo(str("Printed hinge: steel rod, 2 pins ", ph_pd, " mm x ", round(ph_pin_len * 10) / 10,
-             " mm (", ph_pe, " mm into the bed's hole) and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 10) / 10, " mm"));
+    echo(str("Printed hinge: steel rod, 2 pins ", ph_pd, " mm x ", round(ph_pin_l * 10) / 10,
+             " mm (", round(ph_pe_eff * 10) / 10, " mm into the bed's hole) and 2 pivots ", ph_pivot_d, " mm x ", round(ph_bw * 100) / 100, " mm"));
+    echo(str("Printed hinge: pins from ", round(ph_pin_lmin * 2) / 2, " mm long (8 mm into the hole)",
+             ph_pin_lmax > 0 ? str(" to ", floor(ph_pin_lmax * 2) / 2, " mm (the hole is ", hinge_hole_depth_mm, " mm deep)")
+                             : " up; the hole's depth isn't in the profile, so measure it",
+             " fit; set ph_pin_len for a bought dowel pin, ph_pivot_len for the pivot"));
     echo(str("Printed hinge: screws (pan or socket head) from below, through the base's traps into ", hinge_nut_spec,
              " nuts slid into slots in the blocks' front faces"));
     if (ph_stop) echo(str("Printed hinge: the machine stops at about ", ph_stop_angle, " degrees of tilt"));
@@ -2342,6 +2371,11 @@ if (harness_rods && notch_ys[0][1] > hh_y0 - rod_stop - 3)
 if (hinge_type == "printed" && ph_trap_depth > hinge_nut_depth)
     if (report) echo(str("NOTE: the printed hinge's recess is deep, so its screw traps are ", ph_trap_depth,
              " mm below the top (hinge_nut_depth is ", hinge_nut_depth, ")"));
+if (hinge_type == "printed" && ph_pe_eff < 8)
+    if (report) echo(str("WARNING: the printed hinge's pin goes only ", ph_pe_eff, " mm into the bed's hole; use a pin at least ", ph_pin_lmin, " mm long"));
+if (hinge_type == "printed" && hinge_hole_depth_mm > 0 && ph_pe_eff > hinge_hole_depth_mm - 1)
+    if (report) echo(str("WARNING: the printed hinge's pin, ", ph_pe_eff, " mm into the bed's hole, bottoms in it (", hinge_hole_depth_mm,
+             " mm deep); use a pin at most ", ph_pin_lmax, " mm long"));
 if (hinge_type == "printed" && ph_tip_room < 1.5)
     if (report) echo("WARNING: the printed hinge's screw has little room past its nut; increase ph_floor");
 if (hinge_type == "printed" && ph_zb < floor_z)
@@ -2742,8 +2776,8 @@ if (report) echo("=== Hardware for this configuration ===");
 if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type,
          hinge_type == "printed" ? " (part printed_hinges)" : ""));
 if (report && hinge_type == "printed")
-    echo(str("Hinge rods: steel, 2 x ", ph_pd, " mm x ", round(ph_pin_len * 2) / 2,
-             " mm (pins) + 2 x ", ph_pivot_d, " mm x ", round(ph_bw * 2) / 2, " mm (pivots)"));
+    echo(str("Hinge rods: steel, 2 x ", ph_pd, " mm x ", round(ph_pin_l * 100) / 100,
+             " mm (pins) + 2 x ", ph_pivot_d, " mm x ", round(ph_bw * 100) / 100, " mm (pivots)"));
 if (report && has_hinges) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
          stock_len(hinge_nut_spec, hinge_screw_need),
          " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts",
@@ -3009,7 +3043,7 @@ if (part == "assembly") {
             translate([-ph_bw / 2, yb - 40, -ph_pd / 2 - 4])
                 cube([ph_bw, 40, bed_top_z - ph_az + ph_pd / 2 + 4]);
             translate([0, yb + overlap, 0]) rotate([90, 0, 0])
-                cylinder(h = ph_pe + 1, d = ph_pd + 0.4, $fn = 32);
+                cylinder(h = ph_pe_eff + 1, d = ph_pd + 0.4, $fn = 32);
         }
     }
 } else if (part == "split_test") {
@@ -3388,7 +3422,7 @@ module printed_hinge_cutter(x, y) {
     translate([x, y, 0]) {
         translate([-ph_bw / 2 - c, ph_front - c, ph_zb])
             cube([ph_bw + 2 * c, ph_back - ph_front + 2 * c, top_z - ph_zb + overlap]);
-        y_far = seat_y1 - bed_clearance - ph_pe - 1 - y;
+        y_far = seat_y1 - bed_clearance - ph_pe_eff - 1 - y;
         translate([-sw / 2, y_far, ph_az - ph_pd / 2 - ph_clear])
             cube([sw, ph_front - y_far + overlap,
                   top_z - (ph_az - ph_pd / 2 - ph_clear) + overlap]);
@@ -3492,7 +3526,7 @@ module ph_block() {
 module ph_rods(tilt = 0) {
     color("Silver") {
         rotate([-tilt, 0, 0]) translate([0, -ph_Lf + ph_pin_embed, 0]) rotate([90, 0, 0])
-            cylinder(h = ph_pin_len, d = ph_pd, $fn = 32);
+            cylinder(h = ph_pin_l, d = ph_pd, $fn = 32);
         rotate([0, 90, 0]) cylinder(h = ph_bw, d = ph_pivot_d, center = true, $fn = 32);
     }
 }

@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 481 parameters; 479 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 484 parameters; 482 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -52,6 +52,7 @@ There are 481 parameters; 479 of them appear in the Customizer. The rest are lis
 | `custom_hinge_hole_drop_in` | `0.375` | IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8") |
 | `custom_hinge_pin_d_mm` | `6.35` | IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4") |
 | `custom_hinge_pin_engage_mm` | `12` | IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth) |
+| `custom_hinge_hole_depth_mm` | `0` | IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be |
 | `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
 | `custom_foot_height_mm` | `0` | IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead) |
 | `custom_cord_slot` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none |
@@ -283,7 +284,9 @@ There are 481 parameters; 479 of them appear in the Customizer. The rest are lis
 | Parameter | Default | Description |
 |---|---|---|
 | `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001) *Range 0 to 12, step 0.01.* |
-| `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile *Range 0 to 30, step 0.5.* |
+| `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile. Ignored when ph_pin_len is set *Range 0 to 30, step 0.5.* |
+| `ph_pin_len` | `0` | Stock length of the pins, for a bought dowel pin (0 = cut to the length the console gives): the pin goes into the bed's hole by whatever is left past the arm; the console gives the lengths that fit the hole's depth *Range 0 to 80, step 0.5.* |
+| `ph_pivot_len` | `0` | Stock length of the pivot rods, for a bought dowel pin (0 = the block's width, set by ph_cheek): the block's cheeks are widened or narrowed to suit *Range 0 to 60, step 0.025.* |
 | `ph_pin_embed` | `16` | Length of the pin pressed into the arm *Range 8 to 30, step 0.5.* |
 | `ph_pivot_d` | `6.35` | Steel pivot rod, running along the back through the block and the arm: diameter *Range 3 to 12, step 0.01.* |
 | `ph_press` | `0` | Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
