@@ -77,7 +77,9 @@
 > height and the cradle's radius come from the machine profile (6" and 1"
 > for the 99K; `custom_tilt_prop_mm`, or `tilt_prop_h` and `tilt_prop_r`,
 > for others): tip the machine back to 90° on a level gauge and measure
-> from the table to the underside of the arm. Because the base tips first, the stop never has to hold more
+> from the table to the underside of the arm. For a machine whose arm
+> isn't round, a cradle radius of 0 in the profile, or `tilt_prop_top =
+> "flat"`, gives a flat, level top instead. Because the base tips first, the stop never has to hold more
 > than a few newton-metres, well within the pins and the plastic; don't
 > drop the machine onto it all the same. Set `ph_stop_angle` between 45°
 > and 110°, or 0 for no stop. Check that nothing on your machine reaches

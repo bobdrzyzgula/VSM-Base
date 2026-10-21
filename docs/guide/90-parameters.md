@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 470 parameters; 468 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 472 parameters; 470 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -55,7 +55,7 @@ There are 470 parameters; 468 of them appear in the Customizer. The rest are lis
 | `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
 | `custom_foot_height_mm` | `0` | IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead) |
 | `custom_cord_slot` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none |
-| `custom_tilt_prop_mm` | `[0, 0]` | IGNORED unless machine = Custom. Tilt prop, mm: [height of the arm's underside above the table with the machine tipped back to 90 degrees, cradle radius]; [0, 0] = not measured |
+| `custom_tilt_prop_mm` | `[0, 0]` | IGNORED unless machine = Custom. Tilt prop, mm: [height above the table of what rests on it (the arm's underside) with the machine tipped back to 90 degrees, cradle radius for a round arm (0 = a flat, level top)]; height 0 = not measured |
 | `custom_back_trench` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none |
 | `custom_left_trench` | `[83.34, 57.6, 40, 2.5]` | IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none |
 | `custom_base_lid_notch` | `[8, 23]` | IGNORED unless machine = Custom. Notch in the base lid's left edge clearing the motor boss as the lid opens, mm: [depth, width]; [0, 0] = none |
@@ -319,7 +319,9 @@ There are 470 parameters; 468 of them appear in the Customizer. The rest are lis
 | Parameter | Default | Description |
 |---|---|---|
 | `tilt_prop_h` | `0` | Part tilt_prop: a stand on the table behind the base that catches the machine's arm when it is tipped back to about 90 degrees, for hands-free servicing. Height of the arm's underside above the table there, mm; 0 = from the machine profile (99K: 6") *Range 0 to 300, step 1.* |
+| `tilt_prop_top` | `"profile"` | Top: from the profile, a cradle (for a round arm), or flat and level (for anything else) *Choices: profile, cradle, flat.* |
 | `tilt_prop_r` | `0` | Cradle radius (the arm's radius plus a little), mm; 0 = from the profile (99K: 1") *Range 0 to 60, step 0.5.* |
+| `tilt_prop_flat` | `50` | Flat top: depth front to back, mm *Range 20 to 120, step 1.* |
 | `tilt_prop_w` | `38.1` | Cradle width, along the arm (1.5") *Range 20 to 80, step 0.5.* |
 | `tilt_prop_foot` | `[80, 110]` | Foot: width along the arm, and depth front to back *Range 40 to 200, step 1.* |
 

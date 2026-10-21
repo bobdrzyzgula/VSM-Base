@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 51
+// VSM Base, version 52
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -242,6 +242,9 @@
 // tilt_prop_mm (99K: arm 6" above the table, 1" cradle radius, from Bob).
 //
 // v51: the tilt prop's post is opened up into two legs, front and back.
+//
+// v52: tilt prop with a flat, level top for machines without a round arm:
+// a profile cradle radius of 0, or tilt_prop_top = "flat".
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -317,7 +320,7 @@ custom_bed_flush = false;
 custom_foot_height_mm = 0;
 // IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none
 custom_cord_slot = [0, 0, 0, 0];
-// IGNORED unless machine = Custom. Tilt prop, mm: [height of the arm's underside above the table with the machine tipped back to 90 degrees, cradle radius]; [0, 0] = not measured
+// IGNORED unless machine = Custom. Tilt prop, mm: [height above the table of what rests on it (the arm's underside) with the machine tipped back to 90 degrees, cradle radius for a round arm (0 = a flat, level top)]; height 0 = not measured
 custom_tilt_prop_mm = [0, 0];
 // IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none
 custom_back_trench = [0, 0, 0, 0];
@@ -750,8 +753,12 @@ rig_ear_h = 0.4; // [0.2 : 0.1 : 1]
 /* [Tilt prop] */
 // Part tilt_prop: a stand on the table behind the base that catches the machine's arm when it is tipped back to about 90 degrees, for hands-free servicing. Height of the arm's underside above the table there, mm; 0 = from the machine profile (99K: 6")
 tilt_prop_h = 0; // [0 : 1 : 300]
+// Top: from the profile, a cradle (for a round arm), or flat and level (for anything else)
+tilt_prop_top = "profile"; // [profile, cradle, flat]
 // Cradle radius (the arm's radius plus a little), mm; 0 = from the profile (99K: 1")
 tilt_prop_r = 0; // [0 : 0.5 : 60]
+// Flat top: depth front to back, mm
+tilt_prop_flat = 50; // [20 : 1 : 120]
 // Cradle width, along the arm (1.5")
 tilt_prop_w = 38.1; // [20 : 0.5 : 80]
 // Foot: width along the arm, and depth front to back
@@ -1304,7 +1311,8 @@ profiles = [
         ["foot_height_mm",         0],
         ["cord_slot",              [0, 0, 0, 0]],
         // Tipped back to 90 degrees, the arm (1.75-2" across) is 6" above
-        // the table, its centerline about 5" behind the base
+        // the table, its centerline about 5" behind the base: [height of
+        // what rests on the prop, cradle radius (0 = a flat, level top)]
         ["tilt_prop_mm",           [152.4, 25.4]]
     ]],
     ["Kenmore 158-14001", [
@@ -2172,8 +2180,9 @@ if (report && bed_on_feet)
              bed_feet_gap, " mm under the plate"));
 if (report && bed_flush) echo("Bed flush with the rim");
 if (report && (part == "tilt_prop" || part == "tools") && tp_ok)
-    echo(str("Tilt prop: cradle ", tp_r, " mm radius, ", tilt_prop_w, " mm wide, its bottom ", tp_h,
-             " mm above the table; stand it behind the base under the arm, the machine tipped back to 90 degrees. Line the cradle with felt"));
+    echo(str("Tilt prop: ", tp_flat ? str("flat top ", tilt_prop_w, " x ", tilt_prop_flat, " mm, ", tp_h, " mm")
+                                    : str("cradle ", tp_r, " mm radius, ", tilt_prop_w, " mm wide, its bottom ", tp_h, " mm"),
+             " above the table; stand it behind the base under the arm, the machine tipped back to 90 degrees. Line it with felt"));
 if (report && part == "tools")
     echo(str("Tools: hinge_nut_tool, printed_hinge_test, foot_rig_left, foot_rig_right", tp_ok ? ", tilt_prop" : "", " (each also its own part); ",
              "the foot rig is cut for the ", use_custom ? "Custom" : profile_name, " machine"));
@@ -2954,7 +2963,7 @@ if (part == "assembly") {
     tools();
 } else if (part == "tilt_prop") {
     if (tp_ok) tilt_prop();
-    else if (report) echo("WARNING: tilt_prop: this machine profile has no tilt prop measurements; set tilt_prop_h and tilt_prop_r");
+    else if (report) echo("WARNING: tilt_prop: this machine profile has no tilt prop height; set tilt_prop_h");
 } else if (ins_in(part, bb_parts)) {
     assert(bb_have, "The bobbin trays need the corner bay: turn on back_ext, left_ext and corner_ext, or set make_corner_box");
     bobbin_insert(part);
@@ -3557,15 +3566,17 @@ module tools() {
 // height of the arm's centre (its underside at tp_h).
 tp_h  = tilt_prop_h > 0 ? tilt_prop_h : tilt_prop_mm[0];
 tp_r  = tilt_prop_r > 0 ? tilt_prop_r : tilt_prop_mm[1];
-tp_ok = tp_h > 0 && tp_r > 0;
+tp_flat = tilt_prop_top == "flat" || (tilt_prop_top == "profile" && !(tilt_prop_mm[1] > 0))
+        || (tilt_prop_top == "cradle" && !(tp_r > 0));
+tp_ok = tp_h > 0;
 module tilt_prop() {
     w  = tilt_prop_w;
     fx = max(tilt_prop_foot[0], w);
     fy = tilt_prop_foot[1];
     ft = 5;                                   // foot thickness
-    hy = 2 * tp_r + 8;                        // cradle head depth (Y)
+    hy = tp_flat ? tilt_prop_flat : 2 * tp_r + 8;   // head depth (Y)
     hz0 = tp_h - 8;                           // head's underside
-    hz1 = tp_h + 0.6 * tp_r;                  // cradle's lips
+    hz1 = tp_flat ? tp_h : tp_h + 0.6 * tp_r; // cradle's lips, or the flat top
     translate([fx / 2, fy / 2, 0]) difference() {
         union() {
             // foot, corners rounded
@@ -3587,8 +3598,9 @@ module tilt_prop() {
                 rotate([90, 0, 90]) linear_extrude(height = w + 2, center = true)
                     polygon([[-yb, zb], [yb, zb], [yt, zt], [0, zt + yt], [-yt, zt]]);
         // the cradle: the arm's radius plus 1 mm, axis along X
-        translate([-w / 2 - 1, 0, tp_h + tp_r]) rotate([0, 90, 0])
-            cylinder(h = w + 2, r = tp_r + 1, $fn = 96);
+        if (!tp_flat)
+            translate([-w / 2 - 1, 0, tp_h + tp_r]) rotate([0, 90, 0])
+                cylinder(h = w + 2, r = tp_r + 1, $fn = 96);
         // ease the lips
         for (sy = [-1, 1]) translate([-w / 2 - 1, sy * hy / 2, hz1]) rotate([45, 0, 0])
             cube([w + 2, 2, 2], center = false);
