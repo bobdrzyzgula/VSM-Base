@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 46
+// VSM Base, version 47
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -226,6 +226,9 @@
 // face, with plastic under it, so the screw from below clamps the block
 // (the nut in an open pocket underneath was drawn out of it, clamping
 // nothing); the recess's front wall closes the slot. From Bob's review.
+//
+// v47: rod-fit test: a plus, not a dash, over the sixth (running-fit) hole,
+// and the step between holes is ph_test_step (0.1; finer for a second bar).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -693,6 +696,8 @@ ph_stop_angle = 60; // [0 : 1 : 110]
 ph_tail = 12; // [6 : 0.5 : 25]
 // Least plastic over the rods where the arm and cheeks are cut down to the rim
 ph_min_cover = 2.5; // [1.5 : 0.25 : 5]
+// Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_press (0.05 for a finer second bar)
+ph_test_step = 0.1; // [0.02 : 0.01 : 0.2]
 
 /* [Foot-locating rig] */
 // Parts foot_rig_left and foot_rig_right: a thin box that fits round the bed, to stand the machine on paper and print its inked feet. Wall height
@@ -3504,9 +3509,10 @@ module tools() {
 
 // Rod-fit test: a bar with five vertical pin holes (as the arm prints
 // them) and five horizontal pivot holes (as the block prints them), at
-// ph_press -0.2 .. +0.2 left to right, and a sixth horizontal hole at the
-// arm's running fit (marked by a notch on top)
-pt_steps = [-0.2, -0.1, 0, 0.1, 0.2];
+// ph_press - 2 to + 2 steps of ph_test_step left to right (one to five
+// notches on top), and a sixth horizontal hole, with no vertical one, at
+// the arm's running fit (ph_slip), marked by a plus on top
+pt_steps = [for (k = [-2 : 2]) k * ph_test_step];
 pt_pitch = max(ph_pd, ph_pivot_d) + 6;
 module printed_hinge_test() {
     L = 7 * pt_pitch;
@@ -3526,7 +3532,9 @@ module printed_hinge_test() {
         x6 = 6 * pt_pitch;
         translate([x6, -overlap, hz]) rotate([-90, 0, 0])
             linear_extrude(height = D + 2 * overlap) rotate(180) teardrop_2d(ph_pivot_d + ph_slip);
+        // a plus at the loose end, over the running-fit hole
         translate([x6 - 3, D / 2 - 0.5, H - 1]) cube([6, 1, 1 + overlap]);
+        translate([x6 - 0.5, D / 2 - 3, H - 1]) cube([1, 6, 1 + overlap]);
     }
 }
 

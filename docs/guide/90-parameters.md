@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 464 parameters; 462 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 465 parameters; 463 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -288,6 +288,7 @@ There are 464 parameters; 462 of them appear in the Customizer. The rest are lis
 | `ph_stop_angle` | `60` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110) *Range 0 to 110, step 1.* |
 | `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
 | `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
+| `ph_test_step` | `0.1` | Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_press (0.05 for a finer second bar) *Range 0.02 to 0.2, step 0.01.* |
 
 ## Foot-locating rig
 
