@@ -13,7 +13,8 @@
 #
 # VERSION labels the guide's title page: `make docs VERSION=0.1.0-alpha`
 # gives "Version 0.1.0-alpha"; without it the guide says "Development
-# build". The release workflow (.github/workflows/release.yml) builds both
+# Build vNN", NN being the model's version from the header of
+# scad/vsm_base.scad. The release workflow (.github/workflows/release.yml) builds both
 # documents this way for each version tag and attaches them to the release.
 #
 # Two documents: the User's Guide (docs/guide/*.md) and the paper on motor
@@ -32,7 +33,8 @@ MC_HTML  := $(BUILD)/vsm-motor-control.html
 PANDOC   ?= pandoc
 TYPST    ?= typst
 VERSION  ?=
-LABEL    := $(if $(VERSION),Version $(VERSION),Development build)
+DEVVER   := $(shell sed -n 's/^\/\/ VSM Base, version \([0-9]*\).*/\1/p' $(MODEL) | head -1)
+LABEL    := $(if $(VERSION),Version $(VERSION),Development Build v$(DEVVER))
 IMAGES   := $(wildcard docs/images/*/*)
 
 .PHONY: presets all params images pdf html docs clean

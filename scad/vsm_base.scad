@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 44
+// VSM Base, version 45
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -218,6 +218,9 @@
 // than parts of the base: the hinge nut tool, the printed hinge's rod-fit
 // test and the foot-locating rig's two halves. test_parts stays for pieces
 // of the base for trying fits.
+//
+// v45: no model changes; the guide's title page gives this version number
+// for development builds ("Development Build v45").
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
