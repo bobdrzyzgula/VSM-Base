@@ -28,8 +28,9 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   extension pegs (tapped into the lips with a hammer; they then mate with
   the base's holes), and the extended back lip;
 - the lollipop hinges, mounted with 1" #8-32 screws and nylon-insert
-  locknuts in the nut traps; the mending plates fit their pockets (their
-  screws are still to be tried);
+  locknuts in the nut traps; the mending plates, held by
+  1/2" #8-32 flat-head screws into nylon-insert locknuts in their traps
+  (the screws push through the printed membranes);
 - the organizer insert test parts (`bobbin_test`, `notion_test`) and the
   full stack of five bobbin trays; a spool tray and a divided notion tray
   for the back bay. On the spool tray, in silk PLA, a curb split from the
@@ -156,9 +157,11 @@ and others) are welcome; see the guide.
     console's hardware list)
   - 3 flat steel mending plates, 4" × 5/8", countersunk for #8
     (McMaster-Carr 1394A34 or similar)
-  - 12 #8-32 × 1/2" flat-head machine screws and 12 #8-32 hex nuts
+  - 12 #8-32 × 1/2" flat-head machine screws and 12 #8-32 nylon-insert
+    locknuts (plain hex nuts fit the traps too)
     (mending plates)
-  - 2 #8-32 machine screws, about 1" long, and 2 hex nuts (hinges)
+  - 2 #8-32 machine screws, about 1" long, and 2 nylon-insert locknuts
+    (hinges)
   - 4 pieces of 3/16" rod, 2⅜" long (carrying harness; optional): mild steel,
     303 stainless, or lead-free brass such as 464; the hole ends are closed
     with printed plugs

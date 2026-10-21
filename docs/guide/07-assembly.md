@@ -5,6 +5,14 @@
 - Clearing the membranes and knock-out walls.
 - Nuts into the plate and hinge nut traps.
 - Joining the halves: dovetails, then the mending plates from below.
+
+![The joined halves from below: three mending plates across the split,
+each with four 1/2" #8-32 flat-head screws.](../images/photos/plates-underside.jpg){width=80%}
+
+![Inside, the screws' nylon-insert locknuts sit in their traps in the
+cavity floor, either side of the dovetail keys. The screws push through the
+traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){width=70%}
+
 - Installing the hinges and setting the machine on its pins.
 - The hinge nuts: the nut traps open on the underside. Push a nut onto the
   tip of the printed nut tool (`part = "hinge_nut_tool"`), nylon side
