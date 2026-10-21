@@ -79,7 +79,9 @@
 > for others): tip the machine back to 90° on a level gauge and measure
 > from the table to the underside of the arm. For a machine whose arm
 > isn't round, a cradle radius of 0 in the profile, or `tilt_prop_top =
-> "flat"`, gives a flat, level top instead. Because the base tips first, the stop never has to hold more
+> "flat"`, gives a flat, level top instead. A standalone version, with no
+> machine settings but a sloping top and a foot sized for stability, is in
+> `standalone/tilt-prop/`. Because the base tips first, the stop never has to hold more
 > than a few newton-metres, well within the pins and the plastic; don't
 > drop the machine onto it all the same. Set `ph_stop_angle` between 45°
 > and 110°, or 0 for no stop. Check that nothing on your machine reaches
