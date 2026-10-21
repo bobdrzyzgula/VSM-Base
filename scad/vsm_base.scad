@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Singer 99 base, version 33
+// VSM Base, version 43
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -209,6 +209,10 @@
 // v42: Customizer presets "<profile> (as Custom)" in vsm_base.json, built
 // by tools/make_presets.py from the profiles; the console prints profile
 // values to 8 decimals for them.
+//
+// v43: in the "all" view, each plate is as wide as the bed or its widest
+// part, so a base printed whole no longer runs into the next plate. The
+// header's version number tracks again.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -4578,10 +4582,17 @@ function pl_all(gi = 0, base = 1, acc = []) =
 plates = pl_all();
 n_plates = len(plates) == 0 ? 0 : max([for (q = plates) q[1]]);
 
+// Plate widths in the "all" view: the bed, or more if a part overhangs it
+// (the base in one piece, say), so plates never overlap
+function plate_w(pn) = max(concat([printer_size.x],
+    [for (q = plates) if (q[1] == pn)
+        printer_margin + q[2] + (q[5] ? build_parts[q[0]][2].y : build_parts[q[0]][2].x)]));
+plate_x0 = [for (pn = [1 : 1 : n_plates + 1])
+    pn == 1 ? 0 : sum_x([for (k = [1 : 1 : pn - 1]) plate_w(k) + 40])];
 module print_plates() {
     for (q = plates)
         if (print_plate == 0 || q[1] == print_plate) {
-            off = print_plate == 0 ? [(q[1] - 1) * (printer_size.x + 40), 0, 0] : [0, 0, 0];
+            off = print_plate == 0 ? [plate_x0[q[1] - 1], 0, 0] : [0, 0, 0];
             translate(off + [printer_margin + q[2], printer_margin + q[3], 0])
                 if (q[5]) translate([build_parts[q[0]][2].y, 0, 0]) rotate(90)
                               place_part(build_parts[q[0]][0]);
