@@ -64,4 +64,4 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" $pre \
             --title "VSM Base ${GITHUB_REF_NAME}" \
             --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide and the paper on motor speed control are attached as PDF and as single HTML pages (open them in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2. bobbin_box.scad, nut_tool.scad and tilt_prop.scad are the standalone bobbin box, nut tool and tilt prop. This is an alpha: see the guide for what has and has not been printed and tested." \
-            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm-motor-control.pdf build/vsm-motor-control.html build/vsm_base.scad build/bobbin_box.scad build/nut_tool.scad build/tilt_prop.scad
+            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm-motor-control.pdf build/vsm-motor-control.html build/vsm-motor-rig.pdf build/vsm_base.scad build/bobbin_box.scad build/nut_tool.scad build/tilt_prop.scad
