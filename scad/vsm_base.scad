@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 63
+// VSM Base, version 64
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -305,6 +305,10 @@
 //
 // v63: view part extensions_view: the three extension pieces in place,
 // with their lids lifted by `explode` (for the documentation).
+//
+// v64: the exploded view shows the printed hinges taken apart over their
+// recesses: block lifted, arm above it, pin drawn out of the arm's front,
+// pivot rod drawn out to the side.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -3129,6 +3133,10 @@ if (part == "assembly") {
 } else if (part == "exploded") {
     // Base (split if `split` is set) with every other part pulled clear
     color("SteelBlue") base_halves();
+    if (hinge_type == "printed")
+        for (hx = [hinge_x1, hinge_x2])
+            translate([split ? (hx < cut_x ? -1 : 1) * split_spread / 2 : 0, 0, 0])
+                ph_exploded(hx, explode);
     if (attached) color("CadetBlue") translate([explode + (split ? split_spread / 2 : 0), 0, 0]) right_bay();
     if (harness_rods && rod_plug_len > 0)
         color("LightSteelBlue") translate([0, -explode, 0]) rod_plugs();
@@ -3809,6 +3817,24 @@ module ph_in_place(x, tilt = 0) {
         color("DarkOrange") ph_block();
         color("Orange") rotate([-tilt, 0, 0]) ph_arm();
         ph_rods(tilt);
+    }
+}
+
+// One hinge taken apart over its recess, for the exploded view: the block
+// lifted by e, the arm above it, the pin drawn out of the arm's front and
+// the pivot rod out to the +X side
+module ph_exploded(x, e) {
+    translate([x, hinge_y, ph_az]) {
+        translate([0, 0, e]) color("DarkOrange") ph_block();
+        translate([0, 0, 2 * e]) {
+            color("Orange") ph_arm();
+            color("Silver") {
+                translate([0, -ph_Lf + ph_pin_embed - 0.8 * e, 0]) rotate([90, 0, 0])
+                    cylinder(h = ph_pin_l, d = ph_pd, $fn = 32);
+                translate([ph_bw / 2 + 0.6 * e, 0, 0]) rotate([0, 90, 0])
+                    cylinder(h = ph_bw, d = ph_pivot_d, $fn = 32);
+            }
+        }
     }
 }
 

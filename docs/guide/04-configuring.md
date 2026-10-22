@@ -60,6 +60,11 @@
 > the bed's hole (left), and tilted back to its stop
 > (right).](../images/renders/printed-hinge.png){width=100%}
 >
+> ![A printed hinge taken apart over its recess in the back rim (part
+> `exploded`): the block, the arm above it, the pin drawn out of the arm's
+> front, and the pivot rod drawn out to the
+> side.](../images/renders/printed-hinge-exploded.png){width=70%}
+>
 > The arm runs on past the pivot into a short tail (`ph_tail`, 12 mm). When
 > the machine is tipped back, the tail swings down into a pocket in the
 > block and comes to rest on its floor, so the machine stops at about
