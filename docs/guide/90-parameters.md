@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 485 parameters; 483 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 486 parameters; 484 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -297,6 +297,7 @@ There are 485 parameters; 483 of them appear in the Customizer. The rest are lis
 | `ph_cheek` | `6` | Block cheeks either side of the arm (X) *Range 3 to 15, step 0.5.* |
 | `ph_clear` | `0.4` | Clearance between the moving arm and the block *Range 0.2 to 1.5, step 0.05.* |
 | `ph_web` | `4` | Base web left between the bed seat and the hinge recess *Range 2 to 10, step 0.5.* |
+| `ph_head_d` | `9.5` | Screw head counterbore from under the base, for a pan or socket head (#8 pan: 8.2 mm) *Range 5 to 16, step 0.1.* |
 | `ph_floor` | `3` | Block floor under the arm *Range 2 to 8, step 0.5.* |
 | `ph_recess_clear` | `0.2` | Fit of the block in its recess, each side *Range 0 to 0.6, step 0.05.* |
 | `ph_stop_angle` | `100` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110). 100 matches a Singer lollipop hinge's knuckle; the machine passes its balance point (about 55 degrees on a 99K) well before, and past about 75 degrees the base itself starts to tip up unless the machine is held or braced *Range 0 to 110, step 1.* |

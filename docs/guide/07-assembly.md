@@ -17,7 +17,7 @@ cavity floor, either side of the dovetail keys. The screws push through the
 traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){width=70%}
 
 - Installing the hinges and setting the machine on its pins.
-- The hinge nuts: the nut traps open on the underside. Push a nut onto the
+- The hinge nuts (lollipop hinges): the nut traps open on the underside. Push a nut onto the
   tip of the printed nut tool (`part = "hinge_nut_tool"`), nylon side
   first for a locknut, slide it up the trap until it seats, and hold it
   there while you start the screw from above; once the screw has caught,
@@ -33,8 +33,9 @@ traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){
   arm's engraved arrow on its bottom face, pointing toward the pin (the arm
   isn't symmetrical top to bottom); the arm should swing freely. Drop the block into its recess, pin toward the bed;
   the recess's front wall closes the nut's slot. Drive the screw (#8-32 ×
-  5/8", pan or socket head) up from under the base, through the trap (its
-  head bears on the trap's roof), into the block's nut. The recess walls
+  5/8", pan or socket head) up from under the base, through the round
+  counterbore (its head bears on the counterbore's roof; push it through
+  the printed membrane), into the block's nut. The recess walls
   keep the pivot rod from working out.
 - Trim strips, with the extensions off: tap the peg inserts into the
   trims' holes, as into the lips, and press the trims into the rim cuts.

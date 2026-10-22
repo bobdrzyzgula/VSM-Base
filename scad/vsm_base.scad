@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 57
+// VSM Base, version 58
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -270,6 +270,11 @@
 // holes step around it. The nut slot's ceiling is raised 0.4 mm and
 // chamfered at 45 degrees up to what room the block has, shortening the
 // sagging bridge, and its mouth is eased.
+//
+// v58: printed hinge: the screw's way up from under the base is a round
+// counterbore for a pan or socket head (ph_head_d, 9.5 mm for #8), not a
+// hex trap, since the nut is now in the block; in the hinge coupon too.
+// The lollipop hinge keeps its nut trap.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -751,6 +756,8 @@ ph_cheek = 6; // [3 : 0.5 : 15]
 ph_clear = 0.4; // [0.2 : 0.05 : 1.5]
 // Base web left between the bed seat and the hinge recess
 ph_web = 4; // [2 : 0.5 : 10]
+// Screw head counterbore from under the base, for a pan or socket head (#8 pan: 8.2 mm)
+ph_head_d = 9.5; // [5 : 0.1 : 16]
 // Block floor under the arm
 ph_floor = 3; // [2 : 0.5 : 8]
 // Fit of the block in its recess, each side
@@ -1724,9 +1731,9 @@ ph_pe_eff = ph_pin_len > 0 ? ph_pin_len - ph_pin_embed - ph_gap : ph_pe;
 ph_pin_l  = ph_pin_len > 0 ? ph_pin_len : ph_pin_embed + ph_gap + ph_pe;
 ph_pin_lmin = ph_pin_embed + ph_gap + 8;
 ph_pin_lmax = hinge_hole_depth_mm > 0 ? ph_pin_embed + ph_gap + hinge_hole_depth_mm - 1 : 0;
-// The base's trap sits at least 8 mm under the recess floor; the screw's
-// head bears where a lollipop's nut would, and its tip stops 1.5 mm short
-// of the floor under the arm
+// The screw's counterbore from below ends at least 8 mm under the recess
+// floor; the head bears on its roof, and the tip stops 1.5 mm short of
+// the floor under the arm
 ph_trap_depth = max(hinge_nut_depth, top_z - ph_zb + 8);
 ph_screw_need = (ph_zb - (top_z - ph_trap_depth)) + ph_nut_under + ph_nut_t + 0.3 + 0.5;
 ph_tip_room   = (-(ph_R + ph_clear) - 1.5) - (ph_bot + ph_nut_under + ph_nut_t + 0.3);
@@ -2388,7 +2395,7 @@ if (harness_rods && notch_ys[0][1] > hh_y0 - rod_stop - 3)
     if (report) echo("WARNING: rod notch runs into the handhold zone");
 
 if (hinge_type == "printed" && ph_trap_depth > hinge_nut_depth)
-    if (report) echo(str("NOTE: the printed hinge's recess is deep, so its screw traps are ", ph_trap_depth,
+    if (report) echo(str("NOTE: the printed hinge's recess is deep, so its screw counterbores end ", ph_trap_depth,
              " mm below the top (hinge_nut_depth is ", hinge_nut_depth, ")"));
 if (hinge_type == "printed" && ph_pe_eff < 8)
     if (report) echo(str("WARNING: the printed hinge's pin goes only ", ph_pe_eff, " mm into the bed's hole; use a pin at least ", ph_pin_lmin, " mm long"));
@@ -3439,8 +3446,8 @@ module hinge_cutter(x, y) {
 // Recess for one printed hinge block, centered on the pivot (x, y): the
 // block's footprint down to its floor, a slot from the recess through the
 // web and into the seat for the pin (open at the top, so the pin swings
-// up), and the screw's trap and hole from below (the screw's head bears
-// on the trap's roof).
+// up), and the screw's counterbore and hole from below (the screw's head
+// bears on the counterbore's roof).
 module printed_hinge_cutter(x, y) {
     c  = ph_recess_clear;
     trap_top = top_z - ph_trap_depth;
@@ -3456,10 +3463,9 @@ module printed_hinge_cutter(x, y) {
     translate([x, y + ph_sdy, trap_top + hinge_nut_bridge])
         cylinder(h = ph_zb - trap_top - hinge_nut_bridge + overlap,
                  d = hinge_mounting_hole_diameter);
+    // round counterbore for the screw's head, from the underside
     translate([x, y + ph_sdy, -overlap])
-        nut_trap_inline(trap_top + overlap, hinge_nut_spec,
-                        nutwidth = hinge_nut_width > 0 ? hinge_nut_width : undef,
-                        anchor = BOTTOM, $slop = nut_clearance);
+        cylinder(h = trap_top + overlap, d = ph_head_d, $fn = 48);
 }
 
 // Printed hinge parts, in the hinge-local frame (pivot axis on X through
@@ -4295,8 +4301,8 @@ hc_x0 = hinge_x1 - hc_half - hinge_coupon_margin;
 hc_x1 = hinge_x1 + hc_half + hinge_coupon_margin;
 hc_y0 = seat_y1;
 hc_y1 = hinge_y + hinge_rear() + hinge_coupon_margin;
-// (for the printed hinge, as deep as the base's screw trap, so the same
-// screw serves, its head under the coupon)
+// (for the printed hinge, down to the roof of the base's screw counterbore,
+// so the same screw serves, its head bearing on the coupon's bottom)
 hc_t  = hinge_sized == "printed" ? max(ph_trap_depth, top_z - ph_zb + hinge_coupon_floor)
       : max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth) + hinge_coupon_floor;
 hc_z0 = top_z - hc_t;
@@ -4309,6 +4315,9 @@ module hinge_coupon() {
         difference() {
             translate([hc_x0, hc_y0, hc_z0]) cube([hc_x1 - hc_x0, hc_y1 - hc_y0, hc_t]);
             hinge_cutter(hinge_x1, hinge_y);
+            if (hinge_sized == "printed")      // no membrane on the coupon's bottom
+                translate([hinge_x1, hinge_y + ph_sdy, hc_z0 - overlap])
+                    cylinder(h = 2, d = hinge_mounting_hole_diameter);
             for (x = [hc_x0 + ins, hc_x1 - ins], y = [hc_y0 + ins, hc_y1 - ins])
                 translate([x, y, hc_z0 - overlap]) {
                     cylinder(h = hc_t + 2 * overlap, d = sd);

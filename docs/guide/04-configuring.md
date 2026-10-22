@@ -44,8 +44,8 @@
 > goes into the bed's hole; the arm turns on a steel **pivot rod** that runs
 > across the back, pressed into the block's two cheeks; and the block sits
 > in a square recess in the back rim. It is held by one screw driven up
-> from under the base, through the same kind of trap a lollipop hinge's nut
-> sits in, into a nut slid into a slot in the block's front face, below
+> from under the base, its pan or socket head in a round counterbore
+> (`ph_head_d`), into a nut slid into a slot in the block's front face, below
 > the arm, with plastic under it for the nut to bear on. The pivot is set
 > at the bed hole's height from your measurements, so the pin always lines
 > up. The arm and cheeks are cut down flush with the rim wherever that
