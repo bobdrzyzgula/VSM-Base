@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 60
+// VSM Base, version 61
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -285,6 +285,15 @@
 // long back), with ext_divider walls under the one lid, and strips under
 // ext_bin_min left solid. corner_bay_square is retired: the bobbin bin is
 // always square.
+//
+// v61: bins in all three pieces. The left and back extensions keep the
+// bay a 100 mm piece gives, against the base, and their extra width or
+// depth becomes an outer bin (1+1) or two (1+2, split along the length;
+// left_ext_layout, back_ext_layout). left_ext_double / back_ext_double
+// size the width or depth for an outer bin matching the inner one, in the
+// corner and its neighbour alike, the larger need winning and the other
+// piece's bin walled to the same size. Dividers under a single lid get a
+// finger notch at the middle (ext_divider_notch).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -945,12 +954,25 @@ back_ext_length = 240;
 back_ext_depth = 100; // [100 : 0.5 : 300]
 // Left extension body width (X), left of the base
 left_ext_width = 100; // [100 : 0.5 : 300]
+// Left extension and corner: make the width for an outer bin matching the inner one (overrides left_ext_width)
+left_ext_double = false;
+// Back extension and corner: make the depth for an outer bin matching the inner one (overrides back_ext_depth)
+back_ext_double = false;
+// Left extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2)
+left_ext_layout = "1+1"; // [1+1, 1+2]
+// Back extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2)
+back_ext_layout = "1+1"; // [1+1, 1+2]
 // Corner piece past 100 mm: the bobbin bin stays in the inner corner, and the rest becomes open bins left of it and behind it; with both, the far corner gets its own bin (2x2), or the left or back bin runs the full length
 corner_layout = "2x2"; // [2x2, long left, long back]
 // Divider wall between bins
 ext_divider = 2.5; // [1.2 : 0.1 : 6]
 // Least bin width inside; a narrower strip is left solid
 ext_bin_min = 10; // [5 : 0.5 : 30]
+// Finger notch at the middle of each divider, for reaching into narrow bins (single lid)
+ext_divider_notch = true;
+// Finger notch width and depth
+ext_notch_w = 30; // [10 : 1 : 60]
+ext_notch_d = 20; // [5 : 1 : 60]
 // Gap between an extension body and the base or another extension
 ext_gap = 0.3;
 // Clearance between the lip and the base top
@@ -1882,17 +1904,51 @@ bay_back   = has_back || make_back_box;
 bay_left   = has_left || make_left_box;
 bay_corner = has_corner || make_corner_box;
 
-// Back extension body
+// Per-piece wall insets [left, right, front, back] (extra where a socket is)
+bk_extra = [has_corner ? dt_extra : 0, 0, 0, 0];
+lf_extra = [0, 0, 0, has_corner ? dt_extra : 0];
+cn_extra = [0, 0, 0, 0];
+
+// Rabbet opening (lid seat) for a body with given extras
+function rabbet_rect(x0, y0, x1, y1, e) =
+    [[x0 + ext_frame + e[0], y0 + ext_frame + e[2]],
+     [x1 - ext_frame - e[1], y1 - ext_frame - e[3]]];
+
+// The pieces' fixed faces: against the base, and along it
 bk_x0 = 0;
 bk_x1 = back_ext_length;
 bk_y0 = outer_width + ext_gap;
-bk_y1 = bk_y0 + back_ext_depth;
-
-// Left extension body
-lf_x0 = -ext_gap - left_ext_width;
 lf_x1 = -ext_gap;
 lf_y0 = 0;
 lf_y1 = outer_width;
+
+// Inner bays: what a 100 mm piece gives, against the base (the corner's,
+// the bobbin bin, square, in the inner corner). A larger piece keeps it.
+ext_ref = 100;
+bk_inner = bay_rect("back", rabbet_rect(bk_x0, bk_y0, bk_x1, bk_y0 + ext_ref, bk_extra));
+lf_inner = bay_rect("left", rabbet_rect(lf_x1 - ext_ref, lf_y0, lf_x1, lf_y1, lf_extra));
+cn_bob   = bay_rect("corner", rabbet_rect(lf_x1 - ext_ref, bk_y0, lf_x1, bk_y0 + ext_ref, cn_extra));
+bk_s = bk_inner[1].y - bk_inner[0].y;               // inner bay across the piece
+lf_s = lf_inner[1].x - lf_inner[0].x;
+cn_sx = cn_bob[1].x - cn_bob[0].x;
+cn_sy = cn_bob[1].y - cn_bob[0].y;
+// Width or depth that makes the outer bin match the inner one: the inner
+// side, the bin, a divider, and the outer ledge, frame and any socket wall
+lf_need = lf_x1 - lf_inner[0].x + ext_divider + lf_s + ext_L("left")[0] + ext_frame + lf_extra[0];
+cn_need_x = lf_x1 - cn_bob[0].x + ext_divider + cn_sx + ext_L("corner")[0] + ext_frame + cn_extra[0];
+bk_need = bk_inner[1].y - bk_y0 + ext_divider + bk_s + ext_L("back")[3] + ext_frame + bk_extra[3];
+cn_need_y = cn_bob[1].y - bk_y0 + ext_divider + cn_sy + ext_L("corner")[3] + ext_frame + cn_extra[3];
+function up01(v) = ceil(v * 10) / 10;
+lf_w = left_ext_double && (bay_left || bay_corner)
+     ? up01(max(bay_left ? lf_need : 0, bay_corner ? cn_need_x : 0)) : left_ext_width;
+bk_d = back_ext_double && (bay_back || bay_corner)
+     ? up01(max(bay_back ? bk_need : 0, bay_corner ? cn_need_y : 0)) : back_ext_depth;
+
+// Back extension body
+bk_y1 = bk_y0 + bk_d;
+
+// Left extension body
+lf_x0 = lf_x1 - lf_w;
 
 // Corner piece body
 cn_x0 = lf_x0;
@@ -1916,16 +1972,6 @@ peg_right_x = attached ? base_x1 - (base_x1 - seat_x1) / 2 - 0.5 : outer_length 
 back_pegs  = [for (x = back_peg_xs) if (x - peg_d >= bk_x0 && x + peg_d <= bk_lip_x1) x];
 left_pegs  = [for (y = left_peg_ys) if (y - peg_d >= lf_lip[0].y && y + peg_d <= lf_lip[1].y) y];
 
-// Per-piece wall insets [left, right, front, back] (extra where a socket is)
-bk_extra = [has_corner ? dt_extra : 0, 0, 0, 0];
-lf_extra = [0, 0, 0, has_corner ? dt_extra : 0];
-cn_extra = [0, 0, 0, 0];
-
-// Rabbet opening (lid seat) for a body with given extras
-function rabbet_rect(x0, y0, x1, y1, e) =
-    [[x0 + ext_frame + e[0], y0 + ext_frame + e[2]],
-     [x1 - ext_frame - e[1], y1 - ext_frame - e[3]]];
-
 bk_rab = rabbet_rect(bk_x0, bk_y0, bk_x1, bk_y1, bk_extra);
 lf_rab = rabbet_rect(lf_x0, lf_y0, lf_x1, lf_y1, lf_extra);
 cn_rab = rabbet_rect(cn_x0, cn_y0, cn_x1, cn_y1, cn_extra);
@@ -1948,16 +1994,23 @@ cn_rab = rabbet_rect(cn_x0, cn_y0, cn_x1, cn_y1, cn_extra);
 // ---------------------------------------------------------------------------
 
 function bay_z1(which, top, t) = lid_info(which)[4] == "none" ? top : top - t;
+// An extension's lid [hinge edge, type], straight from the settings
+function ext_lid_et(which) =
+    which == "back" ? [back_lid_hinge, back_lid_type]
+  : which == "left" ? [left_lid_hinge, left_lid_type]
+  :                   [corner_lid_hinge, corner_lid_type];
+// Plain ledges [left, right, front, back]: the hinge side's is wider
+function ext_L(which) =
+    let(e = ext_lid_et(which)[0], h = hinge_ledge(which), d = ext_ledge)
+    [e == "left" ? h : d, e == "right" ? h : d, e == "front" ? h : d, e == "back" ? h : d];
 // Ledge widths [left, right, front, back] inside an extension rabbet: wider
 // on a hinged lid's hinge side, and evened out to keep the corner bay square
 function hinge_ledge(which) =
-    lid_info(which)[4] == "hinged"
+    ext_lid_et(which)[1] == "hinged"
         ? max(ext_ledge, ext_lid_clearance + ext_lid_thickness + ext_hinge_margin)
         : ext_ledge;
 function bay_ledges(which, rab) =
-    let(e  = lid_info(which)[3], h = hinge_ledge(which), d = ext_ledge,
-        l0 = [e == "left" ? h : d, e == "right" ? h : d,
-              e == "front" ? h : d, e == "back" ? h : d],
+    let(l0 = ext_L(which),
         bw = rab[1].x - rab[0].x - l0[0] - l0[1],
         bh = rab[1].y - rab[0].y - l0[2] - l0[3],
         sq = which == "corner")
@@ -1971,37 +2024,81 @@ function ext_bay_r(which, b) =
     [[b[0].x, b[0].y, ext_floor],
      [b[1].x, b[1].y, bay_z1(which, ext_top_z, ext_lid_thickness)]];
 
-// Corner bins. The bobbin bin is the (square) bay a 100 x 100 corner would
-// give, in the inner corner, against the base and the back extension. Past
-// it, inside the real rabbet's ledges, a strip to the left and one behind
-// become open bins, each behind an ext_divider wall, when at least
-// ext_bin_min wide; narrower, they stay solid. [name, [[x0,y0],[x1,y1]]]
-ext_ref = 100;
-cn_bob = bay_rect("corner", rabbet_rect(cn_x1 - ext_ref, cn_y0, cn_x1, cn_y0 + ext_ref, cn_extra));
-cn_L   = let(e = lid_info("corner")[3], h = hinge_ledge("corner"), d = ext_ledge)
-         [e == "left" ? h : d, e == "right" ? h : d, e == "front" ? h : d, e == "back" ? h : d];
-cn_in  = [[cn_rab[0].x + cn_L[0], cn_rab[0].y + cn_L[2]],
-          [cn_rab[1].x - cn_L[1], cn_rab[1].y - cn_L[3]]];
-cn_ax  = [cn_in[0].x, cn_bob[0].x - ext_divider];        // left strip, X
-cn_by  = [cn_bob[1].y + ext_divider, cn_in[1].y];        // back strip, Y
+// Extra bins. Past each piece's inner bay, inside the real rabbet's
+// ledges, the strip beyond an ext_divider wall becomes an open bin when it
+// is at least ext_bin_min wide (narrower, it stays solid). With the double
+// setting, the strip is held to the inner bay's size, walled beyond.
+// The corner has a strip left of the bobbin bin and one behind it, laid
+// out by corner_layout; the left and back extensions have one outer strip,
+// whole (1+1) or split in two along its length (1+2).
+// Each bin: [name, [[x0,y0],[x1,y1]]].
+function ext_in(rab, L) = [[rab[0].x + L[0], rab[0].y + L[2]], [rab[1].x - L[1], rab[1].y - L[3]]];
+cn_in  = ext_in(cn_rab, ext_L("corner"));
+lf_in  = ext_in(lf_rab, ext_L("left"));
+bk_in  = ext_in(bk_rab, ext_L("back"));
+cn_ax  = [left_ext_double ? max(cn_in[0].x, cn_bob[0].x - ext_divider - cn_sx) : cn_in[0].x,
+          cn_bob[0].x - ext_divider];                    // left strip, X
+cn_by  = [cn_bob[1].y + ext_divider,
+          back_ext_double ? min(cn_in[1].y, cn_bob[1].y + ext_divider + cn_sy) : cn_in[1].y];
 cn_hx  = cn_ax[1] - cn_ax[0] >= ext_bin_min;
 cn_hy  = cn_by[1] - cn_by[0] >= ext_bin_min;
 cn_bins = concat(
     cn_hx ? [["corner_left", [[cn_ax[0], cn_bob[0].y],
-                              [cn_ax[1], cn_hy && corner_layout != "long left" ? cn_bob[1].y : cn_in[1].y]]]] : [],
-    cn_hy ? [["corner_back", [[cn_hx && corner_layout != "long back" ? cn_bob[0].x : cn_in[0].x, cn_by[0]],
+                              [cn_ax[1], !cn_hy ? cn_in[1].y
+                                       : corner_layout == "long left" ? cn_by[1] : cn_bob[1].y]]]] : [],
+    cn_hy ? [["corner_back", [[!cn_hx ? cn_in[0].x
+                                       : corner_layout == "long back" ? cn_ax[0] : cn_bob[0].x, cn_by[0]],
                               [cn_bob[1].x, cn_by[1]]]]] : [],
     cn_hx && cn_hy && corner_layout == "2x2"
           ? [["corner_far", [[cn_ax[0], cn_by[0]], [cn_ax[1], cn_by[1]]]]] : []);
+lf_ax  = [left_ext_double ? max(lf_in[0].x, lf_inner[0].x - ext_divider - lf_s) : lf_in[0].x,
+          lf_inner[0].x - ext_divider];
+bk_by  = [bk_inner[1].y + ext_divider,
+          back_ext_double ? min(bk_in[1].y, bk_inner[1].y + ext_divider + bk_s) : bk_in[1].y];
+// one outer strip, split along its length when asked and both halves fit
+function strip_bins(name, r, along_y, split) =
+    let(a0 = along_y ? r[0].y : r[0].x, a1 = along_y ? r[1].y : r[1].x,
+        h  = (a1 - a0 - ext_divider) / 2,
+        m0 = a0 + h, m1 = a1 - h)
+    split && h >= ext_bin_min
+        ? (along_y ? [[str(name, "_1"), [r[0], [r[1].x, m0]]], [str(name, "_2"), [[r[0].x, m1], r[1]]]]
+                   : [[str(name, "_1"), [r[0], [m0, r[1].y]]], [str(name, "_2"), [[m1, r[0].y], r[1]]]])
+        : [[name, r]];
+lf_bins = lf_ax[1] - lf_ax[0] >= ext_bin_min
+        ? strip_bins("left_outer", [[lf_ax[0], lf_inner[0].y], [lf_ax[1], lf_inner[1].y]], true,
+                     left_ext_layout == "1+2") : [];
+bk_bins = bk_by[1] - bk_by[0] >= ext_bin_min
+        ? strip_bins("back_outer", [[bk_inner[0].x, bk_by[0]], [bk_inner[1].x, bk_by[1]]], false,
+                     back_ext_layout == "1+2") : [];
+function ext_inner(which) = which == "back" ? bk_inner : which == "left" ? lf_inner : cn_bob;
+function ext_bins(which)  = which == "back" ? bk_bins  : which == "left" ? lf_bins  : cn_bins;
+// Dividers between neighbouring bays: [axis of the wall's run ("x" or
+// "y"), its centre line, the middle of the stretch two bays share, and
+// that stretch's length], one per pair of neighbours
+function ext_dividers(which) =
+    let(rs = concat([ext_inner(which)], [for (b = ext_bins(which)) b[1]]), n = len(rs))
+    [for (i = [0 : n - 1], j = [0 : n - 1]) if (i != j)
+        let(A = rs[i], B = rs[j])
+        each concat(
+            abs(A[1].x + ext_divider - B[0].x) < 0.01
+                ? let(o0 = max(A[0].y, B[0].y), o1 = min(A[1].y, B[1].y))
+                  o1 - o0 > 0.01 ? [["y", A[1].x + ext_divider / 2, (o0 + o1) / 2, o1 - o0]] : []
+                : [],
+            abs(A[1].y + ext_divider - B[0].y) < 0.01
+                ? let(o0 = max(A[0].x, B[0].x), o1 = min(A[1].x, B[1].x))
+                  o1 - o0 > 0.01 ? [["x", A[1].y + ext_divider / 2, (o0 + o1) / 2, o1 - o0]] : []
+                : [])];
 assert(back_ext_depth >= ext_ref && left_ext_width >= ext_ref,
        "back_ext_depth and left_ext_width are at least 100 mm");
 compartments = concat(
     has_compartment && !has_outlet && !has_knee
         ? [["base", [st_x0, st_y0, floor_z],
                     [st_x1, st_y1, bay_z1("base", top_z, rabbit_depth)]]] : [],
-    bay_back   ? [concat(["back"],   ext_bay("back", bk_rab))]   : [],
-    bay_left   ? [concat(["left"],   ext_bay("left", lf_rab))]   : [],
+    bay_back   ? [concat(["back"],   ext_bay_r("back", bk_inner))]  : [],
+    bay_left   ? [concat(["left"],   ext_bay_r("left", lf_inner))]  : [],
     bay_corner ? [concat(["corner"], ext_bay_r("corner", cn_bob))] : [],
+    bay_back   ? [for (b = bk_bins) concat([b[0]], ext_bay_r("back", b[1]))]   : [],
+    bay_left   ? [for (b = lf_bins) concat([b[0]], ext_bay_r("left", b[1]))]   : [],
     bay_corner ? [for (b = cn_bins) concat([b[0]], ext_bay_r("corner", b[1]))] : []);
 // How far an open hinged lid's pivot edge reaches into the opening, past
 // the inner edge of the hinge-side ledge (negative = clear of it)
@@ -2402,6 +2499,12 @@ if (has_back && report) {
         echo("WARNING: the back lip runs over the compartment lid's back hinge; the open lid will hit it");
 }
 if (has_left) if (report) echo(str("Left extension part: ", lf_size, fits(lf_size) ? "" : "  WARNING: exceeds printer"));
+if (left_ext_double && (bay_left || bay_corner)) if (report)
+    echo(str("Left extension width ", lf_w, " mm, for two equal bins (corner needs ", up01(cn_need_x),
+             ", left extension ", up01(lf_need), ")"));
+if (back_ext_double && (bay_back || bay_corner)) if (report)
+    echo(str("Back extension depth ", bk_d, " mm, for two equal bins (corner needs ", up01(cn_need_y),
+             ", back extension ", up01(bk_need), ")"));
 if (has_corner) if (report) echo(str("Corner piece part: ", cn_size, fits(cn_size) ? "" : "  WARNING: exceeds printer"));
 if (report) echo(str("Base part", split ? " (each half)" : "", ": ", base_size,
          fits(base_size) ? "" : "  WARNING: exceeds printer"));
@@ -3927,7 +4030,7 @@ module ext_shell(x0, y0, x1, y1, edges) {
 
 // Lid rabbet and compartment cut for a body with rabbet opening `rab`.
 module ext_hollow(which, rab) {
-    b = which == "corner" ? cn_bob : bay_rect(which, rab);
+    b = ext_inner(which);
     // Lid rabbet
     translate([rab[0].x, rab[0].y, ext_top_z - ext_lid_thickness])
         cube([rab[1].x - rab[0].x, rab[1].y - rab[0].y,
@@ -3935,11 +4038,25 @@ module ext_hollow(which, rab) {
     // Compartment, inside the ledge
     translate([b[0].x, b[0].y, ext_floor])
         cube([b[1].x - b[0].x, b[1].y - b[0].y, ext_top_z]);
-    // and the corner's extra bins
-    if (which == "corner")
-        for (bn = cn_bins) let(r = bn[1])
-            translate([r[0].x, r[0].y, ext_floor])
-                cube([r[1].x - r[0].x, r[1].y - r[0].y, ext_top_z]);
+    // and the extra bins
+    for (bn = ext_bins(which)) let(r = bn[1])
+        translate([r[0].x, r[0].y, ext_floor])
+            cube([r[1].x - r[0].x, r[1].y - r[0].y, ext_top_z]);
+    // finger notches in the dividers, U-shaped, down from the lid's ledge
+    if (ext_divider_notch)
+        for (d = ext_dividers(which)) let(w = min(ext_notch_w, d[3] - 10),
+                                          zt = ext_top_z - ext_lid_thickness,
+                                          dn = min(ext_notch_d, zt - ext_floor - 5),
+                                          r = min(w / 2, dn))
+            if (w >= 10 && dn > 1)
+                translate(d[0] == "y" ? [d[1], 0, 0] : [0, d[1], 0])
+                    rotate(d[0] == "y" ? [90, 0, 90] : [90, 0, 0])
+                        linear_extrude(height = ext_divider + 2, center = true)
+                            hull() {
+                                for (sg = [-1, 1])
+                                    translate([d[2] + sg * (w / 2 - r), zt - dn + r]) circle(r = r, $fn = 48);
+                                translate([d[2] - w / 2, zt - overlap]) square([w, 10]);
+                            }
 }
 
 // Lip slab over the base rim, from corner a to corner b in XY.

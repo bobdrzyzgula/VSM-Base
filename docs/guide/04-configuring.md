@@ -181,74 +181,33 @@
 > left with `back_peg_xs` instead, the lip needn't run on, but the
 > extension, again, fits only bases with those holes.
 
-> **Note: larger extensions and the corner's bins.** The left extension's
-> width (`left_ext_width`) and the back extension's depth
-> (`back_ext_depth`) are 100 mm at least; 100 mm more on the left makes a
-> table about the size of a Sew Steady Junior. The corner piece takes both.
-> Its bobbin bin stays the size a 100 mm corner gives, in the inner corner,
-> against the base and the back extension, so the bobbin trays always fit.
-> Whatever the corner has past it becomes open bins: one to its left, one
-> behind it, each behind a divider (`ext_divider`, 2.5 mm), the dividers'
-> tops level with the lid's ledge so they help hold up the one lid. With
-> both larger, `corner_layout` decides the rest: `2x2` gives the far corner
-> a bin of its own, `long left` runs the left bin the full depth, and
-> `long back` runs the back bin the full width. A strip under
-> `ext_bin_min` (10 mm) inside is left solid.
+> **Note: larger extensions and their bins.** The left extension's width
+> (`left_ext_width`) and the back extension's depth (`back_ext_depth`) are
+> 100 mm at least; 100 mm more on the left makes a table about the size of
+> a Sew Steady Junior. Each piece keeps the bay a 100 mm piece gives,
+> against the base, so the inserts always fit it: the bobbin bin in the
+> corner, the notion and spool trays' bays in the left and back
+> extensions. Whatever a piece has past that becomes open bins, each
+> behind a divider (`ext_divider`, 2.5 mm) whose top is level with the
+> lid's ledge, so it helps hold up the one lid; a finger notch in the
+> middle of each divider (`ext_divider_notch`, 30 mm wide and 20 mm deep)
+> lets you reach into a narrow bin, and keeps papers in it from flopping
+> over. In the corner, the bins go left of the bobbin bin and behind it;
+> with both larger, `corner_layout` decides the rest: `2x2` gives the far
+> corner a bin of its own, `long left` runs the left bin the full depth,
+> and `long back` runs the back bin the full width. The left and back
+> extensions get one outer bin along their length (`1+1`), or two (`1+2`,
+> `left_ext_layout`, `back_ext_layout`); their inner bay stays whole. A
+> strip under `ext_bin_min` (10 mm) inside is left solid.
 >
-> **Note: outlet labels.** With the outlet, LIGHT (always on) and MOTOR
-> (the controlled output) are recessed into the floor by their receptacles,
-> LIGHT at the back by default (`outlet_light_side`), since the outlet goes
-> in with the always-on side and the cord to the back. The words, size and
-> depth are settings; `outlet_labels = false` leaves them off.
->
-> **Note: the outlet's cords out through the walls.** By default the
-> outlet's two cords leave through slots in the compartment's lid. With
-> `outlet_cord_exit`, they can leave through slots in the walls instead,
-> which suits a table where the cords should drop down behind or in front:
->
-> - `front_rear`: the power cord, from the outlet's back end, goes straight
->   out the back wall, and the controller cord, from its front end,
->   straight out the front wall.
-> - `rear`: both go out the back. The controller cord drops from the
->   outlet's front end into a channel in the floor, turns through a
->   180-degree bend (about 27 mm radius on the 99K) and runs back along the divider,
->   under the machine's cords where they come through the pass-through,
->   and out through the back wall beside the power cord. The channel holds
->   two-wire lamp cord standing on edge (`outlet_channel_w`,
->   `outlet_channel_depth`), so the bend is an easy flat bend; small lips
->   along its edges, on alternate sides, let the cord press in and keep it
->   down. The floor labels move over beside the channel, smaller to fit.
->   The cords are taken to leave the outlet's ends at its centre, 1/8" up
->   from its back, as on the usual cordset outlet (`outlet_cord_z` and
->   `outlet_cord_x` if yours differ), and the bend is as wide as the room
->   in front of the outlet allows.
->
-> Each wall slot runs from the top of the wall down to its cord. With the
-> cord in place, a trim (part `outlet_trims`, one per slot) presses into
-> the slot from above, flush with the rim and with the lid's ledge, and
-> leaves an eased opening under it for the cord. The lid then has no cord
-> slots. The tunnel lightening the back wall stops short of the slots.
->
-> **Note: insert trays need their bay.** The bobbin trays need the corner
-> bay and the notion and spool trays need the bay named by `ot_bay`. The bay
-> can be the attached extension or its freestanding box (`make_corner_box`
-> and so on), which is how to hold a second bobbin stack. With no bay, the
-> render stops with a message saying which setting to turn on.
->
-> **Note: notion tray heights.** The console's STACK line gives the total
-> height the trays may add up to in the chosen bay (78.2 mm in the back bay
-> at the defaults), so any mix of the 30, 25, 20, 15, 10 mm and custom
-> trays that totals no more than that fits under the lid. The spool tray
-> line gives what is left above a spool tray.
->
-> **Note: compartments and gussets.** Divided notion trays aim for 2"
-> compartments by default (`ot_cell`), which gives 2 × 4 in the back or left
-> bay; 1" gives 3 × 8. Every notion tray, and the spool tray's curbs, has
-> small triangular gussets at the foot of its long walls (`ot_gussets`),
-> because a thin wall standing on a thin floor joins it at a single layer
-> line, the weakest place in the print. On the spool tray they sit in the
-> gaps between spools. Let trays cool on the plate before taking them off;
-> a long, thin tray pulled off warm can bow.
+> **Two equal bins.** `left_ext_double` and `back_ext_double` work out the
+> width or depth for an outer bin the same size as the inner one, ignoring
+> `left_ext_width` or `back_ext_depth`, and the console gives the size
+> used. The corner and the extension beside it share that size, and their
+> bays can differ by a little (each lid's hinge edge sets its own ledge),
+> so the larger need wins and the other piece's outer bin is walled in to
+> match its inner one. With both on, a `2x2` corner holds four bobbin
+> stacks, and a `1+1` left extension two spool or notion trays.
 
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic
