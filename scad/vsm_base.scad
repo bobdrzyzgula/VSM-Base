@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 56
+// VSM Base, version 57
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -264,6 +264,12 @@
 // v56: part compartment_test: the base's right end, from just left of the
 // divider (both ends of the pass-through) to the end wall with its
 // handhold and rods, to build and try the compartment by itself.
+//
+// v57: printed hinge: ph_pin_press, the arm's pin-hole fit, separate from
+// ph_press (now the block's pivot holes only); the fit-test bar's pin
+// holes step around it. The nut slot's ceiling is raised 0.4 mm and
+// chamfered at 45 degrees up to what room the block has, shortening the
+// sagging bridge, and its mouth is eased.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -729,8 +735,10 @@ ph_pivot_len = 0; // [0 : 0.025 : 60]
 ph_pin_embed = 16; // [8 : 0.5 : 30]
 // Steel pivot rod, running along the back through the block and the arm: diameter
 ph_pivot_d = 6.35; // [3 : 0.01 : 12]
-// Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test)
+// Pivot rod's press fit in the block: printed hole diameter minus rod diameter (try part printed_hinge_test)
 ph_press = 0; // [-0.4 : 0.05 : 0.4]
+// Pin's press fit in the arm: printed hole diameter minus pin diameter (try part printed_hinge_test)
+ph_pin_press = 0; // [-0.4 : 0.05 : 0.4]
 // Running fit: the arm's pivot hole is this much larger than the rod
 ph_slip = 0.3; // [0 : 0.05 : 1]
 // Plastic around the rods in the arm
@@ -753,7 +761,7 @@ ph_stop_angle = 100; // [0 : 1 : 110]
 ph_tail = 12; // [6 : 0.5 : 25]
 // Least plastic over the rods where the arm and cheeks are cut down to the rim
 ph_min_cover = 2.5; // [1.5 : 0.25 : 5]
-// Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_press (0.05 for a finer second bar)
+// Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_pin_press and ph_press (0.05 for a finer second bar)
 ph_test_step = 0.1; // [0.02 : 0.01 : 0.2]
 
 /* [Foot-locating rig] */
@@ -1568,7 +1576,11 @@ ph_front = -(ph_Lf + ph_fc);                             // block front face
 ph_sdy  = ph_front + ph_nut_w / 2 / cos(30) + 2;         // screw, under the arm's front
 // floor under the arm there: nut pocket plus 2 mm (deepen the block if needed)
 ph_nut_under = 2.5;                                      // block plastic under the nut
-ph_bot  = min(ph_bot1, -(ph_R + ph_clear) - 2 - ph_nut_t - 0.3 - ph_nut_under);   // block bottom
+ph_nut_h = ph_nut_t + 0.7;                               // slot height to its ceiling's edges
+ph_bot  = min(ph_bot1, -(ph_R + ph_clear) - 2 - ph_nut_h - ph_nut_under);   // block bottom
+// the slot's ceiling rises at 45 degrees from its edges, up to 1.5 mm
+// under the arm's channel (a full gable if there's room)
+ph_nut_peak = max(0, min(ph_nut_w / 2, -(ph_R + ph_clear) - 1.5 - (ph_bot + ph_nut_under + ph_nut_h)));
 
 // Hinge geometry, by type. Each function describes the hinge's footprint
 // relative to the hinge center; a new hinge type adds a branch to each and
@@ -3488,7 +3500,7 @@ module ph_hole_x(d, w, to_y = false) {
 
 // The arm: pin hole in from the front face (chamfered), pivot hole across
 module ph_arm() {
-    pd = ph_pd + ph_press;
+    pd = ph_pd + ph_pin_press;
     difference() {
         ph_yz(ph_arm_w) ph_arm_2d();
         translate([0, -ph_Lf - overlap, 0]) rotate([-90, 0, 0]) {
@@ -3519,12 +3531,27 @@ module ph_block() {
         // nut slot from the front face, ph_nut_under above the block's
         // bottom (the nut bears on that plastic; the recess's front wall
         // closes the slot), and the screw's hole from the bottom on up (blind)
-        translate([0, ph_sdy, ph_bot + ph_nut_under])
+        translate([0, ph_sdy, ph_bot + ph_nut_under]) {
             hull() {
-                rotate(30) cylinder(h = ph_nut_t + 0.3, r = ph_nut_w / 2 / cos(30), $fn = 6);
+                rotate(30) cylinder(h = ph_nut_h, r = ph_nut_w / 2 / cos(30), $fn = 6);
                 translate([-ph_nut_w / 2, ph_front - ph_sdy - overlap, 0])
-                    cube([ph_nut_w, overlap, ph_nut_t + 0.3]);
+                    cube([ph_nut_w, overlap, ph_nut_h]);
             }
+            // chamfered ceiling, the slot's width, from the mouth to past the nut
+            if (ph_nut_peak > 0.2)
+                translate([0, ph_front - ph_sdy - overlap, ph_nut_h - overlap])
+                    rotate([-90, 0, 0])
+                        linear_extrude(height = ph_sdy - ph_front + ph_nut_w / 2 + overlap)
+                            polygon([[-ph_nut_w / 2, 0], [ph_nut_w / 2, 0],
+                                     [ph_nut_w / 2 - ph_nut_peak, -ph_nut_peak - overlap],
+                                     [-ph_nut_w / 2 + ph_nut_peak, -ph_nut_peak - overlap]]);
+            // eased mouth
+            translate([0, ph_front - ph_sdy, 0])
+                hull() {
+                    translate([-ph_nut_w / 2 - 0.6, -overlap, -0.6]) cube([ph_nut_w + 1.2, overlap, ph_nut_h + 1.2]);
+                    translate([-ph_nut_w / 2, 0.6, 0]) cube([ph_nut_w, overlap, ph_nut_h]);
+                }
+        }
         translate([0, ph_sdy, ph_bot - overlap])
             cylinder(h = -(ph_R + ph_clear) - 1.5 - ph_bot + overlap,
                      d = hinge_mounting_hole_diameter, $fn = 32);
@@ -3722,7 +3749,7 @@ module tilt_prop() {
 
 // Rod-fit test: a bar with five vertical pin holes (as the arm prints
 // them) and five horizontal pivot holes (as the block prints them), at
-// ph_press - 2 to + 2 steps of ph_test_step left to right (one to five
+// ph_pin_press and ph_press - 2 to + 2 steps of ph_test_step left to right (one to five
 // notches on top), and a sixth horizontal hole, with no vertical one, at
 // the arm's running fit (ph_slip), marked by a plus on top
 pt_steps = [for (k = [-2 : 2]) k * ph_test_step];
@@ -3736,7 +3763,7 @@ module printed_hinge_test() {
         cube([L, D, H]);
         for (i = [0 : 4]) {
             x = (i + 1) * pt_pitch;
-            translate([x, D / 2, H - 12]) cylinder(h = 12 + overlap, d = ph_pd + ph_press + pt_steps[i], $fn = 48);
+            translate([x, D / 2, H - 12]) cylinder(h = 12 + overlap, d = ph_pd + ph_pin_press + pt_steps[i], $fn = 48);
             translate([x, -overlap, hz]) rotate([-90, 0, 0])
                 linear_extrude(height = D + 2 * overlap) rotate(180) teardrop_2d(ph_pivot_d + ph_press + pt_steps[i]);
             // one notch per step on the front top edge: 1 = tightest

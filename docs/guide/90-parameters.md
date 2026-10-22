@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 484 parameters; 482 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 485 parameters; 483 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -289,7 +289,8 @@ There are 484 parameters; 482 of them appear in the Customizer. The rest are lis
 | `ph_pivot_len` | `0` | Stock length of the pivot rods, for a bought dowel pin (0 = the block's width, set by ph_cheek): the block's cheeks are widened or narrowed to suit *Range 0 to 60, step 0.025.* |
 | `ph_pin_embed` | `16` | Length of the pin pressed into the arm *Range 8 to 30, step 0.5.* |
 | `ph_pivot_d` | `6.35` | Steel pivot rod, running along the back through the block and the arm: diameter *Range 3 to 12, step 0.01.* |
-| `ph_press` | `0` | Press fit: printed hole diameter minus rod diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
+| `ph_press` | `0` | Pivot rod's press fit in the block: printed hole diameter minus rod diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
+| `ph_pin_press` | `0` | Pin's press fit in the arm: printed hole diameter minus pin diameter (try part printed_hinge_test) *Range -0.4 to 0.4, step 0.05.* |
 | `ph_slip` | `0.3` | Running fit: the arm's pivot hole is this much larger than the rod *Range 0 to 1, step 0.05.* |
 | `ph_wall` | `4` | Plastic around the rods in the arm *Range 2.5 to 8, step 0.5.* |
 | `ph_arm_w` | `14` | Arm width (X) *Range 8 to 30, step 0.5.* |
@@ -301,7 +302,7 @@ There are 484 parameters; 482 of them appear in the Customizer. The rest are lis
 | `ph_stop_angle` | `100` | Tilt-back stop: a tail on the arm, behind the pivot, comes to rest in the block at about this angle (0 = no stop, 45 to 110). 100 matches a Singer lollipop hinge's knuckle; the machine passes its balance point (about 55 degrees on a 99K) well before, and past about 75 degrees the base itself starts to tip up unless the machine is held or braced *Range 0 to 110, step 1.* |
 | `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
 | `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
-| `ph_test_step` | `0.1` | Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_press (0.05 for a finer second bar) *Range 0.02 to 0.2, step 0.01.* |
+| `ph_test_step` | `0.1` | Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_pin_press and ph_press (0.05 for a finer second bar) *Range 0.02 to 0.2, step 0.01.* |
 
 ## Foot-locating rig
 
