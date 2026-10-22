@@ -224,6 +224,15 @@
 > lids print as part `bin_lids`, and go on the `all` plates with the
 > others. A per-bay inner lid with bins beside it uses a finger hole, not
 > a tab, since a tab's notch would cross the bins.
+>
+> ![Larger extensions with `left_ext_double` and `back_ext_double`, one lid
+> each (lids off): a 2x2 corner with four bobbin-bin-sized bins, the left
+> extension split `1+2`, and the finger-notched
+> dividers.](../images/renders/ext-bins.png){width=80%}
+>
+> ![The same sizes with a lid per bay, lids lifted: each bay in its own
+> rabbet, the bin lids lift-out with finger holes, the inner bays' lids
+> hinged as before.](../images/renders/ext-per-bay.png){width=80%}
 
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic

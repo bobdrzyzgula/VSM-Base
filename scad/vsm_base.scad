@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 62
+// VSM Base, version 63
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -302,13 +302,16 @@
 // settings; the outer bins' lids share bin_lid_type and bin_lid_hinge. A
 // bin under bin_lid_min inside gets no lid; a hinged bin lid too small to
 // hinge becomes lift-out. New part bin_lids.
+//
+// v63: view part extensions_view: the three extension pieces in place,
+// with their lids lifted by `explode` (for the documentation).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -3180,6 +3183,15 @@ if (part == "assembly") {
     lid_print("left");
 } else if (part == "corner_lid") {
     lid_print("corner");
+} else if (part == "extensions_view") {
+    // the extension pieces in place, lids lifted
+    up = explode + ext_top_z - top_z;
+    color("Peru") { if (has_back) back_ext_part(); if (has_left) left_ext_part(); if (has_corner) corner_part(); }
+    color("BurlyWood") translate([0, 0, up]) {
+        if (has_back) piece_lids("back");
+        if (has_left) piece_lids("left");
+        if (has_corner) piece_lids("corner");
+    }
 } else if (part == "bin_lids") {
     bl = [for (b = all_bins) if (lid_on(b[0])) b[0]];
     bx = [for (i = [0 : len(bl)]) i == 0 ? 0 : sum_x([for (j = [0 : i - 1]) lid_size(bl[j]).x + 10])];

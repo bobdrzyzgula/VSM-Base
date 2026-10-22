@@ -39,3 +39,7 @@ preview knee            "360,85,30,50,0,25,440"    -D 'part="knee_assembly"' -D 
 render attached-bay       "260,110,40,55,0,25,820"   -D 'part="exploded"' -D 'compartment_mount="attached"' -D back_ext=false -D left_ext=false -D corner_ext=false -D split=false
 # Printed hinge, cut through the middle: at rest and at its stop
 preview printed-hinge   "330,27,10,0,27,10"        -D 'part="printed_hinge_view"' -D 'hinge_type="printed"' -D 'machine="Kenmore 158-14001"' --projection=o
+# Larger extensions, one lid each: bins with finger-notched dividers (lids off)
+preview ext-bins        "20,215,30,50,0,20,1250"  -D 'part="extensions_view"' -D explode=400 -D left_ext_double=true -D back_ext_double=true -D 'left_ext_layout="1+2"'
+# Larger extensions, a lid per bay, lids lifted
+preview ext-per-bay     "20,215,60,50,0,20,1400"  -D 'part="extensions_view"' -D explode=60 -D left_ext_double=true -D back_ext_double=true -D 'back_lids="per bay"' -D 'left_lids="per bay"' -D 'corner_lids="per bay"'
