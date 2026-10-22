@@ -1,0 +1,19 @@
+---
+title: "Sewing-Motor Test Rig"
+subtitle: "User's Guide"
+author: "Claude (Anthropic), at the direction of Robert Drzyzgula"
+papersize: us-letter
+margin:
+  x: 2.2cm
+  y: 2.4cm
+fontsize: 11pt
+header-includes:
+  - |
+    ```{=typst}
+    #set page(numbering: "1")
+    #show heading.where(level: 1): it => { v(0.6em); it }
+    #show link: set text(fill: rgb("#1f5fa8"))
+    #set table(stroke: 0.5pt + rgb("#999999"), inset: 5pt)
+    #show raw: set text(size: 0.9em)
+    ```
+---

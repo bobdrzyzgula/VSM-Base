@@ -2,7 +2,8 @@
 #
 #   make params   regenerate the parameter reference from the model
 #   make images   render the model views (needs OpenSCAD + BOSL2)
-#   make pdf      build build/vsm-base-guide.pdf and build/vsm-motor-control.pdf
+#   make pdf      build build/vsm-base-guide.pdf, build/vsm-motor-control.pdf
+#                 and build/vsm-motor-rig.pdf
 #                 (needs pandoc 3.1.2+ and typst; a recent pandoc (3.7, at least) needs
 #                 typst 0.12 or later. The release build uses pandoc 3.7.0.2
 #                 and typst 0.13.1.) PANDOC= and TYPST= pick other binaries.
@@ -30,6 +31,8 @@ PDF      := $(BUILD)/vsm-base-guide.pdf
 HTML     := $(BUILD)/vsm-base-guide.html
 MC_PDF   := $(BUILD)/vsm-motor-control.pdf
 MC_HTML  := $(BUILD)/vsm-motor-control.html
+RIG_MD   := hardware/motor-rig/RIG_GUIDE.md
+RIG_PDF  := $(BUILD)/vsm-motor-rig.pdf
 PANDOC   ?= pandoc
 TYPST    ?= typst
 VERSION  ?=
@@ -59,7 +62,7 @@ images:
 	python3 tools/make_speed_chart.py
 	sh tools/export_schematic.sh
 
-pdf: $(PDF) $(MC_PDF)
+pdf: $(PDF) $(MC_PDF) $(RIG_PDF)
 
 html: $(HTML) $(MC_HTML)
 
@@ -80,6 +83,17 @@ $(HTML): $(CHAPTERS) docs/guide/metadata.yaml docs/guide/guide.css $(IMAGES)
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -M lang=en -M pagetitle="VSM Base User's Guide" \
 	    -o ../../$@
+
+# The motor test rig's guide: its own title (the file's first heading and
+# credit line are dropped), sections already numbered in the text
+$(RIG_PDF): $(RIG_MD) hardware/motor-rig/metadata.yaml hardware/motor-rig/rig_iso.png
+	mkdir -p $(BUILD)
+	cd hardware/motor-rig && sed '1,4d' RIG_GUIDE.md | $(PANDOC) metadata.yaml - --shift-heading-level-by=-1 \
+	    --from markdown --to typst --standalone --toc --toc-depth=1 \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -o rig.typ
+	$(TYPST) compile --root . hardware/motor-rig/rig.typ $@
+	rm -f hardware/motor-rig/rig.typ
 
 $(MC_PDF): $(MC_CHAPTERS) docs/motor-control/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
