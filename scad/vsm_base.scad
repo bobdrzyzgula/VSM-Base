@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 58
+// VSM Base, version 59
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -258,7 +258,7 @@
 //
 // v55: printed hinge rods from stock: ph_pin_len (the pin goes into the
 // bed's hole by what's left past the arm) and ph_pivot_len (the block's
-// cheeks follow); the profile's hinge_hole_depth_mm (Kenmore 22) bounds
+// cheeks follow); the profile's hinge_hole_depth_mm (22 on both) bounds
 // the pin, and the console gives the lengths that fit.
 //
 // v56: part compartment_test: the base's right end, from just left of the
@@ -275,6 +275,8 @@
 // counterbore for a pan or socket head (ph_head_d, 9.5 mm for #8), not a
 // hex trap, since the nut is now in the block; in the hinge coupon too.
 // The lollipop hinge keeps its nut trap.
+//
+// v59: Singer 99K profile: hinge holes 22 mm deep (measured).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1361,7 +1363,7 @@ profiles = [
         ["base_lid_notch", [8, 23]],
         ["hinge_pin_d_mm",         6.35],
         ["hinge_pin_engage_mm",    12],
-        ["hinge_hole_depth_mm",    0],
+        ["hinge_hole_depth_mm",    22],
         ["bed_flush",              false],
         ["foot_height_mm",         0],
         ["cord_slot",              [0, 0, 0, 0]],

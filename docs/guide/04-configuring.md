@@ -95,8 +95,9 @@
 > a stock pin's length, and the pin goes into the bed's hole by whatever
 > is left past the arm; the console gives the range of lengths that fit,
 > from 8 mm into the hole up to just short of its depth
-> (`hinge_hole_depth_mm` in the profile: 22 mm on the Kenmore, so its pins
-> may be 30.5–43 mm long; a 6 × 40 mm pin goes 17.5 mm in). Set
+> (`hinge_hole_depth_mm` in the profile: 22 mm on both the 99K and the
+> Kenmore, so their pins may be 30.5–43 mm long; a 6 × 40 mm pin goes
+> 17.5 mm in, a 1/4" × 1 1/2" pin 19.6 mm). Set
 > `ph_pivot_len` to a stock pivot's length (1 1/8", 28.575 mm, say) and the
 > block's cheeks widen or narrow to suit. Precision dowel pins are made a
 > few hundredths of a millimetre over size (an m6 6 mm pin is 6.004–6.012
