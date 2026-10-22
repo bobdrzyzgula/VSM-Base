@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 495 parameters; 493 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 501 parameters; 499 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -52,11 +52,11 @@ There are 495 parameters; 493 of them appear in the Customizer. The rest are lis
 | `custom_hinge_hole_drop_in` | `0.375` | IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8") |
 | `custom_hinge_pin_d_mm` | `6.35` | IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4") |
 | `custom_hinge_pin_engage_mm` | `12` | IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth) |
-| `custom_hinge_hole_depth_mm` | `0` | IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be |
+| `custom_hinge_hole_depth_mm` | `22` | IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be |
 | `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
 | `custom_foot_height_mm` | `0` | IGNORED unless machine = Custom. A machine that stands on its own feet: from the plate's underside to the feet's bottoms, mm (0 = the bed rests on the ledge instead) |
 | `custom_cord_slot` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Slot through the back rim for cords leaving the casting, mm: [center from the bed's left end, width, slot bottom below the bed's top, height of the cords' channel left under the slot's trim]; all zeros = none |
-| `custom_tilt_prop_mm` | `[0, 0]` | IGNORED unless machine = Custom. Tilt prop, mm: [height above the table of what rests on it (the arm's underside) with the machine tipped back to 90 degrees, cradle radius for a round arm (0 = a flat, level top)]; height 0 = not measured |
+| `custom_tilt_prop_mm` | `[152.4, 25.4]` | IGNORED unless machine = Custom. Tilt prop, mm: [height above the table of what rests on it (the arm's underside) with the machine tipped back to 90 degrees, cradle radius for a round arm (0 = a flat, level top)]; height 0 = not measured |
 | `custom_back_trench` | `[0, 0, 0, 0]` | IGNORED unless machine = Custom. Back bobbin trench, mm: [center from the bed's left end, width, length back from the bed edge, depth]; all zeros = none |
 | `custom_left_trench` | `[83.34, 57.6, 40, 2.5]` | IGNORED unless machine = Custom. Left bobbin trench, mm: [center from the bed's front edge, width, length left from the bed edge, depth]; all zeros = none |
 | `custom_base_lid_notch` | `[8, 23]` | IGNORED unless machine = Custom. Notch in the base lid's left edge clearing the motor boss as the lid opens, mm: [depth, width]; [0, 0] = none |
@@ -436,7 +436,13 @@ There are 495 parameters; 493 of them appear in the Customizer. The rest are lis
 | `corner_layout` | `"2x2"` | Corner piece past 100 mm: the bobbin bin stays in the inner corner, and the rest becomes open bins left of it and behind it; with both, the far corner gets its own bin (2x2), or the left or back bin runs the full length *Choices: 2x2, long left, long back.* |
 | `ext_divider` | `2.5` | Divider wall between bins *Range 1.2 to 6, step 0.1.* |
 | `ext_bin_min` | `10` | Least bin width inside; a narrower strip is left solid *Range 5 to 30, step 0.5.* |
-| `ext_divider_notch` | `true` | Finger notch at the middle of each divider, for reaching into narrow bins (single lid) |
+| `back_lids` | `"one"` | Lids: one over each piece, or one per bay (on rabbets in the dividers' tops) *Choices: one, per bay.* |
+| `left_lids` | `"one"` |  *Choices: one, per bay.* |
+| `corner_lids` | `"one"` |  *Choices: one, per bay.* |
+| `bin_lid_type` | `"lift-out"` | Per-bay lids on the outer bins: type (the inner bay's lid keeps its piece's settings) *Choices: lift-out, hinged, none.* |
+| `bin_lid_hinge` | `"back"` | Per-bay lids on the outer bins: hinge edge *Choices: left, right, front, back.* |
+| `bin_lid_min` | `15` | Least lid: a bin narrower than this inside gets no lid of its own *Range 10 to 40, step 1.* |
+| `ext_divider_notch` | `true` | Finger notch at the middle of each divider, for reaching into narrow bins (one lid only) |
 | `ext_notch_w` | `30` | Finger notch width and depth *Range 10 to 60, step 1.* |
 | `ext_notch_d` | `20` |  *Range 5 to 60, step 1.* |
 | `ext_gap` | `0.3` | Gap between an extension body and the base or another extension |

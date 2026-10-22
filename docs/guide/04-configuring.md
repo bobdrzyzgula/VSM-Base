@@ -208,6 +208,22 @@
 > so the larger need wins and the other piece's outer bin is walled in to
 > match its inner one. With both on, a `2x2` corner holds four bobbin
 > stacks, and a `1+1` left extension two spool or notion trays.
+>
+> **One lid or a lid per bay.** Each piece takes one lid over all its bays
+> (`back_lids`, `left_lids`, `corner_lids` = `one`), resting on the
+> dividers too, or a lid per bay (`per bay`), each in its own rabbet. Per
+> bay, the bays are spaced for a ledge either side of an `ext_frame` rib
+> between the rabbets, about 12 mm, and under the ledges the divider
+> tapers at 45° to `ext_divider` at the floor, so it prints without
+> supports and takes little plastic; there are no finger notches. The
+> inner bay's lid keeps its piece's lid settings; the outer bins' lids
+> share `bin_lid_type` (lift-out by default) and `bin_lid_hinge`, with a
+> finger hole sized to the lid. A bin under `bin_lid_min` (15 mm) inside
+> gets no lid, and a hinged bin lid too small to hinge (under 30 mm along
+> the hinge or 20 mm across) is made lift-out, with a warning. The bin
+> lids print as part `bin_lids`, and go on the `all` plates with the
+> others. A per-bay inner lid with bins beside it uses a finger hole, not
+> a tab, since a tab's notch would cross the bins.
 
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic
