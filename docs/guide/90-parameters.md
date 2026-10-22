@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 486 parameters; 484 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 488 parameters; 486 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -427,8 +427,11 @@ There are 486 parameters; 484 of them appear in the Customizer. The rest are lis
 | `left_ext` | `true` | Include the left extension |
 | `corner_ext` | `true` | Include the left-rear corner piece (needs both of the above) |
 | `back_ext_length` | `240` | Back extension length (X), from the base's left face |
-| `back_ext_depth` | `100` | Back extension body depth (Y), behind the base |
-| `left_ext_width` | `100` | Left extension body width (X), left of the base |
+| `back_ext_depth` | `100` | Back extension body depth (Y), behind the base *Range 100 to 300, step 0.5.* |
+| `left_ext_width` | `100` | Left extension body width (X), left of the base *Range 100 to 300, step 0.5.* |
+| `corner_layout` | `"2x2"` | Corner piece past 100 mm: the bobbin bin stays in the inner corner, and the rest becomes open bins left of it and behind it; with both, the far corner gets its own bin (2x2), or the left or back bin runs the full length *Choices: 2x2, long left, long back.* |
+| `ext_divider` | `2.5` | Divider wall between bins *Range 1.2 to 6, step 0.1.* |
+| `ext_bin_min` | `10` | Least bin width inside; a narrower strip is left solid *Range 5 to 30, step 0.5.* |
 | `ext_gap` | `0.3` | Gap between an extension body and the base or another extension |
 | `lip_clearance` | `0.2` | Clearance between the lip and the base top |
 | `lip_min_t` | `5.4` | Least lip thickness: where the bed stands less than this above the rim (a bed set flush, say), the rim is cut down under the lips so they keep it, and trim strips (parts back_trim, left_trim) fill the cuts when the extensions are off *Range 3 to 10, step 0.1.* |
@@ -440,7 +443,6 @@ There are 486 parameters; 484 of them appear in the Customizer. The rest are lis
 | `ext_lid_thickness` | `4` | Lid thickness (= depth of the lid rabbet) *Range 2 to 8, step 0.1.* |
 | `ext_lid_clearance` | `0.3` | Clearance around the lid in its rabbet, per side |
 | `ext_hinge_margin` | `0.5` | Hinged lids: the ledge on the hinge side is widened so the open lid stays this far clear of the bay |
-| `corner_bay_square` | `true` | Keep the corner bay square, with matching extra ledge on its other two sides |
 | `ext_finger_hole` | `22` | Finger hole in each lid |
 | `ext_rounding` | `3` | Rounding of the extensions' exposed edges *Range 0 to 8, step 0.5.* |
 

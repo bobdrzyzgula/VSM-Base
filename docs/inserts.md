@@ -32,8 +32,10 @@ extension have the same bay and the same lid.
 
 The box is the bay's usable interior: `z0` is its floor and `z1` the
 underside of its closed lid, or the top of the bay when that lid's type is
-`none`. At the defaults the corner bay is 83.2 × 83.2 × 81.2 mm; it is kept
-square (`corner_bay_square`), so an insert can go in either way round.
+`none`. At the defaults the corner bay is 83.2 × 83.2 × 81.2 mm; it is always
+square, so an insert can go in either way round, and it keeps that size
+when the corner piece is made larger (the extra space becomes open bins,
+listed as `corner_left`, `corner_back` and `corner_far`).
 
 **Read only `compartments` and `lid_hinge_reach`.** Don't read any other
 name from the base model; those are internal and may change. These two are

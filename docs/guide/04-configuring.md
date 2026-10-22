@@ -180,6 +180,20 @@
 > only a base with the same `back_peg_xs`. If you move the base's peg holes
 > left with `back_peg_xs` instead, the lip needn't run on, but the
 > extension, again, fits only bases with those holes.
+
+> **Note: larger extensions and the corner's bins.** The left extension's
+> width (`left_ext_width`) and the back extension's depth
+> (`back_ext_depth`) are 100 mm at least; 100 mm more on the left makes a
+> table about the size of a Sew Steady Junior. The corner piece takes both.
+> Its bobbin bin stays the size a 100 mm corner gives, in the inner corner,
+> against the base and the back extension, so the bobbin trays always fit.
+> Whatever the corner has past it becomes open bins: one to its left, one
+> behind it, each behind a divider (`ext_divider`, 2.5 mm), the dividers'
+> tops level with the lid's ledge so they help hold up the one lid. With
+> both larger, `corner_layout` decides the rest: `2x2` gives the far corner
+> a bin of its own, `long left` runs the left bin the full depth, and
+> `long back` runs the back bin the full width. A strip under
+> `ext_bin_min` (10 mm) inside is left solid.
 >
 > **Note: outlet labels.** With the outlet, LIGHT (always on) and MOTOR
 > (the controlled output) are recessed into the floor by their receptacles,
