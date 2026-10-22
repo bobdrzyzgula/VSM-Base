@@ -133,8 +133,103 @@ microcontroller phase controller with an isolated control side. As it stands:
   single-stitch button; and a force-sensing pedal that reproduces the carbon
   pile's feel while holding speed.
 
-The power stage, isolation, sensing and control loop will be filled in here as
-the design settles.
+### A first concept circuit
+
+> **This is a concept, not a design.** The circuit below has been drawn but
+> not built, simulated or tested. Its part values are first estimates, not
+> yet checked against the parts' datasheets. Only the Nucleo board's pin
+> assignments come from its user manual. The firmware does not exist. It
+> shows how the pieces of §9 fit together around the chosen board, and is a
+> starting point for bench work, not something to build from. It is drawn
+> by Claude at Bob Drzyzgula's direction.
+
+The circuit follows the architecture of Freescale's AN1662: a triac in
+series with the motor, fired once per half-cycle at a delay measured from
+the mains zero crossing, with a speed sensor closing the loop. AN1662 runs
+its microcontroller at line potential, with a resistor from the mains
+straight to an input pin for zero-cross detection. Here every connection
+between the mains and the controller passes through an isolating part, so
+the controller, its pedals and its debug port are all at a safe low
+voltage. The drawing runs the isolation barrier across the sheet, with the
+live side above it.
+
+**Line side (live).** An IEC inlet with earth feeds a 2 A slow fuse and a
+150 V MOV. The base's duplex outlet keeps its two sockets: the light's is
+always on, the motor's is controlled. The motor's hot lead runs from a
+motor-enable relay (K1) through the triac (a BTA08-600BW, a snubberless
+type) to the outlet. The relay lets the firmware cut the motor whatever the
+triac is doing: it closes last and opens first. Space is left for an RC
+snubber, to be fitted only if the triac fires falsely.
+
+**Across the barrier.** Four parts span it:
+
+- a MOC3023 random-phase opto-triac, which fires the triac's gate;
+- an H11AA1 AC-input optocoupler, whose LEDs are fed from the mains
+  through two 22 kΩ resistors and whose transistor gives a pulse at each
+  zero crossing;
+- the relay, whose coil is on the control side and its contact on the
+  line side;
+- an isolated 5 V supply module (Mean Well IRM-05-5 class).
+
+**Control side (low voltage).** The NUCLEO-G431KB takes 5 V from the
+module, and its own regulator supplies 3.3 V to the sensors. A 2N7002
+drives the relay coil. The opto-triac's LED is driven straight from a
+timer pin. The zero-cross output has a pull-up and a small filter
+capacitor. The hand-wheel sensor is a DRV5023 Hall switch on a three-wire
+cable; one magnet gives one pulse per stitch and also marks needle
+position. The knee lever, a travel pedal, a pressure pedal (a
+force-sensing resistor) and a speed-limit knob go to four analog inputs
+through RC filters. A needle-up/down toggle and a single-stitch button use
+the microcontroller's internal pull-ups.
+
+| Signal | Nucleo pin | Use |
+|---|---|---|
+| Triac fire | D3 / PB0 | timer output, one pulse per half-cycle |
+| Relay | D4 / PB7 | output (solder bridge SB2 off) |
+| Zero cross | D5 / PA15 | interrupt (solder bridge SB3 off) |
+| Hand wheel | D6 / PB6 | timer input capture |
+| Single stitch | D9 / PA8 | input |
+| Needle up/down | D11 / PB5 | input |
+| Knee, pedal, pressure, limit | A0–A3 | analog inputs |
+
+D0 and D1 are left free for the board's USB serial link. The timer channels
+named in the drawing's notes still need checking against the STM32G431's
+datasheet.
+
+**Firmware, in outline.** As in AN1662:
+
+- Each zero-cross interrupt starts a timer, and when it reaches the firing
+  delay a pulse of about 100 µs fires the triac for the rest of that
+  half-cycle.
+- The hand wheel's period, measured by input capture, gives the speed.
+- A PI loop sets the next firing delay once per half-cycle, 120 times a
+  second on 60 Hz mains. A limit on how fast the firing angle may change
+  keeps a jammed needle from getting a sudden full-power pulse.
+- A stall watchdog stops firing and opens the relay if the hand wheel stops
+  sending pulses.
+- Nothing fires until a zero crossing has been seen and the speed command
+  is zero, so the machine cannot start on power-up.
+
+**Two practical consequences.** With the supply module feeding the Nucleo's
+5 V pin, the board's built-in programmer is unpowered, per ST's manual
+UM2397. Programming and debugging are therefore done over USB with the mains
+unplugged, or through a USB isolator. And as with the test rig, a scope's
+ground must never be connected to the line side.
+
+![The MCU phase controller as a first concept (not built or tested). The
+isolation barrier runs across the sheet, with the live side above it.
+Line side, left to right: the IEC inlet and fuse, the surge suppressor, the
+outlet, the triac stage, and the line sides of the opto-triac (U3), the
+motor-enable relay (K1), the zero-cross optocoupler (U2) and the 5 V supply
+(PS1). Control side: the triac's LED drive, the relay driver, the
+zero-cross input, the Nucleo, the operator inputs (left), the switches and
+the hand-wheel Hall sensor. The KiCad file and its generator are in
+`hardware/mcu-controller/`.](../images/diagrams/mcu-controller-schematic.svg){width=100%}
+
+The KiCad drawing, a printed copy and the script that generates them are in
+the repository at `hardware/mcu-controller/`. The power stage, sensing and
+control loop will be settled on the bench, and this section will be revised
+as they are.
 
 ## Other options considered
 

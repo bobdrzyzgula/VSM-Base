@@ -1,6 +1,6 @@
 #!/bin/sh
-# Export the triac board's schematic as an SVG figure for the motor-control
-# paper, cropped to the drawing. Needs kicad-cli (KiCad 7 or later).
+# Export the triac board's schematic, and the MCU controller concept, as SVG
+# figures for the motor-control paper, cropped to the drawing. Needs kicad-cli (KiCad 7 or later).
 # Usage: sh tools/export_schematic.sh   (run from the repository root)
 set -e
 SCH=hardware/triac-board/KB3151C.kicad_sch
@@ -17,5 +17,17 @@ s = re.sub(r'width="[^"]*mm" height="[^"]*mm" viewBox="[^"]*"',
            f'width="{w}mm" height="{h}mm" viewBox="{x} {y} {w} {h}"', s, count=1)
 open(sys.argv[2], "w").write(s)
 PY
+# the MCU controller concept, cropped the same way (its notes are in the paper)
+MCU=hardware/mcu-controller/mcu_controller.kicad_sch
+MOUT=docs/images/diagrams/mcu-controller-schematic.svg
+HOME=$TMP kicad-cli sch export svg --exclude-drawing-sheet -o "$TMP" "$MCU" > /dev/null
+python3 - "$TMP/mcu_controller.svg" "$MOUT" <<'PY'
+import re, sys
+s = open(sys.argv[1]).read()
+x, y, w, h = 18, 33, 386, 222
+s = re.sub(r'width="[^"]*mm" height="[^"]*mm" viewBox="[^"]*"',
+           f'width="{w}mm" height="{h}mm" viewBox="{x} {y} {w} {h}"', s, count=1)
+open(sys.argv[2], "w").write(s)
+PY
 rm -rf "$TMP"
-echo "wrote $OUT"
+echo "wrote $OUT and $MOUT"

@@ -2,9 +2,11 @@
 """Generate the draft MCU phase-controller schematic (KiCad 7 format).
 
 Writes hardware/mcu-controller/mcu_controller.kicad_sch. Every symbol is
-defined here (no KiCad libraries needed), and every connection is made by a
-net label (or power port) on a short stub at each pin, so the netlist is
-exactly the NETS table below. Run from the repository root.
+defined here (no KiCad libraries needed). Parts are placed and wired by
+hand in the tables below; power rails (+5V, +3V3, GND) use power ports.
+The script splits wires where another wire or a pin lands on them, adds
+the junction dots, marks unused pins, and prints the netlist it intends
+(compare it with KiCad's netlist export). Run from the repository root.
 """
 import uuid, sys
 
@@ -124,199 +126,378 @@ symbol("GND", "#PWR", [("1", "GND", 0, 0, 270, 0, "power_in")],
        [line((0, 0), (0, -1.27), (1.27, -1.27), (0, -2.54), (-1.27, -1.27), (0, -1.27))], power=True, val_at=(0, -3.81))
 POWER = {"+5V", "+3V3", "GND"}
 
-# ---------------------------------------------------------------- parts
-# (ref, symbol, value, x, y, {pin: net}, note)
-P = []
-def part(ref, sym, val, x, y, nets, fp=""):
-    P.append((ref, sym, val, x, y, nets))
+
+# Variants for this layout: connectors with pins on the right; parts that
+# straddle the (horizontal) isolation barrier, line-side pins on top and
+# control-side pins below; a triac with its gate on the right
+for n in (2, 3, 4):
+    pins = [(str(i + 1), str(i + 1), 5.08, (n - 1) * G / 2 - i * G, 180, 3.81, "passive") for i in range(n)]
+    symbol(f"ConnR_{n}", "J", pins, [rect(-1.27, -(n * G) / 2, 1.27, (n * G) / 2)])
+def barrier(name, ref, top, bot, w=5.08):
+    pins = []
+    for i, (n, nm, t) in enumerate(top):
+        pins.append((n, nm, (i - (len(top) - 1) / 2) * 2 * G / (2 if len(top) == 3 else 1), 7.62, 270, 2.54, t))
+    for i, (n, nm, t) in enumerate(bot):
+        pins.append((n, nm, (i - (len(bot) - 1) / 2) * 2 * G / (2 if len(bot) == 3 else 1), -7.62, 90, 2.54, t))
+    symbol(name, ref, pins, [rect(-w, -5.08, w, 5.08, fill="background"), line((-w + 0.508, 0), (w - 0.508, 0), w=0.152)],
+           show_names=True)
+barrier("MOC3023_H", "U", [("6", "MT", "passive"), ("5", "NC", "no_connect"), ("4", "MT", "passive")],
+        [("1", "A", "passive"), ("3", "NC", "no_connect"), ("2", "K", "passive")])
+barrier("H11AA1_H", "U", [("1", "AC", "passive"), ("3", "NC", "no_connect"), ("2", "AC", "passive")],
+        [("5", "C", "passive"), ("6", "B", "passive"), ("4", "E", "passive")])
+barrier("Relay_H", "K", [("4", "NO", "passive"), ("3", "COM", "passive")],
+        [("1", "COIL+", "passive"), ("2", "COIL-", "passive")])
+barrier("ACDC_5V_H", "PS", [("1", "L", "power_in"), ("2", "N", "power_in")],
+        [("3", "+Vo", "power_out"), ("4", "-Vo", "power_out")], w=7.62)
+symbol("Triac_R", "Q", [("1", "MT1", 0, 5.08, 270, 3.81, "passive"), ("2", "MT2", 0, -5.08, 90, 3.81, "passive"),
+                        ("3", "G", 5.08, 2.54, 180, 2.54, "input")],
+       [line((-2.54, 1.27), (2.54, 1.27)), line((-2.54, -1.27), (2.54, -1.27)),
+        line((-2.54, 1.27), (0, 1.27), (-1.27, -1.27), (-2.54, 1.27)),
+        line((0, -1.27), (2.54, -1.27), (1.27, 1.27), (0, -1.27)), line((2.54, 2.54), (1.27, 1.27))])
+
+# ---------------------------------------------------------------- placement
+# ref: (symbol, value, x, y, rotation)
+PARTS = {}
+def part(ref, sym, val, x, y, rot=0):
+    PARTS[ref] = (sym, val, x, y, rot)
+
+def rotp(px, py, r):
+    return {0: (px, py), 90: (-py, px), 180: (-px, -py), 270: (py, -px)}[r]
+def pin_xy(ref, n):
+    sym, val, x, y, r = PARTS[ref]
+    _, nm, px, py, a, l, t = SYMS[sym]["pins"][n]
+    qx, qy = rotp(px, py, r)
+    return (round(x + qx, 3), round(y - qy, 3))
+def pin_out(ref, n):           # outward unit vector (screen)
+    sym, val, x, y, r = PARTS[ref]
+    a = (SYMS[sym]["pins"][n][4] + r) % 360
+    return {0: (-1, 0), 180: (1, 0), 90: (0, 1), 270: (0, -1)}[a]
 
 # Line side ------------------------------------------------------------
-part("J1", "Conn_3", "IEC C14 inlet (L, N, PE)", 40.64, 45.72, {"1": "L_IN", "2": "N", "3": "PE"})
-part("F1", "Fuse", "T2A 250V", 60.96, 45.72, {"1": "L_IN", "2": "L_F"})
-part("RV1", "MOV", "150VAC 14mm", 76.2, 45.72, {"1": "L_F", "2": "N"})
-part("F2", "Fuse", "T250mA", 91.44, 45.72, {"1": "L_F", "2": "L_PS"})
-part("J2", "Conn_4", "to duplex outlet: LIGHT hot, MOTOR hot, N, PE", 40.64, 83.82,
-     {"1": "L_F", "2": "MOT_OUT", "3": "N", "4": "PE"})
-part("Q1", "Triac", "BTA08-600BW", 76.2, 121.92, {"1": "L_K", "2": "MOT_OUT", "3": "GATE"})
-part("R4", "R", "360 0.5W", 91.44, 121.92, {"1": "MOT_OUT", "2": "OPTO_MT"})
-part("R5", "R", "330", 50.8, 121.92, {"1": "GATE", "2": "L_K"})
-part("R6", "R", "100 1W (DNP)", 111.76, 121.92, {"1": "MOT_OUT", "2": "SNUB"})
-part("C2", "C", "47n X2 (DNP)", 132.08, 121.92, {"1": "SNUB", "2": "L_K"})
-part("R7", "R", "22k 0.5W", 76.2, 170.18, {"1": "L_F", "2": "ZC_A"})
-part("R8", "R", "22k 0.5W", 91.44, 170.18, {"1": "ZC_B", "2": "N"})
-# Across the barrier --------------------------------------------------
-part("K1", "Relay_SPST", "G5LE-1A 5V (motor enable)", 175.26, 68.58,
-     {"3": "L_F", "4": "L_K", "1": "+5V", "2": "RLY_D"})
-part("U3", "MOC3023", "MOC3023", 175.26, 121.92,
-     {"6": "OPTO_MT", "4": "GATE", "1": "OPTO_A", "2": "GND"})
-part("U2", "H11AA1", "H11AA1", 175.26, 170.18,
-     {"1": "ZC_A", "2": "ZC_B", "5": "ZC", "4": "GND"})
-part("PS1", "ACDC_5V", "IRM-05-5 (5V 1A, isolated)", 175.26, 218.44,
-     {"1": "L_PS", "2": "N", "3": "+5V", "4": "GND"})
+part("J1", "ConnR_3", "IEC inlet", 25.4, 50.8)
+part("F1", "Fuse", "T2A 250V", 40.64, 48.26, 90)
+part("RV1", "MOV", "150VAC", 55.88, 53.34)
+part("J2", "ConnR_4", "duplex outlet: PE, LIGHT, N, MOTOR", 25.4, 88.9)
+part("Q1", "Triac_R", "BTA08-600BW", 160.02, 87.63)
+part("R4", "R", "360 0.5W", 182.88, 99.06)
+part("R5", "R", "330", 172.72, 80.01)
+part("R6", "R", "100 1W DNP", 137.16, 80.01)
+part("C2", "C", "47n X2 DNP", 137.16, 88.9)
+part("R7", "R", "22k 0.5W", 261.62, 66.04)
+part("R8", "R", "22k 0.5W", 266.7, 66.04)
+part("F2", "Fuse", "T250mA", 317.5, 93.98)
+# Across the barrier (y = 114.3) ---------------------------------------
+YB = 114.3
+part("U3", "MOC3023_H", "MOC3023", 185.42, YB)
+part("K1", "Relay_H", "G5LE-1A 5V", 223.52, YB)
+part("U2", "H11AA1_H", "H11AA1", 264.16, YB)
+part("PS1", "ACDC_5V_H", "IRM-05-5", 320.04, YB)
 # Control side ---------------------------------------------------------
-part("D1", "D", "1N4148", 210.82, 68.58, {"1": "+5V", "2": "RLY_D"})
-part("Q2", "NMOS", "2N7002", 231.14, 68.58, {"3": "RLY_D", "2": "GND", "1": "RLY_G"})
-part("R12", "R", "100", 246.38, 68.58, {"1": "RELAY", "2": "RLY_G"})
-part("R13", "R", "100k", 256.54, 68.58, {"1": "RLY_G", "2": "GND"})
-part("R11", "R", "270", 210.82, 121.92, {"1": "FIRE", "2": "OPTO_A"})
-part("R9", "R", "10k", 210.82, 170.18, {"1": "+3V3", "2": "ZC"})
-part("C3", "C", "1n", 220.98, 170.18, {"1": "ZC", "2": "GND"})
-part("C12", "C", "10u", 243.84, 170.18, {"1": "+5V", "2": "GND"})
-part("C13", "C", "100n", 254.0, 170.18, {"1": "+5V", "2": "GND"})
-part("A1", "NUCLEO-G431KB", "NUCLEO-G431KB", 299.72, 129.54, {
-    "CN3_2": "GND", "CN3_4": "+5V", "CN3_14": "+3V3",
-    "CN3_12": "KNEE_F", "CN3_11": "PEDAL_F", "CN3_10": "FSR_F", "CN3_9": "LIMIT_F",
-    "CN4_4": "GND", "CN4_5": "ZC", "CN4_6": "FIRE", "CN4_7": "NEEDLE", "CN4_9": "HALL_F",
-    "CN4_12": "STITCH", "CN4_14": "RELAY"})
-# hand-wheel Hall sensor and its input
-part("J3", "Conn_3", "hand-wheel Hall sensor", 210.82, 218.44, {"1": "+3V3", "2": "HALL", "3": "GND"})
-part("R14", "R", "10k", 226.06, 218.44, {"1": "+3V3", "2": "HALL"})
-part("R15", "R", "100", 236.22, 218.44, {"1": "HALL", "2": "HALL_F"})
-part("C4", "C", "1n", 246.38, 218.44, {"1": "HALL_F", "2": "GND"})
-part("U4", "DRV5023", "DRV5023 (at the hand wheel)", 297.18, 218.44, {"1": "+3V3", "2": "HALL", "3": "GND"})
-part("C5", "C", "100n (at sensor)", 266.7, 218.44, {"1": "+3V3", "2": "GND"})
+part("R11", "R", "270", 182.88, 133.35)
+part("Q2", "NMOS", "2N7002", 223.52, 147.32)
+part("D1", "D", "1N4148", 236.22, 132.08)
+part("R12", "R", "100", 210.82, 147.32, 90)
+part("R13", "R", "100k", 215.9, 153.67)
+part("R9", "R", "10k", 271.78, 133.35)
+part("C3", "C", "1n", 279.4, 143.51)
+part("C12", "C", "10u", 335.28, 133.35)
+part("C13", "C", "100n", 345.44, 133.35)
+part("A1", "NUCLEO-G431KB", "NUCLEO-G431KB", 139.7, 190.5)
+# hand-wheel Hall sensor (at the end of a 3-wire cable)
+part("C4", "C", "1n", 208.28, 232.41)
+part("R15", "R", "100", 220.98, 228.6, 90)
+part("R14", "R", "10k", 233.68, 222.25)
+part("U4", "DRV5023", "DRV5023 at hand wheel", 264.16, 228.6)
+part("C5", "C", "100n at sensor", 281.94, 228.6)
+# switches
+part("SW1", "SW", "needle up/down", 175.26, 233.68)
+part("C10", "C", "100n", 182.88, 233.68)
+part("SW2", "SW", "single stitch", 187.96, 248.92)
+part("C11", "C", "100n", 195.58, 248.92)
 # operator inputs
-part("J4", "Conn_3", "knee lever sensor (pot or Hall)", 355.6, 45.72, {"1": "+3V3", "2": "KNEE", "3": "GND"})
-part("R16", "R", "1k", 370.84, 45.72, {"1": "KNEE", "2": "KNEE_F"})
-part("C6", "C", "100n", 381.0, 45.72, {"1": "KNEE_F", "2": "GND"})
-part("J5", "Conn_3", "travel pedal (pot or Hall)", 355.6, 76.2, {"1": "+3V3", "2": "PEDAL", "3": "GND"})
-part("R17", "R", "1k", 370.84, 76.2, {"1": "PEDAL", "2": "PEDAL_F"})
-part("C7", "C", "100n", 381.0, 76.2, {"1": "PEDAL_F", "2": "GND"})
-part("J6", "Conn_2", "pressure pedal (FSR)", 355.6, 106.68, {"1": "+3V3", "2": "FSR"})
-part("R18", "R", "10k", 365.76, 106.68, {"1": "FSR", "2": "GND"})
-part("R19", "R", "1k", 375.92, 106.68, {"1": "FSR", "2": "FSR_F"})
-part("C8", "C", "100n", 386.08, 106.68, {"1": "FSR_F", "2": "GND"})
-part("RV2", "Pot", "10k lin (speed limit, panel)", 358.14, 137.16, {"1": "+3V3", "2": "LIMIT", "3": "GND"})
-part("R20", "R", "1k", 370.84, 137.16, {"1": "LIMIT", "2": "LIMIT_F"})
-part("C9", "C", "100n", 381.0, 137.16, {"1": "LIMIT_F", "2": "GND"})
-part("SW1", "SW", "needle stop up/down (toggle)", 358.14, 172.72, {"1": "NEEDLE", "2": "GND"})
-part("C10", "C", "100n", 370.84, 172.72, {"1": "NEEDLE", "2": "GND"})
-part("SW2", "SW", "single stitch (push)", 358.14, 203.2, {"1": "STITCH", "2": "GND"})
-part("C11", "C", "100n", 370.84, 203.2, {"1": "STITCH", "2": "GND"})
+part("RV2", "Pot", "10k speed limit", 45.72, 152.4)
+part("R20", "R", "1k", 58.42, 152.4, 90)
+part("C9", "C", "100n", 71.12, 156.21)
+part("J6", "ConnR_2", "pressure pedal (FSR)", 30.48, 170.18)
+part("R18", "R", "10k", 43.18, 175.26)
+part("R19", "R", "1k", 53.34, 171.45, 90)
+part("C8", "C", "100n", 66.04, 175.26)
+part("J5", "ConnR_3", "travel pedal", 30.48, 223.52)
+part("R17", "R", "1k", 50.8, 223.52, 90)
+part("C7", "C", "100n", 66.04, 227.33)
+part("J4", "ConnR_3", "knee lever", 30.48, 243.84)
+part("R16", "R", "1k", 50.8, 243.84, 90)
+part("C6", "C", "100n", 66.04, 247.65)
+
+# ---------------------------------------------------------------- wiring
+# Each wire is a list of points: "REF.PIN", (x, y), ("h", x) to run
+# horizontally to x, or ("v", y) to run vertically to y.
+P = pin_xy
+W = []
+def wire(*pts):
+    out = []
+    for p in pts:
+        if isinstance(p, str):
+            r, n = p.split(".", 1); q = P(r, n)
+        elif p[0] == "h":
+            q = (p[1], out[-1][1])
+        elif p[0] == "v":
+            q = (out[-1][0], p[1])
+        else:
+            q = p
+        out.append((round(q[0], 3), round(q[1], 3)))
+    W.append(out)
+
+LR, NR = 48.26, 58.42            # L (fused) and N rails
+# mains in, rails, MOV, outlet
+wire("J1.1", "F1.1")
+wire("F1.2", ("h", 317.5), ("v", 90.17))                 # L rail to F2's lane
+wire("F2.1", (317.5, 90.17))
+wire("J1.2", ("h", 38.1), ("v", NR), ("h", 322.58), ("v", 106.68))   # N rail, on to PS1.N
+wire("PS1.2", (322.58, 106.68))
+wire("J1.3", ("h", 33.02), ("v", 85.09), "J2.1")          # PE
+wire("J2.2", ("h", 50.8), ("v", LR))                      # LIGHT from L
+wire("J2.3", ("h", 45.72), ("v", NR))                     # N
+wire("J2.4", ("h", 137.16), "Q1.2")                       # MOTOR hot from the triac's MT2
+wire("RV1.1", ("v", LR)); wire("RV1.2", ("v", NR))
+# triac stage
+wire("C2.2", (137.16, 92.71))
+wire("R6.2", "C2.1")
+wire("R6.1", ("v", 76.2), ("h", 220.98), "K1.4")          # MT1 / relay NO
+wire("Q1.1", ("v", 76.2))
+wire("R5.1", ("v", 76.2))
+wire("Q1.3", ("h", 187.96), "U3.4")                       # gate
+wire("R5.2", ("v", 85.09))
+wire("R4.1", ("v", 92.71), ("h", 160.02))                 # MT2 to the opto's MT (via R4)
+wire("R4.2", "U3.6")
+wire("K1.3", ("v", LR))                                   # relay COM from L
+# zero-cross input network and supply
+wire("R7.1", ("v", LR)); wire("R7.2", "U2.1")
+wire("R8.1", ("v", NR)); wire("R8.2", "U2.2")
+wire("F2.2", "PS1.1")
+# control side: triac LED
+wire("U3.1", "R11.1")
+wire("R11.2", ("v", 185.42), "A1.CN4_6")                  # FIRE
+# relay driver
+wire("K1.2", "Q2.3")                                      # COIL- to drain
+wire("D1.2", ("v", 137.16), ("h", 226.06))
+wire("R12.2", "Q2.1")
+wire("R13.1", ("v", 147.32))
+wire("R12.1", ("h", 203.2), ("v", 187.96), "A1.CN4_7")    # RELAY
+# zero-cross
+wire("U2.5", ("v", 190.5), "A1.CN4_8")                    # ZC
+wire("R9.2", ("v", 139.7), ("h", 261.62))
+wire("C3.1", ("v", 139.7), ("h", 271.78))
+# Hall
+wire("A1.CN4_9", ("h", 198.12), ("v", 228.6), "R15.1")    # HALL_F
+wire("C4.1", (208.28, 228.6))
+wire("R15.2", "U4.2")                                      # HALL
+wire("R14.2", ("v", 228.6))
+# switches
+wire("A1.CN4_14", ("h", 175.26), "SW1.1")                  # NEEDLE
+wire((175.26, 226.06), ("h", 182.88), "C10.1")
+wire("A1.CN4_12", ("h", 187.96), "SW2.1")                  # STITCH
+wire((187.96, 241.3), ("h", 195.58), "C11.1")
+# operator inputs
+wire("RV2.2", "R20.1")
+wire("R20.2", ("h", 106.68), ("v", 193.04), "A1.CN3_9")    # LIMIT
+wire("C9.1", (71.12, 152.4))
+wire("J6.2", "R19.1")
+wire("R18.1", (43.18, 171.45))
+wire("R19.2", ("h", 101.6), ("v", 195.58), "A1.CN3_10")    # FSR
+wire("C8.1", (66.04, 171.45))
+wire("J5.2", "R17.1")
+wire("R17.2", ("h", 101.6), ("v", 198.12), "A1.CN3_11")    # PEDAL
+wire("C7.1", (66.04, 223.52))
+wire("J4.2", "R16.1")
+wire("R16.2", ("h", 106.68), ("v", 200.66), "A1.CN3_12")   # KNEE
+wire("C6.1", (66.04, 243.84))
+
+# Power ports on pins (a stub and a port in the pin's outward direction)
+POWER = {
+ "+5V":  ["K1.1", "D1.1", "PS1.3", "C12.1", "C13.1", "A1.CN3_4"],
+ "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.CN3_14", "RV2.1", "J6.1", "J5.1", "J4.1"],
+ "GND":  ["U3.2", "U2.4", "PS1.4", "Q2.2", "R13.2", "C3.2", "C12.2", "C13.2", "A1.CN3_2", "A1.CN4_4",
+          "C4.2", "U4.3", "C5.2", "SW1.2", "C10.2", "SW2.2", "C11.2", "RV2.3", "C9.2", "R18.2", "C8.2",
+          "J5.3", "C7.2", "J4.3", "C6.2"],
+}
+# Net names shown along wires: (name, x, y, angle)
+NAMES = [("L (fused)", 80.0, LR, 0), ("N", 80.0, NR, 0), ("PE", 33.02, 70.0, 90),
+         ("MOTOR", 80.0, 92.71, 0), ("MT1 (via K1)", 190.5, 76.2, 0), ("GATE", 168.0, 85.09, 0),
+         ("FIRE", 165.0, 185.42, 0), ("RELAY", 165.0, 187.96, 0), ("ZC", 165.0, 190.5, 0),
+         ("HALL", 165.0, 193.04, 0), ("STITCH", 165.0, 200.66, 0), ("NEEDLE", 160.0, 205.74, 0),
+         ("LIMIT", 80.0, 152.4, 0), ("FSR", 80.0, 171.45, 0), ("PEDAL", 80.0, 223.52, 0), ("KNEE", 80.0, 243.84, 0)]
+
+CAP_LEFT = {"R7", "R18", "SW1", "SW2", "R6", "C2"}
+
+# ---------------------------------------------------------------- connectivity
+def on_seg(p, a, b):
+    (x, y), (x1, y1), (x2, y2) = p, a, b
+    if abs(x1 - x2) < 1e-6 and abs(x - x1) < 1e-6:
+        return min(y1, y2) + 1e-6 < y < max(y1, y2) - 1e-6
+    if abs(y1 - y2) < 1e-6 and abs(y - y1) < 1e-6:
+        return min(x1, x2) + 1e-6 < x < max(x1, x2) - 1e-6
+    return False
+segs = []
+for w in W:
+    for a, b in zip(w, w[1:]):
+        if a != b:
+            assert abs(a[0] - b[0]) < 1e-6 or abs(a[1] - b[1]) < 1e-6, (a, b)
+            segs.append((a, b))
+pins_all = {}
+for ref in PARTS:
+    for n in SYMS[PARTS[ref][0]]["pins"]:
+        pins_all[P(ref, n)] = f"{ref}.{n}"
+# power stubs
+stubs = []
+for net, lst in POWER.items():
+    for pr in lst:
+        r, n = pr.split(".", 1)
+        (x, y), (dx, dy) = P(r, n), pin_out(r, n)
+        e = (round(x + dx * G, 3), round(y + dy * G, 3))
+        segs.append(((x, y), e)); stubs.append((net, e, (dx, dy)))
+# split segments at every endpoint or pin that lands inside them
+pts = set(pins_all) | {p for s in segs for p in s}
+changed = True
+while changed:
+    changed = False
+    new = []
+    for a, b in segs:
+        cut = [p for p in pts if on_seg(p, a, b)]
+        if cut:
+            changed = True
+            cut.sort(key=lambda p: (p[0] - a[0]) ** 2 + (p[1] - a[1]) ** 2)
+            chain = [a] + cut + [b]
+            new += list(zip(chain, chain[1:]))
+        else:
+            new.append((a, b))
+    segs = new
+deg = {}
+for a, b in segs:
+    for p in (a, b):
+        deg[p] = deg.get(p, 0) + 1
+junctions = [p for p, d in deg.items() if d + (1 if p in pins_all else 0) >= 3]
+# union-find for the intended netlist
+par = {}
+def f(x):
+    while par.setdefault(x, x) != x:
+        x = par[x]
+    return x
+for a, b in segs:
+    par[f(a)] = f(b)
+groups = {}
+for p, name in pins_all.items():
+    groups.setdefault(f(p), []).append(name)
+for net, e, _ in stubs:
+    groups.setdefault(f(e), []).append(f"<{net}>")
 
 # ---------------------------------------------------------------- emit
 out = []
-def stub_dir(a):           # outward direction (screen coords) for a pin of lib angle a
-    return {0: (-1, 0), 180: (1, 0), 90: (0, 1), 270: (0, -1)}[a]
-
-pwr_n = [0]
-netlist = {}
-for (ref, sym, val, x, y, nets) in P:
+pw = [0]
+for ref, (sym, val, x, y, r) in PARTS.items():
     S = SYMS[sym]
-    props = [f'(property "Reference" "{ref}" (at {x + 0} {y - 0} 0) {eff(hide=True)})',
-             f'(property "Value" "{val}" (at {x} {y} 0) {eff(hide=True)})']
     pin_uuids = " ".join(f'(pin "{n}" (uuid {U()}))' for n in S["pins"])
-    # visible reference and value as free text beside the symbol
-    out.append(f'''(symbol (lib_id "VSM:{sym}") (at {x} {y} 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid {U()})
-  {props[0]}
-  {props[1]}
+    out.append(f"""(symbol (lib_id "VSM:{sym}") (at {x} {y} {r}) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid {U()})
+  (property "Reference" "{ref}" (at {x} {y} 0) {eff(hide=True)})
+  (property "Value" "{val}" (at {x} {y} 0) {eff(hide=True)})
   (property "Footprint" "" (at {x} {y} 0) {eff(hide=True)})
   (property "Datasheet" "" (at {x} {y} 0) {eff(hide=True)})
   {pin_uuids}
-  (instances (project "mcu_controller" (path "/{ROOT}" (reference "{ref}") (unit 1)))))''')
-    # labels: ref and value placed above-right of the body
-    lib = S["text"]
-    for n, pin in S["pins"].items():
-        _, nm, px, py, a, l, t = pin
-        sx, sy = x + px, y - py                     # pin's connection point (screen)
-        net = nets.get(n)
-        if net is None:
-            if t == "no_connect" or nm in ("NC", "B", "VIN", "NRST", "AREF") or sym.startswith("NUCLEO"):
-                out.append(f"(no_connect (at {sx} {sy}) (uuid {U()}))")
-            continue
-        netlist.setdefault(net, []).append(f"{ref}.{n}")
-        dx, dy = stub_dir(a)
-        ex, ey = round(sx + dx * G, 2), round(sy + dy * G, 2)
-        out.append(f"(wire (pts (xy {sx} {sy}) (xy {ex} {ey})) (stroke (width 0) (type default)) (uuid {U()}))")
-        if net in POWER:
-            pwr_n[0] += 1
-            if net == "GND":
-                rot = {(0, 1): 0, (1, 0): 90, (0, -1): 180, (-1, 0): 270}[(dx, dy)]
-            else:
-                rot = {(0, -1): 0, (-1, 0): 90, (0, 1): 180, (1, 0): 270}[(dx, dy)]
-            out.append(f'''(symbol (lib_id "VSM:{net}") (at {ex} {ey} {rot}) (unit 1) (in_bom no) (on_board no) (dnp no) (uuid {U()})
-  (property "Reference" "#PWR{pwr_n[0]:03d}" (at {ex} {ey} 0) {eff(hide=True)})
-  (property "Value" "{net}" (at {ex} {ey} 0) {eff(1.0, hide=True)})
+  (instances (project "mcu_controller" (path "/{ROOT}" (reference "{ref}") (unit 1)))))""")
+for a, b in segs:
+    out.append(f"(wire (pts (xy {a[0]} {a[1]}) (xy {b[0]} {b[1]})) (stroke (width 0) (type default)) (uuid {U()}))")
+for p in junctions:
+    out.append(f"(junction (at {p[0]} {p[1]}) (diameter 0) (color 0 0 0 0) (uuid {U()}))")
+for net, (ex, ey), (dx, dy) in stubs:
+    pw[0] += 1
+    vx, vy = round(ex + dx * 4.6, 2), round(ey + dy * 4.6 + (0.6 if dy == 0 else 0), 2)
+    if net == "GND":
+        rot = {(0, 1): 0, (1, 0): 90, (0, -1): 180, (-1, 0): 270}[(dx, dy)]
+    else:
+        rot = {(0, -1): 0, (-1, 0): 90, (0, 1): 180, (1, 0): 270}[(dx, dy)]
+    out.append(f"""(symbol (lib_id "VSM:{net}") (at {ex} {ey} {rot}) (unit 1) (in_bom no) (on_board no) (dnp no) (uuid {U()})
+  (property "Reference" "#PWR{pw[0]:03d}" (at {ex} {ey} 0) {eff(hide=True)})
+  (property "Value" "{net}" (at {vx} {vy} 0) {eff(1.0)})
   (property "Footprint" "" (at {ex} {ey} 0) {eff(hide=True)})
   (property "Datasheet" "" (at {ex} {ey} 0) {eff(hide=True)})
   (pin "1" (uuid {U()}))
-  (instances (project "mcu_controller" (path "/{ROOT}" (reference "#PWR{pwr_n[0]:03d}") (unit 1)))))''')
-        else:
-            ang = {(-1, 0): 180, (1, 0): 0, (0, -1): 90, (0, 1): 270}[(dx, dy)]
-            just = "left bottom" if ang in (0, 90) else "right bottom"
-            out.append(f'(label "{net}" (at {ex} {ey} {ang}) {eff(1.0, justify=just)} (uuid {U()}))')
+  (instances (project "mcu_controller" (path "/{ROOT}" (reference "#PWR{pw[0]:03d}") (unit 1)))))""")
+connected = {p for s in segs for p in s}
+for p, name in pins_all.items():
+    if p not in connected:
+        out.append(f"(no_connect (at {p[0]} {p[1]}) (uuid {U()}))")
+for (nm, x, y, a) in NAMES:
+    out.append(f'(label "{nm}" (at {x} {y} {a}) {eff(1.0, justify="left bottom")} (uuid {U()}))')
 
-# reference/value captions
 def text(t, x, y, size=1.27, bold=False, just="left bottom"):
     t = t.replace('"', '\\"')
     out.append(f'(text "{t}" (at {x} {y} 0) {eff(size, justify=just, bold=bold)} (uuid {U()}))')
-for (ref, sym, val, x, y, nets) in P:
-    S = SYMS[sym]
-    xs = [p[2] for p in S["pins"].values()]
-    ys = [p[3] for p in S["pins"].values()]
-    big = sym in ("MOC3023", "H11AA1", "ACDC_5V", "Relay_SPST", "NUCLEO-G431KB", "DRV5023") or sym.startswith("Conn")
-    if big:
-        top = y - max(ys) - (5.08 if not sym.startswith("Conn") else 3.0)
-        text(ref, x, top - 2.0, 1.27, True, "left bottom" if sym.startswith("Conn") else "left bottom")
-        text(val, x, top, 1.0)
+# reference and value beside each part
+for ref, (sym, val, x, y, r) in PARTS.items():
+    if sym in ("MOC3023_H", "H11AA1_H", "Relay_H", "ACDC_5V_H"):
+        w = 7.62 if sym == "ACDC_5V_H" else 5.08
+        text(ref, x + w + 1.27, y - 1.0, 1.27, True); text(val, x + w + 1.27, y + 2.0, 1.0)
+    elif sym == "NUCLEO-G431KB":
+        text(ref, x - 12.7, y - 21.6, 1.27, True); text(val, x - 7.0, y - 21.6, 1.27)
+    elif sym.startswith("ConnR") or sym == "DRV5023":
+        n = len(SYMS[sym]["pins"])
+        text(ref, x - 1.27, y - n * G / 2 - 4.2, 1.27, True); text(val, x - 1.27, y - n * G / 2 - 1.6, 1.0)
+    elif r == 90:
+        text(ref, x - 2.5, y - 2.4, 1.27, True); text(val, x - 2.5, y + 3.6, 1.0)
+    elif sym == "Pot":
+        text(ref, x - 2.54, y - 0.5, 1.27, True, "right bottom"); text(val, x - 2.54, y + 1.6, 1.0, False, "right bottom")
     else:
-        cx, j = (x - 3.81, "right bottom") if sym == "Pot" else (x + 3.81, "left bottom")
-        text(ref, cx, y - 0.5, 1.27, True, j)
-        for k, ln in enumerate(val.split(" ", 1) if len(val) > 12 else [val]):
-            text(ln, cx, y + 1.6 + k * 1.6, 1.0, False, j)
+        dx = -3.81 if (sym == "Triac_R" or ref in CAP_LEFT) else 3.81
+        j = "left bottom" if dx > 0 else "right bottom"
+        text(ref, x + dx, y - 0.5, 1.27, True, j)
+        for k, ln in enumerate(val.split(" ", 1) if len(val) > 9 else [val]):
+            text(ln, x + dx, y + 1.6 + k * 1.6, 1.0, False, j)
 
 def polyline(pts, w=0.4, kind="dash"):
     xy = " ".join(f"(xy {a} {b})" for a, b in pts)
     out.append(f"(polyline (pts {xy}) (stroke (width {w}) (type {kind})) (uuid {U()}))")
-
-# isolation barrier
-polyline([(175.26, 25.4), (175.26, 280.0)], 0.6)
-text("LINE SIDE: LIVE, 120 V", 120, 28, 2.0, True)
-text("CONTROL SIDE: isolated, SELV (3.3 V / 5 V)", 182, 28, 2.0, True)
-text("ISOLATION BARRIER: U2, U3, K1, PS1 straddle it; keep >= 6 mm creepage", 177.8, 278.0, 1.27)
-# block titles
-for (t, x, y) in [("MAINS IN, FUSING, SURGE", 25.4, 35.56), ("OUTLET (base's duplex: LIGHT always on, MOTOR controlled)", 25.4, 73.66),
-                  ("MOTOR ENABLE RELAY (cuts the triac's line on a fault)", 120, 58.42),
-                  ("TRIAC STAGE (AN1662: triac in series with the motor)", 25.4, 106.68),
-                  ("ZERO-CROSS DETECTOR (AN1662 uses a resistor to a pin; here isolated)", 25.4, 154.94),
-                  ("ISOLATED 5 V SUPPLY", 120, 205.74), ("RELAY DRIVER", 203.2, 58.42), ("TRIAC FIRING (LED of U3)", 203.2, 106.68),
-                  ("ZERO-CROSS INPUT", 203.2, 154.94), ("5 V BULK", 238.76, 154.94),
-                  ("NUCLEO-32 (STM32G431KB)", 281.94, 101.6), ("HAND-WHEEL HALL SENSOR (one magnet: one pulse per stitch)", 203.2, 203.2),
-                  ("OPERATOR INPUTS (RC-filtered ADC; switches: internal pull-ups)", 335.28, 33.02)]:
-    text(t, x, y - 5.08, 1.5, True)
-
+polyline([(20.32, YB), (398.78, YB)], 0.6)
+text("LINE SIDE: LIVE, 120 V", 345.44, YB - 3.0, 2.0, True)
+text("CONTROL SIDE: isolated, SELV (3.3 V / 5 V)", 345.44, YB + 6.0, 2.0, True)
+text("ISOLATION BARRIER: U3, K1, U2 and PS1 straddle it; keep at least 6 mm creepage across it", 20.32, YB - 1.5, 1.27)
+for (t, x, y) in [("MAINS IN, FUSE, SURGE; OUTLET (LIGHT always on, MOTOR controlled)", 20.32, 38.1),
+                  ("TRIAC STAGE (after AN1662: triac in series with the motor)", 134.62, 68.58),
+                  ("MOTOR-ENABLE RELAY", 210.82, 104.14), ("ZERO-CROSS", 251.46, 104.14), ("ISOLATED 5 V", 304.8, 104.14),
+                  ("RELAY DRIVER", 231.14, 162.56), ("ZERO-CROSS INPUT", 284.48, 139.7), ("TRIAC FIRING", 170.18, 128.27),
+                  ("5 V BULK", 332.74, 121.92), ("NUCLEO-32 (STM32G431KB)", 124.46, 165.1),
+                  ("HAND-WHEEL HALL SENSOR (3-wire cable; one magnet, one pulse per stitch)", 200.66, 210.82),
+                  ("SWITCHES (internal pull-ups)", 170.18, 218.44),
+                  ("OPERATOR INPUTS (RC-filtered ADC)", 20.32, 139.7)]:
+    text(t, x, y, 1.5, True)
 notes = [
- "NOTES (draft, Claude at Bob Drzyzgula's direction, October 2026; not built or tested)",
- "1. After Freescale AN1662 (Skalka): zero-cross interrupt starts a timer; at the firing angle a short gate pulse (~100 us) fires the triac each half-cycle;",
- "   tacho period measured by input capture; speed loop updated every half-cycle (120 Hz); stall watchdog. Added here: full isolation, relay, inputs.",
- "2. Pins: ZC on D2/PA12 (EXTI); FIRE on D3/PB0 (TIM3_CH3, one-pulse); HALL on D6/PB6 (TIM4_CH1 input capture); RELAY on D11/PB5;",
- "   A0-A3 = knee, pedal, FSR, speed limit; NEEDLE on D4/PB7 (SB2 must be OFF); STITCH on D9/PA8. D0/D1 left for the ST-LINK virtual COM port.",
- "3. Power: PS1 feeds CN3-4 (+5V). Per UM2397 the ST-LINK is then unpowered: program and debug over USB with the mains unplugged.",
- "   For live debugging use a USB isolator. Never connect a scope ground to the line side.",
- "4. Fire only after a zero-cross has been seen and the speed command is zero (no start on power-up); close K1 last, open it first.",
- "5. Values to check: R7/R8 set H11AA1 LED current (~3.9 mA peak at 170 V); R11 gives ~8 mA into U3 from 3.3 V; Q1 needs a heatsink for long runs;",
- "   R6/C2 snubber is DNP with a snubberless (BW) triac and fitted if it false-fires; MOV 150 VAC for 120 V mains.",
- "6. Hall: DRV5023 unipolar switch (open drain) at the hand wheel on a 3-wire cable; one magnet gives one pulse per stitch and needle position.",
+ "NOTES. A concept drawn by Claude at Bob Drzyzgula's direction, October 2026: not built, not tested, values not checked.",
+ "1. After Freescale AN1662: zero-cross interrupt starts a timer; at the firing delay a ~100 us gate pulse fires the triac; hand-wheel period by",
+ "   input capture; speed loop every half-cycle (120 Hz); stall watchdog. Added: full isolation, motor-enable relay, operator inputs.",
+ "2. Pins: FIRE D3/PB0 (TIM3_CH3 one-pulse); RELAY D4/PB7 (SB2 off); ZC D5/PA15 (SB3 off, EXTI); HALL D6/PB6 (TIM4_CH1 capture);",
+ "   STITCH D9/PA8; NEEDLE D11/PB5; A0-A3 knee, pedal, FSR, limit. D0/D1 left for the ST-LINK COM port. Check against the datasheet.",
+ "3. PS1 feeds CN3-4 (+5V): the ST-LINK is then unpowered (UM2397). Program and debug over USB with the mains unplugged, or via a USB isolator.",
+ "4. Fire only after a zero-cross has been seen and the command is zero; close K1 last and open it first. Never scope the line side.",
+ "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires.",
 ]
 for i, n in enumerate(notes):
-    text(n, 20.32, 230.0 + i * 3.6, 1.27, i == 0)
+    text(n, 20.32, 257.0 + i * 3.2, 1.27, i == 0)
 
-body = "\n".join(out)
 libs = "\n".join(s["text"] for s in SYMS.values())
-sch = f'''(kicad_sch (version 20230121) (generator eeschema)
+sch = f"""(kicad_sch (version 20230121) (generator eeschema)
   (uuid {ROOT})
   (paper "A3")
   (title_block
-    (title "VSM MCU phase controller (draft)")
+    (title "VSM MCU phase controller (concept)")
     (date "2026-10-22")
-    (rev "draft-1")
+    (rev "draft-2")
     (comment 1 "After Freescale AN1662, with an isolated control side; NUCLEO-G431KB")
     (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested"))
   (lib_symbols
 {libs})
-{body}
+{chr(10).join(out)}
   (sheet_instances (path "/" (page "1"))))
-'''
+"""
 open(sys.argv[1] if len(sys.argv) > 1 else "hardware/mcu-controller/mcu_controller.kicad_sch", "w").write(sch)
-for k in sorted(netlist):
-    print(f"{k}: {' '.join(netlist[k])}")
+for g in sorted(groups.values(), key=lambda v: sorted(v)):
+    if len(g) > 1:
+        print(" ".join(sorted(g)))
