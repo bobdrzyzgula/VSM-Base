@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 69
+// VSM Base, version 70
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -340,6 +340,8 @@
 // 1.7 mm above the rim and 3.8 mm below the bed top; the arm's swing is
 // relieved, the back lip notched round it, and the screw comes up from
 // under the base into the barrel's tapped bottom.
+//
+// v70: barrel hinge: tapped depth 6 mm and washer 13.7 mm, measured.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -911,9 +913,9 @@ barrel_clear = 0.3; // [0.1 : 0.05 : 1]
 // Screw: length overall, head height, head diameter, thread diameter
 barrel_screw = [35.4, 4.78, 11, 7];
 // Washer under the screw head: thickness and outside diameter
-barrel_washer = [1.5, 16];
+barrel_washer = [1.5, 13.7];
 // Depth of the barrel's tapped hole the screw may use
-barrel_tap_depth = 7; // [3 : 0.5 : 12]
+barrel_tap_depth = 6; // [3 : 0.5 : 12]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)

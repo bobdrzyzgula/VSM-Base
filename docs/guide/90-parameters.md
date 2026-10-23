@@ -356,8 +356,8 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 | `barrel_tilt` | `65` | How far the arm tips back *Range 30 to 110, step 1.* |
 | `barrel_clear` | `0.3` | Clearance round the barrel and the arm's swing *Range 0.1 to 1, step 0.05.* |
 | `barrel_screw` | `[35.4, 4.78, 11, 7]` | Screw: length overall, head height, head diameter, thread diameter |
-| `barrel_washer` | `[1.5, 16]` | Washer under the screw head: thickness and outside diameter |
-| `barrel_tap_depth` | `7` | Depth of the barrel's tapped hole the screw may use *Range 3 to 12, step 0.5.* |
+| `barrel_washer` | `[1.5, 13.7]` | Washer under the screw head: thickness and outside diameter |
+| `barrel_tap_depth` | `6` | Depth of the barrel's tapped hole the screw may use *Range 3 to 12, step 0.5.* |
 
 ## Hinge coupon
 
