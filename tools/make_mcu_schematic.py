@@ -109,14 +109,16 @@ for n in (2, 3, 4):
     pins = [(str(i + 1), str(i + 1), -5.08, (n - 1) * G / 2 - i * G, 0, 3.81, "passive") for i in range(n)]
     symbol(f"Conn_{n}", "J", pins, [rect(-1.27, -(n * G) / 2, 1.27, (n * G) / 2)],
            ref_at=(0, (n * G) / 2 + 1.27), val_at=(0, -(n * G) / 2 - 1.27))
-# Nucleo-32 (NUCLEO-G431KB): CN3 left, CN4 right; names from UM2397
-CN3 = ["VIN", "GND", "NRST", "+5V", "A7/PA2", "A6/PA7", "A5/PA6", "A4/PA5", "A3/PA4", "A2/PA3",
-       "A1/PA1", "A0/PA0", "AREF", "3V3", "D13/PB3"]
-CN4 = ["D1/PA9", "D0/PA10", "NRST", "GND", "D2/PA12", "D3/PB0", "D4/PB7", "D5/PA15", "D6/PB6",
-       "D7/PF0", "D8/PF1", "D9/PA8", "D10/PA11", "D11/PB5", "D12/PB4"]
-pins = [(f"CN3_{i+1}", nm, -17.78, 17.78 - i * G, 0, 5.08, "bidirectional") for i, nm in enumerate(CN3)]
-pins += [(f"CN4_{i+1}", nm, 17.78, 17.78 - i * G, 180, 5.08, "bidirectional") for i, nm in enumerate(CN4)]
-symbol("NUCLEO-G431KB", "A", pins, [rect(-12.7, -20.32, 12.7, 20.32, fill="background")], show_names=True,
+# RP2350B core board: drawn generically, by GPIO number (each board puts
+# these pins in its own places): power and the ADC pins on the left,
+# digital GPIOs on the right
+LEFT = ["VBUS", "GND", "RUN", "VSYS", "GP47/ADC7", "GP46/ADC6", "GP45/ADC5", "GP44/ADC4", "GP43/ADC3",
+        "GP42/ADC2", "GP41/ADC1", "GP40/ADC0", "ADC_VREF", "3V3(OUT)", "3V3_EN"]
+RIGHT = ["GP0/UART0_TX", "GP1/UART0_RX", "GP2", "GND", "GP3", "GP4", "GP5", "GP6", "GP7",
+         "GP8", "GP9", "GP10", "GP11", "GP12", "GP13"]
+pins = [(f"L{i+1}", nm, -17.78, 17.78 - i * G, 0, 5.08, "bidirectional") for i, nm in enumerate(LEFT)]
+pins += [(f"R{i+1}", nm, 17.78, 17.78 - i * G, 180, 5.08, "bidirectional") for i, nm in enumerate(RIGHT)]
+symbol("RP2350B_CORE", "A", pins, [rect(-12.7, -20.32, 12.7, 20.32, fill="background")], show_names=True,
        ref_at=(0, 21.59), val_at=(0, -21.59))
 symbol("+5V", "#PWR", [("1", "+5V", 0, 0, 90, 0, "power_in")],
        [line((-0.762, 1.27), (0, 2.54), (0.762, 1.27)), line((0, 0), (0, 2.54))], power=True, val_at=(0, 3.556))
@@ -202,7 +204,8 @@ part("R9", "R", "10k", 271.78, 133.35)
 part("C3", "C", "1n", 279.4, 143.51)
 part("C12", "C", "10u", 335.28, 133.35)
 part("C13", "C", "100n", 345.44, 133.35)
-part("A1", "NUCLEO-G431KB", "NUCLEO-G431KB", 139.7, 190.5)
+part("A1", "RP2350B_CORE", "RP2350B core board", 139.7, 190.5)
+part("D2", "D", "SS14 (Schottky)", 114.3, 173.99, 180)
 # hand-wheel Hall sensor (at the end of a 3-wire cable)
 part("C4", "C", "1n", 208.28, 232.41)
 part("R15", "R", "100", 220.98, 228.6, 90)
@@ -277,47 +280,49 @@ wire("R8.1", ("v", NR)); wire("R8.2", "U2.2")
 wire("F2.2", "PS1.1")
 # control side: triac LED
 wire("U3.1", "R11.1")
-wire("R11.2", ("v", 185.42), "A1.CN4_6")                  # FIRE
+wire("R11.2", ("v", 185.42), "A1.R6")                  # FIRE
 # relay driver
 wire("K1.2", "Q2.3")                                      # COIL- to drain
 wire("D1.2", ("v", 137.16), ("h", 226.06))
 wire("R12.2", "Q2.1")
 wire("R13.1", ("v", 147.32))
-wire("R12.1", ("h", 203.2), ("v", 187.96), "A1.CN4_7")    # RELAY
+wire("R12.1", ("h", 203.2), ("v", 187.96), "A1.R7")    # RELAY
 # zero-cross
-wire("U2.5", ("v", 190.5), "A1.CN4_8")                    # ZC
+wire("U2.5", ("v", 190.5), "A1.R8")                    # ZC
 wire("R9.2", ("v", 139.7), ("h", 261.62))
 wire("C3.1", ("v", 139.7), ("h", 271.78))
 # Hall
-wire("A1.CN4_9", ("h", 198.12), ("v", 228.6), "R15.1")    # HALL_F
+wire("A1.R9", ("h", 198.12), ("v", 228.6), "R15.1")    # HALL_F
 wire("C4.1", (208.28, 228.6))
 wire("R15.2", "U4.2")                                      # HALL
 wire("R14.2", ("v", 228.6))
 # switches
-wire("A1.CN4_14", ("h", 175.26), "SW1.1")                  # NEEDLE
+wire("A1.R14", ("h", 175.26), "SW1.1")                  # NEEDLE
 wire((175.26, 226.06), ("h", 182.88), "C10.1")
-wire("A1.CN4_12", ("h", 187.96), "SW2.1")                  # STITCH
+wire("A1.R12", ("h", 187.96), "SW2.1")                  # STITCH
 wire((187.96, 241.3), ("h", 195.58), "C11.1")
+# 5 V into VSYS through the Schottky, so USB can be plugged in as well
+wire("D2.1", ("v", 180.34), "A1.L4")
 # operator inputs
 wire("RV2.2", "R20.1")
-wire("R20.2", ("h", 106.68), ("v", 193.04), "A1.CN3_9")    # LIMIT
+wire("R20.2", ("h", 106.68), ("v", 193.04), "A1.L9")    # LIMIT
 wire("C9.1", (71.12, 152.4))
 wire("J6.2", "R19.1")
 wire("R18.1", (43.18, 171.45))
-wire("R19.2", ("h", 101.6), ("v", 195.58), "A1.CN3_10")    # FSR
+wire("R19.2", ("h", 101.6), ("v", 195.58), "A1.L10")    # FSR
 wire("C8.1", (66.04, 171.45))
 wire("J5.2", "R17.1")
-wire("R17.2", ("h", 101.6), ("v", 198.12), "A1.CN3_11")    # PEDAL
+wire("R17.2", ("h", 101.6), ("v", 198.12), "A1.L11")    # PEDAL
 wire("C7.1", (66.04, 223.52))
 wire("J4.2", "R16.1")
-wire("R16.2", ("h", 106.68), ("v", 200.66), "A1.CN3_12")   # KNEE
+wire("R16.2", ("h", 106.68), ("v", 200.66), "A1.L12")   # KNEE
 wire("C6.1", (66.04, 243.84))
 
 # Power ports on pins (a stub and a port in the pin's outward direction)
 POWER = {
- "+5V":  ["K1.1", "D1.1", "PS1.3", "C12.1", "C13.1", "A1.CN3_4"],
- "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.CN3_14", "RV2.1", "J6.1", "J5.1", "J4.1"],
- "GND":  ["U3.2", "U2.4", "PS1.4", "Q2.2", "R13.2", "C3.2", "C12.2", "C13.2", "A1.CN3_2", "A1.CN4_4",
+ "+5V":  ["K1.1", "D1.1", "PS1.3", "C12.1", "C13.1", "D2.2"],
+ "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.L14", "RV2.1", "J6.1", "J5.1", "J4.1"],
+ "GND":  ["U3.2", "U2.4", "PS1.4", "Q2.2", "R13.2", "C3.2", "C12.2", "C13.2", "A1.L2", "A1.R4",
           "C4.2", "U4.3", "C5.2", "SW1.2", "C10.2", "SW2.2", "C11.2", "RV2.3", "C9.2", "R18.2", "C8.2",
           "J5.3", "C7.2", "J4.3", "C6.2"],
 }
@@ -328,7 +333,7 @@ NAMES = [("L (fused)", 80.0, LR, 0), ("N", 80.0, NR, 0), ("PE", 33.02, 70.0, 90)
          ("HALL", 165.0, 193.04, 0), ("STITCH", 165.0, 200.66, 0), ("NEEDLE", 160.0, 205.74, 0),
          ("LIMIT", 80.0, 152.4, 0), ("FSR", 80.0, 171.45, 0), ("PEDAL", 80.0, 223.52, 0), ("KNEE", 80.0, 243.84, 0)]
 
-CAP_LEFT = {"R7", "R18", "SW1", "SW2", "R6", "C2"}
+CAP_LEFT = {"R7", "R18", "SW1", "SW2", "R6", "C2", "D2"}
 
 # ---------------------------------------------------------------- connectivity
 def on_seg(p, a, b):
@@ -437,7 +442,7 @@ for ref, (sym, val, x, y, r) in PARTS.items():
     if sym in ("MOC3023_H", "H11AA1_H", "Relay_H", "ACDC_5V_H"):
         w = 7.62 if sym == "ACDC_5V_H" else 5.08
         text(ref, x + w + 1.27, y - 1.0, 1.27, True); text(val, x + w + 1.27, y + 2.0, 1.0)
-    elif sym == "NUCLEO-G431KB":
+    elif sym == "RP2350B_CORE":
         text(ref, x - 12.7, y - 21.6, 1.27, True); text(val, x - 7.0, y - 21.6, 1.27)
     elif sym.startswith("ConnR") or sym == "DRV5023":
         n = len(SYMS[sym]["pins"])
@@ -464,18 +469,18 @@ for (t, x, y) in [("MAINS IN, FUSE, SURGE; OUTLET (LIGHT always on, MOTOR contro
                   ("TRIAC STAGE (after AN1662: triac in series with the motor)", 134.62, 68.58),
                   ("MOTOR-ENABLE RELAY", 210.82, 104.14), ("ZERO-CROSS", 251.46, 104.14), ("ISOLATED 5 V", 304.8, 104.14),
                   ("RELAY DRIVER", 231.14, 162.56), ("ZERO-CROSS INPUT", 284.48, 139.7), ("TRIAC FIRING", 170.18, 128.27),
-                  ("5 V BULK", 332.74, 121.92), ("NUCLEO-32 (STM32G431KB)", 124.46, 165.1),
+                  ("5 V BULK", 332.74, 121.92), ("RP2350B CORE BOARD (pins by GPIO number)", 124.46, 165.1),
                   ("HAND-WHEEL HALL SENSOR (3-wire cable; one magnet, one pulse per stitch)", 200.66, 210.82),
                   ("SWITCHES (internal pull-ups)", 170.18, 218.44),
                   ("OPERATOR INPUTS (RC-filtered ADC)", 20.32, 139.7)]:
     text(t, x, y, 1.5, True)
 notes = [
  "NOTES. A concept drawn by Claude at Bob Drzyzgula's direction, October 2026: not built, not tested, values not checked.",
- "1. After Freescale AN1662: zero-cross interrupt starts a timer; at the firing delay a ~100 us gate pulse fires the triac; hand-wheel period by",
- "   input capture; speed loop every half-cycle (120 Hz); stall watchdog. Added: full isolation, motor-enable relay, operator inputs.",
- "2. Pins: FIRE D3/PB0 (TIM3_CH3 one-pulse); RELAY D4/PB7 (SB2 off); ZC D5/PA15 (SB3 off, EXTI); HALL D6/PB6 (TIM4_CH1 capture);",
- "   STITCH D9/PA8; NEEDLE D11/PB5; A0-A3 knee, pedal, FSR, limit. D0/D1 left for the ST-LINK COM port. Check against the datasheet.",
- "3. PS1 feeds CN3-4 (+5V): the ST-LINK is then unpowered (UM2397). Program and debug over USB with the mains unplugged, or via a USB isolator.",
+ "1. After Freescale AN1662: zero-cross interrupt sets a timer alarm (or a PIO program); at the firing delay a ~100 us gate pulse fires the",
+ "   triac; hand-wheel period from edge timestamps; speed loop every half-cycle (120 Hz); stall watchdog. Added: isolation, relay, inputs.",
+ "2. Pins (RP2350B): FIRE GP4; RELAY GP5; ZC GP6; HALL GP7; STITCH GP10; NEEDLE GP12; knee, pedal, FSR, limit on ADC0-3 (GP40-43),",
+ "   ADC4-7 spare; GP0/GP1 UART0 for a debug line (or USB serial). Any GPIO will do for the digital signals; wire by GPIO number.",
+ "3. PS1 feeds VSYS through D2, so USB may stay plugged in (the control side is SELV). Flash by UF2 (BOOTSEL) or SWD. Drive GP4 at 8-12 mA.",
  "4. Fire only after a zero-cross has been seen and the command is zero; close K1 last and open it first. Never scope the line side.",
  "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires.",
 ]
@@ -489,8 +494,8 @@ sch = f"""(kicad_sch (version 20230121) (generator eeschema)
   (title_block
     (title "VSM MCU phase controller (concept)")
     (date "2026-10-22")
-    (rev "draft-2")
-    (comment 1 "After Freescale AN1662, with an isolated control side; NUCLEO-G431KB")
+    (rev "draft-3")
+    (comment 1 "After Freescale AN1662, with an isolated control side; RP2350B core board")
     (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested"))
   (lib_symbols
 {libs})

@@ -118,8 +118,10 @@ gearing is linear in resistance.
 The second design is a feedback controller of the kind described in §9: a
 microcontroller phase controller with an isolated control side. As it stands:
 
-- An STM32 on a NUCLEO-G431KB, carried on a controller board laid out as a
-  Nucleo-32 carrier.
+- A Raspberry Pi RP2350B on an inexpensive core board ($5–20), chosen over
+  the STM32 NUCLEO-G431KB first considered for its price, its many analog
+  inputs (eight on the B package), and its familiarity to hobbyists. The
+  firmware is plain C on the Pico SDK, with no RTOS.
 - IEC power only, with earth.
 - Eventually separable from the base: standalone, mounted at the side of the
   base, or in a pedal-only base. External travel and pressure pedals as well as
@@ -137,8 +139,8 @@ microcontroller phase controller with an isolated control side. As it stands:
 
 > **This is a concept, not a design.** The circuit below has been drawn but
 > not built, simulated or tested. Its part values are first estimates, not
-> yet checked against the parts' datasheets. Only the Nucleo board's pin
-> assignments come from its user manual. The firmware does not exist. It
+> yet checked against the parts' datasheets. The core board is drawn by
+> GPIO number, not as any particular board. The firmware does not exist. It
 > shows how the pieces of §9 fit together around the chosen board, and is a
 > starting point for bench work, not something to build from. It is drawn
 > by Claude at Bob Drzyzgula's direction.
@@ -171,10 +173,11 @@ snubber, to be fitted only if the triac fires falsely.
   line side;
 - an isolated 5 V supply module (Mean Well IRM-05-5 class).
 
-**Control side (low voltage).** The NUCLEO-G431KB takes 5 V from the
-module, and its own regulator supplies 3.3 V to the sensors. A 2N7002
-drives the relay coil. The opto-triac's LED is driven straight from a
-timer pin. The zero-cross output has a pull-up and a small filter
+**Control side (low voltage).** The RP2350B core board takes 5 V from the
+module into its VSYS pin through a Schottky diode, so its USB port can stay
+plugged in; its own regulator supplies 3.3 V to the sensors. A 2N7002
+drives the relay coil. The opto-triac's LED is driven straight from a GPIO
+set to 8–12 mA drive. The zero-cross output has a pull-up and a small filter
 capacitor. The hand-wheel sensor is a DRV5023 Hall switch on a three-wire
 cable; one magnet gives one pulse per stitch and also marks needle
 position. The knee lever, a travel pedal, a pressure pedal (a
@@ -182,26 +185,28 @@ force-sensing resistor) and a speed-limit knob go to four analog inputs
 through RC filters. A needle-up/down toggle and a single-stitch button use
 the microcontroller's internal pull-ups.
 
-| Signal | Nucleo pin | Use |
+| Signal | RP2350B pin | Use |
 |---|---|---|
-| Triac fire | D3 / PB0 | timer output, one pulse per half-cycle |
-| Relay | D4 / PB7 | output (solder bridge SB2 off) |
-| Zero cross | D5 / PA15 | interrupt (solder bridge SB3 off) |
-| Hand wheel | D6 / PB6 | timer input capture |
-| Single stitch | D9 / PA8 | input |
-| Needle up/down | D11 / PB5 | input |
-| Knee, pedal, pressure, limit | A0–A3 | analog inputs |
+| Triac fire | GP4 | gate pulse (timer alarm or PIO) |
+| Relay | GP5 | output |
+| Zero cross | GP6 | interrupt |
+| Hand wheel | GP7 | edge timestamps |
+| Single stitch | GP10 | input |
+| Needle up/down | GP12 | input |
+| Knee, pedal, pressure, limit | GP40–43 (ADC0–3) | analog inputs |
 
-D0 and D1 are left free for the board's USB serial link. The timer channels
-named in the drawing's notes still need checking against the STM32G431's
-datasheet.
+ADC4–7 are spare, and GP0/GP1 (UART0) are left for a debug line, though
+the USB port's serial link will usually do. Any GPIO can serve for the
+digital signals, so these are a starting point, to be placed to suit the
+board chosen.
 
 **Firmware, in outline.** As in AN1662:
 
-- Each zero-cross interrupt starts a timer, and when it reaches the firing
+- Each zero-cross interrupt sets a hardware alarm on the chip's
+  microsecond timer (or starts a small PIO program), and at the firing
   delay a pulse of about 100 µs fires the triac for the rest of that
   half-cycle.
-- The hand wheel's period, measured by input capture, gives the speed.
+- The hand wheel's period, from timestamps of its edges, gives the speed.
 - A PI loop sets the next firing delay once per half-cycle, 120 times a
   second on 60 Hz mains. A limit on how fast the firing angle may change
   keeps a jammed needle from getting a sudden full-power pulse.
@@ -210,11 +215,12 @@ datasheet.
 - Nothing fires until a zero crossing has been seen and the speed command
   is zero, so the machine cannot start on power-up.
 
-**Two practical consequences.** With the supply module feeding the Nucleo's
-5 V pin, the board's built-in programmer is unpowered, per ST's manual
-UM2397. Programming and debugging are therefore done over USB with the mains
-unplugged, or through a USB isolator. And as with the test rig, a scope's
-ground must never be connected to the line side.
+**Two practical consequences.** Because the control side is isolated, the
+board's USB port can stay connected to a computer with the mains on, for
+flashing (by dragging a UF2 file onto it in BOOTSEL mode) and for the
+debug serial line; step-through debugging needs a separate SWD probe, such
+as Raspberry Pi's Debug Probe. And as with the test rig, a scope's ground
+must never be connected to the line side.
 
 ![The MCU phase controller as a first concept (not built or tested). The
 isolation barrier runs across the sheet, with the live side above it.
@@ -222,7 +228,7 @@ Line side, left to right: the IEC inlet and fuse, the surge suppressor, the
 outlet, the triac stage, and the line sides of the opto-triac (U3), the
 motor-enable relay (K1), the zero-cross optocoupler (U2) and the 5 V supply
 (PS1). Control side: the triac's LED drive, the relay driver, the
-zero-cross input, the Nucleo, the operator inputs (left), the switches and
+zero-cross input, the RP2350B core board, the operator inputs (left), the switches and
 the hand-wheel Hall sensor. The KiCad file and its generator are in
 `hardware/mcu-controller/`.](../images/diagrams/mcu-controller-schematic.svg){width=100%}
 

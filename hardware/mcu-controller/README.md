@@ -4,13 +4,15 @@
 tested.*
 
 **A concept, not a design.** Drawn but not built, simulated or tested;
-part values are first estimates; only the Nucleo pin assignments come from
-its user manual (UM2397); the firmware does not exist. The motor-control
+part values are first estimates; the core board is drawn by GPIO number,
+not as any particular board; the firmware does not exist. The motor-control
 paper (§11, "A first concept circuit") describes it.
 
 `mcu_controller.kicad_sch` (KiCad 7) is a phase controller after Freescale's
 AN1662, with the control side isolated from the mains, built around a
-NUCLEO-G431KB (Nucleo-32) and a Hall sensor at the hand wheel.
+Raspberry Pi RP2350B core board and a Hall sensor at the hand wheel. (The
+first draft used an STM32 NUCLEO-G431KB; the RP2350B was chosen for its
+price, its eight analog inputs and its familiarity to hobbyists.)
 `mcu_controller.pdf` is the same sheet printed. The isolation barrier runs
 across the sheet, with the live side above it.
 
@@ -35,38 +37,41 @@ MOC3023 random-phase opto-triac, with an RC snubber footprint left unfitted;
 an H11AA1 AC-input optocoupler as the zero-cross detector; an isolated 5 V
 module (Mean Well IRM-05-5 class) on its own T250mA fuse.
 
-**Control side (SELV).** The Nucleo, powered at CN3-4 (+5V) from the
-module, its own regulator supplying 3.3 V to the sensors; the relay driver
-(2N7002, flyback diode); the triac driver's LED, straight from a GPIO; the
-zero-cross input; the Hall sensor (DRV5023, open drain, drawn at the hand-wheel end of its
-three-wire cable) with a pull-up and RC filter; the knee lever, a travel pedal, a
-pressure pedal (FSR) and a speed-limit knob into four ADC inputs; a
-needle-up/down toggle and a single-stitch button.
+**Control side (SELV).** The RP2350B core board, fed 5 V into VSYS from
+the module through a Schottky diode (so its USB port can stay plugged in),
+its own regulator supplying 3.3 V to the sensors; the relay driver (2N7002,
+flyback diode); the triac driver's LED, straight from a GPIO at 8–12 mA
+drive; the zero-cross input; the Hall sensor (DRV5023, open drain, drawn at
+the hand-wheel end of its three-wire cable) with a pull-up and RC filter;
+the knee lever, a travel pedal, a pressure pedal (FSR) and a speed-limit
+knob into four ADC inputs; a needle-up/down toggle and a single-stitch
+button.
 
-## Pin use (NUCLEO-G431KB, from UM2397)
+## Pin use (RP2350B)
 
-| Signal | Nucleo pin | STM32 | Use |
-|---|---|---|---|
-| FIRE | D3 | PB0 | gate pulse, TIM3_CH3 one-pulse |
-| RELAY | D4 | PB7 | motor-enable relay (SB2 must be off) |
-| ZC | D5 | PA15 | zero-cross, EXTI interrupt (SB3 must be off) |
-| HALL | D6 | PB6 | hand-wheel pulses, TIM4_CH1 input capture |
-| STITCH | D9 | PA8 | single-stitch button |
-| NEEDLE | D11 | PB5 | needle-stop toggle |
-| KNEE | A0 | PA0 | knee lever |
-| PEDAL | A1 | PA1 | travel pedal |
-| FSR | A2 | PA3 | pressure pedal |
-| LIMIT | A3 | PA4 | speed-limit knob |
+| Signal | GPIO | Use |
+|---|---|---|
+| FIRE | GP4 | gate pulse: timer alarm or PIO |
+| RELAY | GP5 | motor-enable relay |
+| ZC | GP6 | zero-cross interrupt |
+| HALL | GP7 | hand-wheel pulses, edge timestamps |
+| STITCH | GP10 | single-stitch button |
+| NEEDLE | GP12 | needle-stop toggle |
+| KNEE | GP40 / ADC0 | knee lever |
+| PEDAL | GP41 / ADC1 | travel pedal |
+| FSR | GP42 / ADC2 | pressure pedal |
+| LIMIT | GP43 / ADC3 | speed-limit knob |
 
-D0/D1 are left for the ST-LINK's virtual COM port. Check the timer and
-ADC assignments against the STM32G431 datasheet's alternate-function table
-before laying out a board.
+ADC4–7 (GP44–47) are spare; GP0/GP1 (UART0) are left for a debug line. Any
+GPIO will do for the digital signals: wire them by GPIO number to wherever
+the chosen board brings them out.
 
 ## Firmware outline (after AN1662)
 
-Each zero-cross interrupt starts a timer; when it reaches the firing delay,
-a ~100 µs pulse on FIRE fires the triac for the rest of that half-cycle. The
-Hall sensor's period, by input capture, gives the hand-wheel speed. A PI
+Plain C on the Pico SDK, no RTOS. Each zero-cross interrupt sets a hardware
+alarm on the microsecond timer (or starts a small PIO program); at the
+firing delay a ~100 µs pulse on FIRE fires the triac for the rest of that half-cycle. The
+Hall sensor's period, from edge timestamps, gives the hand-wheel speed. A PI
 loop updates the firing delay once per half-cycle (120 Hz on 60 Hz mains),
 with a rate limit on the firing angle and a stall watchdog (no Hall pulses
 for some time: stop firing, open K1). Fire only after a zero-cross has been
@@ -74,9 +79,9 @@ seen and the speed command is zero; close K1 last and open it first.
 
 ## Cautions
 
-- With PS1 powering the Nucleo through CN3-4, UM2397 says the ST-LINK is
-  unpowered: program and debug over USB with the mains unplugged, or through
-  a USB isolator.
+- The control side is isolated, so the board's USB port may stay connected
+  with the mains on, for UF2 flashing and the serial line; step-through
+  debugging needs an SWD probe.
 - Never connect a scope's ground to the line side (see the test rig's
   guide).
 - Values to check on the bench: R7/R8 set about 3.9 mA peak through the
