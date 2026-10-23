@@ -87,7 +87,10 @@ In the OpenSCAD Customizer:
 ### 3.2 Print list
 
 PETG for anything that carries load or heat, PLA for the rest. No part needs
-supports, and each STL is already oriented for printing.
+supports, and each STL is already oriented for printing. To see every part at
+once, render `motor_rig.scad` with `part = "all"`: all of them, the motor
+cradle and the brake's jaws included, laid out in print orientation (an
+overview and checklist; they won't all fit one bed).
 
 | STL | Qty | Material | Notes |
 |---|---|---|---|

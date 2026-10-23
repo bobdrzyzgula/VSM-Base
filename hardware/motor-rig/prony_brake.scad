@@ -95,6 +95,11 @@ module lower_jaw() {
     }
 }
 
+// print plate: both parts lying on their broad face (y = -jaw_y/2 down)
+module print_plate() {
+    rotate([90, 0, 0]) translate([0, jaw_y / 2, 0]) upper_jaw();
+    translate([0, blk_h + 12, 0]) rotate([90, 0, 0]) translate([0, jaw_y / 2, 0]) lower_jaw();
+}
 module pulley_ghost() {
     %rotate([90, 0, 0]) cylinder(d = pulley_d, h = pulley_w, center = true);
 }
@@ -106,9 +111,7 @@ if (part == "assembly") {
 } else if (part == "lower") {
     lower_jaw();
 } else {
-    // print plate: both parts lying on their broad face (y = -jaw_y/2 down)
-    rotate([90, 0, 0]) translate([0, jaw_y / 2, 0]) upper_jaw();
-    translate([0, blk_h + 12, 0]) rotate([90, 0, 0]) translate([0, jaw_y / 2, 0]) lower_jaw();
+    print_plate();
 }
 
 echo(str("Bore ", 2 * r_in, " mm; bolts ", 2 * bolt_x, " mm apart; arm ", arm_len, " mm"));

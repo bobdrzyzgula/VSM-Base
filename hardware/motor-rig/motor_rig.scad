@@ -24,8 +24,11 @@
 // See RIG_GUIDE.md for building, wiring and test procedures.
 //
 // part = "layout" shows everything on the board; "template" is the 2D top
-// view for marking the screw holes (export as SVG, print 1:1). Every other
-// part name renders that part alone, oriented for printing.
+// view for marking the screw holes (export as SVG, print 1:1); "all" lays
+// out every printed part, the motor cradle and the brake's jaws included,
+// in print orientation (a checklist and overview: the parts don't all fit
+// one printer bed). Every other part name renders that part alone,
+// oriented for printing.
 //
 // Units: mm. Plain OpenSCAD; needs motor_cradle.scad and prony_brake.scad
 // in the same folder. Labels use Liberation Sans.
@@ -40,7 +43,7 @@ use <motor_cradle.scad>
 use <prony_brake.scad>
 
 /* [What to render] */
-part = "layout"; // [layout, template, iso_holder, board_plate, board_cover, wago_holder, wago_lid, bb_tray, bb_lid, jack_panel, iec_box, load_rail, load_carriage, load_pulley, load_spacer, drag_plunger, scale_fence]
+part = "layout"; // [layout, template, all, iso_holder, board_plate, board_cover, wago_holder, wago_lid, bb_tray, bb_lid, jack_panel, iec_box, load_rail, load_carriage, load_pulley, load_spacer, drag_plunger, scale_fence]
 
 /* [Plywood] */
 ply = [450, 300];
@@ -546,23 +549,58 @@ module layout_footprints() {
 }
 
 // ---------------------------------------------------------------- dispatch
+// One printed part, oriented for printing
+module print_part(n) {
+    if (n == "board_plate") board_plate_full();
+    else if (n == "board_cover") translate([0, 0, cover_h]) mirror([0, 0, 1]) board_cover();   // roof down
+    else if (n == "wago_holder") wago_holder();
+    else if (n == "wago_lid") translate([0, 0, wl_h]) mirror([0, 0, 1]) wago_lid();
+    else if (n == "bb_tray") bb_tray();
+    else if (n == "bb_lid") translate([0, 0, bb_lid_h]) mirror([0, 0, 1]) bb_lid();
+    else if (n == "jack_panel") rotate([90, 0, 0]) jack_panel();   // panel face down
+    else if (n == "iec_box") translate([0, 0, ib_out.y]) rotate([-90, 0, 0]) iec_box();      // panel face down
+    else if (n == "load_rail") translate([-cx, 0, 0]) load_rail_part();
+    else if (n == "load_carriage") translate([-cx, 0, -(rail_t - dt_h)]) load_carriage();
+    else if (n == "load_pulley") translate([0, 0, pulley_w / 2]) load_pulley();
+    else if (n == "load_spacer") load_spacer();
+    else if (n == "drag_plunger") drag_plunger();
+    else if (n == "scale_fence") scale_fence();
+    else if (n == "iso_holder") iso_holder();
+    else if (n == "cradle") cradle();
+    else if (n == "brake") print_plate();
+}
+
+// part = "all": every printed part in print orientation, in rows. Each
+// entry is [name, [x, y] of its footprint's front-left corner, [width,
+// depth]] as the part prints at the default settings; parts made much
+// larger than the defaults may crowd their neighbours.
+all_gap = 15;
+all_rows = [
+    [["iso_holder", [-11, 0], [171.2, 104.5]], ["board_plate", [-10, -12], [109, 89]],
+     ["board_cover", [-10, 0], [109, 65]], ["scale_fence", [0, 0], [81, 86]]],
+    [["jack_panel", [0, -42], [219.5, 42]], ["wago_holder", [-11, 0], [148.4, 29.8]],
+     ["wago_lid", [0, 0], [130.6, 34]]],
+    [["cradle", [-51.2, -35], [102.4, 70]], ["bb_tray", [-11, 0], [109.9, 60]],
+     ["bb_lid", [0, 0], [92.1, 64.2]], ["iec_box", [-11, 0], [90.5, 43.5]]],
+    [["brake", [-23, -16.5], [130, 61.5]], ["load_rail", [-25, 0], [50, 114]],
+     ["load_carriage", [-14.8, 0], [29.6, 46]], ["load_pulley", [-30, -30], [60, 60]],
+     ["load_spacer", [-6, -6], [12, 12]], ["drag_plunger", [-6, -6], [12, 12]]]];
+function rsum(v, i) = i <= 0 ? 0 : v[i - 1] + rsum(v, i - 1);
+module all_parts() {
+    depths = [for (r = all_rows) max([for (e = r) e[2].y])];
+    for (j = [0 : len(all_rows) - 1]) {
+        r  = all_rows[j];
+        ws = [for (e = r) e[2].x + all_gap];
+        y0 = -(rsum([for (d = depths) d + all_gap], j));
+        for (i = [0 : len(r) - 1])
+            translate([rsum(ws, i) - r[i][1].x, y0 - depths[j] - r[i][1].y, 0]) print_part(r[i][0]);
+    }
+}
+
 if (part == "layout") layout();
 else if (part == "template") template();
-else if (part == "board_plate") board_plate_full();
-else if (part == "board_cover") translate([0, 0, cover_h]) mirror([0, 0, 1]) board_cover();   // roof down
-else if (part == "wago_holder") wago_holder();
-else if (part == "wago_lid") translate([0, 0, wl_h]) mirror([0, 0, 1]) wago_lid();
-else if (part == "bb_tray") bb_tray();
-else if (part == "bb_lid") translate([0, 0, bb_lid_h]) mirror([0, 0, 1]) bb_lid();
-else if (part == "jack_panel") rotate([90, 0, 0]) jack_panel();   // panel face down
-else if (part == "iec_box") translate([0, 0, ib_out.y]) rotate([-90, 0, 0]) iec_box();      // panel face down
-else if (part == "load_rail") translate([-cx, 0, 0]) load_rail_part();
-else if (part == "load_carriage") translate([-cx, 0, -(rail_t - dt_h)]) load_carriage();
-else if (part == "load_pulley") translate([0, 0, pulley_w / 2]) load_pulley();
-else if (part == "load_spacer") load_spacer();
-else if (part == "drag_plunger") drag_plunger();
-else if (part == "scale_fence") scale_fence();
-else if (part == "iso_holder") iso_holder();
+else if (part == "all") all_parts();
+else print_part(part);
 
 echo(str("Belt plane (motor pulley) at X = ", pulley_x, "; brake arm tip at Y = ", motor_y - arm_len));
 echo(str("Load axle to motor axis: ", load_axis_z - motor_axis_z, " mm up; Y from ",
