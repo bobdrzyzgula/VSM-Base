@@ -7,10 +7,11 @@
   holes, a cord slot at the back), measured by Bob Drzyzgula. The Kenmore's
   bed is too long for halves with the side compartment built in: use
   `compartment_mount = "attached"`, and `hinge_type = "printed"`, since
-  its own hinges went with its molded base. Its base is 246 mm from front
-  to back with the printed hinge, so lower `printer_margin` to 5 mm, or set
-  `back_rim_width`, to fit a 256 mm printer. Move `back_peg_xs` clear of
-  the split (the console warns).
+  its own hinges went with its molded base. Its base is in the 250 mm depth
+  class with the printed hinge, so lower `printer_margin` to 3 mm to fit a
+  256 mm printer, or set `back_rim_width` (outside the standard classes).
+  Its bed sits 3.9 mm lower than the 99K's, so the base is raised to the
+  standard extension height.
 - What changes between machines, and what to measure.
 - Machines without a side compartment, and bases for larger beds.
 - Adding a hinge type: the footprint functions and the cutter module.

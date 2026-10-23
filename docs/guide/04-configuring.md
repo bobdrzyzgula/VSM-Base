@@ -26,9 +26,10 @@
 > doesn't want them: no hinge recesses or nut traps, no hinge checks or
 > hardware in the console, and no hinge test parts; the back-wall tunnels run
 > the whole back wall, and the hinge-hole measurements are ignored. The back
-> rim stays as wide as it would be with lollipop hinges, so the extensions
-> are the same for both; set `back_rim_width` (9 matches the front rim) for a
-> base about 32 mm shallower. Nothing holds the machine in its seat, so carry
+> rim starts at `back_rim_thin` (12 mm) instead of the hinge's 42 mm before
+> the base is rounded up to its depth class (below), so the 99K's comes out
+> at 200 mm rather than 230; its back rim, and so its back extension's lip,
+> differ from a hinged base's. Nothing holds the machine in its seat, so carry
 > the machine and base separately, or strap them together; to reach the
 > cavity (an attached bay's screws, say), lift the machine out. Decide at
 > print time: hinge recesses can't be added well to a printed base later.
@@ -53,8 +54,8 @@
 > Kenmore 158-14001, whose holes are 6.75 mm down, the whole hinge is flush; on
 > the 99K, whose holes are only 4 mm down, the arm stands 1.7 mm proud, and
 > the back extension's lip is notched around it. The block and the base's
-> recess are larger than the lollipop's, so the back rim is about 8 mm
-> wider.
+> recess are larger than the lollipop's, so the back rim needs about 8 mm
+> more; the 99K still fits the 230 mm class.
 >
 > ![The printed hinge, cut through the middle: at rest, with the pin in
 > the bed's hole (left), and tilted back to its stop
@@ -185,6 +186,35 @@
 > only a base with the same `back_peg_xs`. If you move the base's peg holes
 > left with `back_peg_xs` instead, the lip needn't run on, but the
 > extension, again, fits only bases with those holes.
+
+> **Note: standard sizes.** So that bases share extensions, and every
+> extension takes the same inserts, sizes come in standards.
+>
+> - **Depth classes.** The base's front-to-back size is 200, 230 or 250 mm
+>   (`base_depth`; Auto takes the smallest that fits), the spare going into
+>   the back rim. The 99K comes out at 200 with no hinges and 230 with
+>   lollipop or printed hinges; the Kenmore 158-14001 at 230 with no hinges
+>   and 250 with hinges. A class too small for the machine stops the render;
+>   `back_rim_width` overrides the class, with a note.
+> - **Height.** Every extension's top stands at `ext_height` (88.225 mm, the
+>   99K's bed top), with the same 81.2 mm bays. A bed lower than that raises
+>   the base by thickening its floor (the Kenmore's by 3.9 mm, which makes
+>   its plate screws 5/8"); a bed higher than that stands each extension on
+>   a podium (parts `back_podium`, `left_podium`, `corner_podium`), a frame
+>   at least `podium_min` (5 mm) thick, pinned to the extension by four
+>   short pieces of 3/16" rod. `ext_standard = false` lets the extensions
+>   follow the bed instead.
+> - **Length and pegs.** The back extension is 240 mm long
+>   (`back_ext_length`; other lengths get a note), and its pegs sit at 16
+>   and 160 mm from the base's left face (`back_peg_xs`), clear of the
+>   hinges and the split on both machines.
+>
+> Bases of the same machine and class share extensions. Machines whose
+> beds are set flush, like the Kenmore, won't share extensions with
+> machines whose beds stand on the rim, like the 99K, since the lips sit
+> differently; nor will a hingeless thin-backed base share a back extension
+> with a hinged one, and other differences (a printed hinge's notch in the
+> back lip, say) can break the match too.
 
 > **Note: larger extensions and their bins.** The left extension's width
 > (`left_ext_width`) and the back extension's depth (`back_ext_depth`) are

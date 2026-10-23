@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 64
+// VSM Base, version 65
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -309,13 +309,24 @@
 // v64: the exploded view shows the printed hinges taken apart over their
 // recesses: block lifted, arm above it, pin drawn out of the arm's front,
 // pivot rod drawn out to the side.
+//
+// v65: standard sizes. base_depth: the base's front-to-back size comes in
+// classes of 200, 230 and 250 mm (auto: the smallest that fits), the
+// spare going into the back rim, so bases of a class share a left
+// extension's length. With no hinges the back rim is back_rim_thin (12 mm)
+// before rounding up to the class. Extensions stand at a standard height
+// (ext_height, the 99K's bed top, 88.225 mm) with the same bays: a lower
+// bed raises the base by thickening its floor (base_raise); a higher one
+// stands each extension on a podium (parts back_podium, left_podium,
+// corner_podium) at least podium_min thick, raising the base if need be.
+// back_ext_length other than 240 mm gets a note.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -431,11 +442,15 @@ rabbit_depth = 4; // [2 : 0.1 : 8]
 rim_width = 9; // [5 : 0.5 : 20]
 // End wall thickness at the bottom, left and right (7/8" = 22.225)
 end_wall = 22.225;
-// Top rim: back of the bed seat to outer back face (0 = from the hinge)
+// Base depth front to back: a standard class, so bases of a class share extensions; auto = the smallest that fits
+base_depth = 0; // [0:Auto, 200:200 mm, 230:230 mm, 250:250 mm]
+// Top rim: back of the bed seat to outer back face (0 = from the hinge and base_depth; set it to override the class)
 back_rim_width = 0;
+// With no hinges: the back rim before rounding up to the depth class
+back_rim_thin = 12; // [8 : 0.5 : 40]
 // With automatic back rim: solid behind the hinge's rear edge
 hinge_back_skin = 5; // [2 : 0.5 : 15]
-// Bottom thickness
+// Bottom thickness (the base may be raised above this to bring the bed to ext_height)
 bottom_thickness = 12.7;
 // Cavity depth below the top surface
 inner_depth = 70;
@@ -1010,6 +1025,14 @@ lip_cut_clearance = 0.25; // [0.1 : 0.05 : 0.6]
 ext_top_adjust = 0; // [-3 : 0.1 : 3]
 // Extension floor thickness
 ext_floor = 3; // [1.5 : 0.1 : 8]
+// Standard extension height: every extension's top at ext_height above the table, with the same bays (the base is raised, or the extensions stand on podiums, to match the bed)
+ext_standard = true;
+// Standard extension height: the 99K's bed top
+ext_height = 88.225; // [60 : 0.005 : 140]
+// Least podium under an extension, when the bed stands above ext_height
+podium_min = 5; // [3 : 0.5 : 20]
+// Podium wall (it is a frame, open below)
+podium_wall = 6; // [3 : 0.5 : 15]
 // Frame width around each lid, at the top
 ext_frame = 4; // [2 : 0.1 : 10]
 // Ledge the lid rests on, inside the frame
@@ -1071,8 +1094,8 @@ peg_lip_clearance = 0.2;
 pin_lip_interference = 0.1;
 // Hole depth in the base
 peg_hole_depth = 3.5;
-// Back-rim peg positions (X); keep clear of the hinges and the split
-back_peg_xs = [16, 230];
+// Back-rim peg positions (X), from the base's left face: standard for every machine, so back extensions fit any base of their class; keep clear of the hinges and the split
+back_peg_xs = [16, 160];
 // Left-rim peg positions (Y)
 left_peg_ys = [35, 150];
 // Right-rim peg positions (Y), for future right-side extensions; [] for none
@@ -1586,9 +1609,19 @@ bed_bot_drop  = bed_flush ? bed_plate_thickness
               : bed_on_feet ? rabbit_depth - bed_feet_gap : rabbit_depth - bed_cushion;
 seat_depth    = bed_bot_drop + (bed_on_feet ? bed_feet_gap : bed_cushion);
 inner_depth_eff = bed_on_feet ? bed_bot_drop + foot_height + bed_cushion : inner_depth;
-outer_depth   = bottom_thickness + inner_depth_eff;
+// Standard extension height: a bed lower than ext_height raises the base
+// (a thicker floor); a higher one needs podiums under the extensions, at
+// least podium_min thick, so a bed just above ext_height raises the base
+// to make room for one
+bed_top_nat   = bottom_thickness + inner_depth_eff - bed_bot_drop + bed_plate_thickness;
+base_raise    = !ext_standard ? 0
+              : bed_top_nat < ext_height - 0.001 ? ext_height - bed_top_nat
+              : bed_top_nat > ext_height + 0.001 && bed_top_nat < ext_height + podium_min
+                  ? ext_height + podium_min - bed_top_nat : 0;
+bottom_eff    = bottom_thickness + base_raise;
+outer_depth   = bottom_eff + inner_depth_eff;
 top_z         = outer_depth;
-floor_z       = bottom_thickness;
+floor_z       = bottom_eff;
 seat_floor_z  = top_z - seat_depth;
 
 // Bed seat (rabbet the machine sits in)
@@ -1742,8 +1775,15 @@ ol_slots = [                                     // [x, front?, bottom z, is cha
 
 outer_length = (has_compartment ? lid_x1 : seat_x1) + right_rim;
 base_x1 = attached ? base_len : outer_length;     // the base part's right end
-auto_back_rim = hinge_offset_y() + hinge_rear() + hinge_back_skin;
-back_rim      = back_rim_width > 0 ? back_rim_width : auto_back_rim;
+auto_back_rim = hinge_type == "none" ? back_rim_thin : hinge_offset_y() + hinge_rear() + hinge_back_skin;
+// Depth classes: the natural depth rounded up to a class, the spare in the back rim
+depth_classes = [200, 230, 250];
+nat_width     = seat_y1 + auto_back_rim;
+class_width   = base_depth > 0 ? base_depth
+              : let(c = [for (d = depth_classes) if (d >= nat_width - 0.001) d]) len(c) > 0 ? c[0] : nat_width;
+assert(back_rim_width > 0 || class_width >= nat_width - 0.001,
+       str("base_depth ", base_depth, " mm is less than this machine and hinge need (", nat_width, " mm)"));
+back_rim      = back_rim_width > 0 ? back_rim_width : class_width - seat_y1;
 outer_width   = seat_y1 + back_rim;
 
 // Divider between the machine cavity and the small compartment
@@ -1853,7 +1893,7 @@ tunnel_blocks = concat(
         [rl[1].x - hinge_tunnel_margin, rl[2].x + hinge_tunnel_margin]]);
 tunnel_runs = [for (r = cut_runs(has_hinges ? [[hinge_x1 + hinge_keepout, hinge_x2 - hinge_keepout]]
                                             : [[mc_x0 + tunnel_web, mc_x1 - tunnel_web]], tunnel_blocks))
-                  if (r[1] - r[0] >= tunnel_width / 2) r];
+                  if (r[1] - r[0] >= tunnel_width / 2 && tunnel_len >= 8) r];
 // Behind the small compartment, clear of the right hinge
 st_tunnel_x0  = has_hinges ? max(st_x0, hinge_x2 + hinge_keepout) : st_x0;
 st_tunnel_y0  = st_y1 - overlap;
@@ -1911,6 +1951,10 @@ serr_top  = seat_floor_z - serration_top_gap;
 
 base_peg_hole_d = ext_peg_style == "pin" ? rod_d + 0.2 : peg_hole_d;
 ext_top_z  = bed_top_z + ext_top_adjust;      // lids and lips level with the bed
+// The extension bodies start at ext_z0: 0, or the podium's top
+ext_z0     = ext_standard ? max(0, bed_top_z - ext_height) : 0;
+ext_fl     = ext_z0 + ext_floor;                 // bay floor
+has_podium = ext_z0 > 0.01;
 // Lips: on the rim, or recessed into it where the bed doesn't stand high
 // enough for lip_min_t (within 0.5 mm, so the 99K's 5.3 mm lips stay put)
 lip_nat    = ext_top_z - top_z - lip_clearance;
@@ -2064,7 +2108,7 @@ function bay_rect(which, rab) = let(L = bay_ledges(which, rab))
     [[rab[0].x + L[0], rab[0].y + L[2]], [rab[1].x - L[1], rab[1].y - L[3]]];
 function ext_bay(which, rab) = ext_bay_r(which, bay_rect(which, rab));
 function ext_bay_r(which, b) =
-    [[b[0].x, b[0].y, ext_floor],
+    [[b[0].x, b[0].y, ext_fl],
      [b[1].x, b[1].y, bay_z1(which, ext_top_z, ext_lid_thickness)]];
 
 // Extra bins. Past each piece's inner bay, inside the real rabbet's
@@ -2389,9 +2433,9 @@ if (report && ins_in(part, ot_parts)) {
 }
 
 // Footprints of the printed parts (X, Y, Z)
-bk_size = [bk_lip_x1 - bk_x0, bk_y1 - seat_y1, ext_top_z];
-lf_size = [seat_x0 - lf_x0, lf_y1 - lf_y0, ext_top_z];
-cn_size = [cn_x1 - cn_x0 + ext_dt_depth, cn_y1 - cn_y0 + ext_dt_depth, ext_top_z];
+bk_size = [bk_lip_x1 - bk_x0, bk_y1 - seat_y1, ext_top_z - ext_z0];
+lf_size = [seat_x0 - lf_x0, lf_y1 - lf_y0, ext_top_z - ext_z0];
+cn_size = [cn_x1 - cn_x0 + ext_dt_depth, cn_y1 - cn_y0 + ext_dt_depth, ext_top_z - ext_z0];
 half_x  = max(cut_x + key_depth, base_x1 - cut_x);
 base_size = split ? [half_x, outer_width, outer_depth]
                   : [base_x1, outer_width, outer_depth];
@@ -2577,6 +2621,19 @@ if (left_ext_double && (bay_left || bay_corner)) if (report)
 if (back_ext_double && (bay_back || bay_corner)) if (report)
     echo(str("Back extension depth ", bk_d, " mm, for two equal bins (corner needs ", up01(cn_need_y),
              ", back extension ", up01(bk_need), ")"));
+if (report) echo(str("Base depth ", outer_width, " mm",
+                     back_rim_width > 0 ? " (back_rim_width override: not a standard class)"
+                     : str(" (class ", class_width, "; this machine and hinge need ", round(nat_width * 10) / 10, ")"),
+                     "; back rim ", back_rim));
+if (report && back_rim_width <= 0 && class_width > depth_classes[len(depth_classes) - 1])
+    echo(str("WARNING: the base is deeper than the largest class (", depth_classes[len(depth_classes) - 1], " mm); its extensions are not standard"));
+if (report && back_rim_width > 0) echo("NOTE: back_rim_width is set, so the base is outside the standard depth classes");
+if (report && ext_standard && base_raise > 0)
+    echo(str("Base raised ", round(base_raise * 1000) / 1000, " mm (thicker floor) to bring the bed to the standard extension height, ", ext_height, " mm"));
+if (report && ext_standard && has_podium)
+    echo(str("Extensions stand on podiums ", round(ext_z0 * 1000) / 1000, " mm thick (parts back_podium, left_podium, corner_podium), pinned with ", rod_d, " mm rod, 4 per podium, ", 2 * pod_pin_depth - 1, " mm long"));
+if (report && !ext_standard) echo("NOTE: ext_standard is off: the extensions follow this bed's height and their bays are not standard");
+if (report && abs(back_ext_length - 240) > 0.01) echo(str("NOTE: back_ext_length is ", back_ext_length, " mm, not the standard 240"));
 if (has_corner) if (report) echo(str("Corner piece part: ", cn_size, fits(cn_size) ? "" : "  WARNING: exceeds printer"));
 if (report) echo(str("Base part", split ? " (each half)" : "", ": ", base_size,
          fits(base_size) ? "" : "  WARNING: exceeds printer"));
@@ -3119,14 +3176,17 @@ if (part == "assembly") {
     if (has_back) {
         color("Peru") back_ext_part();
         color("BurlyWood") piece_lids("back");
+        if (has_podium) color("Tan") podium_part("back");
     }
     if (has_left) {
         color("Peru") left_ext_part();
         color("BurlyWood") piece_lids("left");
+        if (has_podium) color("Tan") podium_part("left");
     }
     if (has_corner) {
         color("Peru") corner_part();
         color("BurlyWood") piece_lids("corner");
+        if (has_podium) color("Tan") podium_part("corner");
     }
 } else if (part == "all") {
     print_plates();
@@ -3149,17 +3209,20 @@ if (part == "assembly") {
     if (has_back) translate([0, explode, 0]) {
         color("Peru") back_ext_part();
         color("BurlyWood") translate([0, 0, up]) piece_lids("back");
+        if (has_podium) color("Tan") translate([0, 0, -up / 2]) podium_part("back");
         for (x = back_pegs) peg_exploded(x, peg_back_y, up / 2);
     }
     if (has_left) translate([-explode - (split ? split_spread / 2 : 0), 0, 0]) {
         color("Peru") left_ext_part();
         color("BurlyWood") translate([0, 0, up]) piece_lids("left");
+        if (has_podium) color("Tan") translate([0, 0, -up / 2]) podium_part("left");
         for (y = left_pegs) peg_exploded(peg_left_x, y, up / 2);
     }
     if (has_corner)
         translate([-explode - (split ? split_spread / 2 : 0), explode, 0]) {
             color("Peru") corner_part();
             color("BurlyWood") translate([0, 0, up]) piece_lids("corner");
+            if (has_podium) color("Tan") translate([0, 0, -up / 2]) podium_part("corner");
         }
     // Freestanding boxes, in a row in front of the base, lids above
     bxs = [for (w = ["back", "left", "corner"])
@@ -3180,15 +3243,19 @@ if (part == "assembly") {
 } else if (part == "base_lid") {
     if (lid_on("base")) lid_print("base");
 } else if (part == "back_ext") {
-    translate([-bk_x0, -seat_y1, 0]) back_ext_part();
+    translate([-bk_x0, -seat_y1, -ext_z0]) back_ext_part();
 } else if (part == "left_ext") {
-    translate([-lf_x0, -lf_y0, 0]) left_ext_part();
+    translate([-lf_x0, -lf_y0, -ext_z0]) left_ext_part();
 } else if (part == "corner_ext") {
-    translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();
+    translate([-cn_x0, -cn_y0 + ext_dt_depth, -ext_z0]) corner_part();
 } else if (part == "back_lid") {
     lid_print("back");
 } else if (part == "left_lid") {
     lid_print("left");
+} else if (part == "back_podium" || part == "left_podium" || part == "corner_podium") {
+    w = part == "back_podium" ? "back" : part == "left_podium" ? "left" : "corner";
+    assert(has_podium, "no podium: the bed is not above ext_height");
+    translate([-lid_body(w)[0].x, -lid_body(w)[0].y, 0]) podium_part(w);
 } else if (part == "corner_lid") {
     lid_print("corner");
 } else if (part == "extensions_view") {
@@ -3214,11 +3281,11 @@ if (part == "assembly") {
 } else if (part == "lid_hinge_test") {
     lid_hinge_test();
 } else if (part == "back_box") {
-    translate([-bk_x0, -bk_y0, 0]) back_box();
+    translate([-bk_x0, -bk_y0, -ext_z0]) back_box();
 } else if (part == "left_box") {
-    translate([-lf_x0, -lf_y0, 0]) left_box();
+    translate([-lf_x0, -lf_y0, -ext_z0]) left_box();
 } else if (part == "corner_box") {
-    translate([-cn_x0, -cn_y0, 0]) corner_box();
+    translate([-cn_x0, -cn_y0, -ext_z0]) corner_box();
 } else if (part == "hinge_coupon") {
     if (has_hinges) hinge_coupon();
     else if (report) echo("WARNING: hinge_coupon needs a hinge_type other than none");
@@ -4127,16 +4194,17 @@ module gable_tunnel(w, h, len, center = false) {
 
 // Rounded box from (x0,y0,0) to (x1,y1,ext_top_z), rounding the listed edges.
 module ext_shell(x0, y0, x1, y1, edges) {
-    translate([x0, y0, 0])
+    translate([x0, y0, ext_z0])
         if (len(edges) > 0)
-            cuboid([x1 - x0, y1 - y0, ext_top_z], rounding = ext_rounding,
+            cuboid([x1 - x0, y1 - y0, ext_top_z - ext_z0], rounding = ext_rounding,
                    edges = edges, anchor = LEFT + FRONT + BOTTOM);
         else
-            cube([x1 - x0, y1 - y0, ext_top_z]);
+            cube([x1 - x0, y1 - y0, ext_top_z - ext_z0]);
 }
 
 // Lid rabbet and compartment cut for a body with rabbet opening `rab`.
 module ext_hollow(which, rab) {
+    podium_holes(which);
     b  = ext_inner(which);
     sp = ext_sep(which);
     zt = ext_top_z - ext_lid_thickness;               // the ledges' top
@@ -4147,11 +4215,11 @@ module ext_hollow(which, rab) {
         translate([r[0].x, r[0].y, zt])
             cube([r[1].x - r[0].x, r[1].y - r[0].y, ext_lid_thickness + overlap]);
     // Compartment, inside the ledge
-    translate([b[0].x, b[0].y, ext_floor])
+    translate([b[0].x, b[0].y, ext_fl])
         cube([b[1].x - b[0].x, b[1].y - b[0].y, ext_top_z]);
     // and the extra bins
     for (bn = ext_bins(which)) let(r = bn[1])
-        translate([r[0].x, r[0].y, ext_floor])
+        translate([r[0].x, r[0].y, ext_fl])
             cube([r[1].x - r[0].x, r[1].y - r[0].y, ext_top_z]);
     // bin lids' hinge recesses and lean-back chamfers
     if (sp) for (bn = ext_bins(which)) lid_frame_cuts(bn[0]);
@@ -4159,7 +4227,7 @@ module ext_hollow(which, rab) {
         if (!sp && ext_divider_notch) {
             // finger notch, U-shaped, down from the lid's ledge
             w  = min(ext_notch_w, d[3] - 10);
-            dn = min(ext_notch_d, zt - ext_floor - 5);
+            dn = min(ext_notch_d, zt - ext_fl - 5);
             r  = min(w / 2, dn);
             if (w >= 10 && dn > 1)
                 translate(d[0] == "y" ? [d[1], 0, 0] : [0, d[1], 0])
@@ -4181,7 +4249,7 @@ module ext_hollow(which, rab) {
                 translate(d[0] == "y" ? [0, d[2] + d[3] / 2, 0] : [d[2] - d[3] / 2, 0, 0])
                     rotate(d[0] == "y" ? [90, 0, 0] : [90, 0, 90])
                         linear_extrude(height = d[3])
-                            polygon([[e + sg * overlap, ext_floor], [e - sg * h, ext_floor],
+                            polygon([[e + sg * overlap, ext_fl], [e - sg * h, ext_fl],
                                      [e - sg * h, zl - h], [e + sg * overlap, zl]]);
         }
 }
@@ -4310,7 +4378,7 @@ module back_ext_part() {
         lid_frame_cuts("back");
         for (x = back_pegs) ext_peg_hole(x, peg_back_y);
         if (has_corner)
-            corner_tongues(ext_dt_clearance, -overlap, ext_top_z + 2 * overlap);
+            corner_tongues(ext_dt_clearance, ext_z0 - overlap, ext_top_z - ext_z0 + 2 * overlap);
         back_trench_cut();
         // Printed hinges stand above the rim, and a recessed lip goes round
         // the full-height islands left about the hinges: notch the lip
@@ -4424,9 +4492,38 @@ module left_ext_part() {
         lid_frame_cuts("left");
         for (y = left_pegs) ext_peg_hole(peg_left_x, y);
         if (has_corner)
-            corner_tongues(ext_dt_clearance, -overlap, ext_top_z + 2 * overlap);
+            corner_tongues(ext_dt_clearance, ext_z0 - overlap, ext_top_z - ext_z0 + 2 * overlap);
         left_trench_cut();
     }
+}
+
+// Podiums: when the bed stands above ext_height, each extension stands on
+// a frame of its own footprint, ext_z0 tall and open below, with a solid
+// block at each corner; a short pin (rod_d, the harness rod's stock) in
+// each corner locates the extension on it.
+pod_blk = 14;                                   // corner block
+pod_pin_depth = 6;
+function pod_pins(b) = let(i = pod_blk / 2)
+    [[b[0].x + i, b[0].y + i], [b[1].x - i, b[0].y + i], [b[0].x + i, b[1].y - i], [b[1].x - i, b[1].y - i]];
+module podium_part(w) {
+    b = lid_body(w);
+    difference() {
+        union() {
+            difference() {
+                translate([b[0].x, b[0].y, 0]) cube([b[1].x - b[0].x, b[1].y - b[0].y, ext_z0]);
+                translate([b[0].x + podium_wall, b[0].y + podium_wall, -overlap])
+                    cube([b[1].x - b[0].x - 2 * podium_wall, b[1].y - b[0].y - 2 * podium_wall, ext_z0 + 2 * overlap]);
+            }
+            for (c = pod_pins(b)) translate([c.x - pod_blk / 2, c.y - pod_blk / 2, 0]) cube([pod_blk, pod_blk, ext_z0]);
+        }
+        for (c = pod_pins(b)) translate([c.x, c.y, ext_z0 - min(pod_pin_depth, ext_z0 - 1)])
+            cylinder(h = pod_pin_depth + overlap, d = rod_hole_d, $fn = 24);
+    }
+}
+// The pins' holes in an extension's underside
+module podium_holes(w) {
+    if (has_podium) for (c = pod_pins(lid_body(w)))
+        translate([c.x, c.y, ext_z0 - overlap]) cylinder(h = pod_pin_depth + overlap, d = rod_hole_d, $fn = 24);
 }
 
 module corner_part() {
@@ -4434,7 +4531,7 @@ module corner_part() {
         union() {
             ext_shell(cn_x0, cn_y0, cn_x1, cn_y1,
                       [TOP + LEFT, TOP + BACK, BACK + LEFT]);
-            corner_tongues(0, 0, ext_top_z);
+            corner_tongues(0, ext_z0, ext_top_z - ext_z0);
         }
         ext_hollow("corner", cn_rab);
         lid_frame_cuts("corner");
@@ -5152,6 +5249,8 @@ build_parts = concat(
     has_back   ? [["back_ext",   "extension", [bk_size.x, bk_size.y], ext_support("back")]] : [],
     has_left   ? [["left_ext",   "extension", [lf_size.x, lf_size.y], ext_support("left")]] : [],
     has_corner ? [["corner_ext", "extension", [cn_size.x, cn_size.y], []]] : [],
+    has_podium ? [for (w = ["back", "left", "corner"]) if (w == "back" ? has_back : w == "left" ? has_left : has_corner)
+        [str(w, "_podium"), "extension", lid_body(w)[1] - lid_body(w)[0], []]] : [],
     make_back_box   ? [["back_box",   "extension", [bk_x1 - bk_x0, bk_y1 - bk_y0], []]] : [],
     make_left_box   ? [["left_box",   "extension", [lf_x1 - lf_x0, lf_y1 - lf_y0], []]] : [],
     make_corner_box ? [["corner_box", "extension", [cn_x1 - cn_x0, cn_y1 - cn_y0], []]] : [],
@@ -5199,12 +5298,15 @@ module place_part(id) {
     else if (id == "back_trim") rim_trim_print("back");
     else if (id == "left_trim") rim_trim_print("left");
     else if (id == "cord_slot_trim") cord_slot_trim_print();
-    else if (id == "back_ext")   translate([-bk_x0, -seat_y1, 0]) back_ext_part();
-    else if (id == "left_ext")   translate([-lf_x0, -lf_y0, 0]) left_ext_part();
-    else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, 0]) corner_part();
-    else if (id == "back_box")   translate([-bk_x0, -bk_y0, 0]) back_box();
-    else if (id == "left_box")   translate([-lf_x0, -lf_y0, 0]) left_box();
-    else if (id == "corner_box") translate([-cn_x0, -cn_y0, 0]) corner_box();
+    else if (id == "back_ext")   translate([-bk_x0, -seat_y1, -ext_z0]) back_ext_part();
+    else if (id == "left_ext")   translate([-lf_x0, -lf_y0, -ext_z0]) left_ext_part();
+    else if (id == "corner_ext") translate([-cn_x0, -cn_y0 + ext_dt_depth, -ext_z0]) corner_part();
+    else if (id == "back_box")   translate([-bk_x0, -bk_y0, -ext_z0]) back_box();
+    else if (id == "left_box")   translate([-lf_x0, -lf_y0, -ext_z0]) left_box();
+    else if (id == "corner_box") translate([-cn_x0, -cn_y0, -ext_z0]) corner_box();
+    else if (id == "back_podium" || id == "left_podium" || id == "corner_podium")
+        let(w = id == "back_podium" ? "back" : id == "left_podium" ? "left" : "corner")
+            translate([-lid_body(w)[0].x, -lid_body(w)[0].y, 0]) podium_part(w);
     else if (len([for (w = lid_names) if (id == str("lid_", w)) w]) > 0)
         let(w = [for (w = lid_names) if (id == str("lid_", w)) w][0])
             translate([tab_pad(w) / 2, tab_pad(w) / 2, 0]) lid_print(w);

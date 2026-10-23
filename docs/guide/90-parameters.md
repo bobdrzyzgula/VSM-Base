@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 501 parameters; 499 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 507 parameters; 505 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---|---|---|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -87,9 +87,11 @@ There are 501 parameters; 499 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `rim_width` | `9` | Top rim: outer face to seat/rabbet edge, front, left and right *Range 5 to 20, step 0.5.* |
 | `end_wall` | `22.225` | End wall thickness at the bottom, left and right (7/8" = 22.225) |
-| `back_rim_width` | `0` | Top rim: back of the bed seat to outer back face (0 = from the hinge) |
+| `base_depth` | `0` | Base depth front to back: a standard class, so bases of a class share extensions; auto = the smallest that fits *Choices: 0:Auto, 200:200 mm, 230:230 mm, 250:250 mm.* |
+| `back_rim_width` | `0` | Top rim: back of the bed seat to outer back face (0 = from the hinge and base_depth; set it to override the class) |
+| `back_rim_thin` | `12` | With no hinges: the back rim before rounding up to the depth class *Range 8 to 40, step 0.5.* |
 | `hinge_back_skin` | `5` | With automatic back rim: solid behind the hinge's rear edge *Range 2 to 15, step 0.5.* |
-| `bottom_thickness` | `12.7` | Bottom thickness |
+| `bottom_thickness` | `12.7` | Bottom thickness (the base may be raised above this to bring the bed to ext_height) |
 | `inner_depth` | `70` | Cavity depth below the top surface |
 | `divider_web` | `4` | Solid web at the top between the bed seat and the lid rabbet *Range 2 to 10, step 0.5.* |
 | `outer_rounding` | `5` | Outer edge rounding (top and vertical edges) *Range 0 to 10, step 0.5.* |
@@ -451,6 +453,10 @@ There are 501 parameters; 499 of them appear in the Customizer. The rest are lis
 | `lip_cut_clearance` | `0.25` | Clearance around the recessed lips and the trims, per side *Range 0.1 to 0.6, step 0.05.* |
 | `ext_top_adjust` | `0` | Trim to the extensions' top plane (lids, lips, trenches) against the real bed, mm; negative lowers it *Range -3 to 3, step 0.1.* |
 | `ext_floor` | `3` | Extension floor thickness *Range 1.5 to 8, step 0.1.* |
+| `ext_standard` | `true` | Standard extension height: every extension's top at ext_height above the table, with the same bays (the base is raised, or the extensions stand on podiums, to match the bed) |
+| `ext_height` | `88.225` | Standard extension height: the 99K's bed top *Range 60 to 140, step 0.005.* |
+| `podium_min` | `5` | Least podium under an extension, when the bed stands above ext_height *Range 3 to 20, step 0.5.* |
+| `podium_wall` | `6` | Podium wall (it is a frame, open below) *Range 3 to 15, step 0.5.* |
 | `ext_frame` | `4` | Frame width around each lid, at the top *Range 2 to 10, step 0.1.* |
 | `ext_ledge` | `4` | Ledge the lid rests on, inside the frame *Range 2 to 10, step 0.1.* |
 | `ext_lid_thickness` | `4` | Lid thickness (= depth of the lid rabbet) *Range 2 to 8, step 0.1.* |
@@ -494,7 +500,7 @@ There are 501 parameters; 499 of them appear in the Customizer. The rest are lis
 | `peg_lip_clearance` | `0.2` | Peg hole in the lip, over the peg diameter (the peg's crush ribs make the press fit) |
 | `pin_lip_interference` | `0.1` | Metal pins: press fit in the lip, hole under the rod diameter |
 | `peg_hole_depth` | `3.5` | Hole depth in the base |
-| `back_peg_xs` | `[16, 230]` | Back-rim peg positions (X); keep clear of the hinges and the split |
+| `back_peg_xs` | `[16, 160]` | Back-rim peg positions (X), from the base's left face: standard for every machine, so back extensions fit any base of their class; keep clear of the hinges and the split |
 | `left_peg_ys` | `[35, 150]` | Left-rim peg positions (Y) |
 | `right_peg_ys` | `[35, 150]` | Right-rim peg positions (Y), for future right-side extensions; [] for none |
 
