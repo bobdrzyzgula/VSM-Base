@@ -107,6 +107,47 @@ overview and checklist; they won't all fit one bed).
 | `iec_box` | 1 | PETG | Prints panel-down |
 | `jack_panel` | 1 | PETG | Prints face-down, 220 mm long |
 
+**Notes on filament choices.** Nothing on the rig is loaded anywhere near
+the strength of any common filament, so the choice comes down to heat,
+and to which parts carry mains.
+
+- **What the filaments stand.** As a rough guide, PLA starts to soften at
+  about 55 °C. PETG holds its shape to about 70 °C (its heat deflection
+  temperature at light load), and ASA and ABS to about 90 °C. PC and
+  PC blends go higher still. Carbon- or glass-filled grades are stiffer
+  and gain a few degrees, but they wear brass nozzles and add nothing the
+  rig needs.
+- **The brake jaws: the hottest parts.** The brake turns the motor's
+  output into heat at the pulley, and the jaws hold the pulley through
+  their felt pads. With the duty cycle in §7 (10–20 seconds per loaded
+  point, then a pause to cool), PETG stays well inside its range. Feel
+  the jaws after a few points: if they're too warm to hold comfortably,
+  wait longer between points. For long runs at heavy loads, print them in
+  ASA or PC.
+- **The motor cradle.** A sewing motor's case runs warm rather than hot
+  in short tests, and the felt lining insulates it a little; PETG is
+  enough. A motor run hard for many minutes can get hotter. Then ASA, or
+  simply letting it cool, is the answer.
+- **The load pulley and its plunger.** Bearing friction warms them only a
+  little. A slipping belt warms the pulley's groove, so tension the belt
+  rather than letting it slip.
+- **The parts near mains.** The triac board's plate and vented cover, the
+  IEC box, the jack panel and the Wago holder carry or cover live parts.
+  The heat is modest: the triac dissipates about a watt at these
+  currents. Use PETG or better, not PLA, so that a warm day or a warm
+  triac can't let a screw loosen or a cover sag toward a live part. No
+  common filament is flame-rated as printed, so the fused inlet, the lids
+  and the rule of changing connections only with the cord unplugged are
+  what keep these parts safe, not the plastic.
+- **The rest.** The scale fence, the breadboard tray and lid, and the
+  isolation transformer's holder see little heat. PLA is fine for the
+  fence and the breadboard parts. The holder is listed as PETG because it
+  bears the transformer's weight on a bench that may get warm, but PLA
+  would serve.
+
+In short: PETG for everything is a sound default, with ASA or PC for the
+brake jaws if they will see long, heavy runs.
+
 ### 3.3 Hardware
 
 | Item | Qty | For |
