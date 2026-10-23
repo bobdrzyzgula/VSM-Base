@@ -202,7 +202,7 @@
 >   its plate screws 5/8"); a bed higher than that stands each extension on
 >   a podium (parts `back_podium`, `left_podium`, `corner_podium`), a frame
 >   at least `podium_min` (5 mm) thick, pinned to the extension by four
->   short pieces of 3/16" rod. `ext_standard = false` lets the extensions
+>   3/16" × 3/8" dowel pins. `ext_standard = false` lets the extensions
 >   follow the bed instead.
 > - **Length and pegs.** The back extension is 240 mm long
 >   (`back_ext_length`; other lengths get a note), and its pegs sit at 16

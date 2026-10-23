@@ -165,9 +165,10 @@ and others) are welcome; see the guide.
     (mending plates)
   - 2 #8-32 machine screws, about 1" long, and 2 nylon-insert locknuts
     (hinges)
-  - 4 pieces of 3/16" rod, 2⅜" long (carrying harness; optional): mild steel,
-    303 stainless, or lead-free brass such as 464; the hole ends are closed
-    with printed plugs
+  - 4 3/16" × 2⅝" dowel pins (carrying harness; optional), or 3/16" rod
+    cut to length (mild steel, 303 stainless, or lead-free brass such as
+    464); the hole ends are closed with printed plugs. The console gives
+    the length for your build
   - Bed cushions, 1/16" thick when compressed
 
 The console ends with a hardware list for your configuration, with screw

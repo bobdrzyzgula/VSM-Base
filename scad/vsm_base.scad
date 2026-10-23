@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 65
+// VSM Base, version 66
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -320,6 +320,10 @@
 // stands each extension on a podium (parts back_podium, left_podium,
 // corner_podium) at least podium_min thick, raising the base if need be.
 // back_ext_length other than 240 mm gets a note.
+//
+// v66: the console suggests a stock 3/16" dowel pin for the harness rods
+// (the longest stock length that fits, 2 5/8" on the 99K) ahead of cut
+// rod, and 7/16" pins for the podiums.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -2631,7 +2635,7 @@ if (report && back_rim_width > 0) echo("NOTE: back_rim_width is set, so the base
 if (report && ext_standard && base_raise > 0)
     echo(str("Base raised ", round(base_raise * 1000) / 1000, " mm (thicker floor) to bring the bed to the standard extension height, ", ext_height, " mm"));
 if (report && ext_standard && has_podium)
-    echo(str("Extensions stand on podiums ", round(ext_z0 * 1000) / 1000, " mm thick (parts back_podium, left_podium, corner_podium), pinned with ", rod_d, " mm rod, 4 per podium, ", 2 * pod_pin_depth - 1, " mm long"));
+    echo(str("Extensions stand on podiums ", round(ext_z0 * 1000) / 1000, " mm thick (parts back_podium, left_podium, corner_podium), pinned with 3/16\" dowel pins, 4 per podium, ", frac16(dowel_fit(2 * pod_pin_depth - 1) + 1 / 64), " long"));
 if (report && !ext_standard) echo("NOTE: ext_standard is off: the extensions follow this bed's height and their bays are not standard");
 if (report && abs(back_ext_length - 240) > 0.01) echo(str("NOTE: back_ext_length is ", back_ext_length, " mm, not the standard 240"));
 if (has_corner) if (report) echo(str("Corner piece part: ", cn_size, fits(cn_size) ? "" : "  WARNING: exceeds printer"));
@@ -3054,6 +3058,11 @@ function stock_len(spec, need) =
           len(c) > 0 ? str(c[0], " mm") : str(ceil(need), " mm (special)")
         : let(c = [for (l = inch_lengths) if (l[0] * in >= need) l[1]])
           len(c) > 0 ? str(c[0], "\"") : str(need / in, "\" (special)");
+// Stock 3/16" dowel-pin lengths (McMaster), inches; the longest that fits `need` mm
+dowel_lengths = [3/16, 7/32, 1/4, 5/16, 3/8, 7/16, 1/2, 9/16, 5/8, 11/16, 3/4, 13/16, 7/8, 15/16, 1,
+                 1+1/8, 1+1/4, 1+3/8, 1+1/2, 1+5/8, 1+3/4, 1+7/8, 2, 2+1/8, 2+1/4, 2+3/8, 2+1/2,
+                 2+5/8, 2+3/4, 2+7/8, 3, 3+1/2, 4];
+function dowel_fit(need) = let(c = [for (l = dowel_lengths) if (l * in <= need + 0.05) l]) len(c) > 0 ? c[len(c) - 1] : 0;
 // Inches, rounded down to 1/16", as a mixed fraction
 function frac16(x_in) =
     let(t = floor(x_in * 16 + 1e-6), w = floor(t / 16), n = t - 16 * w,
@@ -3090,9 +3099,12 @@ if (split && plate_count > 0) {
              " mm), + ", n_plate_screws, " hex nuts"));
 }
 if (harness_rods)
-    if (report) echo(str("Harness rods: ", n_rods, " x ", frac16(rod_d / in + 1 / 32), " (", rod_d,
-             " mm) rod, cut to ", round(rod_len * 10) / 10, " mm (",
-             frac16(rod_len / in), "); steel, 303 stainless or lead-free brass",
+    if (report) echo(str("Harness rods: ", n_rods, " x ", frac16(rod_d / in + 1 / 32), " (", rod_d, " mm), ",
+             round(rod_len * 10) / 10, " mm long: ",
+             dowel_fit(rod_len) * in > rod_len - 3
+                 ? str("stock dowel pins, ", frac16(dowel_fit(rod_len) + 1 / 64), " (", round(dowel_fit(rod_len) * in * 10) / 10,
+                       " mm), or rod cut to length (steel, 303 stainless or lead-free brass)")
+                 : str("rod cut to ", frac16(rod_len / in), " (steel, 303 stainless or lead-free brass)"),
              rod_plug_len > 0 ? str("; + ", n_rods, " printed plugs (part rod_plugs)") : ""));
 if (has_outlet) {
     if (report) echo(str("Outlet: 1 x dual sewing-machine outlet, about ", ol_L, " x ", ol_W, " x ", ol_T,
