@@ -3,7 +3,11 @@
 *This chapter is an outline, still to be written. It will cover:*
 
 - Slicer settings that matter: walls, infill, bridging, and brims.
-- The base halves: orientation and what to expect.
+- The base halves: orientation and what to expect. The split sits left of
+  the middle by half the dovetail keys' depth (`split_balance`), so the
+  two halves, the left one's keys included, are the same length. Even so,
+  the Kenmore's halves (231.5 × 250 mm) only just fit a 256 mm bed: in
+  Bambu Studio, rotate each until the keys clear the excluded corner.
 - Extensions: printed upright with supports under the lips.
 - Print plates: `part = "all"` gives every part of the build in print
   orientation, grouped into plates for your `printer_size` and

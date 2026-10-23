@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 66
+// VSM Base, version 67
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -324,6 +324,10 @@
 // v66: the console suggests a stock 3/16" dowel pin for the harness rods
 // (the longest stock length that fits, 2 5/8" on the 99K) ahead of cut
 // rod, and 7/16" pins for the podiums.
+//
+// v67: the split line moves left by half the dovetail keys' depth
+// (split_balance), so the two halves, keys included, are the same length
+// and the longer one is 4 mm shorter (the Kenmore's fits a 256 mm bed).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -951,6 +955,8 @@ split_keepout = 15;
 split_part = "both"; // [both, left, right]
 // Separation between the two halves when both are shown
 split_spread = 30;
+// Put the split where the two halves, the left one's dovetail keys included, come out the same length (else at the middle)
+split_balance = true;
 // Clearance in the joint, per face
 split_clearance = 0.1;
 // Dovetail key width at the cut line (neck)
@@ -1795,8 +1801,10 @@ divider_x0        = mc_x1;
 divider_x1        = st_x0;
 divider_thickness = divider_x1 - divider_x0;
 
-// Split line, along Y at the center in X
-cut_x = base_x1 / 2;
+// Split line, along Y: at the center in X, or (split_balance) left of it
+// by half the keys' depth, so the halves come out the same length, keys
+// and all
+cut_x = split_balance ? (base_x1 - key_depth) / 2 : base_x1 / 2;
 
 // Bed edges (the bed is centered in its seat)
 bed_x0 = seat_x0 + bed_clearance;

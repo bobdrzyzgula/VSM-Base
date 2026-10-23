@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 507 parameters; 505 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 508 parameters; 506 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -409,6 +409,7 @@ There are 507 parameters; 505 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `split_part` | `"both"` | Which part to render when split *Choices: both, left, right.* |
 | `split_spread` | `30` | Separation between the two halves when both are shown |
+| `split_balance` | `true` | Put the split where the two halves, the left one's dovetail keys included, come out the same length (else at the middle) |
 | `split_clearance` | `0.1` | Clearance in the joint, per face |
 | `key_neck` | `8` | Dovetail key width at the cut line (neck) *Range 4 to 16, step 0.5.* |
 | `key_flare_angle` | `30` | Dovetail flare, per side, in degrees; steeper = less pull-apart play |
