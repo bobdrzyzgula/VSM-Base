@@ -119,7 +119,7 @@ and to which parts carry mains.
   rig needs.
 - **The brake jaws: the hottest parts.** The brake turns the motor's
   output into heat at the pulley, and the jaws hold the pulley through
-  their felt pads. With the duty cycle in §7 (10–20 seconds per loaded
+  their felt pads. With the duty cycle in §1 (10–20 seconds per loaded
   point, then a pause to cool), PETG stays well inside its range. Feel
   the jaws after a few points: if they're too warm to hold comfortably,
   wait longer between points. For long runs at heavy loads, print them in
