@@ -52,7 +52,7 @@
 > up. The arm and cheeks are cut down flush with the rim wherever that
 > leaves `ph_min_cover` (2.5 mm) of plastic over the rods: on the
 > Kenmore 158-14001, whose holes are 6.75 mm down, the whole hinge is flush; on
-> the 99K, whose holes are only 4 mm down, the arm stands 1.7 mm proud, and
+> the 99K, whose holes are only 4 mm down, the arm stands 2.1 mm proud, and
 > the back extension's lip is notched around it. The block and the base's
 > recess are larger than the lollipop's, so the back rim needs about 8 mm
 > more; the 99K still fits the 230 mm class.
@@ -103,7 +103,7 @@
 > from 8 mm into the hole up to just short of its depth
 > (`hinge_hole_depth_mm` in the profile: 22 mm on both the 99K and the
 > Kenmore, so their pins may be 30.5–43 mm long; a 6 × 40 mm pin goes
-> 17.5 mm in, a 1/4" × 1 1/2" pin 15.6 mm). Set
+> 17.5 mm in, a 9/32" × 1 1/2" pin about 15 mm). Set
 > `ph_pivot_len` to a stock pivot's length (1 1/8", 28.575 mm, say) and the
 > block's cheeks widen or narrow to suit. Precision dowel pins are made a
 > few hundredths of a millimetre over size (an m6 6 mm pin is 6.004–6.012

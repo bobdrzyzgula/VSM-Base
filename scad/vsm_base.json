@@ -10,7 +10,7 @@
             "custom_back_trench": "[0, 0, 0, 0]",
             "custom_left_trench": "[83.34, 57.6, 40, 2.5]",
             "custom_base_lid_notch": "[8, 23]",
-            "custom_hinge_pin_d_mm": "6.34999999",
+            "custom_hinge_pin_d_mm": "7.14374999",
             "custom_hinge_pin_engage_mm": "12",
             "custom_hinge_hole_depth_mm": "22",
             "custom_bed_flush": "false",

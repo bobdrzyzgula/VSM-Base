@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 67
+// VSM Base, version 68
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -328,6 +328,10 @@
 // v67: the split line moves left by half the dovetail keys' depth
 // (split_balance), so the two halves, keys included, are the same length
 // and the longer one is 4 mm shorter (the Kenmore's fits a 256 mm bed).
+//
+// v68: Singer 99K profile: hinge holes 9/32" (7.14 mm), measured on the
+// machine (the 1/4" came from cabinet hinges). The printed hinge's pin and
+// arm follow.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -393,8 +397,8 @@ custom_bed_plate_thickness_in = 0.3125;
 custom_hinge_hole_inset_in = 1.4375;
 // IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8")
 custom_hinge_hole_drop_in = 0.375;
-// IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4")
-custom_hinge_pin_d_mm = 6.35;
+// IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 9/32")
+custom_hinge_pin_d_mm = 7.14375;
 // IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth)
 custom_hinge_pin_engage_mm = 12;
 // IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be
@@ -785,7 +789,7 @@ hinge_mounting_hole_diameter = 5; // [2 : 0.1 : 10]
 hinge_mounting_hole_offset = 9.5;
 
 /* [Printed hinge] */
-// Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001)
+// Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (9/32" for the 99K, 6 mm for the Kenmore 158-14001)
 ph_pin_d = 0; // [0 : 0.01 : 12]
 // How far the pin enters the bed's hole; 0 = from the machine profile. Ignored when ph_pin_len is set
 ph_pin_engage = 0; // [0 : 0.5 : 30]
@@ -1453,7 +1457,7 @@ profiles = [
         ["left_trench", [83.34, 57.6, 40, 2.5]],
         // The base lid's left edge clears the motor boss as the lid opens
         ["base_lid_notch", [8, 23]],
-        ["hinge_pin_d_mm",         6.35],
+        ["hinge_pin_d_mm",         7.14375],      // 9/32", measured
         ["hinge_pin_engage_mm",    12],
         ["hinge_hole_depth_mm",    22],
         ["bed_flush",              false],

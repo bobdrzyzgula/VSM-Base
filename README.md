@@ -156,7 +156,7 @@ and others) are welcome; see the guide.
   slicer will tell you.
 - Hardware for the base:
   - 2 lollipop hinges (or, with `hinge_type = "printed"`, steel rod for the
-    printed hinges: 2 pins and 2 pivots, 1/4" for a 99, lengths in the
+    printed hinges: 2 pins (9/32" for a 99) and 2 pivots (1/4"), lengths in the
     console's hardware list)
   - 3 flat steel mending plates, 4" × 5/8", countersunk for #8
     (McMaster-Carr 1394A34 or similar)

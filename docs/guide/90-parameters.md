@@ -50,7 +50,7 @@ There are 508 parameters; 506 of them appear in the Customizer. The rest are lis
 | `custom_bed_plate_thickness_in` | `0.3125` | IGNORED unless machine = Custom. Thickness of the flat bed plate, inches (99K: 5/16") |
 | `custom_hinge_hole_inset_in` | `1.4375` | IGNORED unless machine = Custom. Hinge hole center from each end of the bed, inches (99K: 1 7/16") |
 | `custom_hinge_hole_drop_in` | `0.375` | IGNORED unless machine = Custom. Hinge hole center below the bed top surface, inches (99K: 3/8") |
-| `custom_hinge_pin_d_mm` | `6.35` | IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 1/4") |
+| `custom_hinge_pin_d_mm` | `7.14375` | IGNORED unless machine = Custom. Hinge hole diameter, mm: the printed hinge's pin (99K: 9/32") |
 | `custom_hinge_pin_engage_mm` | `12` | IGNORED unless machine = Custom. How far the printed hinge's pin goes into the hinge hole, mm (no more than the hole's depth) |
 | `custom_hinge_hole_depth_mm` | `22` | IGNORED unless machine = Custom. Depth of the shallower hinge hole, mm (0 = not measured): it limits how long a printed hinge's pin may be |
 | `custom_bed_flush` | `false` | IGNORED unless machine = Custom. Bed top flush with the base's rim (true) or standing above it by the plate less rabbit_depth (false, as for the 99K) |
@@ -285,7 +285,7 @@ There are 508 parameters; 506 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---|---|---|
-| `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (1/4" for the 99K, 6 mm for the Kenmore 158-14001) *Range 0 to 12, step 0.01.* |
+| `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (9/32" for the 99K, 6 mm for the Kenmore 158-14001) *Range 0 to 12, step 0.01.* |
 | `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile. Ignored when ph_pin_len is set *Range 0 to 30, step 0.5.* |
 | `ph_pin_len` | `0` | Stock length of the pins, for a bought dowel pin (0 = cut to the length the console gives): the pin goes into the bed's hole by whatever is left past the arm; the console gives the lengths that fit the hole's depth *Range 0 to 80, step 0.5.* |
 | `ph_pivot_len` | `0` | Stock length of the pivot rods, for a bought dowel pin (0 = the block's width, set by ph_cheek): the block's cheeks are widened or narrowed to suit *Range 0 to 60, step 0.025.* |

@@ -127,7 +127,9 @@ Measure the hinge holes' diameter. For lollipop hinges it isn't a model
 parameter, but it is the diameter of the hinge pins you need. For the
 printed hinge it sets the steel pin's diameter (`custom_hinge_pin_d_mm`):
 choose rod just under the hole's size, so the pin slides in without play.
-On the 99 the holes are 1/4"; on the Kenmore 158-14001, 6 mm. Measure how deep
+On the 99 the holes are 9/32" (7.14 mm; worn ones measure up to 7.2 mm),
+and set screws in the casting clamp the pins; on the Kenmore 158-14001,
+6 mm. Measure how deep
 the holes go too (`custom_hinge_hole_depth_mm`; the shallower one, if they
 differ): that limits how long the printed hinge's pin may be, and the
 console then gives the pin lengths that fit. Without a stock length, the
@@ -295,7 +297,7 @@ Your 99 should be very close, but measure it anyway.
 | Hinge hole from each end | 1 7/16" | `hinge_hole_inset_in` | `1.4375` |
 | Hinge hole below bed top | 3/8" | `hinge_hole_drop_in` | `0.375` |
 | Bed cushions, compressed | 1/16" | `bed_cushion_in` | `0.0625` |
-| Hinge hole diameter | 1/4" | (hinge pins) | — |
+| Hinge hole diameter | 9/32" | (hinge pins) | — |
 | End bosses, middle 3" of each end | 15 mm thick | `bed_reliefs` | `["left", 83.34, 76.2, 15]`, `["right", 83.34, 76.2, 15]` |
 | Hinge bosses, 1" either side of each hole | 20 mm thick | `bed_reliefs` | `["back", 36.51, 50.8, 20]`, `["back", 273.05, 50.8, 20]` |
 | Slide plate | 2 3/16" wide, 2 mm thick, 1 1/4" travel | `left_trench` | `[83.34, 57.6, 40, 2.5]` |
