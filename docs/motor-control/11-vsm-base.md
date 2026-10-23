@@ -241,9 +241,13 @@ as they are.
 
 - **A KBIC with an isolated command (§8).** Proven regulation through IR
   compensation with almost no design work, driven from an isolated source (a
-  KBSI-240D, or an MCU through an isolated 0–9 V output). It needs space in the
-  bay for the drive and its heatsink, and a check that its DC output reaches
-  the 99's top speed.
+  KBSI-240D, or an MCU through an isolated 0–9 V output). Evaluated from its
+  manual and set aside for now: it is proprietary, so it teaches little and
+  appeals less to hobbyists; it costs about $100; and it is too large for the
+  right-hand bay, so it would need its own enclosure under the machine. It
+  remains the fallback if the purpose-built MCU controller proves too hard,
+  and would then still need a check that its DC output reaches the 99's top
+  speed.
 
 A bench rig for these measurements is in the repository at
 `hardware/motor-rig/` (its guide is `RIG_GUIDE.md`). Two bench measurements
