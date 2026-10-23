@@ -21,6 +21,21 @@
 > pull`, `git stash pop`. To override just the printed hinge's pin, you
 > don't need Custom: set `ph_pin_d` and `ph_pin_engage`.
 >
+> **Note: the barrel hinge.** `hinge_type = "barrel"` takes the hinges
+> from a vintage portable case: a steel barrel, 15.2 mm across and 17.5 mm
+> tall, standing in a round hole, with an arm that pivots in the barrel's
+> slotted top on a cross pin and a 6.85 mm pin that goes into the bed's
+> hole. A slotted screw with a washer comes up from under the base into
+> the barrel's tapped bottom; its head sits in a counterbore. The barrel is
+> set so the pin meets the bed's hole: on the 99K its top stands 1.7 mm
+> above the rim (in its case it was flush with the wood, the bed sunk a
+> little lower), the back extension's lip is notched round it, and the
+> arm's swing is cut away in front of it. These hinges tip the machine
+> back only about 65°. Their dimensions (`barrel_*`, measured by Bob
+> Drzyzgula from a 99K's case) may differ a little from hinge to hinge;
+> print the hinge coupon and try one first. The hinge needs only about
+> 25 mm of back rim, against the lollipop's 42.
+>
 > **Note: a base without hinges.** `hinge_type = "none"` makes a base for
 > a machine to sit in, for a machine without hinges or for anyone who
 > doesn't want them: no hinge recesses or nut traps, no hinge checks or

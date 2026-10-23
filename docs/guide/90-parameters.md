@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 508 parameters; 506 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 521 parameters; 519 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -31,7 +31,7 @@ There are 508 parameters; 506 of them appear in the Customizer. The rest are lis
 |---|---|---|
 | `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
 | `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
-| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, printed, none.* |
+| `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, printed, barrel, none.* |
 | `split` | `true` | Split into two dovetailed halves for printing |
 
 ## Machine
@@ -340,6 +340,24 @@ There are 508 parameters; 506 of them appear in the Customizer. The rest are lis
 | `tilt_prop_flat` | `50` | Flat top: depth front to back, mm *Range 20 to 120, step 1.* |
 | `tilt_prop_w` | `38.1` | Cradle width, along the arm (1.5") *Range 20 to 80, step 0.5.* |
 | `tilt_prop_foot` | `[80, 110]` | Foot: width along the arm, and depth front to back *Range 40 to 200, step 1.* |
+
+## Barrel hinge
+
+| Parameter | Default | Description |
+|---|---|---|
+| `barrel_d` | `15.2` | Barrel hinge (hinge_type = "barrel", from vintage portable cases): barrel diameter *Range 8 to 30, step 0.05.* |
+| `barrel_h` | `17.5` | Barrel height (its top was flush with the case) *Range 8 to 40, step 0.05.* |
+| `barrel_pin_z` | `11.8` | Arm's pin axis above the barrel's bottom, arm level *Range 3 to 30, step 0.05.* |
+| `barrel_pivot_z` | `14.3` | Cross pin (the arm's pivot) above the barrel's bottom *Range 3 to 30, step 0.05.* |
+| `barrel_pivot_dy` | `4.5` | Cross pin in front of the barrel's axis, toward the bed *Range 0 to 10, step 0.05.* |
+| `barrel_reach` | `30` | Barrel axis to the pin's tip, arm level *Range 15 to 60, step 0.1.* |
+| `barrel_block` | `[16.4, 9.3, 7.1]` | Arm's block: length (along the arm), height, width |
+| `barrel_pin` | `[6.85, 18.8]` | Arm's pin: diameter, and length from the block to the tip |
+| `barrel_tilt` | `65` | How far the arm tips back *Range 30 to 110, step 1.* |
+| `barrel_clear` | `0.3` | Clearance round the barrel and the arm's swing *Range 0.1 to 1, step 0.05.* |
+| `barrel_screw` | `[35.4, 4.78, 11, 7]` | Screw: length overall, head height, head diameter, thread diameter |
+| `barrel_washer` | `[1.5, 16]` | Washer under the screw head: thickness and outside diameter |
+| `barrel_tap_depth` | `7` | Depth of the barrel's tapped hole the screw may use *Range 3 to 12, step 0.5.* |
 
 ## Hinge coupon
 

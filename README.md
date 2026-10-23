@@ -155,7 +155,8 @@ and others) are welcome; see the guide.
   material, so the real figure depends on your walls and infill; your
   slicer will tell you.
 - Hardware for the base:
-  - 2 lollipop hinges (or, with `hinge_type = "printed"`, steel rod for the
+  - 2 lollipop hinges (or vintage barrel hinges from a portable case, with
+    `hinge_type = "barrel"`; or, with `hinge_type = "printed"`, steel rod for the
     printed hinges: 2 pins (9/32" for a 99) and 2 pivots (1/4"), lengths in the
     console's hardware list)
   - 3 flat steel mending plates, 4" × 5/8", countersunk for #8

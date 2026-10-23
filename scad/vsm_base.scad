@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 68
+// VSM Base, version 69
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -332,6 +332,14 @@
 // v68: Singer 99K profile: hinge holes 9/32" (7.14 mm), measured on the
 // machine (the 1/4" came from cabinet hinges). The printed hinge's pin and
 // arm follow.
+//
+// v69: hinge_type "barrel": the vintage portable-case barrel hinge (a
+// 15.2 mm steel barrel standing in a round hole, an arm pivoting in its
+// slotted top on a cross pin), measured by Bob Drzyzgula. The barrel is set
+// so the arm's pin meets the bed's hole, which on the 99K leaves its top
+// 1.7 mm above the rim and 3.8 mm below the bed top; the arm's swing is
+// relieved, the back lip notched round it, and the screw comes up from
+// under the base into the barrel's tapped bottom.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -376,7 +384,7 @@ compartment_option = "storage"; // [none, storage, outlet, knee, jack]
 // How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now)
 compartment_mount = "built-in"; // [built-in, attached]
 // Hinge type
-hinge_type = "lollipop"; // [lollipop, printed, none]
+hinge_type = "lollipop"; // [lollipop, printed, barrel, none]
 // Split into two dovetailed halves for printing
 split = true;
 
@@ -878,6 +886,34 @@ tilt_prop_flat = 50; // [20 : 1 : 120]
 tilt_prop_w = 38.1; // [20 : 0.5 : 80]
 // Foot: width along the arm, and depth front to back
 tilt_prop_foot = [80, 110]; // [40 : 1 : 200]
+
+/* [Barrel hinge] */
+// Barrel hinge (hinge_type = "barrel", from vintage portable cases): barrel diameter
+barrel_d = 15.2; // [8 : 0.05 : 30]
+// Barrel height (its top was flush with the case)
+barrel_h = 17.5; // [8 : 0.05 : 40]
+// Arm's pin axis above the barrel's bottom, arm level
+barrel_pin_z = 11.8; // [3 : 0.05 : 30]
+// Cross pin (the arm's pivot) above the barrel's bottom
+barrel_pivot_z = 14.3; // [3 : 0.05 : 30]
+// Cross pin in front of the barrel's axis, toward the bed
+barrel_pivot_dy = 4.5; // [0 : 0.05 : 10]
+// Barrel axis to the pin's tip, arm level
+barrel_reach = 30; // [15 : 0.1 : 60]
+// Arm's block: length (along the arm), height, width
+barrel_block = [16.4, 9.3, 7.1];
+// Arm's pin: diameter, and length from the block to the tip
+barrel_pin = [6.85, 18.8];
+// How far the arm tips back
+barrel_tilt = 65; // [30 : 1 : 110]
+// Clearance round the barrel and the arm's swing
+barrel_clear = 0.3; // [0.1 : 0.05 : 1]
+// Screw: length overall, head height, head diameter, thread diameter
+barrel_screw = [35.4, 4.78, 11, 7];
+// Washer under the screw head: thickness and outside diameter
+barrel_washer = [1.5, 16];
+// Depth of the barrel's tapped hole the screw may use
+barrel_tap_depth = 7; // [3 : 0.5 : 12]
 
 /* [Hinge coupon] */
 // Solid margin around the hinge flange (room for the corner screws)
@@ -1708,31 +1744,41 @@ ph_nut_peak = max(0, min(ph_nut_w / 2, -(ph_R + ph_clear) - 1.5 - (ph_bot + ph_n
 // "none" keeps the lollipop's footprint for sizing (the back rim), so a
 // base without hinges matches one with them and shares its extensions
 has_hinges  = hinge_type != "none";
+// Barrel hinge, in its own frame: origin on the barrel's axis at its
+// bottom, -Y toward the bed. The arm's block front face, the pivot, and
+// the screw's grip (from under the head and washer to the barrel)
+bh_front = barrel_reach - barrel_pin[1];
+bh_back  = bh_front - barrel_block[0];
+bh_grip  = barrel_screw[0] - barrel_screw[1] - barrel_washer[0] - barrel_tap_depth + 0.5;
 hinge_sized = hinge_type == "none" ? "lollipop" : hinge_type;
 function hinge_offset_y() =
     hinge_sized == "lollipop"
         ? hinge_flange_diameter / 2
           + (hinge_pin_square_projection - hinge_pin_allowed_projection)
   : hinge_sized == "printed" ? ph_web + ph_recess_clear - ph_front
+  : hinge_sized == "barrel" ? bh_front + 0.5
         : undef;
 function hinge_rear() =
     hinge_sized == "lollipop" ? hinge_flange_diameter / 2
-  : hinge_sized == "printed" ? ph_back + ph_recess_clear : undef;
+  : hinge_sized == "printed" ? ph_back + ph_recess_clear
+  : hinge_sized == "barrel" ? barrel_d / 2 + barrel_clear : undef;
 function hinge_half_x() =
     hinge_sized == "lollipop"
         ? max(hinge_flange_diameter,
               1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance)) / 2
   : hinge_sized == "printed"
         ? max(ph_bw / 2 + ph_recess_clear,
-              1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance) / 2) : undef;
+              1.2 * (nut_w(hinge_nut_spec, hinge_nut_width) + 2 * nut_clearance) / 2)
+  : hinge_sized == "barrel" ? max(barrel_d / 2 + barrel_clear, barrel_washer[1] / 2 + 0.5) : undef;
 // The printed hinge's pin is set at the bed hole's height
 function hinge_pin_z() =
     hinge_sized == "lollipop" ? hinge_pin_height / 2
-  : hinge_sized == "printed" ? top_z - hole_axis_z : undef;
+  : hinge_sized == "printed" || hinge_sized == "barrel" ? top_z - hole_axis_z : undef;
 function hinge_screw_dy() =
     hinge_sized == "lollipop"
         ? hinge_flange_diameter / 2 - hinge_mounting_hole_offset
-  : hinge_sized == "printed" ? ph_sdy : undef;
+  : hinge_sized == "printed" ? ph_sdy
+  : hinge_sized == "barrel" ? 0 : undef;
 
 
 // Attached bay: the base ends at base_len, its own right end wall; the bay
@@ -1889,7 +1935,9 @@ plate_ys = !split || plate_count <= 0 ? [] :
 // Screw length suggestions (flat head length includes the head)
 plate_screw_len = (floor_z - plate_nut_trap_depth + nut_t(plate_nut_spec))
                 - (plate_pocket_depth - plate_thickness) + 1.5;
-hinge_screw_len = hinge_sized == "printed" ? ph_screw_need + 1 : hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
+hinge_screw_len = hinge_sized == "printed" ? ph_screw_need + 1
+                : hinge_sized == "barrel" ? barrel_screw[0]
+                : hinge_nut_depth + nut_t(hinge_nut_spec) + 1.5;
 
 // Back-wall tunnels: two runs, hinge1..split and split..hinge2
 tunnel_y0     = mc_y1 - overlap;
@@ -2512,7 +2560,7 @@ if (report && has_hinges) echo(str("Hinge coupon (part hinge_coupon): ", hc_x1 -
          "bed opening; its top goes ", bed_top_z - top_z, " mm below the bed top, ",
          "hinge centers ", hinge_hole_spacing, " mm apart, pin axis ", top_z - pin_axis_z,
          " mm below the coupon top"));
-if (report && has_hinges) echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
+if (report && has_hinges && hinge_type != "barrel") echo(str("Hinge screw length ~", hinge_screw_len, " mm (",
          hinge_screw_len / in, " in), measured from ",
          hinge_type == "printed" ? "the roof of the trap under the block" : "the top surface"));
 if (report && lip_recessed)
@@ -2693,6 +2741,22 @@ if (hinge_type == "printed" && hinge_hole_depth_mm > 0 && ph_pe_eff > hinge_hole
              " mm deep); use a pin at most ", ph_pin_lmax, " mm long"));
 if (hinge_type == "printed" && ph_tip_room < 1.5)
     if (report) echo("WARNING: the printed hinge's screw has little room past its nut; increase ph_floor");
+bh_engage = (seat_y1 - bed_clearance) - (hinge_y - barrel_reach);
+if (report && hinge_type == "barrel")
+    echo(str("Barrel hinge: top ", round(abs(bh_top - top_z) * 100) / 100, " mm ", bh_top >= top_z ? "above" : "below",
+             " the rim, ", round(abs(bh_top - bed_top_z) * 100) / 100, " mm ", bh_top >= bed_top_z ? "above" : "below",
+             " the bed top; pin ",
+             round(bh_engage * 10) / 10, " mm into the bed's hole; screw head ", round(bh_roof * 10) / 10,
+             " mm above the base's underside, in a ", max(barrel_screw[2], barrel_washer[1]) + 1, " mm counterbore"));
+if (hinge_type == "barrel" && hinge_hole_depth_mm > 0 && bh_engage > hinge_hole_depth_mm)
+    if (report) echo(str("WARNING: the barrel hinge's pin reaches ", round(bh_engage * 10) / 10,
+                         " mm into the bed's hole, which is only ", hinge_hole_depth_mm, " mm deep"));
+if (hinge_type == "barrel" && bh_roof < 3)
+    if (report) echo(str("WARNING: the barrel hinge's screw is too long for this base: its head would sit ",
+                         round(bh_roof * 10) / 10, " mm above the underside"));
+if (hinge_type == "barrel" && abs(hinge_pin_d_mm - barrel_pin[0]) > 0.5)
+    if (report) echo(str("NOTE: the barrel hinge's pin (", barrel_pin[0], " mm) and this machine's hinge holes (",
+                         hinge_pin_d_mm, " mm) differ by more than 0.5 mm"));
 if (hinge_type == "printed" && ph_zb < floor_z)
     if (report) echo("WARNING: the printed hinge's recess reaches below the floor's top; the base may be too shallow for it");
 if (has_hinges && back_rim < hinge_offset_y() + hinge_rear() + 2)
@@ -3098,7 +3162,9 @@ if (report && has_hinges) echo(str("Hinges: 2 x ", hinge_type,
 if (report && hinge_type == "printed")
     echo(str("Hinge rods: steel, 2 x ", ph_pd, " mm x ", round(ph_pin_l * 100) / 100,
              " mm (pins) + 2 x ", ph_pivot_d, " mm x ", round(ph_bw * 100) / 100, " mm (pivots)"));
-if (report && has_hinges) echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
+if (report && hinge_type == "barrel")
+    echo(str("Barrel hinges: 2, with their own screws and washers (", barrel_screw[0], " mm, driven up from under the base)"));
+if (report && has_hinges && hinge_type != "barrel") echo(str("Hinge screws: 2 x ", hinge_nut_spec, " x ",
          stock_len(hinge_nut_spec, hinge_screw_need),
          " (at least ", round(hinge_screw_need * 10) / 10, " mm), + 2 hex nuts",
          hinge_type == "printed" ? " (pan or socket heads, driven from below)" : ""));
@@ -3192,6 +3258,7 @@ if (report) echo("=======================================");
 if (part == "assembly") {
     color("SteelBlue") base();
     if (hinge_type == "printed") for (hx = [hinge_x1, hinge_x2]) ph_in_place(hx);
+    if (hinge_type == "barrel") for (hx = [hinge_x1, hinge_x2]) barrel_in_place(hx);
     if (ol_wall_exit) color("LightSteelBlue") for (sl = ol_slots) ol_trim(sl);
     if (attached) color("CadetBlue") right_bay();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
@@ -3763,8 +3830,61 @@ module hinge_cutter(x, y) {
         lollipop_hinge_cutter(x, y);
     else if (hinge_sized == "printed")
         printed_hinge_cutter(x, y);
+    else if (hinge_sized == "barrel")
+        barrel_hinge_cutter(x, y);
     else
         assert(false, str("Unknown hinge_type: ", hinge_type));
+}
+
+// Barrel hinge. The barrel stands in a round hole, set so the arm's pin
+// meets the bed's hole (bh_z0: the barrel's bottom); the arm's block and
+// pin, grown by barrel_clear, are swept about the cross pin from level to
+// barrel_tilt and cut away; the screw comes up from under the base, its
+// head and washer in a counterbore whose roof is bh_grip below the barrel.
+bh_z0 = hole_axis_z - barrel_pin_z;
+bh_top = bh_z0 + barrel_h;
+bh_roof = bh_z0 - bh_grip;
+// The arm in the barrel's frame, level, grown by g
+module barrel_arm(g = 0) {
+    bl = barrel_block;
+    translate([-bl[2] / 2 - g, -bh_front - g, barrel_h - bl[1] - g])
+        cube([bl[2] + 2 * g, bl[0] + 2 * g, bl[1] + 2 * g]);
+    translate([0, -bh_front + overlap, barrel_pin_z]) rotate([90, 0, 0])
+        cylinder(h = barrel_pin[1] + overlap + g, d = barrel_pin[0] + 2 * g, $fn = 32);
+}
+module barrel_arm_at(a, g = 0) {
+    translate([0, -barrel_pivot_dy, barrel_pivot_z]) rotate([-a, 0, 0])
+        translate([0, barrel_pivot_dy, -barrel_pivot_z]) barrel_arm(g);
+}
+module barrel_hinge_cutter(x, y) {
+    c = barrel_clear;
+    translate([x, y, 0]) {
+        translate([0, 0, bh_z0]) {
+            cylinder(h = top_z - bh_z0 + 10, d = barrel_d + 2 * c, $fn = 64);
+            // the arm's swing, in steps
+            for (i = [0 : 1 : ceil(barrel_tilt / 5) - 1])
+                hull() {
+                    barrel_arm_at(i * barrel_tilt / ceil(barrel_tilt / 5), c);
+                    barrel_arm_at((i + 1) * barrel_tilt / ceil(barrel_tilt / 5), c);
+                }
+        }
+        // screw hole, and the counterbore for its head and washer from below
+        translate([0, 0, bh_roof + hinge_nut_bridge])
+            cylinder(h = bh_z0 - bh_roof - hinge_nut_bridge + overlap, d = barrel_screw[3] + 0.5, $fn = 32);
+        translate([0, 0, -overlap])
+            cylinder(h = bh_roof + overlap, d = max(barrel_screw[2], barrel_washer[1]) + 1, $fn = 48);
+    }
+}
+// The hinge drawn in place, arm tipped back by `tilt`
+module barrel_in_place(x, tilt = 0) {
+    translate([x, hinge_y, bh_z0]) color("DimGray") {
+        difference() {
+            cylinder(h = barrel_h, d = barrel_d, $fn = 48);
+            translate([-barrel_block[2] / 2 - 0.2, -barrel_d, barrel_h - barrel_block[1] - 0.2])
+                cube([barrel_block[2] + 0.4, 2 * barrel_d, barrel_block[1] + 1]);
+        }
+        barrel_arm_at(tilt);
+    }
 }
 
 // Recess for one printed hinge block, centered on the pivot (x, y): the
@@ -4406,7 +4526,7 @@ module back_ext_part() {
         back_trench_cut();
         // Printed hinges stand above the rim, and a recessed lip goes round
         // the full-height islands left about the hinges: notch the lip
-        if (has_hinges && (hinge_type == "printed" || lip_recessed))
+        if (has_hinges && (hinge_type == "printed" || hinge_type == "barrel" || lip_recessed))
             translate([0, 0, lip_z0 - 1]) linear_extrude(height = lip_t + 2)
                 offset(delta = lip_cut_clearance) hinge_islands_2d();
     }
@@ -4715,6 +4835,7 @@ hc_y1 = hinge_y + hinge_rear() + hinge_coupon_margin;
 // (for the printed hinge, down to the roof of the base's screw counterbore,
 // so the same screw serves, its head bearing on the coupon's bottom)
 hc_t  = hinge_sized == "printed" ? max(ph_trap_depth, top_z - ph_zb + hinge_coupon_floor)
+      : hinge_sized == "barrel" ? top_z - bh_roof
       : max(hinge_thickness, hinge_pin_height + hinge_pin_sweep_depth) + hinge_coupon_floor;
 hc_z0 = top_z - hc_t;
 module hinge_coupon() {
@@ -4729,6 +4850,9 @@ module hinge_coupon() {
             if (hinge_sized == "printed")      // no membrane on the coupon's bottom
                 translate([hinge_x1, hinge_y + ph_sdy, hc_z0 - overlap])
                     cylinder(h = 2, d = hinge_mounting_hole_diameter);
+            if (hinge_sized == "barrel")
+                translate([hinge_x1, hinge_y, hc_z0 - overlap])
+                    cylinder(h = 2, d = barrel_screw[3] + 0.5, $fn = 32);
             for (x = [hc_x0 + ins, hc_x1 - ins], y = [hc_y0 + ins, hc_y1 - ins])
                 translate([x, y, hc_z0 - overlap]) {
                     cylinder(h = hc_t + 2 * overlap, d = sd);
