@@ -164,7 +164,7 @@ type) to the outlet. The relay lets the firmware cut the motor whatever the
 triac is doing: it closes last and opens first. Space is left for an RC
 snubber, to be fitted only if the triac fires falsely.
 
-**Across the barrier.** Four parts span it:
+**Across the barrier.** Four parts span it, and an optional fifth:
 
 - a MOC3023 random-phase opto-triac, which fires the triac's gate;
 - an H11AA1 AC-input optocoupler, whose LEDs are fed from the mains
@@ -172,7 +172,9 @@ snubber, to be fitted only if the triac fires falsely.
   zero crossing;
 - the relay, whose coil is on the control side and its contact on the
   line side;
-- an isolated 5 V supply module (Mean Well IRM-05-5 class).
+- an isolated 5 V supply module (Mean Well IRM-05-5 class);
+- optional, a current transformer (ZMCT103C class) on the motor lead, for
+  the load compensation described under "Directions" below.
 
 **Control side (low voltage).** The RP2350B core board takes 5 V from the
 module into its VSYS pin through a Schottky diode, so its USB port can stay
@@ -199,8 +201,9 @@ pull-ups.
 | Heel switch | GP11 | input |
 | Needle up/down | GP12 | input |
 | Knee, pedal, pressure, limit | GP40–43 (ADC0–3) | analog inputs |
+| Motor current (optional) | GP44 (ADC4) | analog input |
 
-ADC4–7 are spare, and GP8/GP9 (UART1) are left for a debug line, though
+ADC5–7 are spare, and GP8/GP9 (UART1) are left for a debug line, though
 the USB port's serial link will usually do. Any GPIO can serve for the
 digital signals, so these are a starting point, to be placed to suit the
 board chosen. A candidate is WeAct Studio's RP2350B Core board, about $6,
@@ -292,8 +295,8 @@ must never be connected to the line side.
 isolation barrier runs across the sheet, with the live side above it.
 Line side, left to right: the IEC inlet and fuse, the surge suppressor, the
 outlet, the triac stage, and the line sides of the opto-triac (U3), the
-motor-enable relay (K1), the zero-cross optocoupler (U2) and the 5 V supply
-(PS1). Control side: the triac's LED drive, the relay driver, the
+motor-enable relay (K1), the zero-cross optocoupler (U2), the 5 V supply
+(PS1) and the optional current transformer (T1). Control side: the triac's LED drive, the relay driver, the
 zero-cross input, the RP2350B core board, the operator inputs and heel
 switch (left), the switches, the hand-wheel index sensor and the optional
 hand-wheel encoder (right). The KiCad file and its generator are in
@@ -400,8 +403,9 @@ as it rises. A small current transformer on the motor lead gives the
 current with isolation built in. The correction is first-order and must be
 tuned per motor, either from $K$ and $R$ measured on the test rig, or, as
 with the KBIC's IR trimpot, turned up in a setup mode until the motor
-begins to hunt and then backed off. Space for the current transformer on
-the board would keep the option open.
+begins to hunt and then backed off. The concept circuit carries the
+current transformer as an option (T1), so the board can be built with
+it.
 
 **A tabletop controller for accessibility.** Many people who sew can't use
 a pedal or a knee lever. A tabletop controller on the same electronics

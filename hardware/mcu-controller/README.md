@@ -35,7 +35,12 @@ contact feeds the triac, so a firmware fault can always cut the motor; the
 triac (BTA08-600BW, snubberless) in series with the motor, fired through a
 MOC3023 random-phase opto-triac, with an RC snubber footprint left unfitted;
 an H11AA1 AC-input optocoupler as the zero-cross detector; an isolated 5 V
-module (Mean Well IRM-05-5 class) on its own T250mA fuse.
+module (Mean Well IRM-05-5 class) on its own T250mA fuse; and, optional, a
+current transformer (T1, ZMCT103C class, 1000:1) whose window the motor's
+hot lead passes through, for IR compensation (see the paper's "Load
+compensation without a machine sensor"). Its secondary is on the control
+side: a 100 Ω burden gives about 0.1 V per amp, centered on a 1.65 V bias,
+filtered into ADC4.
 
 **Control side (SELV).** The RP2350B core board, fed 5 V into VSYS from
 the module through a Schottky diode (so its USB port can stay plugged in),
@@ -68,8 +73,9 @@ labels (HEEL, HEEL_F, ENC_A, ENC_B).
 | PEDAL | GP41 / ADC1 | travel pedal |
 | FSR | GP42 / ADC2 | pressure pedal |
 | LIMIT | GP43 / ADC3 | speed-limit knob |
+| ISENSE | GP44 / ADC4 | motor current (T1, optional) |
 
-ADC4–7 (GP44–47) are spare; GP8/GP9 (UART1) are left for a debug line,
+ADC5–7 (GP45–47) are spare; GP8/GP9 (UART1) are left for a debug line,
 though the USB serial link will usually do. Any GPIO will do for the
 digital signals: wire them by GPIO number to wherever the chosen board
 brings them out, but avoid the pins boards commonly use themselves: GP0

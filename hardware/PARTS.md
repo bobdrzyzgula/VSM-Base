@@ -40,6 +40,7 @@ where, and the specification checked.
 | Opto-triac driver | MOC3023, random-phase (not the zero-crossing MOC304x) | 2 | M | Dist | U3 |
 | AC-input optocoupler | H11AA1, or another AC-input optocoupler | 2 | M | Dist | U2 |
 | Relay | Omron G5LE-1A 5 V DC (SPST-NO, 10 A), or a like 5 V relay with a stated mains rating | 1 | M | Check | K1 |
+| Current transformer (optional) | ZMCT103C class, 1000:1, 5 A, PCB mount, window for the primary wire | 1 | M | Check | T1, for IR compensation. Confirm its isolation rating from the datasheet; the motor lead passes through the window with its insulation intact. |
 | Isolated 5 V supply | Mean Well IRM-05-5 (5 V 1 A, safety-certified) | 1 | M | Dist | PS1. Hi-Link copies are common; buy the certified part. |
 | MOV | 14 mm disc, 150 VAC rating (varistor voltage about 240 V, e.g. 14D241K) | 2 | M | Check | RV1 |
 | Resistors, mains | 22 kΩ 0.5 W (2, R7/R8); 360 Ω 0.5 W (R4); 100 Ω 1 W (R6, DNP) | 1 set | M | Any | Metal film, 350 V or higher working voltage for R7/R8 |
@@ -58,8 +59,8 @@ where, and the specification checked.
 | Debug probe (optional) | Raspberry Pi Debug Probe, or a second Pico board as a probe | 1 | M | Any | Only for step-through debugging; flashing works over USB. |
 | MOSFET | 2N7002, SOT-23 (or 2N7000, TO-92, on perfboard) | 2 | M | Any | Q2, the relay driver |
 | Diodes | 1N4148 (D1); SS14 Schottky (D2; can be left out on the WeAct board) | a few | M | Any | |
-| Resistors, 0.25 W | 270 Ω (R11), 100 Ω (R12, R15, R22, R23), 100 kΩ (R13), 10 kΩ (R9, R14, R18, R24, R25), 1 kΩ (R16, R17, R19, R20, R21) | 1 set | M | Any | An assortment kit covers these. |
-| Capacitors | 100 nF ceramic (about 12), 1 nF ceramic (4), 10 µF (1) | 1 set | M | Any | |
+| Resistors, 0.25 W | 270 Ω (R11), 100 Ω (R12, R15, R22, R23; R26, the burden, 1%), 100 kΩ (R13), 10 kΩ (R9, R14, R18, R24, R25, R28, R29), 1 kΩ (R16, R17, R19, R20, R21, R27) | 1 set | M | Any | An assortment kit covers these. |
+| Capacitors | 100 nF ceramic (about 12), 1 nF ceramic (4), 10 nF ceramic (1), 10 µF (2) | 1 set | M | Any | |
 | Hand-wheel index sensor | TI DRV5023 unipolar Hall switch (TO-92 for wiring at the sensor), 3.3 V-capable | 2 | M | Dist | U4. Generic A3144 parts need 4.5 V or more; don't substitute those. |
 | Hand-wheel encoder (optional) | TI DRV5013 Hall latch (TO-92), 2.5–38 V supply | 2 + spare | M | Dist | U5, U6: quadrature over a ring of magnets, a quarter-cycle apart |
 | Magnets | Neodymium disc, about 6 × 3 mm | 1 + 12 | M | Any | One for the index sensor; twelve for the encoder ring, alternating poles. Check the pole facing each sensor. |

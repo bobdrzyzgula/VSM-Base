@@ -154,6 +154,8 @@ barrier("Relay_H", "K", [("4", "NO", "passive"), ("3", "COM", "passive")],
         [("1", "COIL+", "passive"), ("2", "COIL-", "passive")])
 barrier("ACDC_5V_H", "PS", [("1", "L", "power_in"), ("2", "N", "power_in")],
         [("3", "+Vo", "power_out"), ("4", "-Vo", "power_out")], w=7.62)
+barrier("CT_H", "T", [("1", "P", "passive"), ("2", "P", "passive")],
+        [("3", "S1", "passive"), ("4", "S2", "passive")])
 symbol("Triac_R", "Q", [("1", "MT1", 0, 5.08, 270, 3.81, "passive"), ("2", "MT2", 0, -5.08, 90, 3.81, "passive"),
                         ("3", "G", 5.08, 2.54, 180, 2.54, "input")],
        [line((-2.54, 1.27), (2.54, 1.27)), line((-2.54, -1.27), (2.54, -1.27)),
@@ -197,6 +199,7 @@ part("U3", "MOC3023_H", "MOC3023", 185.42, YB)
 part("K1", "Relay_H", "G5LE-1A 5V", 223.52, YB)
 part("U2", "H11AA1_H", "H11AA1", 264.16, YB)
 part("PS1", "ACDC_5V_H", "IRM-05-5", 320.04, YB)
+part("T1", "CT_H", "ZMCT103C 1000:1 (optional)", 124.46, YB)
 # Control side ---------------------------------------------------------
 part("R11", "R", "270", 182.88, 133.35)
 part("Q2", "NMOS", "2N7002", 223.52, 147.32)
@@ -215,6 +218,13 @@ part("R15", "R", "100", 220.98, 228.6, 90)
 part("R14", "R", "10k", 233.68, 222.25)
 part("U4", "DRV5023", "DRV5023 at hand wheel", 264.16, 228.6)
 part("C5", "C", "100n at sensor", 281.94, 228.6)
+# motor-current sense (optional, for IR compensation): burden, mid-supply bias, filter
+part("R26", "R", "100 burden", 134.62, 130.81)
+part("R27", "R", "1k", 149.86, 127.0, 90)
+part("C19", "C", "10n", 157.48, 130.81)
+part("R28", "R", "10k", 116.84, 132.08)
+part("R29", "R", "10k", 116.84, 142.24)
+part("C20", "C", "10u", 127.0, 142.24)
 # switches
 part("SW1", "SW", "needle up/down", 175.26, 233.68)
 part("C10", "C", "100n", 182.88, 233.68)
@@ -275,7 +285,8 @@ wire("PS1.2", (322.58, 106.68))
 wire("J1.3", ("h", 33.02), ("v", 85.09), "J2.1")          # PE
 wire("J2.2", ("h", 50.8), ("v", LR))                      # LIGHT from L
 wire("J2.3", ("h", 45.72), ("v", NR))                     # N
-wire("J2.4", ("h", 137.16), "Q1.2")                       # MOTOR hot from the triac's MT2
+wire("J2.4", ("h", 121.92), "T1.1")                        # MOTOR hot, through T1's window
+wire("T1.2", ("v", 92.71), ("h", 160.02), "Q1.2")          # from the triac's MT2
 wire("RV1.1", ("v", LR)); wire("RV1.2", ("v", NR))
 # triac stage
 wire("C2.2", (137.16, 92.71))
@@ -337,6 +348,16 @@ wire((55.88, 205.74), "R21.1")
 wire("R21.2", ("h", 86.36))
 wire("C14.1", (78.74, 205.74))
 wire("A1.R13", ("h", 167.64))                             # HEEL_F
+# motor current: S2 is the signal, S1 the 1.65 V bias
+wire("T1.4", ("v", 127.0), "R27.1")
+wire("R26.2", ("v", 137.16))
+wire("T1.3", ("v", 137.16), ("h", 134.62))
+wire("R28.2", "R29.1")
+wire((116.84, 137.16), (121.92, 137.16))
+wire("C20.1", ("v", 137.16))
+wire("R27.2", ("h", 165.1))
+wire("C19.1", (157.48, 127.0))
+wire("A1.L8", ("h", 109.22))                              # ISENSE (ADC4)
 # encoder A and B: from GP2 and GP3 by label
 wire("A1.R3", ("h", 162.56))
 wire("A1.R5", ("h", 162.56))
@@ -352,10 +373,10 @@ wire("C6.1", (66.04, 241.3))
 POWER = {
  "+5V":  ["K1.1", "D1.1", "PS1.3", "C12.1", "C13.1", "D2.2"],
  "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.L14", "RV2.1", "J6.1", "J5.1", "J4.1",
-          "R24.1", "R25.1", "U5.1", "U6.1", "C15.1", "C16.1"],
+          "R24.1", "R25.1", "U5.1", "U6.1", "C15.1", "C16.1", "R28.1"],
  "GND":  ["U3.2", "U2.4", "PS1.4", "Q2.2", "R13.2", "C3.2", "C12.2", "C13.2", "A1.L2", "A1.R4",
           "C4.2", "U4.3", "C5.2", "SW1.2", "C10.2", "SW2.2", "C11.2", "RV2.3", "C9.2", "R18.2", "C8.2",
-          "J5.3", "C7.2", "J4.3", "C6.2", "C14.2", "C17.2", "C18.2", "U5.3", "U6.3", "C15.2", "C16.2"],
+          "J5.3", "C7.2", "J4.3", "C6.2", "C14.2", "C17.2", "C18.2", "U5.3", "U6.3", "C15.2", "C16.2", "R29.2", "C20.2", "C19.2"],
 }
 # Net names shown along wires: (name, x, y, angle)
 NAMES = [("L (fused)", 80.0, LR, 0), ("N", 80.0, NR, 0), ("PE", 33.02, 70.0, 90),
@@ -365,7 +386,8 @@ NAMES = [("L (fused)", 80.0, LR, 0), ("N", 80.0, NR, 0), ("PE", 33.02, 70.0, 90)
          ("LIMIT", 80.0, 152.4, 0), ("FSR", 80.0, 171.45, 0), ("PEDAL", 80.0, 223.52, 0), ("KNEE", 80.0, 241.3, 0),
          ("HEEL", 36.07, 173.99, 0), ("HEEL", 36.07, 228.6, 0), ("HEEL", 56.39, 205.74, 0), ("HEEL_F", 80.5, 205.74, 0),
          ("HEEL_F", 158.0, 203.2, 0), ("ENC_A", 158.0, 177.8, 0), ("ENC_B", 158.0, 182.88, 0),
-         ("ENC_A", 297.7, 172.72, 0), ("ENC_B", 297.7, 205.74, 0)]
+         ("ENC_A", 297.7, 172.72, 0), ("ENC_B", 297.7, 205.74, 0),
+         ("ISENSE", 159.0, 127.0, 0), ("ISENSE", 109.6, 190.5, 0)]
 
 CAP_LEFT = {"R7", "SW1", "SW2", "R6", "C2", "D2"}
 
@@ -477,7 +499,7 @@ def text(t, x, y, size=1.27, bold=False, just="left bottom"):
     out.append(f'(text "{t}" (at {x} {y} 0) {eff(size, justify=just, bold=bold)} (uuid {U()}))')
 # reference and value beside each part
 for ref, (sym, val, x, y, r) in PARTS.items():
-    if sym in ("MOC3023_H", "H11AA1_H", "Relay_H", "ACDC_5V_H"):
+    if sym in ("MOC3023_H", "H11AA1_H", "Relay_H", "ACDC_5V_H", "CT_H"):
         w = 7.62 if sym == "ACDC_5V_H" else 5.08
         text(ref, x + w + 1.27, y - 1.0, 1.27, True); text(val, x + w + 1.27, y + 2.0, 1.0)
     elif sym == "RP2350B_CORE":
@@ -504,12 +526,12 @@ def polyline(pts, w=0.4, kind="dash"):
 polyline([(20.32, YB), (398.78, YB)], 0.6)
 text("LINE SIDE: LIVE, 120 V", 345.44, YB - 3.0, 2.0, True)
 text("CONTROL SIDE: isolated, SELV (3.3 V / 5 V)", 345.44, YB + 6.0, 2.0, True)
-text("ISOLATION BARRIER: U3, K1, U2 and PS1 straddle it; keep at least 6 mm creepage across it", 20.32, YB - 1.5, 1.27)
+text("ISOLATION BARRIER: U3, K1, U2, PS1 (and T1) straddle it; keep at least 6 mm creepage across it", 20.32, YB - 1.5, 1.27)
 for (t, x, y) in [("MAINS IN, FUSE, SURGE; OUTLET (LIGHT always on, MOTOR controlled)", 20.32, 38.1),
                   ("TRIAC STAGE (after AN1662: triac in series with the motor)", 134.62, 68.58),
                   ("MOTOR-ENABLE RELAY", 210.82, 104.14), ("ZERO-CROSS", 251.46, 104.14), ("ISOLATED 5 V", 304.8, 104.14),
                   ("RELAY DRIVER", 231.14, 162.56), ("ZERO-CROSS INPUT", 284.48, 139.7), ("TRIAC FIRING", 170.18, 128.27),
-                  ("5 V BULK", 332.74, 121.92), ("RP2350B CORE BOARD (pins by GPIO number)", 124.46, 165.1),
+                  ("5 V BULK", 332.74, 121.92), ("MOTOR CURRENT (optional)", 132.08, 120.65), ("RP2350B CORE BOARD (pins by GPIO number)", 124.46, 165.1),
                   ("HAND-WHEEL INDEX SENSOR (one magnet, one pulse per stitch)", 200.66, 210.82),
                   ("HAND-WHEEL ENCODER (two Hall latches, quadrature; same cable as the index)", 297.18, 160.02),
                   ("HEEL SWITCH", 55.88, 199.39),
@@ -521,16 +543,16 @@ notes = [
  "1. After Freescale AN1662: zero-cross interrupt sets a timer alarm (or a PIO program); at the firing delay a ~100 us gate pulse fires the",
  "   triac; hand-wheel period from edge timestamps; speed loop every half-cycle (120 Hz); stall watchdog. Added: isolation, relay, inputs.",
  "2. Pins (RP2350B): FIRE GP4; RELAY GP5; ZC GP6; HALL (index) GP7; ENC_A/B GP2/GP3 (PIO counter); STITCH GP10; HEEL GP11; NEEDLE GP12;",
- "   knee, pedal, FSR, limit on ADC0-3 (GP40-43); ADC4-7 spare; GP8/GP9 UART1 for debug (or USB serial). Avoid GP0, GP23, GP25 (PSRAM, key, LED).",
+ "   knee, pedal, FSR, limit on ADC0-3 (GP40-43); ISENSE ADC4; ADC5-7 spare; GP8/GP9 UART1 for debug (or USB serial). Avoid GP0, GP23, GP25 (PSRAM, key, LED).",
  "3. PS1 feeds VSYS through D2, so USB may stay plugged in (the control side is SELV). Flash by UF2 (BOOTSEL) or SWD. Drive GP4 at 8-12 mA.",
  "4. Fire only after a zero-cross has been seen and the command is zero; close K1 last and open it first. Never scope the line side.",
- "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires.",
+ "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires. T1 optional: motor lead through its window, 0.1 V/A about 1.65 V.",
  "6. On a WeAct RP2350B Core board, feed PS1 to the 5V pin: the board has its own diode from USB VBUS, so D2 may be left out.",
  "7. Heel: momentary switch to GND in either pedal (J5 pin 4, J6 pin 3); a heel tap sends the needle to its other stop.",
  "8. Encoder U5/U6 (ring of alternating magnets) optional: stops taught and landed by angle; 5-wire cable (3V3, GND, index, A, B).",
 ]
 for i, n in enumerate(notes):
-    text(n, 20.32, 259.3 + i * 2.5, 1.15, i == 0)
+    text(n, 20.32, 258.6 + i * 2.4, 1.15, i == 0)
 
 libs = "\n".join(s["text"] for s in SYMS.values())
 sch = f"""(kicad_sch (version 20230121) (generator eeschema)
