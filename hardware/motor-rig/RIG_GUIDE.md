@@ -86,8 +86,9 @@ In the OpenSCAD Customizer:
 
 ### 3.2 Print list
 
-PETG for anything that carries load or heat, PLA for the rest. No part needs
-supports, and each STL is already oriented for printing. To see every part at
+PETG for anything that carries load or heat, PLA for the rest. Each STL is
+already oriented for printing, and only the IEC box may need supports (see
+its note). To see every part at
 once, render `motor_rig.scad` with `part = "all"`: all of them, the motor
 cradle and the brake's jaws included, laid out in print orientation (an
 overview and checklist; they won't all fit one bed).
@@ -104,8 +105,8 @@ overview and checklist; they won't all fit one bed).
 | `board_plate`, `board_cover` | 1 each | PETG | The cover prints roof-down |
 | `wago_holder`, `wago_lid` | 1 each | PLA or PETG | |
 | `bb_tray`, `bb_lid` | 1 each | PLA | |
-| `iec_box` | 1 | PETG | Prints panel-down |
-| `jack_panel` | 1 | PETG | Prints face-down, 220 mm long |
+| `iec_box` | 1 | PETG | Prints roof-down. The top edge of the inlet opening is a 52 mm bridge: support it unless your printer bridges that far cleanly |
+| `jack_panel` | 1 | PETG | Prints face-down, 220 mm long. The middle rib sits between two holes; check that your sockets' rear nuts clear it |
 
 **Notes on filament choices.** Nothing on the rig is loaded anywhere near
 the strength of any common filament, so the choice comes down to heat,
@@ -226,8 +227,8 @@ after that is done with banana leads at the jack panel.
 | Wago PE | **PE** socket | Also any exposed metal you add |
 | Motor lead A | Wago **MOT A** → **MOT A** socket | The motor's own cord, through whatever adapter its plug needs |
 | Motor lead B | Wago **MOT B** → **MOT B** socket | |
-| Triac board tab J1 (MT2 side) | **MT2** socket | 6.3 mm female spade on the board end |
-| Triac board tab J2 (MT1 side) | **MT1** socket | 6.3 mm female spade |
+| Triac board tab J1 (MT2 side) | **MT2** socket | 3.2 mm (.125") female FASTON on the board end |
+| Triac board tab J2 (MT1 side) | **MT1** socket | 3.2 mm (.125") female FASTON |
 | Old VR1 pad, pin 2 (wiper) | **R TIM** socket, left | |
 | Old VR1 pad, pin 1 | **R TIM** socket, right | Leave pin 3 open: that takes RV2 out of circuit |
 | **DC+**, **DC−** sockets | Breadboard power rails | Bench supply into the breadboard only |

@@ -34,7 +34,7 @@ where, and the specification checked.
 | Duplex outlet | US 15 A duplex receptacle, center screw hole | 1 | B | Any | Its tie bar broken off so LIGHT and MOTOR are separate; size checked by the console |
 | Pedal cordset | Standard sewing-machine pedal controller cordset (plug or duplex at the junction) | 1 | K | Any | `knee_power = "cordset"` only |
 | Speed-control board | XWW KB3151C pedal board, 75 × 35 mm | 1 + spare | K R | Any | The board itself comes from pedal listings. |
-| Quick-disconnects | Female, insulated, to fit the KB3151C's spade tabs (measure: likely 6.3 mm) | 4 | K R | Any | |
+| Quick-disconnects | Female FASTON, 3.2 mm (.125") tab size, insulated | 4 | K R | Any | To fit the KB3151C's tabs (measured). Not the common 6.3 mm (.250") size. |
 | Triac | BTA08-600BW (snubberless, insulated tab), TO-220 | 2 | M | Dist | BTA16-600BW if more margin is wanted |
 | TO-220 heatsink | Small clip-on or bolt-on, about 10 °C/W | 1 | M | Any | The tab is insulated on the BTA type. |
 | Opto-triac driver | MOC3023, random-phase (not the zero-crossing MOC304x) | 2 | M | Dist | U3 |

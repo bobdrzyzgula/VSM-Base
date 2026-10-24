@@ -227,8 +227,10 @@ module board_cover() {
         // wire exits at the bottom edge, front corners (spade leads) and back-left (R-timing leads)
         for (x = [bw + 6, bpl.x - bw - 20]) translate([x, -1, -eps]) cube([14, bw + 2, 8]);
         translate([bw + 6, bpl.y - bw - 1, -eps]) cube([14, bw + 2, 8]);
-        // label
-        translate([bpl.x / 2, bpl.y / 2, cover_h - 0.6]) linear_extrude(1) label("LIVE  KB3151C", 5);
+        // label, on the roof beside the vents (they end at x = bw + 8 + 5 * 6 + 2.5)
+        lx = (bw + 8 + 5 * 6 + 2.5 + bpl.x - bw) / 2;
+        translate([lx, bpl.y / 2 + 5, cover_h - 0.6]) linear_extrude(1) label("LIVE", 6);
+        translate([lx, bpl.y / 2 - 5, cover_h - 0.6]) linear_extrude(1) label("KB3151C", 5);
     }
 }
 
@@ -324,14 +326,18 @@ module iec_box() {
                 cube([ib_out.x, ib_out.y, ib_h]);
                 translate([ib_wall, ib_wall, -eps]) cube([ib_out.x - 2 * ib_wall, ib_out.y - ib_wall - iec_panel, ib_h - ib_wall + eps]);
             }
-            for (sx = [0, 1]) translate([sx ? ib_out.x - 3 : -11, ib_out.y / 2 - 8, 0]) linear_extrude(3) rrect([14, 16], 3);
+            // full-height ears, so the box prints roof down with nothing overhanging
+            for (sx = [0, 1]) translate([sx ? ib_out.x - 3 : -11, ib_out.y / 2 - 8, 0]) linear_extrude(ib_h) rrect([14, 16], 3);
         }
         // inlet cutout through the panel
         translate([ib_out.x / 2, ib_out.y + 1, ib_h / 2]) rotate([90, 0, 0])
             linear_extrude(iec_panel + 2) offset(iec_r) offset(-iec_r) square(iec_cut, center = true);
         // wire exit to the Wago blocks, front wall, low
         translate([ib_out.x / 2, -1, 9]) rotate([-90, 0, 0]) cylinder(d = 11, h = ib_wall + 2);
-        for (sx = [0, 1]) translate([sx ? ib_out.x + 4 : -4, ib_out.y / 2, 0]) { screw_hole(3); countersunk(3); }
+        for (sx = [0, 1]) translate([sx ? ib_out.x + 4 : -4, ib_out.y / 2, 0]) {
+            screw_hole(ib_h);
+            translate([0, 0, 6]) cylinder(d = 9.5, h = ib_h);   // counterbore: the head sits 6 mm above the board
+        }
     }
 }
 
@@ -343,7 +349,8 @@ module jack_panel() {
         union() {
             cube([jp_w, jp_t, panel_h]);                       // the panel, facing -Y
             cube([jp_w, jp_base, 4]);                          // base
-            for (x = [0, jp_w / 2 - 2, jp_w - 4]) translate([x, 0, 0])
+            // ribs at the ends and in the gap between holes nearest the middle
+            for (x = [0, 8 + round(len(jack_labels) / 2) * jack_pitch - 2, jp_w - 4]) translate([x, 0, 0])
                 hull() { cube([4, jp_t, panel_h - 4]); cube([4, jp_base - 2, 4]); }
         }
         for (i = [0 : len(jack_labels) - 1]) {
@@ -549,16 +556,19 @@ module layout_footprints() {
 }
 
 // ---------------------------------------------------------------- dispatch
-// One printed part, oriented for printing
+// One printed part, oriented for printing. Upside-down parts are turned over
+// (rotated about X), never mirrored: a mirror would reverse their lettering.
+module flip(y, h) translate([0, y, h]) rotate([180, 0, 0]) children();
+lid_tc = 2 * (1.8 + 0.3);   // a lid's wall and clearance, both sides
 module print_part(n) {
     if (n == "board_plate") board_plate_full();
-    else if (n == "board_cover") translate([0, 0, cover_h]) mirror([0, 0, 1]) board_cover();   // roof down
+    else if (n == "board_cover") flip(bpl.y, cover_h) board_cover();   // roof down
     else if (n == "wago_holder") wago_holder();
-    else if (n == "wago_lid") translate([0, 0, wl_h]) mirror([0, 0, 1]) wago_lid();
+    else if (n == "wago_lid") flip(wh_size.y + lid_tc, wl_h) wago_lid();
     else if (n == "bb_tray") bb_tray();
-    else if (n == "bb_lid") translate([0, 0, bb_lid_h]) mirror([0, 0, 1]) bb_lid();
+    else if (n == "bb_lid") flip(bb_size.y + lid_tc, bb_lid_h) bb_lid();
     else if (n == "jack_panel") rotate([90, 0, 0]) jack_panel();   // panel face down
-    else if (n == "iec_box") translate([0, 0, ib_out.y]) rotate([-90, 0, 0]) iec_box();      // panel face down
+    else if (n == "iec_box") flip(ib_out.y, ib_h) iec_box();   // roof down
     else if (n == "load_rail") translate([-cx, 0, 0]) load_rail_part();
     else if (n == "load_carriage") translate([-cx, 0, -(rail_t - dt_h)]) load_carriage();
     else if (n == "load_pulley") translate([0, 0, pulley_w / 2]) load_pulley();
@@ -581,7 +591,7 @@ all_rows = [
     [["jack_panel", [0, -42], [219.5, 42]], ["wago_holder", [-11, 0], [148.4, 29.8]],
      ["wago_lid", [0, 0], [130.6, 34]]],
     [["cradle", [-51.2, -35], [102.4, 70]], ["bb_tray", [-11, 0], [109.9, 60]],
-     ["bb_lid", [0, 0], [92.1, 64.2]], ["iec_box", [-11, 0], [90.5, 43.5]]],
+     ["bb_lid", [0, 0], [92.1, 64.2]], ["iec_box", [-11, 0], [90.5, ib_out.y]]],
     [["brake", [-23, -16.5], [130, 61.5]], ["load_rail", [-25, 0], [50, 114]],
      ["load_carriage", [-14.8, 0], [29.6, 46]], ["load_pulley", [-30, -30], [60, 60]],
      ["load_spacer", [-6, -6], [12, 12]], ["drag_plunger", [-6, -6], [12, 12]]]];
