@@ -108,7 +108,8 @@ pulse), so stops are rougher and can't be taught by hand.
 - **Teaching the stops.** With the needle toggle at "up", turn the hand
   wheel to where the thread releases (the take-up lever at its top, which
   is not quite the needle's highest point) and hold the single-stitch
-  button for two seconds; set the toggle to "down" and do the same with the
+  button for two seconds (setting top dead center, in the words of modern
+  service manuals); set the toggle to "down" and do the same with the
   needle in the fabric. The two angles are kept in flash. They are relative
   to the magnets, so the magnets can go anywhere on the wheel.
 - **Stopping.** When the pedal is released, the loop brings the machine

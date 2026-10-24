@@ -259,7 +259,9 @@ at the hand wheel. In the firmware:
   turns the hand wheel to where the thread releases (the take-up lever at
   its highest, which is not quite the needle's highest point, and differs
   from machine to machine) and holds the single-stitch button for two
-  seconds; then the same at "down", with the needle in the fabric. The
+  seconds. This is what service manuals for modern electronic machines call
+  setting top dead center. Then the same at "down", with the needle in the
+  fabric. The
   angles are kept in flash, relative to the magnets, which can therefore go
   anywhere on the wheel.
 - **Stops are landed by angle.** On release, the loop brings the machine
