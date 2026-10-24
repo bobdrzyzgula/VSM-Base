@@ -103,7 +103,10 @@ example), and the index pulse sets and checks the count once a turn.
 Twelve magnets give 24 counts a turn, 15° each, and the firmware can tell
 where the needle is even at rest. Without the encoder, the index alone
 gives a position only while the wheel turns (by time since the last
-pulse), so stops are rougher and can't be taught by hand.
+pulse), so stops are rougher and can't be taught by hand. Where the ring
+can go on a given machine (on the arm shaft under a removable top, or on
+the hand wheel), and what each place costs, is in the motor-control
+paper's "Fitting the encoder" (§11).
 
 - **Teaching the stops.** With the needle toggle at "up", turn the hand
   wheel to where the thread releases (the take-up lever at its top, which

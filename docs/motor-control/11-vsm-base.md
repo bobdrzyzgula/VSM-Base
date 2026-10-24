@@ -304,6 +304,118 @@ the repository at `hardware/mcu-controller/`. The power stage, sensing and
 control loop will be settled on the bench, and this section will be revised
 as they are.
 
+### Fitting the encoder
+
+Fitting an encoder is an engineering exercise on every machine, and on some
+it won't be practical. Where it is, it gives the controller the needle's
+angle at all times, and with it taught stops and the heel tap. The
+electronics are the same everywhere: two Hall latches a quarter-cycle apart
+over a ring of magnets of alternating pole, plus an index. Each magnet gives
+two counts, so twelve magnets give 24 counts a turn (15° each). What
+differs is where the ring can go, and two places look like the best
+candidates on any machine that can be adapted.
+
+**On the arm shaft, inside the arm.** Machines with a removable top cover,
+such as the Singer 306W and many machines of the 1960s, often have room
+inside the arm casting and places where the arm shaft is open to reach. Set-screw
+collars on the shaft are common there, and they are left clear because the
+screws must be reachable. A printed ring that snaps over the shaft or an
+existing collar, locked by a set screw of its own, carries the magnets in
+pockets. Its size is limited only by the room in the casting. A 40 mm ring
+takes about twelve 6 mm magnets, and a larger ring, or smaller magnets,
+takes more, so resolution is seldom the limit. The sensors sit on a printed
+bracket fixed to an existing hole in the casting, and their leads run
+inside the casting down to the bed, out of sight.
+
+- *For it:* the ring is fixed to the shaft, so taught stops survive bobbin
+  winding and the cover keeps out hands, thread and lint.
+- *To check:* clearance through a full turn from cams, cranks, oil wicks
+  and the cover; a lead path clear of moving parts; and a bracket that
+  needs no drilling.
+
+**On the hand wheel.** Where the arm is sealed cast iron, as on the Singer
+99K, the shaft can't be reached without dismantling the machine, so the ring
+goes on the hand wheel. The sensor lead can't cross the front of the
+machine or come near the rim or the bobbin winder's tire track. On the 99K
+the one place left is the wheel's sloped back face, between the tire track
+and the rim. There the sensor head comes up between the belt and the wheel,
+or in through the belt from the side, where the belt already keeps hands
+away.
+
+- *Every wheel differs:* diameter, slope and curvature, material (cast
+  iron, aluminum, plastic) and finish. Many of these wheels have original
+  japanning, so the ring must come off without marking it; a printed
+  segment ring and a removable adhesive suit better than anything
+  permanent.
+- *The gap moves:* runout of the wheel and its end play on the shaft go
+  straight into the gap between magnet and sensor, so the bracket needs some
+  adjustment, and the sensor head must clear the belt as it flexes.
+- *The stops don't survive bobbin winding:* the wheel is held to the shaft
+  by the stop-motion clamp, by friction. Loosen it to wind a bobbin and the
+  wheel turns free; tighten it again and the wheel is fixed at a new angle,
+  so the taught stops are off by an unknown amount. The spacing between
+  the up and down stops belongs to the shaft and does not change, so one
+  point is enough to recover: set top dead center again, with the needle
+  up and a short hold of the single-stitch button. The firmware should ask
+  for this after bobbin winding rather than trust stale stops; nothing in
+  the circuit can tell that the clamp slipped.
+
+**The index.** A third sensor reading a magnet of its own (on another
+radius, or off to one side of the ring) is the plain answer. Where three
+sensors won't fit, a gap in the ring (one magnet left out) can stand in
+for it, the firmware finding the gap by timing; but then the index is
+found only once the shaft is turning, so this is a fallback rather than the
+first choice.
+
+## Directions under consideration
+
+These are ideas, not designs, recorded so they are not lost.
+
+**A pedal-first controller, without feedback.** Fitting any sensor to the
+machine is the largest barrier to the MCU design. A middle course drops
+machine feedback altogether and puts the effort into the human side: a
+pedal designed for the foot, supporting all of it and responding to
+changes in pressure, with response curves that can be switched or tuned.
+Electrically it is open-loop phase control, like the KB3151C board in the
+knee controller, whose function it would take over and refine. It would be
+built in two parts. The mains stays in the base, behind a grounded IEC
+inlet: the triac stage, its isolation and the isolated supply. The pedal
+carries only low-voltage sensors, powered from the base, on a cable with
+a connector that can't be mistaken for a mains one (a square Molex-style
+connector, say). One fixed curve could be done in analog; switchable
+curves, a dead band with no hum below it, soft start and a speed limit are
+all simple in firmware. So this is best treated as a feedback-free mode of
+the MCU design, not a separate circuit. Without feedback the load still
+sets the speed, as with the carbon pile (§4), and the operator
+compensates; a pressure-responsive pedal makes that compensation natural.
+
+**Load compensation without a machine sensor.** A tunable compensation
+mode is mostly firmware, but not entirely. A series motor's back-EMF
+depends on its field current ($E = K I \omega$, §2), so between the
+triac's pulses, with no current, there is only the weak residual-field
+voltage of §9: noisy, and it would need the motor voltage carried across
+the isolation barrier. The more practical route is IR compensation, as in
+the KBIC (§7, §8): measure the motor current and advance the firing angle
+as it rises. A small current transformer on the motor lead gives the
+current with isolation built in. The correction is first-order and must be
+tuned per motor, either from $K$ and $R$ measured on the test rig, or, as
+with the KBIC's IR trimpot, turned up in a setup mode until the motor
+begins to hunt and then backed off. Space for the current transformer on
+the board would keep the option open.
+
+**A tabletop controller for accessibility.** Many people who sew can't use
+a pedal or a knee lever. A tabletop controller on the same electronics
+would accept a range of assistive interfaces: a slide pot or knob, a grip
+or pressure sensor, a switch. Assistive switches commonly use 3.5 mm mono
+jacks, which would let existing switches plug straight in. Switch-only
+use needs its own firmware modes: start and stop at a preset speed, speed
+steps up and down, single stitch, needle up and down. Every latched mode
+must stop on any input, and should probably have a large stop button as
+well, since the user may not be able to reach for anything else in a
+hurry. The right set of interfaces is a question for the people who will
+use them.
+
+
 ## Other options considered
 
 - **A KBIC with an isolated command (§8).** Proven regulation through IR
