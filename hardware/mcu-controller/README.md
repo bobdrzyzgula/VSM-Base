@@ -45,7 +45,12 @@ drive; the zero-cross input; the Hall sensor (DRV5023, open drain, drawn at
 the hand-wheel end of its three-wire cable) with a pull-up and RC filter;
 the knee lever, a travel pedal, a pressure pedal (FSR) and a speed-limit
 knob into four ADC inputs; a needle-up/down toggle and a single-stitch
-button.
+button; a heel switch in either pedal (pin 4 of J5, pin 3 of J6, both
+4-pin) to one filtered input; and an optional hand-wheel encoder, two
+DRV5013 Hall latches (U5, U6) a quarter-cycle apart over a ring of
+alternating magnets, on the same cable as the index sensor (five wires:
+3V3, GND, index, A, B). The heel and encoder lines reach the board by net
+labels (HEEL, HEEL_F, ENC_A, ENC_B).
 
 ## Pin use (RP2350B)
 
@@ -54,8 +59,10 @@ button.
 | FIRE | GP4 | gate pulse: timer alarm or PIO |
 | RELAY | GP5 | motor-enable relay |
 | ZC | GP6 | zero-cross interrupt |
-| HALL | GP7 | hand-wheel pulses, edge timestamps |
-| STITCH | GP10 | single-stitch button |
+| ENC_A, ENC_B | GP2, GP3 | hand-wheel encoder, PIO quadrature counter (consecutive pins) |
+| HALL | GP7 | hand-wheel index (one per turn), edge timestamps |
+| STITCH | GP10 | single-stitch button; held, teaches a stop |
+| HEEL | GP11 | heel switch in the pedal |
 | NEEDLE | GP12 | needle-stop toggle |
 | KNEE | GP40 / ADC0 | knee lever |
 | PEDAL | GP41 / ADC1 | travel pedal |
@@ -89,6 +96,30 @@ loop updates the firing delay once per half-cycle (120 Hz on 60 Hz mains),
 with a rate limit on the firing angle and a stall watchdog (no Hall pulses
 for some time: stop firing, open K1). Fire only after a zero-cross has been
 seen and the speed command is zero; close K1 last and open it first.
+
+**Needle position.** With the encoder fitted, a PIO program counts its
+quadrature edges in either direction (the Pico SDK's quadrature-encoder
+example), and the index pulse sets and checks the count once a turn.
+Twelve magnets give 24 counts a turn, 15° each, and the firmware can tell
+where the needle is even at rest. Without the encoder, the index alone
+gives a position only while the wheel turns (by time since the last
+pulse), so stops are rougher and can't be taught by hand.
+
+- **Teaching the stops.** With the needle toggle at "up", turn the hand
+  wheel to where the thread releases (the take-up lever at its top, which
+  is not quite the needle's highest point) and hold the single-stitch
+  button for two seconds; set the toggle to "down" and do the same with the
+  needle in the fabric. The two angles are kept in flash. They are relative
+  to the magnets, so the magnets can go anywhere on the wheel.
+- **Stopping.** When the pedal is released, the loop brings the machine
+  down to a creep speed and cuts firing short of the stop chosen by the
+  toggle, by a learned coast angle; after each stop it reads where the
+  needle actually came to rest and corrects the coast angle.
+- **Heel tap.** A press and release of the heel switch with the pedal at
+  rest sends the needle to its other stop: up to release the fabric, or
+  down to pivot. It is ignored while the pedal is pressed.
+- A pedal pressed less than its start threshold commands nothing at all:
+  no firing, no current, no hum.
 
 ## Cautions
 

@@ -58,16 +58,18 @@ where, and the specification checked.
 | Debug probe (optional) | Raspberry Pi Debug Probe, or a second Pico board as a probe | 1 | M | Any | Only for step-through debugging; flashing works over USB. |
 | MOSFET | 2N7002, SOT-23 (or 2N7000, TO-92, on perfboard) | 2 | M | Any | Q2, the relay driver |
 | Diodes | 1N4148 (D1); SS14 Schottky (D2; can be left out on the WeAct board) | a few | M | Any | |
-| Resistors, 0.25 W | 270 Ω (R11), 100 Ω (R12, R15), 100 kΩ (R13), 10 kΩ (R9, R14, R18), 1 kΩ (R16, R17, R19, R20) | 1 set | M | Any | An assortment kit covers these. |
-| Capacitors | 100 nF ceramic (about 10), 1 nF ceramic (2), 10 µF (1) | 1 set | M | Any | |
-| Hand-wheel sensor | TI DRV5023 unipolar Hall switch (TO-92 for wiring at the sensor), 3.3 V-capable | 2 | M | Dist | U4. Generic A3144 parts need 4.5 V or more; don't substitute those. |
-| Magnet | Neodymium disc, about 6 × 3 mm | a few | M | Any | One on the hand wheel; check the pole facing the sensor. |
+| Resistors, 0.25 W | 270 Ω (R11), 100 Ω (R12, R15, R22, R23), 100 kΩ (R13), 10 kΩ (R9, R14, R18, R24, R25), 1 kΩ (R16, R17, R19, R20, R21) | 1 set | M | Any | An assortment kit covers these. |
+| Capacitors | 100 nF ceramic (about 12), 1 nF ceramic (4), 10 µF (1) | 1 set | M | Any | |
+| Hand-wheel index sensor | TI DRV5023 unipolar Hall switch (TO-92 for wiring at the sensor), 3.3 V-capable | 2 | M | Dist | U4. Generic A3144 parts need 4.5 V or more; don't substitute those. |
+| Hand-wheel encoder (optional) | TI DRV5013 Hall latch (TO-92), 2.5–38 V supply | 2 + spare | M | Dist | U5, U6: quadrature over a ring of magnets, a quarter-cycle apart |
+| Magnets | Neodymium disc, about 6 × 3 mm | 1 + 12 | M | Any | One for the index sensor; twelve for the encoder ring, alternating poles. Check the pole facing each sensor. |
+| Heel switch | Momentary switch, normally open, sized for the pedal's heel (a snap-action microswitch works) | 1 per pedal | M | Any | To GND; on pin 4 of the travel pedal's connector, pin 3 of the pressure pedal's |
 | Knee and pedal sensors | 10 kΩ linear pot, or a linear Hall sensor (DRV5055 or SS49E class) with a magnet | 2 | M | Any | For the knee lever and the travel pedal |
 | Pressure sensor | FSR, Interlink 402 (round) or 406 (square) | 1 | M | Check | The pressure pedal. Clones vary widely in range. |
 | Speed-limit knob | 10 kΩ linear panel pot, with knob | 1 | M | Any | RV2 |
 | Switches | SPDT or SPST panel toggle (needle up/down); momentary push button (single stitch) | 1 each | M | Any | |
-| Pedal and sensor connectors | 3- or 4-pin, to be chosen: GX12 aviation, M8, or 3.5 mm TRS jacks | to suit | M | Any | Low voltage only, but they must never be mistakable for a mains connector. |
-| Cable | 3- or 4-core shielded, 24–26 AWG | a few m | M | Any | Hall sensor and pedals |
+| Pedal and sensor connectors | 4-pin for each pedal (3.3 V, signal, GND, heel); 5-pin for the hand wheel (3.3 V, GND, index, A, B); 3-pin for the knee lever. GX12 aviation or M8; a TRS jack has too few contacts | to suit | M | Any | Low voltage only, but they must never be mistakable for a mains connector. |
+| Cable | 4- and 5-core shielded, 24–26 AWG | a few m | M | Any | Hand-wheel sensors and pedals |
 | Prototype board | Perfboard or stripboard; a breadboard for first tests | 1–2 | M R | Any | Keep 6 mm between mains and low-voltage copper. |
 
 ## Test rig panel and patching

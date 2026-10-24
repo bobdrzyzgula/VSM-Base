@@ -24,7 +24,7 @@ HOME=$TMP kicad-cli sch export svg --exclude-drawing-sheet -o "$TMP" "$MCU" > /d
 python3 - "$TMP/mcu_controller.svg" "$MOUT" <<'PY'
 import re, sys
 s = open(sys.argv[1]).read()
-x, y, w, h = 18, 33, 386, 222
+x, y, w, h = 18, 33, 386, 224
 s = re.sub(r'width="[^"]*mm" height="[^"]*mm" viewBox="[^"]*"',
            f'width="{w}mm" height="{h}mm" viewBox="{x} {y} {w} {h}"', s, count=1)
 open(sys.argv[2], "w").write(s)

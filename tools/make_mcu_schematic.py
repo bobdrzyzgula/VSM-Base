@@ -105,6 +105,9 @@ symbol("SW", "SW", [("1", "1", 0, 5.08, 270, 2.54, "passive"), ("2", "2", 0, -5.
 symbol("DRV5023", "U", [("1", "VCC", -7.62, 2.54, 0, 2.54, "power_in"), ("2", "OUT", -7.62, 0, 0, 2.54, "output"),
                         ("3", "GND", -7.62, -2.54, 0, 2.54, "power_in")],
        [rect(-5.08, -3.81, 5.08, 3.81, fill="background")], show_names=True, ref_at=(0, 5.08), val_at=(0, -5.08))
+symbol("DRV5013", "U", [("1", "VCC", -7.62, 2.54, 0, 2.54, "power_in"), ("2", "OUT", -7.62, 0, 0, 2.54, "output"),
+                        ("3", "GND", -7.62, -2.54, 0, 2.54, "power_in")],
+       [rect(-5.08, -3.81, 5.08, 3.81, fill="background")], show_names=True, ref_at=(0, 5.08), val_at=(0, -5.08))
 for n in (2, 3, 4):
     pins = [(str(i + 1), str(i + 1), -5.08, (n - 1) * G / 2 - i * G, 0, 3.81, "passive") for i in range(n)]
     symbol(f"Conn_{n}", "J", pins, [rect(-1.27, -(n * G) / 2, 1.27, (n * G) / 2)],
@@ -221,16 +224,27 @@ part("C11", "C", "100n", 195.58, 248.92)
 part("RV2", "Pot", "10k speed limit", 45.72, 152.4)
 part("R20", "R", "1k", 58.42, 152.4, 90)
 part("C9", "C", "100n", 71.12, 156.21)
-part("J6", "ConnR_2", "pressure pedal (FSR)", 30.48, 170.18)
+part("J6", "ConnR_4", "pressure pedal (FSR) + heel", 30.48, 172.72)
 part("R18", "R", "10k", 43.18, 175.26)
 part("R19", "R", "1k", 53.34, 171.45, 90)
 part("C8", "C", "100n", 66.04, 175.26)
-part("J5", "ConnR_3", "travel pedal", 30.48, 223.52)
+part("J5", "ConnR_4", "travel pedal + heel", 30.48, 224.79)
 part("R17", "R", "1k", 50.8, 223.52, 90)
 part("C7", "C", "100n", 66.04, 227.33)
-part("J4", "ConnR_3", "knee lever", 30.48, 243.84)
-part("R16", "R", "1k", 50.8, 243.84, 90)
-part("C6", "C", "100n", 66.04, 247.65)
+part("J4", "ConnR_3", "knee lever", 30.48, 241.3)
+part("R16", "R", "1k", 50.8, 241.3, 90)
+part("C6", "C", "100n", 66.04, 245.11)
+# heel switch (in either pedal, to GND): filtered here, to GP11 by label
+part("R21", "R", "1k", 68.58, 205.74, 90)
+part("C14", "C", "100n", 78.74, 209.55)
+# optional hand-wheel encoder: two Hall latches over a ring of alternating
+# magnets, a quarter-cycle apart (quadrature); same network as the index sensor
+for k, y0 in enumerate((172.72, 205.74)):
+    part(f"C{17 + k}", "C", "1n", 307.34, y0 + 3.81)
+    part(f"R{22 + k}", "R", "100", 320.04, y0, 90)
+    part(f"R{24 + k}", "R", "10k", 332.74, y0 - 6.35)
+    part(f"U{5 + k}", "DRV5013", "DRV5013 at hand wheel", 363.22, y0)
+    part(f"C{15 + k}", "C", "100n at sensor", 381.0, y0)
 
 # ---------------------------------------------------------------- wiring
 # Each wire is a list of points: "REF.PIN", (x, y), ("h", x) to run
@@ -315,25 +329,45 @@ wire("J5.2", "R17.1")
 wire("R17.2", ("h", 101.6), ("v", 198.12), "A1.L11")    # PEDAL
 wire("C7.1", (66.04, 223.52))
 wire("J4.2", "R16.1")
+# heel: stubs from both pedal jacks, joined to the filter by the HEEL label
+wire("J6.3", (40.64, 173.99))
+wire("J5.4", (40.64, 228.6))
+wire("J6.4", ("h", 39.37), ("v", 181.61), ("h", 43.18))   # J6's ground into R18's
+wire((55.88, 205.74), "R21.1")
+wire("R21.2", ("h", 86.36))
+wire("C14.1", (78.74, 205.74))
+wire("A1.R13", ("h", 167.64))                             # HEEL_F
+# encoder A and B: from GP2 and GP3 by label
+wire("A1.R3", ("h", 162.56))
+wire("A1.R5", ("h", 162.56))
+for k, y0 in enumerate((172.72, 205.74)):
+    wire((297.18, y0), f"R{22 + k}.1")
+    wire(f"C{17 + k}.1", (307.34, y0))
+    wire(f"R{22 + k}.2", f"U{5 + k}.2")
+    wire(f"R{24 + k}.2", ("v", y0))
 wire("R16.2", ("h", 106.68), ("v", 200.66), "A1.L12")   # KNEE
-wire("C6.1", (66.04, 243.84))
+wire("C6.1", (66.04, 241.3))
 
 # Power ports on pins (a stub and a port in the pin's outward direction)
 POWER = {
  "+5V":  ["K1.1", "D1.1", "PS1.3", "C12.1", "C13.1", "D2.2"],
- "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.L14", "RV2.1", "J6.1", "J5.1", "J4.1"],
+ "+3V3": ["R9.1", "R14.1", "U4.1", "C5.1", "A1.L14", "RV2.1", "J6.1", "J5.1", "J4.1",
+          "R24.1", "R25.1", "U5.1", "U6.1", "C15.1", "C16.1"],
  "GND":  ["U3.2", "U2.4", "PS1.4", "Q2.2", "R13.2", "C3.2", "C12.2", "C13.2", "A1.L2", "A1.R4",
           "C4.2", "U4.3", "C5.2", "SW1.2", "C10.2", "SW2.2", "C11.2", "RV2.3", "C9.2", "R18.2", "C8.2",
-          "J5.3", "C7.2", "J4.3", "C6.2"],
+          "J5.3", "C7.2", "J4.3", "C6.2", "C14.2", "C17.2", "C18.2", "U5.3", "U6.3", "C15.2", "C16.2"],
 }
 # Net names shown along wires: (name, x, y, angle)
 NAMES = [("L (fused)", 80.0, LR, 0), ("N", 80.0, NR, 0), ("PE", 33.02, 70.0, 90),
          ("MOTOR", 80.0, 92.71, 0), ("MT1 (via K1)", 190.5, 76.2, 0), ("GATE", 168.0, 85.09, 0),
          ("FIRE", 165.0, 185.42, 0), ("RELAY", 165.0, 187.96, 0), ("ZC", 165.0, 190.5, 0),
          ("HALL", 165.0, 193.04, 0), ("STITCH", 165.0, 200.66, 0), ("NEEDLE", 160.0, 205.74, 0),
-         ("LIMIT", 80.0, 152.4, 0), ("FSR", 80.0, 171.45, 0), ("PEDAL", 80.0, 223.52, 0), ("KNEE", 80.0, 243.84, 0)]
+         ("LIMIT", 80.0, 152.4, 0), ("FSR", 80.0, 171.45, 0), ("PEDAL", 80.0, 223.52, 0), ("KNEE", 80.0, 241.3, 0),
+         ("HEEL", 36.07, 173.99, 0), ("HEEL", 36.07, 228.6, 0), ("HEEL", 56.39, 205.74, 0), ("HEEL_F", 80.5, 205.74, 0),
+         ("HEEL_F", 158.0, 203.2, 0), ("ENC_A", 158.0, 177.8, 0), ("ENC_B", 158.0, 182.88, 0),
+         ("ENC_A", 297.7, 172.72, 0), ("ENC_B", 297.7, 205.74, 0)]
 
-CAP_LEFT = {"R7", "R18", "SW1", "SW2", "R6", "C2", "D2"}
+CAP_LEFT = {"R7", "SW1", "SW2", "R6", "C2", "D2"}
 
 # ---------------------------------------------------------------- connectivity
 def on_seg(p, a, b):
@@ -390,6 +424,10 @@ def f(x):
     return x
 for a, b in segs:
     par[f(a)] = f(b)
+for (nm, x, y, a) in NAMES:          # a label joins the wire it sits on to its namesakes
+    hit = [sg for sg in segs if (x, y) in sg or on_seg((x, y), *sg)]
+    assert hit, ("label off any wire", nm, x, y)
+    par[f(hit[0][0])] = f(("label", nm))
 groups = {}
 for p, name in pins_all.items():
     groups.setdefault(f(p), []).append(name)
@@ -444,9 +482,11 @@ for ref, (sym, val, x, y, r) in PARTS.items():
         text(ref, x + w + 1.27, y - 1.0, 1.27, True); text(val, x + w + 1.27, y + 2.0, 1.0)
     elif sym == "RP2350B_CORE":
         text(ref, x - 12.7, y - 21.6, 1.27, True); text(val, x - 7.0, y - 21.6, 1.27)
-    elif sym.startswith("ConnR") or sym == "DRV5023":
+    elif sym.startswith("ConnR") or sym in ("DRV5023", "DRV5013"):
         n = len(SYMS[sym]["pins"])
         text(ref, x - 1.27, y - n * G / 2 - 4.2, 1.27, True); text(val, x - 1.27, y - n * G / 2 - 1.6, 1.0)
+    elif ref == "R18":
+        text(ref, x + 2.54, y + 4.6, 1.27, True); text(val, x + 2.54, y + 6.6, 1.0)
     elif r == 90:
         text(ref, x - 2.5, y - 2.4, 1.27, True); text(val, x - 2.5, y + 3.6, 1.0)
     elif sym == "Pot":
@@ -470,7 +510,9 @@ for (t, x, y) in [("MAINS IN, FUSE, SURGE; OUTLET (LIGHT always on, MOTOR contro
                   ("MOTOR-ENABLE RELAY", 210.82, 104.14), ("ZERO-CROSS", 251.46, 104.14), ("ISOLATED 5 V", 304.8, 104.14),
                   ("RELAY DRIVER", 231.14, 162.56), ("ZERO-CROSS INPUT", 284.48, 139.7), ("TRIAC FIRING", 170.18, 128.27),
                   ("5 V BULK", 332.74, 121.92), ("RP2350B CORE BOARD (pins by GPIO number)", 124.46, 165.1),
-                  ("HAND-WHEEL HALL SENSOR (3-wire cable; one magnet, one pulse per stitch)", 200.66, 210.82),
+                  ("HAND-WHEEL INDEX SENSOR (one magnet, one pulse per stitch)", 200.66, 210.82),
+                  ("HAND-WHEEL ENCODER (two Hall latches, quadrature; same cable as the index)", 297.18, 160.02),
+                  ("HEEL SWITCH", 55.88, 199.39),
                   ("SWITCHES (internal pull-ups)", 170.18, 218.44),
                   ("OPERATOR INPUTS (RC-filtered ADC)", 20.32, 139.7)]:
     text(t, x, y, 1.5, True)
@@ -478,15 +520,17 @@ notes = [
  "NOTES. A concept drawn by Claude at Bob Drzyzgula's direction, October 2026: not built, not tested, values not checked.",
  "1. After Freescale AN1662: zero-cross interrupt sets a timer alarm (or a PIO program); at the firing delay a ~100 us gate pulse fires the",
  "   triac; hand-wheel period from edge timestamps; speed loop every half-cycle (120 Hz); stall watchdog. Added: isolation, relay, inputs.",
- "2. Pins (RP2350B): FIRE GP4; RELAY GP5; ZC GP6; HALL GP7; STITCH GP10; NEEDLE GP12; knee, pedal, FSR, limit on ADC0-3 (GP40-43),",
- "   ADC4-7 spare; GP8/GP9 UART1 for a debug line (or USB serial). Avoid GP0 (PSRAM select on some boards), GP23, GP25 (key, LED).",
+ "2. Pins (RP2350B): FIRE GP4; RELAY GP5; ZC GP6; HALL (index) GP7; ENC_A/B GP2/GP3 (PIO counter); STITCH GP10; HEEL GP11; NEEDLE GP12;",
+ "   knee, pedal, FSR, limit on ADC0-3 (GP40-43); ADC4-7 spare; GP8/GP9 UART1 for debug (or USB serial). Avoid GP0, GP23, GP25 (PSRAM, key, LED).",
  "3. PS1 feeds VSYS through D2, so USB may stay plugged in (the control side is SELV). Flash by UF2 (BOOTSEL) or SWD. Drive GP4 at 8-12 mA.",
  "4. Fire only after a zero-cross has been seen and the command is zero; close K1 last and open it first. Never scope the line side.",
  "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires.",
  "6. On a WeAct RP2350B Core board, feed PS1 to the 5V pin: the board has its own diode from USB VBUS, so D2 may be left out.",
+ "7. Heel: momentary switch to GND in either pedal (J5 pin 4, J6 pin 3); a heel tap sends the needle to its other stop.",
+ "8. Encoder U5/U6 (ring of alternating magnets) optional: stops taught and landed by angle; 5-wire cable (3V3, GND, index, A, B).",
 ]
 for i, n in enumerate(notes):
-    text(n, 20.32, 257.0 + i * 3.2, 1.27, i == 0)
+    text(n, 20.32, 259.3 + i * 2.5, 1.15, i == 0)
 
 libs = "\n".join(s["text"] for s in SYMS.values())
 sch = f"""(kicad_sch (version 20230121) (generator eeschema)
@@ -494,8 +538,8 @@ sch = f"""(kicad_sch (version 20230121) (generator eeschema)
   (paper "A3")
   (title_block
     (title "VSM MCU phase controller (concept)")
-    (date "2026-10-22")
-    (rev "draft-3")
+    (date "2026-10-24")
+    (rev "draft-4")
     (comment 1 "After Freescale AN1662, with an isolated control side; RP2350B core board")
     (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested"))
   (lib_symbols

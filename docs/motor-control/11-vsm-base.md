@@ -131,8 +131,9 @@ microcontroller phase controller with an isolated control side. As it stands:
   (the crank, spring housing and screw stops, and the switch's dead travel)
   carries over; the speed curve moves into firmware.
 - A speed sensor (handwheel or motor pulley) for true speed command, and the
-  features it makes cheap: needle positioning, slow start, a speed limit, a
-  single-stitch button; and a force-sensing pedal that reproduces the carbon
+  features it makes cheap: needle positioning (stops taught by hand, and a
+  heel tap in the pedal), slow start, a speed limit, a single-stitch button;
+  and a force-sensing pedal that reproduces the carbon
   pile's feel while holding speed.
 
 ### A first concept circuit
@@ -178,20 +179,24 @@ module into its VSYS pin through a Schottky diode, so its USB port can stay
 plugged in; its own regulator supplies 3.3 V to the sensors. A 2N7002
 drives the relay coil. The opto-triac's LED is driven straight from a GPIO
 set to 8–12 mA drive. The zero-cross output has a pull-up and a small filter
-capacitor. The hand-wheel sensor is a DRV5023 Hall switch on a three-wire
-cable; one magnet gives one pulse per stitch and also marks needle
-position. The knee lever, a travel pedal, a pressure pedal (a
-force-sensing resistor) and a speed-limit knob go to four analog inputs
-through RC filters. A needle-up/down toggle and a single-stitch button use
-the microcontroller's internal pull-ups.
+capacitor. The hand-wheel index sensor is a DRV5023 Hall switch; one magnet
+gives one pulse per stitch. An optional encoder beside it, two Hall
+latches over a ring of alternating magnets, tells the firmware the hand
+wheel's angle to 15° (see below). The knee lever, a travel pedal, a pressure
+pedal (a force-sensing resistor) and a speed-limit knob go to four analog
+inputs through RC filters. A needle-up/down toggle, a single-stitch button
+and a heel switch in the pedal use the microcontroller's internal
+pull-ups.
 
 | Signal | RP2350B pin | Use |
 |---|---|---|
 | Triac fire | GP4 | gate pulse (timer alarm or PIO) |
 | Relay | GP5 | output |
 | Zero cross | GP6 | interrupt |
-| Hand wheel | GP7 | edge timestamps |
-| Single stitch | GP10 | input |
+| Hand-wheel encoder | GP2, GP3 | quadrature count (PIO) |
+| Hand-wheel index | GP7 | edge timestamps |
+| Single stitch | GP10 | input; held, teaches a stop |
+| Heel switch | GP11 | input |
 | Needle up/down | GP12 | input |
 | Knee, pedal, pressure, limit | GP40–43 (ADC0–3) | analog inputs |
 
@@ -218,6 +223,62 @@ supply already passes through a diode, so the supply module can feed its
 - Nothing fires until a zero crossing has been seen and the speed command
   is zero, so the machine cannot start on power-up.
 
+**What a sewist asks of a pedal.** Danielle, who has sewn for more than
+five decades and works with Bob Drzyzgula on repairing and re-homing
+thrift-store machines, read a draft of this paper and described what she
+values in a foot control. Her observations, which she agreed to share, set
+part of this controller's brief:
+
+- **Full power at slow speed, from the first movement.** A pedal should
+  respond as soon as it engages, without the "bogginess" some show in heavy
+  fabric. That is the series-resistance problem of §3: as the load rises,
+  the pedal drops more voltage and the motor slows just when it needs
+  torque. The speed loop answers it, adding power to hold the speed asked
+  for.
+- **No heat at rest.** She described a sewist who holds a carbon-pile
+  pedal just short of moving the needle, so the motor hums, for several
+  seconds before each start. The pile is then a resistor in series with a
+  stalled motor: current flows, but nearly all the power becomes heat in
+  the pedal, more so on the high-speed setting. Here a pedal below its
+  start threshold commands nothing: no firing and no current.
+- **Stopping the needle where it is wanted.** A foot control does more than
+  set speed: it stops the needle down, in the fabric, to pivot or to hold
+  the work while it is rearranged, and up, to take the work out. She
+  recalls learning to do this with the pedal alone on some machines and
+  never managing it on others. Even then "up" often missed the spot where
+  the stitch completes and the thread releases, so the hand wheel was
+  needed anyway. The heel tap of later electronic pedals (raise or lower
+  the needle with a tap of the heel) she counts the most useful feature of
+  all. Smooth speed at a crawl, with no pulses or stalls, is what makes
+  stopping by foot possible at all.
+
+The circuit takes these up with a heel switch in the pedal and an encoder
+at the hand wheel. In the firmware:
+
+- **The stops are taught.** With the needle toggle at "up", the sewist
+  turns the hand wheel to where the thread releases (the take-up lever at
+  its highest, which is not quite the needle's highest point, and differs
+  from machine to machine) and holds the single-stitch button for two
+  seconds; then the same at "down", with the needle in the fabric. The
+  angles are kept in flash, relative to the magnets, which can therefore go
+  anywhere on the wheel.
+- **Stops are landed by angle.** On release, the loop brings the machine
+  down to a creep speed and cuts firing short of the chosen stop by a coast
+  angle. The triac design has no active braking, so the coast is learned:
+  after each stop the firmware reads where the needle came to rest and
+  corrects it.
+- **A heel tap, with the pedal at rest, sends the needle to its other
+  stop**: up to release the work, down to pivot.
+
+The encoder is there because one magnet is not enough. A single index
+pulse gives the hand wheel's angle only while it turns, by time since the
+pulse, so a controller with only the index can't learn a stop from a hand
+wheel turned by hand, or check where the needle landed. Two Hall latches
+placed a quarter-cycle apart over a ring of twelve alternating magnets give
+24 counts a turn, 15° each, in either direction, counted by a small PIO
+program; the index pulse sets and checks the count once a turn. Without
+the encoder the controller still stops by the index alone, more roughly.
+
 **Two practical consequences.** Because the control side is isolated, the
 board's USB port can stay connected to a computer with the mains on, for
 flashing (by dragging a UF2 file onto it in BOOTSEL mode) and for the
@@ -231,8 +292,9 @@ Line side, left to right: the IEC inlet and fuse, the surge suppressor, the
 outlet, the triac stage, and the line sides of the opto-triac (U3), the
 motor-enable relay (K1), the zero-cross optocoupler (U2) and the 5 V supply
 (PS1). Control side: the triac's LED drive, the relay driver, the
-zero-cross input, the RP2350B core board, the operator inputs (left), the switches and
-the hand-wheel Hall sensor. The KiCad file and its generator are in
+zero-cross input, the RP2350B core board, the operator inputs and heel
+switch (left), the switches, the hand-wheel index sensor and the optional
+hand-wheel encoder (right). The KiCad file and its generator are in
 `hardware/mcu-controller/`.](../images/diagrams/mcu-controller-schematic.svg){width=100%}
 
 The KiCad drawing, a printed copy and the script that generates them are in
