@@ -69,7 +69,9 @@ brings them out, but avoid the pins boards commonly use themselves: GP0
 (the PSRAM chip select, where a board has PSRAM), GP23 (a user button) and
 GP25 (the LED, useful as a status light).
 
-**A candidate board: WeAct Studio RP2350B Core (V1.0),** about $6. It
+**A candidate board: WeAct Studio RP2350B Core (V1.0),** about $6. Its
+schematic, 3D model and examples are in WeAct's public repository,
+<https://github.com/WeActStudio/WeActStudio.RP2350BCoreBoard>. It
 brings every GPIO, GP40–47 included, out to 0.1" headers, along with VBUS,
 5V, 3V3, 3V3_EN, RUN and ADC_VREF. From its schematic: GP0 has a 0 Ω link
 to an optional PSRAM's chip select, GP23 is the KEY button and GP25 the
