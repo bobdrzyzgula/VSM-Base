@@ -62,9 +62,20 @@ button.
 | FSR | GP42 / ADC2 | pressure pedal |
 | LIMIT | GP43 / ADC3 | speed-limit knob |
 
-ADC4–7 (GP44–47) are spare; GP0/GP1 (UART0) are left for a debug line. Any
-GPIO will do for the digital signals: wire them by GPIO number to wherever
-the chosen board brings them out.
+ADC4–7 (GP44–47) are spare; GP8/GP9 (UART1) are left for a debug line,
+though the USB serial link will usually do. Any GPIO will do for the
+digital signals: wire them by GPIO number to wherever the chosen board
+brings them out, but avoid the pins boards commonly use themselves: GP0
+(the PSRAM chip select, where a board has PSRAM), GP23 (a user button) and
+GP25 (the LED, useful as a status light).
+
+**A candidate board: WeAct Studio RP2350B Core (V1.0),** about $6. It
+brings every GPIO, GP40–47 included, out to 0.1" headers, along with VBUS,
+5V, 3V3, 3V3_EN, RUN and ADC_VREF. From its schematic: GP0 has a 0 Ω link
+to an optional PSRAM's chip select, GP23 is the KEY button and GP25 the
+LED; and USB VBUS reaches the board's 5V rail through a diode, so PS1 can
+feed the 5V pin directly, with USB plugged in as well, and D2 can be left
+out. The 3.3 V regulator easily covers the sensors' few milliamps.
 
 ## Firmware outline (after AN1662)
 

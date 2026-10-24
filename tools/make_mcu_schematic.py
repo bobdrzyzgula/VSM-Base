@@ -114,8 +114,8 @@ for n in (2, 3, 4):
 # digital GPIOs on the right
 LEFT = ["VBUS", "GND", "RUN", "VSYS", "GP47/ADC7", "GP46/ADC6", "GP45/ADC5", "GP44/ADC4", "GP43/ADC3",
         "GP42/ADC2", "GP41/ADC1", "GP40/ADC0", "ADC_VREF", "3V3(OUT)", "3V3_EN"]
-RIGHT = ["GP0/UART0_TX", "GP1/UART0_RX", "GP2", "GND", "GP3", "GP4", "GP5", "GP6", "GP7",
-         "GP8", "GP9", "GP10", "GP11", "GP12", "GP13"]
+RIGHT = ["GP0", "GP1", "GP2", "GND", "GP3", "GP4", "GP5", "GP6", "GP7",
+         "GP8/UART1_TX", "GP9/UART1_RX", "GP10", "GP11", "GP12", "GP13"]
 pins = [(f"L{i+1}", nm, -17.78, 17.78 - i * G, 0, 5.08, "bidirectional") for i, nm in enumerate(LEFT)]
 pins += [(f"R{i+1}", nm, 17.78, 17.78 - i * G, 180, 5.08, "bidirectional") for i, nm in enumerate(RIGHT)]
 symbol("RP2350B_CORE", "A", pins, [rect(-12.7, -20.32, 12.7, 20.32, fill="background")], show_names=True,
@@ -479,10 +479,11 @@ notes = [
  "1. After Freescale AN1662: zero-cross interrupt sets a timer alarm (or a PIO program); at the firing delay a ~100 us gate pulse fires the",
  "   triac; hand-wheel period from edge timestamps; speed loop every half-cycle (120 Hz); stall watchdog. Added: isolation, relay, inputs.",
  "2. Pins (RP2350B): FIRE GP4; RELAY GP5; ZC GP6; HALL GP7; STITCH GP10; NEEDLE GP12; knee, pedal, FSR, limit on ADC0-3 (GP40-43),",
- "   ADC4-7 spare; GP0/GP1 UART0 for a debug line (or USB serial). Any GPIO will do for the digital signals; wire by GPIO number.",
+ "   ADC4-7 spare; GP8/GP9 UART1 for a debug line (or USB serial). Avoid GP0 (PSRAM select on some boards), GP23, GP25 (key, LED).",
  "3. PS1 feeds VSYS through D2, so USB may stay plugged in (the control side is SELV). Flash by UF2 (BOOTSEL) or SWD. Drive GP4 at 8-12 mA.",
  "4. Fire only after a zero-cross has been seen and the command is zero; close K1 last and open it first. Never scope the line side.",
  "5. R7/R8: ~3.9 mA peak in the H11AA1; R11: ~8 mA into U3 from 3.3 V; R6/C2 fitted only if a snubberless triac false-fires.",
+ "6. On a WeAct RP2350B Core board, feed PS1 to the 5V pin: the board has its own diode from USB VBUS, so D2 may be left out.",
 ]
 for i, n in enumerate(notes):
     text(n, 20.32, 257.0 + i * 3.2, 1.27, i == 0)

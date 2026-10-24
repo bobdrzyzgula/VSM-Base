@@ -195,10 +195,13 @@ the microcontroller's internal pull-ups.
 | Needle up/down | GP12 | input |
 | Knee, pedal, pressure, limit | GP40–43 (ADC0–3) | analog inputs |
 
-ADC4–7 are spare, and GP0/GP1 (UART0) are left for a debug line, though
+ADC4–7 are spare, and GP8/GP9 (UART1) are left for a debug line, though
 the USB port's serial link will usually do. Any GPIO can serve for the
 digital signals, so these are a starting point, to be placed to suit the
-board chosen.
+board chosen. A candidate is WeAct Studio's RP2350B Core board, about $6,
+which brings out every GPIO including all eight analog inputs; its USB
+supply already passes through a diode, so the supply module can feed its
+5V pin directly.
 
 **Firmware, in outline.** As in AN1662:
 
