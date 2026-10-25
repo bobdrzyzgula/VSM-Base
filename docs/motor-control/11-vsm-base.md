@@ -370,6 +370,36 @@ for it, the firmware finding the gap by timing; but then the index is
 found only once the shaft is turning, so this is a fallback rather than the
 first choice.
 
+**An optical alternative, for a small shaft.** Where the shaft can be
+reached but there is little room around it, a ring of magnets can't be
+made large enough for useful resolution. A slotted optical sensor reading
+a printed slotted ring can: 36 or 60 slots fit where a dozen magnets
+won't. Each sensor is a fork with an infrared LED on one side and a
+detector on the other, and the ring's teeth pass between them; two forks,
+or one dual-channel fork, a quarter-slot apart give quadrature, and a
+separate slot or tooth on another track gives the index. The circuit
+changes little:
+
+- *Logic outputs.* "Photo-IC" interrupters, with the amplifier and
+  Schmitt trigger built in, give clean edges even at a crawl, so they take
+  the Hall latches' place with the same pull-ups, filters and pins. A bare
+  phototransistor would need a comparator per channel.
+- *More current.* Each LED draws 10–20 mA through its own resistor, against
+  about 3 mA for a Hall latch, so the LEDs are best fed from the 5 V rail
+  and the cable gains a wire.
+
+The cost is dirt. The inside of an arm holds oil mist and lint, and an
+optical path collects both, where a Hall sensor is indifferent to them. So
+the fitting has to be made for cleaning: the forks open and reachable with
+the top cover off, the ring's slots open-ended or wide enough to clear with
+a brush, and nothing that holds oil. A sewist who keeps a vintage machine
+well is in the top of it regularly to oil and clean it, and wiping the
+encoder can become part of that routine. A reflective sensor reading
+painted or printed bands is also possible but more fragile: it fouls
+fastest, and printed plastics vary widely in how they reflect infrared
+(some black filaments look nearly white to it). On a hand wheel, room light
+adds a further problem, so it is the last resort there.
+
 ## Directions under consideration
 
 These are ideas, not designs, recorded so they are not lost.
