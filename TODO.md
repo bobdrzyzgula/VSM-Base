@@ -39,7 +39,8 @@ aren't forgotten.* Last gathered October 25, 2026.
   watch. If it serves as K1 on a prototype, log it in `hardware/PARTS.md`.
 - [ ] Log substitutions in `hardware/PARTS.md` as parts arrive.
 - [ ] When the WeAct RP2350B boards arrive, print the header stand
-  (`hardware/mcu-controller/header-stand/`) and solder their headers.
+  (`rp2350b-controller/` in the Header-Soldering-Jigs repository) and solder
+  their headers.
 
 ## Decide
 
