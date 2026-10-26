@@ -88,3 +88,19 @@ and Hall switch](enc_exploded.png)
 - **Slot count.** 36 slots at 40 mm leaves teeth and slots about 1.6 mm
   wide at the apertures. More slots need a finer aperture, a larger ring,
   or both.
+
+## Measuring the shaft's height: `shaft_height_gauge.scad`
+
+A small printed slide gauge for measuring from the casting floor to the
+underside of the shaft, where calipers won't fit. A foot stands on the
+floor, with an upright rail engraved in millimeters (12–32 mm) on both
+faces. A slider rides the rail, and its flat arm reaches under the shaft. A
+sprung pad cut in the slider's back wall holds it wherever it's left. Push
+the slider up by its tab until the arm just touches the shaft; the reading
+is the scale mark level with the slider's top edge. For a better number,
+lift the gauge out without disturbing the slider and measure from the
+bottom of the foot to the top of the arm with calipers. Print the base
+standing up, and the slider upside down, with the arm's measuring face on
+the bed.
+
+![The gauge set at 20 mm under an 11 mm shaft](shaft_height_gauge.png)
