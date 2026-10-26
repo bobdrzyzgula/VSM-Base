@@ -38,6 +38,8 @@ aren't forgotten.* Last gathered October 25, 2026.
 - [ ] Keep the 4-relay module (Songle SRD-05VDC-SL-C) to the bench, under
   watch. If it serves as K1 on a prototype, log it in `hardware/PARTS.md`.
 - [ ] Log substitutions in `hardware/PARTS.md` as parts arrive.
+- [ ] When the WeAct RP2350B boards arrive, print the header stand
+  (`hardware/mcu-controller/header-stand/`) and solder their headers.
 
 ## Decide
 

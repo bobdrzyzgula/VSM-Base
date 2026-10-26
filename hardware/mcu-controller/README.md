@@ -92,6 +92,9 @@ LED; and USB VBUS reaches the board's 5V rail through a diode, so PS1 can
 feed the 5V pin directly, with USB plugged in as well, and D2 can be left
 out. The 3.3 V regulator easily covers the sensors' few milliamps.
 
+A printed stand for soldering the board's pin headers straight is in
+`header-stand/`, with a body-bottom (Pico-style) and a body-top variant.
+
 ## Firmware outline (after AN1662)
 
 Plain C on the Pico SDK, no RTOS. Each zero-cross interrupt sets a hardware
