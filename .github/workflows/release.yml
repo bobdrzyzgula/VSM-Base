@@ -45,7 +45,7 @@ jobs:
           else
             make docs
           fi
-          cp scad/vsm_base.scad standalone/bobbin-box/bobbin_box.scad standalone/nut-tool/nut_tool.scad standalone/tilt-prop/tilt_prop.scad standalone/shaft-height-gauge/shaft_height_gauge.scad standalone/shaft-fit-collars/shaft_fit_collars.scad build/
+          cp scad/vsm_base.scad standalone/bobbin-box/bobbin_box.scad standalone/nut-tool/nut_tool.scad standalone/tilt-prop/tilt_prop.scad standalone/shaft-height-gauge/shaft_height_gauge.scad standalone/shaft-fit-collars/shaft_fit_collars.scad standalone/motor-rig/motor_rig.scad standalone/motor-rig/motor_cradle.scad standalone/motor-rig/prony_brake.scad build/
 
       - name: Keep the documents (manual runs)
         if: github.ref_type != 'tag'
@@ -63,5 +63,5 @@ jobs:
           case "${GITHUB_REF_NAME}" in *alpha*|*beta*|*rc*) pre="--prerelease" ;; esac
           gh release create "${GITHUB_REF_NAME}" $pre \
             --title "VSM Base ${GITHUB_REF_NAME}" \
-            --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide and the paper on motor speed control are attached as PDF and as single HTML pages (open them in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2. bobbin_box.scad, nut_tool.scad, tilt_prop.scad, shaft_height_gauge.scad and shaft_fit_collars.scad are the standalone bobbin box, nut tool, tilt prop, shaft height gauge and shaft fit collars. This is an alpha: see the guide for what has and has not been printed and tested." \
-            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm-motor-control.pdf build/vsm-motor-control.html build/vsm-motor-rig.pdf build/vsm_base.scad build/bobbin_box.scad build/nut_tool.scad build/tilt_prop.scad build/shaft_height_gauge.scad build/shaft_fit_collars.scad
+            --notes "VSM Base ${GITHUB_REF_NAME}. The User's Guide and the paper on motor speed control are attached as PDF and as single HTML pages (open them in any browser). The model is scad/vsm_base.scad in the source, also attached; it needs OpenSCAD 2021.01 or later and BOSL2. bobbin_box.scad, nut_tool.scad, tilt_prop.scad, shaft_height_gauge.scad and shaft_fit_collars.scad are the standalone bobbin box, nut tool, tilt prop, shaft height gauge and shaft fit collars; motor_rig.scad, motor_cradle.scad and prony_brake.scad are the motor test rig, whose guide is vsm-motor-rig.pdf. This is an alpha: see the guide for what has and has not been printed and tested." \
+            build/vsm-base-guide.pdf build/vsm-base-guide.html build/vsm-motor-control.pdf build/vsm-motor-control.html build/vsm-motor-rig.pdf build/vsm_base.scad build/bobbin_box.scad build/nut_tool.scad build/tilt_prop.scad build/shaft_height_gauge.scad build/shaft_fit_collars.scad build/motor_rig.scad build/motor_cradle.scad build/prony_brake.scad

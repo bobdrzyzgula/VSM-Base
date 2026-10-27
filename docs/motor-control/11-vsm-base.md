@@ -463,7 +463,7 @@ use them.
   speed.
 
 A bench rig for these measurements is in the repository at
-`hardware/motor-rig/` (its guide is `RIG_GUIDE.md`). Two bench measurements
+`standalone/motor-rig/` (its guide is `RIG_GUIDE.md`). Two bench measurements
 would settle the open questions for any of these: the
 99 motor's current and speed on a variac at several voltages, giving $K$ and
 $R$ for the model in §2, and its top speed on rectified DC.

@@ -31,7 +31,7 @@ PDF      := $(BUILD)/vsm-base-guide.pdf
 HTML     := $(BUILD)/vsm-base-guide.html
 MC_PDF   := $(BUILD)/vsm-motor-control.pdf
 MC_HTML  := $(BUILD)/vsm-motor-control.html
-RIG_MD   := hardware/motor-rig/RIG_GUIDE.md
+RIG_MD   := standalone/motor-rig/RIG_GUIDE.md
 RIG_PDF  := $(BUILD)/vsm-motor-rig.pdf
 PANDOC   ?= pandoc
 TYPST    ?= typst
@@ -86,14 +86,14 @@ $(HTML): $(CHAPTERS) docs/guide/metadata.yaml docs/guide/guide.css $(IMAGES)
 
 # The motor test rig's guide: its own title (the file's first heading and
 # credit line are dropped), sections already numbered in the text
-$(RIG_PDF): $(RIG_MD) hardware/motor-rig/metadata.yaml hardware/motor-rig/rig_iso.png
+$(RIG_PDF): $(RIG_MD) standalone/motor-rig/metadata.yaml standalone/motor-rig/rig_iso.png
 	mkdir -p $(BUILD)
-	cd hardware/motor-rig && sed '1,4d' RIG_GUIDE.md | $(PANDOC) metadata.yaml - --shift-heading-level-by=-1 \
+	cd standalone/motor-rig && sed '1,4d' RIG_GUIDE.md | $(PANDOC) metadata.yaml - --shift-heading-level-by=-1 \
 	    --from markdown --to typst --standalone --toc --toc-depth=1 \
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -o rig.typ
-	$(TYPST) compile --root . hardware/motor-rig/rig.typ $@
-	rm -f hardware/motor-rig/rig.typ
+	$(TYPST) compile --root . standalone/motor-rig/rig.typ $@
+	rm -f standalone/motor-rig/rig.typ
 
 $(MC_PDF): $(MC_CHAPTERS) docs/motor-control/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)

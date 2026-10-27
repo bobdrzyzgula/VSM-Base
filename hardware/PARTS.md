@@ -6,7 +6,7 @@ plywood) stays in each project's own guide.*
 
 **Where each part is used:**
 - **K:** the knee controller (User's Guide, chapter 9);
-- **R:** the motor test rig (`motor-rig/RIG_GUIDE.md`);
+- **R:** the motor test rig (`standalone/motor-rig/RIG_GUIDE.md`);
 - **M:** the MCU controller, a concept so far (`mcu-controller/`; references
   are to its schematic);
 - **B:** the base's outlet compartment.

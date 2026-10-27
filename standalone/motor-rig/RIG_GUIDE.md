@@ -422,7 +422,7 @@ cutoff resistance sets RV2 in the Gen 1 knee controller.
 | `motor_cradle.scad`, `prony_brake.scad` | Cradle and brake, used by the rig file |
 | `rig_template.svg` | 1:1 drilling template for the plywood |
 | `rig_iso.png` | Layout preview |
-| [`../triac-board/KB3151C.kicad_sch`](../triac-board/KB3151C.kicad_sch) | The triac board's traced schematic |
+| [`hardware/triac-board/KB3151C.kicad_sch`](../../hardware/triac-board/KB3151C.kicad_sch) | The triac board's traced schematic |
 
 The repository doesn't carry STL files; export each part from
 `motor_rig.scad` (or `prony_brake.scad`) by setting `part` and rendering.

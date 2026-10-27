@@ -107,7 +107,7 @@ fit on your printer, and then print a base that fits.
 - **A motor test rig** for the knee controller work: a plywood board of
   printed modules for measuring a sewing motor (resistance, inductance,
   speed, torque with a Prony brake) and the triac board; see
-  [hardware/motor-rig/](hardware/motor-rig/RIG_GUIDE.md).
+  [standalone/motor-rig/](standalone/motor-rig/RIG_GUIDE.md).
 - **A standalone bobbin box**: the corner bay and its five bobbin trays as a
   small lidded box in one self-contained file, for anyone who wants the box
   without the base; see [standalone/bobbin-box/](standalone/bobbin-box/).

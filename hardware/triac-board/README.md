@@ -14,5 +14,5 @@ wired as a two-terminal resistor, with RV1's pin-3 pad jumpered to its
 wiper pad so that RV2 lies across the new pot; see chapter 9 of the User's
 Guide.
 
-The motor test rig in [`../motor-rig/`](../motor-rig/RIG_GUIDE.md) studies
+The motor test rig in [`standalone/motor-rig/`](../../standalone/motor-rig/RIG_GUIDE.md) studies
 this board on the bench, with a decade box in place of RV1.
