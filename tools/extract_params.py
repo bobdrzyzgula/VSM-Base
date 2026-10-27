@@ -94,7 +94,7 @@ def main(path):
         if not params:
             continue
         out += [f"## {name}", "", "| Parameter | Default | Description |",
-                "|---|---|---|"]
+                "|---------|----|---------------|"]   # column proportions (pandoc reads the dashes)
         for p, default, choices, desc in params:
             d = md_escape(desc)
             rng = re.fullmatch(r"\s*(-?[\d.]+)\s*:\s*(-?[\d.]+)\s*:\s*(-?[\d.]+)\s*", choices or "")

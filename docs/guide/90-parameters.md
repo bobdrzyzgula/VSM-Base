@@ -7,7 +7,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Part
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
@@ -28,7 +28,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Options
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
 | `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
 | `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, printed, barrel, none.* |
@@ -37,14 +37,14 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Machine
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `machine` | `"Singer 99K"` | Your machine. A listed machine supplies every setting in the "Custom machine" section; choose Custom to use those settings instead. *Choices: Singer 99K, Kenmore 158-14001, Custom.* |
 | `bed_cushion_in` | `0.0625` | Bed cushion thickness, compressed, in inches (1/16"); for a machine standing on its feet, the pads under the feet |
 
 ## Custom machine: IGNORED unless machine = Custom
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `custom_bed_length_in` | `12.1875` | IGNORED unless machine = Custom. Bed length, inches (99K: 12 3/16") |
 | `custom_bed_width_in` | `6.5625` | IGNORED unless machine = Custom. Bed width, inches (99K: 6 9/16") |
 | `custom_bed_plate_thickness_in` | `0.3125` | IGNORED unless machine = Custom. Thickness of the flat bed plate, inches (99K: 5/16") |
@@ -76,7 +76,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Bed seat
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `bed_clearance` | `0.75` | Clearance between bed and seat wall, per side |
 | `bed_ledge` | `8` | How far the bed rests on the ledge around the machine cavity *Range 3 to 15, step 0.5.* |
 | `rabbit_depth` | `4` | Depth of the bed seat and lid rabbet below the top surface *Range 2 to 8, step 0.1.* |
@@ -84,7 +84,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Body
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `rim_width` | `9` | Top rim: outer face to seat/rabbet edge, front, left and right *Range 5 to 20, step 0.5.* |
 | `end_wall` | `22.225` | End wall thickness at the bottom, left and right (7/8" = 22.225) |
 | `base_depth` | `0` | Base depth front to back: a standard class, so bases of a class share extensions; auto = the smallest that fits *Choices: 0:Auto, 200:200 mm, 230:230 mm, 250:250 mm.* |
@@ -99,14 +99,14 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Small compartment
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `storage_inner_length` | `70` | Inner length of the small compartment (X) |
 | `lid_ledge` | `10` | Lid ledge width around the small compartment *Range 5 to 20, step 0.5.* |
 
 ## Attached bay
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `attached_lid_type` | `"none"` | Attached bay's lid: none (the default, since cords from the machine may lie over the bay's edge), hinged (on the edge set by base_lid_hinge), or lift-out *Choices: none, hinged, lift-out.* |
 | `attach_screw_spec` | `"M5"` | Joint screws: socket-head cap screws through the base's right end wall, from inside the machine cavity, into heat-set inserts in the bay's inner wall |
 | `attach_screw_hole` | `5.5` | Joint screw clearance hole *Range 3 to 8, step 0.1.* |
@@ -123,7 +123,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Cord pass-through
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `cord_hole_width` | `46` | Cord pass-through width (wide enough for both plugs' cords side by side) |
 | `cord_hole_height` | `36` | Cord pass-through height (without gable) |
 | `passthrough_knockouts` | `false` | Close both ends of the pass-through with knock-out walls (tap them out with a punch when you fit the outlet) |
@@ -136,7 +136,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Outlet compartment
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `outlet_size` | `[76, 40, 22]` | Outlet body, mm: [length, width, thickness]. Modern: 76 x 40 x 22; early Bakelite: 83 x 45 x 22 |
 | `outlet_receptacle_spacing` | `34` | Receptacle spacing, center to center (modern 34, Bakelite 38) *Range 20 to 60, step 0.5.* |
 | `outlet_clearance` | `1.5` | Clearance around the outlet inside its curbs, per side |
@@ -179,7 +179,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Knee controller
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `knee_push` | `"right"` | The knee controller (compartment_option = "knee"): a knee bar turns a shaft running front to back in the right bay. A crank on the bar's hub, outside the front face, pushes a compression spring in a housing beside it; steel screws in the housing set the rest and the hard stop, so the knee's force stays out of the shaft and gears. Inside, two gear stages turn a pot standing in for the donor board's slide pot, and a cam on the sector works a switch that cuts the motor for the first part of the travel. See the User's Guide before building: the board is live at mains voltage. Which way the knee pushes the bar *Choices: right, left.* |
 | `knee_bar_drop` | `317.5` | Bar: drop from the shaft to where the knee meets it (12.5" = 317.5 mm) *Range 150 to 450, step 0.5.* |
 | `knee_travel_on` | `25.4` | Knee travel at that point where the switch closes and the motor starts; the travel before it is dead (1" = 25.4 mm) *Range 0 to 60, step 0.5.* |
@@ -266,7 +266,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Lollipop hinge
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `hinge_flange_diameter` | `29` | Hinge flange diameter *Range 15 to 50, step 0.1.* |
 | `hinge_flange_thickness` | `3` | Hinge flange thickness *Range 1 to 8, step 0.1.* |
 | `hinge_thickness` | `8` | Hinge body depth below the top surface *Range 3 to 20, step 0.1.* |
@@ -284,7 +284,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Printed hinge
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ph_pin_d` | `0` | Steel pin into the bed's hinge hole: diameter, just under the hole's; 0 = from the machine profile (9/32" for the 99K, 6 mm for the Kenmore 158-14001) *Range 0 to 12, step 0.01.* |
 | `ph_pin_engage` | `0` | How far the pin enters the bed's hole; 0 = from the machine profile. Ignored when ph_pin_len is set *Range 0 to 30, step 0.5.* |
 | `ph_pin_len` | `0` | Stock length of the pins, for a bought dowel pin (0 = cut to the length the console gives): the pin goes into the bed's hole by whatever is left past the arm; the console gives the lengths that fit the hole's depth *Range 0 to 80, step 0.5.* |
@@ -310,7 +310,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Foot-locating rig
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `rig_height` | `80` | Parts foot_rig_left and foot_rig_right: a thin box that fits round the bed, to stand the machine on paper and print its inked feet. Wall height *Range 30 to 150, step 1.* |
 | `rig_wall` | `2.4` | Wall thickness *Range 1.2 to 5, step 0.2.* |
 | `rig_rim` | `10` | Floor rim, inward from the wall (it lies under the bed's edge) *Range 5 to 25, step 0.5.* |
@@ -333,7 +333,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Tilt prop
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `tilt_prop_h` | `0` | Part tilt_prop: a stand on the table behind the base that catches the machine's arm when it is tipped back to about 90 degrees, for hands-free servicing. Height of the arm's underside above the table there, mm; 0 = from the machine profile (99K: 6") *Range 0 to 300, step 1.* |
 | `tilt_prop_top` | `"profile"` | Top: from the profile, a cradle (for a round arm), or flat and level (for anything else) *Choices: profile, cradle, flat.* |
 | `tilt_prop_r` | `0` | Cradle radius (the arm's radius plus a little), mm; 0 = from the profile (99K: 1") *Range 0 to 60, step 0.5.* |
@@ -344,7 +344,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Barrel hinge
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `barrel_d` | `15.2` | Barrel hinge (hinge_type = "barrel", from vintage portable cases): barrel diameter *Range 8 to 30, step 0.05.* |
 | `barrel_h` | `17.5` | Barrel height (its top was flush with the case) *Range 8 to 40, step 0.05.* |
 | `barrel_pin_z` | `11.8` | Arm's pin axis above the barrel's bottom, arm level *Range 3 to 30, step 0.05.* |
@@ -362,7 +362,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Hinge coupon
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `hinge_coupon_margin` | `12` | Solid margin around the hinge flange (room for the corner screws) |
 | `hinge_coupon_floor` | `4` | Floor left under the deepest hinge cut *Range 2 to 10, step 0.5.* |
 | `hinge_coupon_screw_d` | `4.6` | Corner holes for #8 flat-head wood screws: clearance hole |
@@ -371,7 +371,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Hinge nut traps
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `hinge_nut_spec` | `"#8-32"` | Nut for the hinge screws (BOSL2 spec, e.g. "#8-32", "M4") |
 | `hinge_nut_width` | `0` | Nut width across flats; 0 = from the spec *Range 0 to 20, step 0.05.* |
 | `hinge_nut_depth` | `21` | Depth of the nut's upper face below the top surface *Range 8 to 60, step 0.5.* |
@@ -381,7 +381,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Mending plates
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `plate_count` | `3` | Number of plates across the split (0 = none) |
 | `plate_length` | `101.6` | Plate length (McMaster 1394A34: 4") |
 | `plate_width` | `15.875` | Plate width (5/8") |
@@ -399,20 +399,20 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Nut fit
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `nut_clearance` | `0.15` | Extra clearance added to nut width (applied to each side) |
 
 ## Casting reliefs
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `relief_clearance` | `1` | Clearance below the casting in a relief (the reliefs themselves come from the machine profile) *Range 0 to 4, step 0.1.* |
 | `relief_margin` | `2` | Extra length added at each end of a relief *Range 0 to 10, step 0.5.* |
 
 ## Back wall lightening
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `lighten_back_wall` | `true` | Hollow the back wall between the hinges |
 | `back_skin` | `17` | Back wall thickness left behind the tunnels *Range 6 to 40, step 0.5.* |
 | `back_top_skin` | `6` | Solid material above the tunnel peaks *Range 2 to 20, step 0.5.* |
@@ -424,7 +424,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Split
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `split_part` | `"both"` | Which part to render when split *Choices: both, left, right.* |
 | `split_spread` | `30` | Separation between the two halves when both are shown |
 | `split_balance` | `true` | Put the split where the two halves, the left one's dovetail keys included, come out the same length (else at the middle) |
@@ -443,7 +443,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Extensions
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `back_ext` | `true` | Include the back extension (outfeed support / compartment) |
 | `left_ext` | `true` | Include the left extension |
 | `corner_ext` | `true` | Include the left-rear corner piece (needs both of the above) |
@@ -487,7 +487,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Turn button
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `turn_button` | `false` | Turn button on the front rim that holds the bed's front edge down (off by default) |
 | `turn_button_x` | `0` | Position along the front rim (X); 0 = automatic, between the split and the compartment |
 | `turn_button_overlap` | `4` | How far the button reaches over the bed's front edge *Range 1 to 10, step 0.5.* |
@@ -502,7 +502,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Freestanding boxes
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `make_back_box` | `false` | Also make a freestanding version of the back extension (part back_box): same bay and lid, no lip, pegs or dovetails |
 | `make_left_box` | `false` | Also make a freestanding left box (part left_box) |
 | `make_corner_box` | `false` | Also make a freestanding corner box (part corner_box) |
@@ -510,7 +510,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Extension pegs
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ext_peg_holes` | `true` | Holes in the base rim for the extension pegs |
 | `ext_peg_style` | `"insert"` | Pegs: insert (separate printed pegs, part ext_pegs, printed lying down), pin (cut from rod_d rod), or molded into the lip (as before v20) *Choices: insert, pin, molded.* |
 | `peg_d` | `4` | Peg diameter (printed pegs) *Range 3 to 8, step 0.1.* |
@@ -526,7 +526,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Corner dovetails
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ext_dt_neck` | `6` | Dovetail width at the mating face *Range 3 to 12, step 0.5.* |
 | `ext_dt_head` | `9` | Dovetail width at its head *Range 4 to 16, step 0.5.* |
 | `ext_dt_depth` | `4` | Dovetail depth into the mating wall *Range 2 to 10, step 0.5.* |
@@ -535,7 +535,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Handholds
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `handholds` | `true` | Handholds under each end |
 | `handhold_bottom_len` | `76.2` | Handhold length along the end, at the bottom face (3") |
 | `handhold_top_len` | `50.8` | Handhold length at its top (2") |
@@ -555,7 +555,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Harness rods
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `harness_rods` | `true` | Rod notches and rods either side of each handhold |
 | `rod_d` | `4.7625` | Rod diameter (3/16") |
 | `rod_hole_d` | `4.95` | Rod hole diameter (printed as a teardrop, point up) |
@@ -572,21 +572,21 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Left lip
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `lip_edge_round` | `2` | Radius of the rounded top edge along the lip front (also the free edges of an extended back lip) *Range 0 to 5, step 0.5.* |
 | `lip_fillet` | `5` | Radius of the inside corner where the lip front meets the body (also an extended back lip's corners) *Range 0 to 15, step 0.5.* |
 
 ## Back lip
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `back_lip_extend` | `true` | Run the back lip on past a short back extension, over the base's back rim, to reach the last back peg hole |
 | `back_lip_peg_margin` | `10` | How far the lip runs past the last peg's center *Range 6 to 30, step 0.5.* |
 
 ## Lid hinges
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `base_lid_hinge` | `"right"` | Lid edge each lid hinges on *Choices: left, right, front, back.* |
 | `back_lid_hinge` | `"back"` |  *Choices: left, right, front, back.* |
 | `left_lid_hinge` | `"left"` |  *Choices: left, right, front, back.* |
@@ -631,7 +631,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Inserts
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ins_spacing` | `10` | Spacing between parts in the insert print layouts *Range 0 to 50, step 1.* |
 | `bobbin_d` | `20.6375` | Bobbin diameter (class 15 and 66: 13/16"), for the bobbin trays and the spool tray |
 | `bobbin_t` | `11.1125` | Bobbin thickness (class 15 and 66: 7/16") |
@@ -639,7 +639,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Bobbin trays (corner bay)
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `bb_trays` | `0` | Number of trays, bottom included; 0 = as many as fit under the lid *Range 0 to 10, step 1.* |
 | `bb_post_d` | `5` | Post diameter (class 15 and 66 bores are a little over 6 mm) *Range 3 to 10, step 0.1.* |
 | `bb_grid` | `[3, 3]` | Post grid [columns (X), rows (Y)]; cells that would crowd the center column are left empty |
@@ -664,7 +664,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Notion trays (back or left bay)
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ot_bay` | `"back"` | Bay the notion and spool trays go in *Choices: back, left.* |
 | `ot_custom_h` | `12` | Custom tray height *Range 5 to 80, step 0.5.* |
 | `ot_show` | `[25, 20, 15, 10]` | Tray heights shown stacked in part notion_assembly |
@@ -686,7 +686,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Notion tray compartments
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ot_compartments` | `false` | Divide the plain notion trays (not the spool tray) into compartments |
 | `ot_cell` | `50.8` | Target compartment size; the grid divides the tray evenly to come closest to it (2" gives 2 x 4 in the back or left bay; 1" gives 3 x 8) *Range 10 to 100, step 0.1.* |
 | `ot_cols` | `0` | Compartments along the tray's length (0 = from ot_cell) *Range 0 to 20, step 1.* |
@@ -697,7 +697,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Spool tray
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ot_spool_d` | `38` | Spool diameter *Range 20 to 80, step 0.5.* |
 | `ot_spool_h` | `44` | Spool height *Range 20 to 100, step 0.5.* |
 | `ot_spool_post_d` | `5` | Post diameter at the top, through the bobbin *Range 3 to 15, step 0.1.* |
@@ -713,7 +713,7 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 ## Tray gussets
 
 | Parameter | Default | Description |
-|---|---|---|
+|---------|----|---------------|
 | `ot_gussets` | `true` | Small triangular ribs at the foot of the trays' long walls, where a thin wall meets the floor at one layer line |
 | `ot_gusset_t` | `1` | Gusset thickness (on the spool tray it must fit between neighboring spools) *Range 0.6 to 3, step 0.1.* |
 | `ot_gusset_d` | `5` | Gusset reach along the floor, from the wall *Range 1 to 15, step 0.5.* |

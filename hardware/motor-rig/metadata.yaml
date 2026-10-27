@@ -14,6 +14,11 @@ header-includes:
     #show heading.where(level: 1): it => { v(0.6em); it }
     #show link: set text(fill: rgb("#1f5fa8"))
     #set table(stroke: 0.5pt + rgb("#999999"), inset: 5pt)
+    // pandoc 3.2+ wraps each table in a figure, which typst won't split
+    // across pages, and centres it; let tables break and keep cells left
+    #show figure.where(kind: table): set block(breakable: true)
+    #show table.cell: set align(left)
+    #show table.cell: set par(justify: false)
     #show raw: set text(size: 0.9em)
     ```
 ---
