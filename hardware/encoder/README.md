@@ -107,3 +107,15 @@ standing up, and the slider upside down, with the arm's measuring face on
 the bed.
 
 ![The gauge set at 20 mm under an 11 mm shaft](shaft_height_gauge.png)
+
+## Finding the bore: `shaft_fit_collars.scad`
+
+The shaft is turned down in places and needn't be a standard size, so the
+ring's bore is found by trial. The model prints a set of snap-on C-clip
+collars, each with its bore engraved on a tab. You set the middle size, the
+step and the number of collars, so the search narrows round by round: 0.25 mm
+steps, then 0.1, then 0.05. Push each collar onto the shaft where the ring
+will sit. Too small won't seat or sits proud; too large turns freely; the
+right one snaps on and turns with light drag. Because the collars measure
+what your printer actually makes, print the final ring in the same filament
+and the same orientation, bore vertical and flat on the bed.
