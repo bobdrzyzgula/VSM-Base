@@ -104,3 +104,23 @@ so they live with the other standalone projects:
   snap-on test collars for finding the bore. On the 158, 12.25 mm stayed
   put but turned under a couple of ounces, 12.5 mm spun freely, and
   12.0 mm went on only with force, so the ring's `ring_bore` is 12.25 mm.
+
+## Assembling the ring
+
+The clamp screws are M2 socket-head cap screws through the top half, into
+**M2 heat-set inserts** (M2 × 4 × 3.5) in the bottom half. The inserts go
+in on the bench, so nothing small has to be handled inside the machine.
+`clamp_fastener = "nut"` gives the earlier nut traps instead.
+
+1. Print `insert_cradle`. Set the bottom half in it, split face up; the
+   face sits level with the cradle's top, and the cradle supports the hub
+   right under the insert holes.
+2. Press the two inserts in from the split face with the iron, square to
+   the face, and let them cool before lifting the half out.
+3. In the machine, swivel the bottom half around the shaft through the
+   forks first, then add the top half and drive the screws, evenly, until
+   the ring just stops turning.
+
+Screws from M2 × 11 to M2 × 16 work: the hole runs on through below the
+insert, so a longer screw passes out the far side instead of bottoming. The
+hub was widened from 22 to 25 mm to leave enough plastic around the inserts.

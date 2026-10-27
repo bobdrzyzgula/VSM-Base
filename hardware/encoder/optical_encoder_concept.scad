@@ -12,15 +12,17 @@
 //
 // Frame: the shaft runs along X; Z is up; the forks sit below the shaft.
 // part = "assembly" shows it in place; "exploded" pulls it apart;
-// "ring_half" (the top half: screw heads), "ring_half_bottom" (nut traps and
-// the magnet) and "bracket" are the printed parts, in print orientation.
+// "ring_half" (the top half: screw heads), "ring_half_bottom" (inserts or nut
+// traps, and the magnet), "insert_cradle" (holds the bottom half split face up,
+// level, for pressing in the heat-set inserts) and "bracket" are the printed
+// parts, in print orientation.
 //
 // Things this concept does not settle: the fork part (sizes here are
 // generic: check yours), the anchor on the casting, the lead path, and
 // the axial room at the rim (the forks are longer along the shaft than
 // the ring is thick).
 
-part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, bracket]
+part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, insert_cradle, bracket]
 
 /* [Shaft and ring] */
 shaft_d = 12.25;      // Kenmore 158, as measured by calipers (Oct 2026); for the views
@@ -37,10 +39,14 @@ slot_share = 0.5;
 // Web (the disc) thickness
 web_t = 1.4;
 // Hub: outside diameter and length along the shaft (on one side of the web)
-hub_od = 22;
+hub_od = 25;          // room round the heat-set inserts
 hub_len = 5.8;
-// Clamp screws: M2 x 14 socket-head cap screws with M2 hex nuts, through the
-// hub across the split
+// Clamp screws: M2 socket-head cap screws through the top half, into M2
+// heat-set inserts in the bottom half (pressed in on the bench, before the
+// ring goes near the machine), or into M2 hex nuts in traps
+clamp_fastener = "insert"; // [insert, nut]
+insert = [3.5, 4];    // heat-set insert: outside diameter, length (M2 x 4 x 3.5)
+insert_hole = 3.2;    // hole for the insert (about 0.3 under its diameter)
 clamp_screw = 2.3;    // clearance hole
 clamp_head = 4.2;     // counterbore for the head (M2 SHCS head 3.8)
 clamp_nut = 4.3;      // nut trap across flats (M2 nut 4.0)
@@ -65,9 +71,13 @@ anchor_drop = 14;     // from the plate down to the anchor tab
 
 $fn = 96;
 eps = 0.01;
-clamp_y = ring_bore / 2 + 2.5;                                    // screw axis, beside the bore
+clamp_y = ring_bore / 2 + 3.0;                                    // screw axis, beside the bore
 seat_z = sqrt(pow(hub_od / 2, 2) - pow(clamp_y, 2)) - clamp_seat; // head and nut seats
-echo(str("Clamp: seats ", 2 * seat_z, " mm apart; an M2 x ", ceil(2 * seat_z + 1.6 + 0.5), " or longer reaches through the nut"));
+if (clamp_fastener == "nut")
+    echo(str("Clamp: seats ", 2 * seat_z, " mm apart; an M2 x ", ceil(2 * seat_z + 1.6 + 0.5), " or longer reaches through the nut"));
+else
+    echo(str("Clamp: head seat ", seat_z + split_gap / 2, " mm above the split; M2 x ", ceil(seat_z + split_gap / 2 + 3),
+             " to M2 x ", floor(2 * seat_z + split_gap / 2 + 1), " screws (the hole runs on through below the insert)"));
 
 R = ring_od / 2;
 root_r = R - tooth_len;
@@ -125,8 +135,14 @@ module ring_whole() {
         for (sy = [-1, 1]) translate([-web_t / 2 - hub_len / 2, sy * clamp_y, 0]) {
             cylinder(d = clamp_screw, h = 40, center = true);
             translate([0, 0, seat_z]) cylinder(d = clamp_head, h = 20);                      // head, top half
-            translate([0, 0, -seat_z - 20]) rotate([0, 0, 30])                              // nut, bottom half,
-                cylinder(d = clamp_nut / cos(30), h = 20, $fn = 6);                         // flats along the shaft
+            if (clamp_fastener == "nut")
+                translate([0, 0, -seat_z - 20]) rotate([0, 0, 30])                          // nut, bottom half,
+                    cylinder(d = clamp_nut / cos(30), h = 20, $fn = 6);                     // flats along the shaft
+            else {
+                // insert, from the bottom half's split face, with a small lead-in
+                translate([0, 0, -split_gap / 2 - insert[1] - 0.5]) cylinder(d = insert_hole, h = insert[1] + 0.5 + split_gap);
+                translate([0, 0, -split_gap / 2 - 0.4]) cylinder(d1 = insert_hole, d2 = insert_hole + 0.8, h = 0.4 + eps);
+            }
         }
     }
 }
@@ -137,6 +153,21 @@ module ring_half(top = true) {
     intersection() {
         ring_whole();
         translate([-50, -50, top ? split_gap / 2 : -100 - split_gap / 2]) cube([100, 100, 100]);
+    }
+}
+
+// the insert cradle: holds the bottom half split face up and level with the
+// cradle's top, supported under the hub where the iron presses; built in the
+// ring's frame, then turned to print pocket up
+module insert_cradle() {
+    difference() {
+        translate([-web_t / 2 - hub_len - 4, -R - 4, -R - 4]) cube([hub_len + web_t + 9, 2 * R + 8, R + 4 - split_gap / 2]);
+        for (c = [[R + 0.4, -web_t / 2 - 0.3, web_t + 0.6],                     // disc and teeth
+                  [magnet_r + magnet[0] / 2 + 0.8 + 0.4, -web_t / 2 - 1.6, 1.6 + eps], // magnet boss
+                  [hub_od / 2 + 0.3, -web_t / 2 - hub_len - 0.3, hub_len + 0.3 + eps]]) // hub
+            translate([c[1], 0, 0]) rotate([0, 90, 0]) cylinder(r = c[0], h = c[2]);
+        // finger room to lift the half out
+        translate([-web_t / 2 - hub_len - 5, -6, -6]) cube([4, 12, 10]);
     }
 }
 
@@ -232,4 +263,5 @@ if (part == "assembly") assembly(0);
 else if (part == "exploded") assembly(12);
 else if (part == "ring_half") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(true);   // prints flat, +X face on the bed, bore vertical
 else if (part == "ring_half_bottom") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(false);
+else if (part == "insert_cradle") translate([0, 0, R + 4]) insert_cradle();   // pocket up
 else if (part == "bracket") bracket();
