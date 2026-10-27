@@ -12,14 +12,15 @@
 //
 // Frame: the shaft runs along X; Z is up; the forks sit below the shaft.
 // part = "assembly" shows it in place; "exploded" pulls it apart;
-// "ring_half" and "bracket" are the printed parts, in print orientation.
+// "ring_half" (the top half: screw heads), "ring_half_bottom" (nut traps and
+// the magnet) and "bracket" are the printed parts, in print orientation.
 //
 // Things this concept does not settle: the fork part (sizes here are
 // generic: check yours), the anchor on the casting, the lead path, and
 // the axial room at the rim (the forks are longer along the shaft than
 // the ring is thick).
 
-part = "assembly"; // [assembly, exploded, ring_half, bracket]
+part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, bracket]
 
 /* [Shaft and ring] */
 shaft_d = 12.25;      // Kenmore 158, as measured by calipers (Oct 2026); for the views
@@ -38,10 +39,12 @@ web_t = 1.4;
 // Hub: outside diameter and length along the shaft (on one side of the web)
 hub_od = 22;
 hub_len = 5.8;
-// Clamp screws (M2) through the hub, across the split
-clamp_screw = 2.3;
-clamp_head = 4.2;
-clamp_nut = 4.4;      // across corners-ish, for the nut trap
+// Clamp screws: M2 x 14 socket-head cap screws with M2 hex nuts, through the
+// hub across the split
+clamp_screw = 2.3;    // clearance hole
+clamp_head = 4.2;     // counterbore for the head (M2 SHCS head 3.8)
+clamp_nut = 4.3;      // nut trap across flats (M2 nut 4.0)
+clamp_seat = 1.0;     // head and nut seats this far in from the hub's surface at the screw
 split_gap = 0.4;      // left open so the screws can clamp
 
 /* [Index magnet] */
@@ -62,6 +65,9 @@ anchor_drop = 14;     // from the plate down to the anchor tab
 
 $fn = 96;
 eps = 0.01;
+clamp_y = ring_bore / 2 + 2.5;                                    // screw axis, beside the bore
+seat_z = sqrt(pow(hub_od / 2, 2) - pow(clamp_y, 2)) - clamp_seat; // head and nut seats
+echo(str("Clamp: seats ", 2 * seat_z, " mm apart; an M2 x ", ceil(2 * seat_z + 1.6 + 0.5), " or longer reaches through the nut"));
 
 R = ring_od / 2;
 root_r = R - tooth_len;
@@ -106,17 +112,21 @@ module ring_whole() {
             yz() translate([0, 0, -web_t / 2]) linear_extrude(web_t) disc2d();
             // hub, on the -X side of the web
             translate([-web_t / 2 - hub_len, 0, 0]) rotate([0, 90, 0]) cylinder(d = hub_od, h = hub_len + eps);
-            // index magnet boss on the +X face (clear of the forks' arms)
-            translate([web_t / 2 - eps, 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0] + 2.4, h = magnet[1] + 0.6);
+            // index magnet: flush in the +X face (which prints on the bed), backed by
+            // a short boss on the hub side, inside the radius the forks' arms reach
+            translate([-web_t / 2 + eps, 0, 0]) yz_at(magnet_r, 0) rotate([0, -90, 0]) cylinder(d = magnet[0] + 1.6, h = magnet[1] + 0.6 - web_t);
         }
         translate([-50, 0, 0]) rotate([0, 90, 0]) cylinder(d = ring_bore, h = 100);
-        // magnet pocket, open on the boss's face
-        translate([web_t / 2 + 0.6, 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0] + 0.15, h = 10);
+        // magnet pocket, open on the +X face
+        translate([web_t / 2 - magnet[1], 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0] + 0.15, h = 10);
         // clamp screws along Z, through the hub beside the bore
-        for (sy = [-1, 1]) translate([-web_t / 2 - hub_len / 2, sy * (shaft_d / 2 + 2.5), 0]) {
+        // (the hub's surface at the screw is lower than its top, so the seats
+        // are set from the chord there: flat seats clamp_seat below it)
+        for (sy = [-1, 1]) translate([-web_t / 2 - hub_len / 2, sy * clamp_y, 0]) {
             cylinder(d = clamp_screw, h = 40, center = true);
-            translate([0, 0, hub_od / 2 - 2.2]) cylinder(d = clamp_head, h = 10);               // head, top half
-            translate([0, 0, -hub_od / 2 - 10 + 2.2]) cylinder(d = clamp_nut, h = 10, $fn = 6); // nut, bottom half
+            translate([0, 0, seat_z]) cylinder(d = clamp_head, h = 20);                      // head, top half
+            translate([0, 0, -seat_z - 20]) rotate([0, 0, 30])                              // nut, bottom half,
+                cylinder(d = clamp_nut / cos(30), h = 20, $fn = 6);                         // flats along the shaft
         }
     }
 }
@@ -152,10 +162,10 @@ module hall_model() {   // TO-92-ish, flat face toward -X
     color("black") translate([0, -2, -1.5]) cube([1.5, 4, 3]);
     color("silver") for (y = [-1.27, 0, 1.27]) translate([1.5, y, 0]) rotate([0, 90, 0]) cylinder(d = 0.45, h = 5, $fn = 8);
 }
-hall_x = web_t / 2 + magnet[1] + 0.6 + 1.0;      // 1 mm from the boss's face
+hall_x = web_t / 2 + 1.0;                        // 1 mm from the disc's +X face
 module hall_at() translate([hall_x, 0, -magnet_r]) hall_model();
 
-module magnet_model() color("orange") translate([web_t / 2 + 0.6, 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0], h = magnet[1]);
+module magnet_model() color("orange") translate([web_t / 2 - magnet[1], 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0], h = magnet[1]);
 
 // ---------------------------------------------------------------- bracket
 // an arc plate under the forks (they sit in pockets on its inner face, leads
@@ -188,7 +198,7 @@ module bracket() {
         // Hall leads along the finger
         translate([hall_x + 1.5 - eps, -2.2, -pl_r1 - 1]) cube([1.2, 4.4, pl_r1 - magnet_r + 2]);
         // the ring must turn freely: clear its whole envelope, plus a margin
-        translate([-web_t / 2 - hub_len - 1, 0, 0]) rotate([0, 90, 0]) cylinder(r = R + 0.8, h = hub_len + web_t + magnet[1] + 2.2);
+        translate([-web_t / 2 - hub_len - 1, 0, 0]) rotate([0, 90, 0]) cylinder(r = R + 0.8, h = hub_len + web_t + 1.6);   // to 0.6 mm past the +X face
         // slotted hole for the anchor screw (along X): sliding it sets the
         // forks' depth over the teeth; turning it about the screw trims the angle
         hull() for (dz = [-3, 3]) translate([fx0 - 5, 0, -pl_r1 - anchor_drop + 9 + dz]) rotate([0, 90, 0]) cylinder(d = 3.4, h = 6 + fx1 - fx0);
@@ -220,5 +230,6 @@ module assembly(ex = 0) {
 
 if (part == "assembly") assembly(0);
 else if (part == "exploded") assembly(12);
-else if (part == "ring_half") translate([0, 0, 0]) rotate([0, 0, 0]) translate([0, 0, -split_gap / 2]) ring_half(true);   // prints on its split face
+else if (part == "ring_half") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(true);   // prints flat, +X face on the bed, bore vertical
+else if (part == "ring_half_bottom") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(false);
 else if (part == "bracket") bracket();
