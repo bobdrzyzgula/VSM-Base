@@ -17,7 +17,7 @@ DC motors, and they still drive treadmills, cranes and machine tools.
   armature, with many turns of fine wire carrying a small, steady current.
   The flux is then nearly constant whatever the load. Back-EMF is
   proportional to speed alone, $e = K_e\omega$, and torque to armature
-  current alone, $T = K_t i_a$. The speed falls only by the small $i_a R_a$
+  current alone, $T = K_t i_a$ (the two constants are explained in §2). The speed falls only by the small $i_a R_a$
   drop as load rises: the "nearly constant speed" motor of machine shops.
 - **Separately excited.** A shunt motor whose field has its own supply. This
   makes two independent controls: armature voltage sets speed up to base

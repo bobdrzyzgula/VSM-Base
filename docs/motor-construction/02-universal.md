@@ -115,6 +115,45 @@ coils), and the back-EMF.](../images/motors/universal-wiring.svg){width=100%}
   (a stall, or a heavy start) the iron saturates, flux stops rising with
   current, and torque grows more slowly than $i^2$.
 
+## One constant here, two later
+
+Every brushed motor obeys the same two laws, whatever makes its field.
+
+- **Back-EMF:** $e = k\,\Phi\,\omega$.
+- **Torque:** $T = k\,\Phi\,i$.
+
+Here $\Phi$ is the field's flux, $i$ the armature current, and $k$ a number
+fixed by how the armature is wound. The same $k\Phi$ appears in both,
+because they are two views of one exchange of energy. The electrical power
+the back-EMF absorbs, $e\,i$, is the mechanical power the shaft delivers,
+$T\omega$. Both come to $k\Phi\,\omega\,i$.
+
+Motors with a fixed field, shunt-wound (§4) and permanent-magnet (§5), have
+a constant $\Phi$. Their $k\Phi$ is then one fixed number, and it is
+written twice, by the job it is doing:
+
+- **$K_e$, the back-EMF constant,** in volts per rad/s: $e = K_e\,\omega$.
+- **$K_t$, the torque constant,** in N·m per ampere: $T = K_t\,i$.
+
+In SI units the two are the same number. Datasheets often quote them in
+different units, such as volts per 1,000 rpm and ounce-inches per ampere,
+which hides that they are equal.
+
+A series motor has no fixed field. Its flux is made by the armature
+current itself, so $k\Phi$ is proportional to $i$. Writing $k\Phi = K\,i$
+gives the paper's model:
+
+- **Back-EMF:** $e = (K\,i)\,\omega = K\,\omega\,i$.
+- **Torque:** $T = (K\,i)\,i = K\,i^2$.
+
+So the single $K$ used through §2 and §3 is not a third kind of constant.
+**$K\,i$ is the series motor's $K_e$ and $K_t$ at once,** a value that rises
+and falls with the current. $K$ itself has units of volts per (ampere ×
+rad/s), which reduce to henries. The representative motor's $K$ is
+0.1037 H. At its running current of about 1 A, that makes an effective
+$K_e = K_t \approx 0.10$ V per rad/s (or N·m per ampere), comparable to a fixed-field motor's constant.
+From §4 on, the motors have fixed fields, and the paper uses $K_e$ and $K_t$.
+
 ## Why it runs slower on AC than on DC
 
 On DC, only $R$ and the back-EMF oppose the supply. On AC the inductance adds
