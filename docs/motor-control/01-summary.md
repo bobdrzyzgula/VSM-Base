@@ -26,3 +26,10 @@ feedback controllers including KB Electronics boards and MCU designs. It
 closes with the two controller designs for the VSM Base: the knee controller
 built around a repurposed foot-pedal triac board, and a microcontroller phase
 controller now in design.
+
+A companion paper, *Inside the Motor*, looks at how these motors are built
+and how each part maps onto the model used here. It also compares the
+universal motor with wound-field DC, permanent-magnet and brushless motors
+and their controls, and shows the waveforms of each control method on the
+wire. It closes by asking whether a small DC motor could drive a vintage
+machine from a version of the MCU controller.

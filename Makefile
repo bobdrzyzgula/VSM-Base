@@ -2,8 +2,8 @@
 #
 #   make params   regenerate the parameter reference from the model
 #   make images   render the model views (needs OpenSCAD + BOSL2)
-#   make pdf      build build/vsm-base-guide.pdf, build/vsm-motor-control.pdf
-#                 and build/vsm-motor-rig.pdf
+#   make pdf      build build/vsm-base-guide.pdf, build/vsm-motor-control.pdf,
+#                 build/vsm-inside-the-motor.pdf and build/vsm-motor-rig.pdf
 #                 (needs pandoc 3.1.2+ and typst; a recent pandoc (3.7, at least) needs
 #                 typst 0.12 or later. The release build uses pandoc 3.7.0.2
 #                 and typst 0.13.1.) PANDOC= and TYPST= pick other binaries.
@@ -31,6 +31,9 @@ PDF      := $(BUILD)/vsm-base-guide.pdf
 HTML     := $(BUILD)/vsm-base-guide.html
 MC_PDF   := $(BUILD)/vsm-motor-control.pdf
 MC_HTML  := $(BUILD)/vsm-motor-control.html
+MX_CHAPTERS := $(sort $(wildcard docs/motor-construction/[0-9]*.md))
+MX_PDF   := $(BUILD)/vsm-inside-the-motor.pdf
+MX_HTML  := $(BUILD)/vsm-inside-the-motor.html
 RIG_MD   := standalone/motor-rig/RIG_GUIDE.md
 RIG_PDF  := $(BUILD)/vsm-motor-rig.pdf
 PANDOC   ?= pandoc
@@ -60,11 +63,13 @@ scad/vsm_base.json: $(MODEL) tools/make_presets.py
 images:
 	sh tools/render_images.sh
 	python3 tools/make_speed_chart.py
+	python3 tools/make_motor_waveforms.py
+	python3 tools/make_motor_drawings.py
 	sh tools/export_schematic.sh
 
-pdf: $(PDF) $(MC_PDF) $(RIG_PDF)
+pdf: $(PDF) $(MC_PDF) $(MX_PDF) $(RIG_PDF)
 
-html: $(HTML) $(MC_HTML)
+html: $(HTML) $(MC_HTML) $(MX_HTML)
 
 $(PDF): $(CHAPTERS) docs/guide/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
@@ -113,5 +118,24 @@ $(MC_HTML): $(MC_CHAPTERS) docs/motor-control/metadata.yaml docs/guide/guide.css
 	    -M lang=en -M pagetitle="Speed Control of Universal Motors in Sewing Machines" \
 	    -o ../../$@
 
+# The companion paper, "Inside the Motor" (docs/motor-construction/)
+$(MX_PDF): $(MX_CHAPTERS) docs/motor-construction/metadata.yaml $(IMAGES)
+	mkdir -p $(BUILD)
+	cd docs/motor-construction && $(PANDOC) metadata.yaml $(notdir $(MX_CHAPTERS)) \
+	    --from markdown --to typst --standalone --toc --toc-depth=1 \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -o paper.typ
+	$(TYPST) compile --root docs docs/motor-construction/paper.typ $@
+	rm -f docs/motor-construction/paper.typ
+
+$(MX_HTML): $(MX_CHAPTERS) docs/motor-construction/metadata.yaml docs/guide/guide.css $(IMAGES)
+	mkdir -p $(BUILD)
+	cd docs/motor-construction && $(PANDOC) metadata.yaml $(notdir $(MX_CHAPTERS)) \
+	    --from markdown --to html5 --standalone --embed-resources \
+	    --toc --toc-depth=1 --number-sections --css ../guide/guide.css --mathml \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -M lang=en -M pagetitle="Inside the Motor" \
+	    -o ../../$@
+
 clean:
-	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ
+	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ
