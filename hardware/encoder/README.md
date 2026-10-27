@@ -92,35 +92,15 @@ and Hall switch](enc_exploded.png)
   wide at the apertures. More slots need a finer aperture, a larger ring,
   or both.
 
-## Measuring the shaft's height: `shaft_height_gauge.scad`
+## Measuring tools
 
-A small printed slide gauge for measuring from the casting floor to the
-underside of the shaft, where calipers won't fit. A foot stands on the
-floor, with an upright rail engraved in millimeters (12–32 mm) on both
-faces. A slider rides the rail, and its flat arm reaches under the shaft. A
-sprung pad cut in the slider's back wall holds it wherever it's left. Push
-the slider up by its tab until the arm just touches the shaft; the reading
-is the scale mark level with the slider's top edge. For a better number,
-lift the gauge out without disturbing the slider and measure from the
-bottom of the foot to the top of the arm with calipers. Print the base
-standing up, and the slider upside down, with the arm's measuring face on
-the bed.
+Two printed tools made for fitting this encoder are useful well beyond it,
+so they live with the other standalone projects:
 
-![The gauge set at 20 mm under an 11 mm shaft](shaft_height_gauge.png)
-
-## Finding the bore: `shaft_fit_collars.scad`
-
-The shaft is turned down in places and needn't be a standard size, so the
-ring's bore is found by trial. The model prints a set of snap-on C-clip
-collars, each with its bore engraved on a tab. You set the middle size, the
-step and the number of collars, so the search narrows round by round: 0.25 mm
-steps, then 0.1, then 0.05. Push each collar onto the shaft where the ring
-will sit. Too small won't seat or sits proud; too large turns freely; the
-right one snaps on and turns with light drag. Because the collars measure
-what your printer actually makes, print the final ring in the same filament
-and the same orientation, bore vertical and flat on the bed.
-
-On the Kenmore 158 (October 2026), the first round settled it: 12.5 mm
-spun freely, 12.0 mm went on only with force, and 12.25 mm stayed put but
-turned under a couple of ounces. That is the right fit for a screw-clamped
-ring, so the concept model's `ring_bore` is 12.25 mm.
+- [`standalone/shaft-height-gauge/`](../../standalone/shaft-height-gauge/):
+  a slide gauge for the height from the casting floor to the underside of
+  the shaft. On the Kenmore 158 it read 20 mm, confirmed with calipers.
+- [`standalone/shaft-fit-collars/`](../../standalone/shaft-fit-collars/):
+  snap-on test collars for finding the bore. On the 158, 12.25 mm stayed
+  put but turned under a couple of ounces, 12.5 mm spun freely, and
+  12.0 mm went on only with force, so the ring's `ring_bore` is 12.25 mm.

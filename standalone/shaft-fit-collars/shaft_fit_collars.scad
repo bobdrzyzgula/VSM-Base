@@ -1,10 +1,10 @@
 // Shaft fit collars: a set of snap-on test collars for finding the bore a
-// printed clamp ring needs on a shaft that may not be a standard size.
+// printed part (a clamp ring, collar, hub or pulley) needs on a shaft that
+// may not be a standard size, measured by what your printer actually makes.
 // Written by Claude at Bob Drzyzgula's direction, 2026-10-26.
 //
 // Each collar is a C-shaped clip that pushes onto the shaft from the side,
-// with its bore engraved on a tab. Push each one on where the encoder ring
-// will sit:
+// with its bore engraved on a tab. Push each one on where the part will sit:
 //   - too small: it won't seat, or seats only with force and sits proud;
 //   - too large: it seats easily and turns or slides freely;
 //   - right: it seats with a definite snap and turns with light drag.
@@ -12,11 +12,11 @@
 // smaller step (for example 0.25, then 0.1, then 0.05 mm).
 //
 // The bores are what the printer actually makes, which is what matters:
-// print the final ring in the same filament and the same orientation (bore
+// print the final part in the same filament and the same orientation (bore
 // vertical, flat on the bed, as these are) and it will fit the same way.
 
 /* [Search] */
-// Middle bore of the set (mm)
+// Middle bore of the set (mm); 12.25 was the Kenmore 158's arm shaft
 centre = 12.25;
 // Step between collars (mm)
 step = 0.25;

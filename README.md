@@ -114,6 +114,12 @@ fit on your printer, and then print a base that fits.
 - **A tilt prop**: a stand that holds the machine tipped back for
   servicing, with a cradle or a flat top, level or sloped, on a foot sized
   to stay upright; see [standalone/tilt-prop/](standalone/tilt-prop/).
+- **Two measuring tools** for fitting parts inside a machine: a slide
+  gauge for the height from a casting floor to the underside of a shaft,
+  and a set of snap-on test collars for finding the bore a printed part
+  needs on a shaft of unknown size; see
+  [standalone/shaft-height-gauge/](standalone/shaft-height-gauge/) and
+  [standalone/shaft-fit-collars/](standalone/shaft-fit-collars/).
 - **Test parts** for checking the fit, the joints and the hardware before
   committing to a long print.
 - **Self-checking.** Every render prints the key dimensions and warns about

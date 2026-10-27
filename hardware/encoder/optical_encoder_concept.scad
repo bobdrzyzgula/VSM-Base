@@ -24,7 +24,7 @@ part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, bracket]
 
 /* [Shaft and ring] */
 shaft_d = 12.25;      // Kenmore 158, as measured by calipers (Oct 2026); for the views
-// Ring bore, as printed: found with shaft_fit_collars.scad (12.25 snug and
+// Ring bore, as printed: found with standalone/shaft-fit-collars (12.25 snug and
 // turnable, 12.5 loose, 12.0 tight), for PETG printed flat; the clamp does the holding
 ring_bore = 12.25;
 // Ring outside diameter (the tips of the teeth)
