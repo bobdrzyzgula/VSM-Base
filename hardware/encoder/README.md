@@ -119,3 +119,8 @@ will sit. Too small won't seat or sits proud; too large turns freely; the
 right one snaps on and turns with light drag. Because the collars measure
 what your printer actually makes, print the final ring in the same filament
 and the same orientation, bore vertical and flat on the bed.
+
+On the Kenmore 158 (October 2026), the first round settled it: 12.5 mm
+spun freely, 12.0 mm went on only with force, and 12.25 mm stayed put but
+turned under a couple of ounces. That is the right fit for a screw-clamped
+ring, so the concept model's `ring_bore` is 12.25 mm.

@@ -22,7 +22,10 @@
 part = "assembly"; // [assembly, exploded, ring_half, bracket]
 
 /* [Shaft and ring] */
-shaft_d = 12.25;      // Kenmore 158, measured (Oct 2026); bore it to suit the real shaft
+shaft_d = 12.25;      // Kenmore 158, as measured by calipers (Oct 2026); for the views
+// Ring bore, as printed: found with shaft_fit_collars.scad (12.25 snug and
+// turnable, 12.5 loose, 12.0 tight), for PETG printed flat; the clamp does the holding
+ring_bore = 12.25;
 // Ring outside diameter (the tips of the teeth)
 ring_od = 40;
 // Slots in the ring (even, so the split falls in a slot)
@@ -90,7 +93,7 @@ module disc2d() {
                 wedge(root_r, R, a - pitch * (1 - slot_share) / 2, a + pitch * (1 - slot_share) / 2, 4);
             }
         }
-        circle(d = shaft_d + 0.2);
+        circle(d = ring_bore + 0.2);
     }
 }
 
@@ -106,7 +109,7 @@ module ring_whole() {
             // index magnet boss on the +X face (clear of the forks' arms)
             translate([web_t / 2 - eps, 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0] + 2.4, h = magnet[1] + 0.6);
         }
-        translate([-50, 0, 0]) rotate([0, 90, 0]) cylinder(d = shaft_d, h = 100);
+        translate([-50, 0, 0]) rotate([0, 90, 0]) cylinder(d = ring_bore, h = 100);
         // magnet pocket, open on the boss's face
         translate([web_t / 2 + 0.6, 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0] + 0.15, h = 10);
         // clamp screws along Z, through the hub beside the bore
