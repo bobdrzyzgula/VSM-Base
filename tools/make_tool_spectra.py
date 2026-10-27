@@ -9,7 +9,7 @@ docs/images/motors/tool-spectra.svg.
 
 The screenshots are Robert Drzyzgula's, from the iPhone app Audio Tools
 (FFT view, iPhone microphone, 48 kHz, 16 bit), October 2026: a DeWalt
-cordless drill and a DeWalt impact driver in a quiet room, each with the
+DCD780 drill driver and a DeWalt DCF885 impact driver (both brushed) in a quiet room, each with the
 room alone, the trigger just past the start, and the trigger fully in. The
 trace is read back off each screenshot (the top edge of the blue line in
 each pixel column), and the axes are calibrated from the chart's own
@@ -78,8 +78,8 @@ def mark(ax, f, label, y=86):
 
 
 fig, axes = plt.subplots(2, 1, figsize=(7.2, 6.4), sharex=True)
-for ax, tool, title in ((axes[0], "drill", "DeWalt cordless drill"),
-                        (axes[1], "impact", "DeWalt impact driver")):
+for ax, tool, title in ((axes[0], "drill", "DeWalt DCD780 drill driver"),
+                        (axes[1], "impact", "DeWalt DCF885 impact driver")):
     style(ax)
     for kind, color, lw, label in (("ambient", GRAY, 0.9, "room alone"),
                                    ("low", ACCENT, 1.1, "trigger just in"),

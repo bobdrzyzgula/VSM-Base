@@ -135,13 +135,21 @@ The certain answer is a scope across the motor's leads, which shows the
 frequency and the duty cycle at once, at a battery voltage that is safe to
 probe.
 
-**Measured: a drill and an impact driver.** Two DeWalt cordless tools were
-measured this way in a quiet room, with a phone's microphone and a
-spectrum-analyzer app. Each tool was recorded three times: the room alone,
+**Measured: a drill and an impact driver.** Two DeWalt 20 V Max tools
+were measured this way in a quiet room, with a phone's microphone and a
+spectrum-analyzer app:
+
+- **A DCD780 drill driver,** 0–600 and 0–2,000 rpm in its two gears.
+- **A DCF885 impact driver,** 0–2,800 rpm and 0–3,200 impacts per minute.
+
+Both are brushed models: replacement carbon brushes are sold for both
+([iFixit](https://proxy.ifixit.com/Answers/View/829312/new+brushes+for+the+DCF885),
+[vhbw](https://www.manomano.co.uk/p/vhbw-2x-carbon-brush-45-x-35-x-11-mm-compatible-with-dewalt-dcd785l-dcd780-dcd780c2-dcd780l2-dcd785-dcd785c2-dcd785l2-drill-driver-63022978)).
+Each is a PM motor on a single PWM switch, the circuit of this section. Each tool was recorded three times: the room alone,
 the trigger just in, and the trigger fully in.
 
-![Measured: sound spectra of a DeWalt cordless drill (top) and impact driver
-(bottom), from an iPhone running an FFT analyzer app, each with the room
+![Measured: sound spectra of a DeWalt DCD780 drill (top) and DCF885 impact
+driver (bottom), from an iPhone running an FFT analyzer app, each with the room
 alone (gray), the trigger just in (blue) and the trigger fully in (orange).
 The dotted lines mark the narrow lines described in the text. Read back
 from the app's screenshots and replotted.](../images/motors/tool-spectra.svg){width=100%}
@@ -154,20 +162,23 @@ from the app's screenshots and replotted.](../images/motors/tool-spectra.svg){wi
   fully in, so this drill tops out short of 100% duty. It has moved down
   to about 3.3 kHz, so the controller changes its frequency near full
   power, whether by design or as a side effect of how it controls current.
-  The drill's two-position speed switch, which on these drills usually
-  selects a gear ratio, changed nothing in the spectrum.
+  The drill's two-position speed switch is mechanical, selecting first or
+  second gear, and it changed nothing in the spectrum.
 - **The impact driver shows 7.7 kHz and 15.4 kHz.** These are narrow lines
   that hold their frequency as the trigger moves, the signature of
   switching. There is no clean line at 3.85 kHz, only a broad hump from 2
   to 4 kHz that grows with speed, and is more likely mechanical. So either
   this tool switches at 7.7 kHz, or it switches at 3.85 kHz and its
-  fundamental is lost in the hump. A three-phase brushless drive with
-  centre-aligned PWM puts its strongest current ripple at twice the
-  switching frequency, which would give the second result.
+  fundamental is lost in the hump. A scope across its motor would settle
+  it.
 - **The speed can be heard too.** In the impact driver a tall, narrow line
   rises from about 320 Hz to 380 Hz as the trigger goes in, and the drill
-  shows one near 320 Hz at full trigger. A line that moves with speed
-  follows the motor's rotation, so the spectrum doubles as a tachometer.
+  shows one near 320 Hz at full trigger. A line that moves with speed is
+  most likely the motor's own rotation, felt through any small imbalance:
+  320–380 turns a second is 19,000–23,000 rpm. That is a usual speed for a
+  small brushed motor, and a planetary gearbox brings it down to the
+  2,000–2,800 rpm on the nameplates. Here the spectrum doubles as a
+  tachometer.
 
 A faint third harmonic has a likely cause. A train of pulses at duty cycle
 $D$ has harmonics whose sizes go as $|\sin(n\pi D)|/n$. At $D$ near 1/3,

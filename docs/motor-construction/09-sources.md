@@ -11,6 +11,8 @@
 9. [57 mm Brushless DC Motor with Driver Kit, 24 V 103 W](https://www.robotshop.com/products/e-s-motor-57mm-brushless-dc-motor-w-driver-kits-24v-103w), RobotShop product page.
 10. [Brushless Digital D.C. Servo Motor](https://leathermachineco.com/product/brushless-digital-d-c-servo-motor/), Leather Machine Co. product page.
 11. I. Skalka, [*Low-Cost Universal Motor Phase Angle Drive System*](https://nxp.com/docs/en/application-note/AN1662.pdf), Freescale AN1662.
+12. [New brushes for the DCF885](https://proxy.ifixit.com/Answers/View/829312/new+brushes+for+the+DCF885), iFixit Answers.
+13. [vhbw carbon brushes for the DeWalt DCD780 and DCD785](https://www.manomano.co.uk/p/vhbw-2x-carbon-brush-45-x-35-x-11-mm-compatible-with-dewalt-dcd785l-dcd780-dcd780c2-dcd780l2-dcd785-dcd785c2-dcd785l2-drill-driver-63022978), ManoMano product page.
 
 The motor model, its equations and the speed-control methods are those of
 the companion paper, *Speed Control of Universal Motors in Sewing Machines*,
