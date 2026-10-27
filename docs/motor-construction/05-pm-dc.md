@@ -135,6 +135,46 @@ The certain answer is a scope across the motor's leads, which shows the
 frequency and the duty cycle at once, at a battery voltage that is safe to
 probe.
 
+**Measured: a drill and an impact driver.** Two DeWalt cordless tools were
+measured this way in a quiet room, with a phone's microphone and a
+spectrum-analyzer app. Each tool was recorded three times: the room alone,
+the trigger just in, and the trigger fully in.
+
+![Measured: sound spectra of a DeWalt cordless drill (top) and impact driver
+(bottom), from an iPhone running an FFT analyzer app, each with the room
+alone (gray), the trigger just in (blue) and the trigger fully in (orange).
+The dotted lines mark the narrow lines described in the text. Read back
+from the app's screenshots and replotted.](../images/motors/tool-spectra.svg){width=100%}
+
+- **The drill sings at about 3.85 kHz.** With the trigger just in, the
+  spectrum shows a sharp line there, some 20 dB above its surroundings. It
+  has harmonics at 7.7 kHz and 15.4 kHz, twice and four times the
+  fundamental. The third harmonic, near 11.5 kHz, is faint.
+- **It never stops chopping.** The line is still there with the trigger
+  fully in, so this drill tops out short of 100% duty. It has moved down
+  to about 3.3 kHz, so the controller changes its frequency near full
+  power, whether by design or as a side effect of how it controls current.
+  The drill's two-position speed switch, which on these drills usually
+  selects a gear ratio, changed nothing in the spectrum.
+- **The impact driver shows 7.7 kHz and 15.4 kHz.** These are narrow lines
+  that hold their frequency as the trigger moves, the signature of
+  switching. There is no clean line at 3.85 kHz, only a broad hump from 2
+  to 4 kHz that grows with speed, and is more likely mechanical. So either
+  this tool switches at 7.7 kHz, or it switches at 3.85 kHz and its
+  fundamental is lost in the hump. A three-phase brushless drive with
+  centre-aligned PWM puts its strongest current ripple at twice the
+  switching frequency, which would give the second result.
+- **The speed can be heard too.** In the impact driver a tall, narrow line
+  rises from about 320 Hz to 380 Hz as the trigger goes in, and the drill
+  shows one near 320 Hz at full trigger. A line that moves with speed
+  follows the motor's rotation, so the spectrum doubles as a tachometer.
+
+A faint third harmonic has a likely cause. A train of pulses at duty cycle
+$D$ has harmonics whose sizes go as $|\sin(n\pi D)|/n$. At $D$ near 1/3,
+the third falls to nothing while the second and fourth stay strong. The
+motor's mechanical response and the phone's microphone shape the levels
+too, so this is a likely cause, not a proof.
+
 **What it means for control.** A PM motor drive usually has two loops:
 
 - **A fast current loop.** It measures the current with a shunt resistor,

@@ -65,6 +65,7 @@ images:
 	python3 tools/make_speed_chart.py
 	python3 tools/make_motor_waveforms.py
 	python3 tools/make_motor_drawings.py
+	python3 tools/make_tool_spectra.py
 	sh tools/export_schematic.sh
 
 pdf: $(PDF) $(MC_PDF) $(MX_PDF) $(RIG_PDF)
