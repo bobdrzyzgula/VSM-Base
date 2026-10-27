@@ -5,7 +5,10 @@ to look at and argue with. It is not a finished design and has not been
 built.*
 
 This is the optical alternative from the motor-control paper's "Fitting the
-encoder" (§11), sized for a Kenmore 158's arm shaft (11 mm). The
+encoder" (§11), sized for a Kenmore 158's arm shaft. The shaft measures about 12.25 mm
+(an earlier, rougher figure was 11 mm), and its underside is 20 mm above
+the casting floor, measured with the gauge below and confirmed with
+calipers, which puts the axis about 26.1 mm up. The
 measurements behind it are about 5–10 mm of clear shaft at the candidate
 spots, with room for a ring of up to about 40 mm diameter (50 mm in places).
 `optical_encoder_concept.scad` models it. Its parts are `assembly`,

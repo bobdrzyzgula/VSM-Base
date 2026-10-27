@@ -7,7 +7,8 @@ aren't forgotten.* Last gathered October 25, 2026.
 ## Measure
 
 - [ ] **Kenmore 158, for the encoder** (`hardware/encoder/`):
-  - [ ] the shaft axis's height above the casting floor;
+  - [x] the shaft's underside above the casting floor: 20 mm (gauge and
+        calipers); shaft about 12.25 mm, so the axis is about 26.1 mm up;
   - [ ] the floor's ribs: pitch, height and thickness, and where the
         nearest ones are relative to the shaft, along it and across it;
   - [ ] the clear length of shaft at the chosen spot;

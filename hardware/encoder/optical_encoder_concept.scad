@@ -2,7 +2,8 @@
 // Written by Claude at Bob Drzyzgula's direction, 2026-10-24.
 //
 // A split slotted ring that clamps onto a sewing machine's arm shaft (sized
-// for the Kenmore 158's 11 mm shaft), read by two slotted photo-IC
+// for the Kenmore 158's shaft: 12.25 mm measured, its underside 20 mm above
+// the casting floor, so the axis is about 26.1 mm up), read by two slotted photo-IC
 // interrupters ("forks") a quarter-slot apart, which gives quadrature: the
 // count and the direction. One magnet in the ring and a Hall switch on the
 // bracket give the index, once a turn. The bracket holds the forks and the
@@ -21,7 +22,7 @@
 part = "assembly"; // [assembly, exploded, ring_half, bracket]
 
 /* [Shaft and ring] */
-shaft_d = 11;
+shaft_d = 12.25;      // Kenmore 158, measured (Oct 2026); bore it to suit the real shaft
 // Ring outside diameter (the tips of the teeth)
 ring_od = 40;
 // Slots in the ring (even, so the split falls in a slot)
