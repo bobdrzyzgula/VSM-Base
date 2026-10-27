@@ -100,6 +100,41 @@ it.
   and with it the speed, depends on the load. At 20 kHz the current stays
   continuous and the average is simply the duty cycle times the supply.
 
+**Hearing it: the cordless drill.** A cordless drill whose trigger is held
+just short of turning the chuck often lets out a high-pitched whine. That
+whine is the switching frequency.
+
+- **Where the sound comes from.** Each pulse of current pulls on the
+  windings and the iron, and they flex very slightly at the switching rate.
+  The motor becomes a small loudspeaker playing a tone at the PWM frequency.
+- **Why it is loudest at the edge of the trigger.** With the rotor stopped
+  there is no fan, gear or brush noise to cover the tone. The duty cycle is
+  also small, so the current is discontinuous, in short pulses that start
+  and stop sharply. That makes a harsher, louder tone than a current
+  rippling around a steady mean.
+- **Why the tool sings at all.** Many cordless tools switch at a few
+  kilohertz to around 10 kHz, where it can be heard. Slower switching wastes
+  less power in the transistors, and the parts cost less. Tools that switch
+  above 16–20 kHz are silent.
+- **The same holds for any battery tool.** A cordless router or saw, brushed
+  or brushless, sings in the same way, since a brushless controller chops
+  its three phases with PWM too. A corded tool on a triac control is
+  different: its hum is at twice the line frequency (120 Hz on 60 Hz mains)
+  and its multiples.
+
+The tone can be measured. A spectrum-analyzer app on a phone, held near the
+tool, shows a sharp peak at the switching frequency. There are two cautions:
+
+- **Harmonics.** Peaks may also show at 2×, 3× and so on. A part whose
+  force goes as the square of the current can make 2× the strongest. If the
+  peaks are evenly spaced, the spacing is the switching frequency.
+- **A changing frequency.** Some cheap controllers change frequency with the
+  trigger's position, so the pitch moves as the trigger is squeezed.
+
+The certain answer is a scope across the motor's leads, which shows the
+frequency and the duty cycle at once, at a battery voltage that is safe to
+probe.
+
 **What it means for control.** A PM motor drive usually has two loops:
 
 - **A fast current loop.** It measures the current with a shunt resistor,
