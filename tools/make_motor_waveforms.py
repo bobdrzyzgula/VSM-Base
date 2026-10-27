@@ -321,3 +321,42 @@ axes[0].set_ylim(0, 2.6)
 axes[0].set_ylabel("speed (1 = full speed)", color=MUTED)
 axes[0].legend(frameon=False, fontsize=8)
 save(fig, "speed-torque-types.svg")
+
+# ------------------------------------------------------------ induction motor, on the line and on a VFD
+# Kloss approximation, T/Tmax = 2 / (s/sm + sm/s), for a representative
+# four-pole motor: breakdown torque 2.8 x full load at 20% slip, which puts
+# full load at about 3.7% slip (about 1,734 rpm on 60 Hz). On a VFD with constant
+# volts per hertz the curve keeps its shape in slip *speed* (ns - n), so it
+# slides down with the synchronous speed.
+SM, TMAX, POLES = 0.2, 2.8, 4
+fig, ax = plt.subplots(figsize=(7.2, 3.8))
+style(ax)
+NS60 = 120 * 60 / POLES
+for f, c, lw in ((60, INK, 1.9), (40, GRAY1, 1.6), (20, GRAY2, 1.6)):
+    ns = 120 * f / POLES
+    n = np.linspace(0, ns * 0.9995, 800)
+    slip_speed = ns - n
+    x = slip_speed / (SM * NS60)
+    torque = 2 * TMAX / (x + 1 / x)
+    ax.plot(torque, n, color=c, linewidth=lw, label=f"{f} Hz" + (" (the line)" if f == 60 else " (VFD)"))
+    ax.text(0.04, ns + 25, f"{ns:.0f} rpm synchronous", fontsize=8, color=c if f != 60 else MUTED, va="bottom")
+    ax.axhline(ns, color=GRID, linewidth=0.8, zorder=0)
+ax.axvline(1, color=MUTED, linewidth=0.8, linestyle=(0, (3, 3)))
+# the 60 Hz landmarks
+x_fl = (5.6 - np.sqrt(5.6 ** 2 - 4)) / 2                     # full-load slip / SM
+n_fl = NS60 * (1 - x_fl * SM)
+ax.plot([1], [n_fl], "o", color=ACCENT, markersize=5, zorder=5)
+ax.annotate(f"full load: {n_fl:.0f} rpm, {100 * x_fl * SM:.1f}% slip", xy=(1, n_fl), xytext=(1.25, 1500),
+            fontsize=8.5, color=INK, arrowprops=dict(arrowstyle="-", color=MUTED, linewidth=0.8))
+ax.plot([TMAX], [NS60 * (1 - SM)], "o", color=WARM, markersize=5, zorder=5)
+ax.text(TMAX + 0.09, NS60 * (1 - SM), "breakdown torque", fontsize=8.5, color=INK, va="center")
+t_start = 2 * TMAX / (1 / SM + SM)
+ax.annotate(f"starting torque\non the line:\n{t_start:.1f} x full load", xy=(t_start, 0), xytext=(0.12, 90),
+            fontsize=8.5, color=INK, arrowprops=dict(arrowstyle="-", color=MUTED, linewidth=0.8))
+ax.set_xlim(0, 3.7)
+ax.set_ylim(0, 1950)
+ax.set_xlabel("torque (1 = full load)", color=MUTED)
+ax.set_ylabel("speed, rpm", color=MUTED)
+ax.set_title("Four-pole induction motor")
+ax.legend(frameon=False, fontsize=8, loc="upper right")
+save(fig, "induction-speed-torque.svg")

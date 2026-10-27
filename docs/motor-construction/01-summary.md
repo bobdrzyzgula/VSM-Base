@@ -18,11 +18,13 @@ speed $\omega$. This paper starts from the metal and copper.
   - its laminated field iron and field coils;
   - its wound armature;
   - its commutator and carbon brushes.
-- **Other motor types.** It treats three related motors the same way, as
+- **Other motor types.** It treats four related motors the same way, as
   parallel subjects rather than footnotes:
   - the wound-field DC motor, the universal motor's DC relatives;
   - the brushed permanent-magnet DC motor;
-  - the brushless DC motor.
+  - the brushless DC motor;
+  - the induction motor, with the industrial clutch motor and the
+    variable-frequency drive.
 
   For each it covers how the motor is built, what its equations say, and how
   its speed is controlled.
@@ -56,7 +58,13 @@ speed $\omega$. This paper starts from the metal and copper.
    and torque follows current, each on its own. That makes them far easier
    to regulate, to hold still, and to brake. They need DC and, in the
    brushless case, an electronic commutator.
-4. **Suitable DC motors exist, and they are small and cheap.** Common 24 V
+4. **The induction motor needs no commutator at all.** A three-phase
+   supply makes a field that rotates by itself, and the rotor's bars have
+   their currents induced by the field sweeping past. It runs at nearly
+   fixed speed off the line, a few percent below the field, and only a
+   variable-frequency drive changes that. The sewing trade's clutch motor
+   was an induction motor with the speed control in a slipping clutch.
+5. **Suitable DC motors exist, and they are small and cheap.** Common 24 V
    brushed motors of the "775" size (42 mm across) deliver 60 W or more near
    7,000 rpm. Brushless motors of 42–57 mm deliver 50–100 W at 3,000–4,000
    rpm. Both fit easily within the envelope of a Singer external motor.

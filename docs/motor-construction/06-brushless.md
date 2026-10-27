@@ -22,7 +22,7 @@ phase.](../images/motors/bldc-construction.svg){width=100%}
 Two arrangements are common:
 
 - **The inrunner.** The rotor turns inside the stator, as drawn. It is the
-  form of industrial motors, including the 42 mm and 57 mm motors of §8.
+  form of industrial motors, including the 42 mm and 57 mm motors of §9.
 - **The outrunner.** The rotor is a cup of magnets turning *outside* a
   stationary wound core. This is the form of drone and model-aircraft
   motors: more torque for their size, but an exposed rotating can.
@@ -32,7 +32,7 @@ pole pairs, the current pattern must go round its cycle $p$ times per
 mechanical revolution. Three Hall-effect sensors, set 120 electrical degrees
 apart, divide each electrical cycle into six states, so an 8-pole motor
 (4 pole pairs) reports 24 distinct positions per turn. That point returns
-in §8.
+in §9.
 
 **The ratings.** Brushless motors are rated by:
 
@@ -93,7 +93,7 @@ On top of that it gives:
 - quiet running at 20 kHz PWM;
 - in Hall sensors that come built in, a measure of the motor's position.
 
-Brushless servo motors replaced the clutch motor on industrial sewing
+Brushless servo motors replaced the clutch motor (§7) on industrial sewing
 machines for these reasons. They are typically a few hundred watts, mounted
 under the table, with the controller in the same housing
 ([Leather Machine Co.](https://leathermachineco.com/product/brushless-digital-d-c-servo-motor/)).
