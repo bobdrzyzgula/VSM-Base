@@ -61,7 +61,9 @@ better one.
 
 The MCU controller in the speed-control paper is built around a triac
 because the motor runs on mains AC. A DC motor changes its power stage
-completely and leaves its brain much as it is.
+completely and leaves its brain much as it is. A concept schematic of the brushed version, a 775 on an
+off-the-shelf H-bridge, is in the speed-control paper's §11 ("A DC-motor
+variant") and in the repository at `hardware/mcu-controller-dc/`.
 
 - **The supply becomes a certified 24 V adapter.** A 24 V, 5 A (120 W)
   supply with a safety listing does all of the isolation from the mains,

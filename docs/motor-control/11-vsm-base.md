@@ -450,6 +450,95 @@ hurry. The right set of interfaces is a question for the people who will
 use them.
 
 
+### A DC-motor variant
+
+*Inside the Motor*, the companion paper, asks whether a small DC motor
+could drive a vintage machine in place of its universal motor (its §9). A
+24 V brushed permanent-magnet motor of the "775" size has about the right
+power, around 60 W near 7,000 rpm, and fits easily inside a Singer
+external motor's envelope. This variant of the concept circuit shows what
+the controller would become. Like the mains version, it is drawn but not
+built or tested, by Claude at Bob Drzyzgula's direction.
+
+**The control side is unchanged.** The RP2350B core board, the operator
+inputs, the heel switch, the needle and single-stitch switches, the index
+sensor and the encoder keep the same parts and the same GPIOs.
+
+**The mains side is gone.** No triac, opto-triac, zero-cross detector,
+relay, isolated supply or current transformer is needed. In their place:
+
+- **A 24 V adapter with a safety listing,** which does all the isolation
+  from the mains inside a part that is bought, not built. A 24 V, 4 A (96 W)
+  adapter listed as Class 2 or LPS is also power-limited by its own design.
+  On the board there are a 5 A fuse, a TVS diode for spikes, and bulk
+  capacitance at the driver. Every wire the builder touches is at 24 V.
+- **A 5 V buck module** for the core board, in place of the isolated
+  supply.
+- **An off-the-shelf H-bridge:** Pololu's G2 High-Power Motor Driver
+  24v13, rated 6.5–40 V and 13 A continuous, with reverse-voltage
+  protection, an adjustable current limit and a current-sense output
+  ([Pololu](https://www.pololu.com/product/2992)). PWM high drives the
+  motor and PWM low brakes it, and the module pulls its PWM input low
+  itself, so a resetting controller leaves the motor braked. One resistor
+  sets the current limit below the 775's stall current, about 24 A.
+- **Sensing:** the driver's current output, the bus voltage, and the
+  voltage at each of the motor's terminals. These use the four analog
+  inputs the mains version left spare.
+- **An optional brake chopper,** a MOSFET and a power resistor across the
+  bus.
+
+| Signal | RP2350B pin | Use |
+|---|---|---|
+| PWM | GP4 | bridge PWM, 20 kHz (was triac fire) |
+| DIR | GP5 | direction (was relay) |
+| SLP | GP6 | driver sleep (was zero cross) |
+| FLT | GP13 | driver fault |
+| Brake chopper (optional) | GP1 | output |
+| Motor current | GP44 (ADC4) | analog input |
+| Motor terminals A, B | GP45, GP46 (ADC5, 6) | analog inputs |
+| Bus voltage | GP47 (ADC7) | analog input |
+
+**What changes in the firmware:**
+
+- **A current loop.** It runs at a few kilohertz, sampling the
+  current mid-pulse, with the speed loop around it.
+- **Exact needle stops.** The triac version cuts firing early and learns
+  the coast. Here the controller brakes the motor electrically and then
+  holds the needle at the taught angle with current, a position loop on the
+  encoder.
+- **Load compensation without a machine sensor,** in place of the current
+  transformer's first-order fix. A PM motor's back-EMF is its speed
+  (*Inside the Motor*, §5). With the driver asleep for a moment, the two terminal readings
+  give the back-EMF directly. While driving, the speed can be estimated
+  from the duty cycle, the bus voltage and the current. That gives the
+  pedal-first mode above a true speed loop, with nothing fitted to the
+  machine.
+
+**One new hazard: regeneration.** A motor slowed by reversing its
+current, or by a speed loop allowed to drive negative current, returns its
+energy to the bus. An adapter can't take energy back. The machine's
+inertia holds tens of joules at full speed, enough to drive a 1000 µF bus
+far past the driver's 40 V. So the firmware slows the machine only by
+braking, which spends the energy in the motor's own resistance. It also
+watches the bus voltage and, if the bus rises anyway, stops driving and
+fires the chopper.
+
+![The DC-motor variant of the concept (not built or tested). The 24 V
+power section is above the dashed line, which here separates high current
+from logic, not live from safe. Left to right: the 24 V input with its
+fuse, TVS and bulk capacitors; the 5 V buck; the optional brake chopper;
+the bus-voltage sense; the G2 H-bridge module with its current-limit and
+current-sense resistors; the 775 motor with its suppression capacitor; and
+the dividers that read the motor's terminals. Below the line, the control
+side is that of the mains version. The KiCad file and its generator are in
+`hardware/mcu-controller-dc/`.](../images/diagrams/mcu-controller-dc-schematic.svg){width=100%}
+
+The KiCad drawing, a printed copy, the generator script and notes on
+values and firmware are in the repository at `hardware/mcu-controller-dc/`.
+The first bench step is still the one *Inside the Motor* recommends: run a
+775 from a 24 V supply on the motor rig, then put it on a machine on a
+temporary bracket.
+
 ## Other options considered
 
 - **A KBIC with an isolated command (§8).** Proven regulation through IR
