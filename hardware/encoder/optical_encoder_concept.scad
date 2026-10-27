@@ -59,6 +59,16 @@ split_gap = 0.4;      // left open so the screws can clamp
 magnet = [3, 2];      // diameter, thickness
 magnet_r = 12;        // radius of the magnet's centre (inside the forks' arms)
 
+/* [Insert cradle] */
+// Clearance round the hub and the teeth, at the sides
+cradle_clear = 0.3;
+// Under the hub: the half sinks this far, and the top is set down to match (raise it if the half sits low)
+cradle_seat = 0.1;
+// Anti-roll ribs, width (the slots are about 1.4 mm wide at the tooth roots)
+key_w = 0.8;
+// Which slots get a rib, in pitches from straight down
+key_slots = [-2, 0, 2];
+
 /* [Forks (generic slotted photo-IC interrupter)] */
 fork_len = 10;        // along the shaft
 fork_w = 4.5;         // across (tangential)
@@ -164,10 +174,6 @@ module ring_half(top = true) {
 // The half rests on the hub (its pocket is set up so it bottoms first, with
 // cradle_seat under it); the teeth hang clear. Ribs in three of the slots stop
 // the half rolling in its round pocket when one insert is pressed.
-cradle_clear = 0.3;   // round the hub and the teeth, at the sides
-cradle_seat = 0.1;    // under the hub: the half sinks this far, and the top is set down to match
-key_w = 0.8;          // anti-roll ribs, width (the slots are 1.4 mm wide at the tooth roots)
-key_slots = [-2, 0, 2]; // which slots (in pitches from straight down) get a rib
 module insert_cradle() {
     top = -split_gap / 2 - cradle_seat;
     hub_lift = cradle_clear - cradle_seat;   // raise the hub pocket so the hub bottoms before the teeth
