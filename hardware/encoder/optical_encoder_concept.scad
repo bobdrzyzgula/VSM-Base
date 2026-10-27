@@ -160,14 +160,29 @@ module ring_half(top = true) {
 
 // the insert cradle: holds the bottom half split face up and level with the
 // cradle's top, supported under the hub where the iron presses; built in the
-// ring's frame, then turned to print pocket up
+// ring's frame, then turned to print pocket up.
+// The half rests on the hub (its pocket is set up so it bottoms first, with
+// cradle_seat under it); the teeth hang clear. Ribs in three of the slots stop
+// the half rolling in its round pocket when one insert is pressed.
+cradle_clear = 0.3;   // round the hub and the teeth, at the sides
+cradle_seat = 0.1;    // under the hub: the half sinks this far, and the top is set down to match
+key_w = 0.8;          // anti-roll ribs, width (the slots are 1.4 mm wide at the tooth roots)
+key_slots = [-2, 0, 2]; // which slots (in pitches from straight down) get a rib
 module insert_cradle() {
+    top = -split_gap / 2 - cradle_seat;
+    hub_lift = cradle_clear - cradle_seat;   // raise the hub pocket so the hub bottoms before the teeth
     difference() {
-        translate([-web_t / 2 - hub_len - 4, -R - 4, -R - 4]) cube([hub_len + web_t + 9, 2 * R + 8, R + 4 - split_gap / 2]);
-        for (c = [[R + 0.4, -web_t / 2 - 0.3, web_t + 0.6],                     // disc and teeth
-                  [magnet_r + magnet[0] / 2 + 0.8 + 0.4, -web_t / 2 - 1.6, 1.6 + eps], // magnet boss
-                  [hub_od / 2 + 0.3, -web_t / 2 - hub_len - 0.3, hub_len + 0.3 + eps]]) // hub
-            translate([c[1], 0, 0]) rotate([0, 90, 0]) cylinder(r = c[0], h = c[2]);
+        translate([-web_t / 2 - hub_len - 4, -R - 4, -R - 4]) cube([hub_len + web_t + 9, 2 * R + 8, R + 4 + top]);
+        // disc and teeth: a round pocket, with ribs left standing in a few slots
+        difference() {
+            translate([-web_t / 2 - 0.3, 0, 0]) rotate([0, 90, 0]) cylinder(r = R + 0.4, h = web_t + 0.6);
+            for (k = key_slots) rotate([k * pitch, 0, 0])
+                translate([-web_t / 2 - 0.4, -key_w / 2, -R - 1]) cube([web_t + 0.8, key_w, R + 1 - (root_r + 0.5)]);
+        }
+        // magnet boss
+        translate([-web_t / 2 - 1.6, 0, 0]) rotate([0, 90, 0]) cylinder(r = magnet_r + magnet[0] / 2 + 0.8 + 0.4, h = 1.6 + eps);
+        // hub
+        translate([-web_t / 2 - hub_len - 0.3, 0, hub_lift]) rotate([0, 90, 0]) cylinder(r = hub_od / 2 + cradle_clear, h = hub_len + 0.3 + eps);
         // finger room to lift the half out
         translate([-web_t / 2 - hub_len - 5, -6, -6]) cube([4, 12, 10]);
     }
