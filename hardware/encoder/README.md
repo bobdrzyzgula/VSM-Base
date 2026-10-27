@@ -107,6 +107,11 @@ so they live with the other standalone projects:
 
 ## Assembling the ring
 
+**Print the ring halves with the finest layers your printer does well**
+(0.12 mm has worked). The screw and insert holes run across the layers
+when the halves print flat, so they come out round only with thin
+layers. On parts this small it adds only a few minutes.
+
 The clamp screws are M2 socket-head cap screws through the top half, into
 **M2 heat-set inserts** (M2 × 4 × 3.5) in the bottom half. The inserts go
 in on the bench, so nothing small has to be handled inside the machine.

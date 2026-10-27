@@ -12,6 +12,8 @@
 //
 // Frame: the shaft runs along X; Z is up; the forks sit below the shaft.
 // part = "assembly" shows it in place; "exploded" pulls it apart;
+// Print the ring halves with fine layers (0.12 mm has worked): their screw
+// and insert holes run across the layers, and come out round only when thin.
 // "ring_half" (the top half: screw heads), "ring_half_bottom" (inserts or nut
 // traps, and the magnet), "insert_cradle" (holds the bottom half split face up,
 // level, for pressing in the heat-set inserts) and "bracket" are the printed
