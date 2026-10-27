@@ -57,9 +57,33 @@ trace the motor current. In the middle panel, the dashed line shows what a
 plain resistor's current would look like: a slice of sine that stops dead
 at the voltage zero.](../images/motors/universal-triac.svg){width=100%}
 
-A triac switches the full line on part-way through each half-cycle, at the
-firing angle $\alpha$, and leaves it on until the current falls to zero. The
-plots show what the inductance does with that.
+**How a triac switches.** A triac is a pair of thyristors (SCRs) back to
+back in one package, so it conducts in either direction. Its gate can turn
+it on but cannot turn it off. A short pulse of gate current starts it
+conducting. Once the load current has passed the triac's *latching current*,
+it holds itself on and the gate has no further say. It turns off only when
+the current through it falls below its *holding current*, a few milliamps.
+In practice that means when the load current crosses zero, and then it waits
+for the next gate pulse. So the only control a triac offers is *when to
+switch on* in each half-cycle. This is **leading-edge** (forward-phase)
+control:
+
+- **The line crosses zero.** The triac is off, and stays off.
+- **The firing angle $\alpha$.** The gate is pulsed, and the triac switches
+  the full line on. $\alpha$ is measured from the voltage zero, so a larger
+  $\alpha$ means a later start and less power.
+- **The current reaches zero.** The triac turns itself off.
+
+The other scheme, **trailing-edge** (reverse-phase) control, switches on at
+the zero and cuts off part-way through. It needs a switch that its gate can
+turn off, a MOSFET or an IGBT, and it is what some dimmers for LED lamps
+use. It suits a motor badly: cutting the current off sharply in an inductive
+load makes the inductance answer with a voltage spike ($v = L\,di/dt$). This
+is why dimmers sold for motors and transformers are leading-edge.
+
+The triac switches the full line on at the firing angle and leaves it on
+until the current falls to zero. The plots show what the inductance does
+with that.
 
 - **The voltage is a sliced sine.** Before firing, the motor sees almost
   nothing. The line is held off by the triac, and the motor's own terminals
