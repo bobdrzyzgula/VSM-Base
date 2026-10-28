@@ -199,21 +199,46 @@ lengths rounded up to stock sizes.
   controller designs for the base. Its source is in
   [`docs/motor-control/`](docs/motor-control/); releases carry it as PDF and
   HTML.
+- **Inside the Motor**: the companion paper on how the motors themselves
+  are built. It covers the universal motor in iron and copper, its
+  waveforms on the line, behind a rheostat and behind a triac, and its
+  relatives: wound-field and permanent-magnet DC motors, brushless motors
+  and induction motors. It closes on whether a small DC motor could drive
+  a vintage machine. Its source is in
+  [`docs/motor-construction/`](docs/motor-construction/); releases carry it
+  as PDF and HTML.
+- **The motor test rig's guide**: building and using the bench rig in
+  [`standalone/motor-rig/`](standalone/motor-rig/); releases carry it as a
+  PDF.
 
 To build the documentation, see the [`Makefile`](Makefile): `make params`,
 `make images`, `make pdf`, `make html`, or `make docs` for both. They build
-the guide and the motor-control paper into `build/`. Both need pandoc 3.1.2 or later; the PDF also needs
-[Typst](https://typst.app), 0.12 or later with a recent pandoc (the release
-build uses pandoc 3.7.0.2 and Typst 0.13.1). `make pdf TYPST=/path/to/typst`
-uses a Typst binary that isn't on your path. A version tag (`v*`) builds both and attaches them
-to a GitHub release (see
+the guide, the two papers and the rig guide into `build/`.
+
+- **`make pdf` and `make html`** need pandoc 3.1.2 or later. The PDF also
+  needs [Typst](https://typst.app), 0.12 or later with a recent pandoc (the
+  release build uses pandoc 3.7.0.2 and Typst 0.13.1). `make pdf
+  TYPST=/path/to/typst` uses a Typst binary that isn't on your path.
+- **`make images`** regenerates the figures, and needs more:
+  - [OpenSCAD](https://openscad.org) with BOSL2, for the model's renders
+    (on a machine with no display, run it under `xvfb-run`);
+  - [KiCad](https://www.kicad.org) 7 or later, for `kicad-cli`, which
+    exports the schematics;
+  - Python 3 with matplotlib, NumPy and Pillow, for the charts, waveforms
+    and drawings.
+
+  The figures are committed to the repository, so building the documents
+  doesn't need `make images` unless a figure has changed.
+
+A version tag (`v*`) builds the documents and attaches them to a GitHub
+release (see
 [`.github/workflows/release.yml`](.github/workflows/release.yml)).
 
 ## Credits
 
 Designed and tested by Robert Drzyzgula. The OpenSCAD code, the User's
-Guide and the motor-control paper were written by Claude (Anthropic) at his
-direction, with Claude contributing engineering background and research
+Guide, the motor-control paper and *Inside the Motor* were written by Claude
+(Anthropic) at his direction, with Claude contributing engineering background and research
 along the way.
 
 ## License
