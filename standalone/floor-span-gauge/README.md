@@ -47,13 +47,16 @@ For contrast, print the body in one color, and the slider in a dark color
 with light markings (or the reverse). The scale stands 0.4 mm proud of the
 slider's top face:
 
+- **With several filaments,** export the `slider` part as 3MF, not STL.
+  Its bar and scale are colour-tagged (black and white), so Bambu Studio
+  and Orca open it as a two-colour part and ask which filament each gets.
+  (Bob Drzyzgula's tip.) The `slider_marks` part, the scale alone in the
+  slider's coordinates, is there for a slicer or a workflow that wants them
+  as separate files.
 - **With one extruder,** print the slider face up and change filament at
   the first layer above the face (in Bambu Studio, add a filament change at
   that layer in the layer slider). That is z = 1.7 mm with the default
   `slide_t`.
-- **With several,** export `slider_marks` as well. It has the slider's
-  coordinates, so loaded as a part of the same object it lands on the face,
-  and can be given its own filament.
 
 ## Settings
 

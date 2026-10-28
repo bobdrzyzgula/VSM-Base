@@ -21,10 +21,11 @@
 // and measure across the jaws with calipers.
 //
 // Two colours: the scale is raised 0.4 mm on the slider's top face.
+// - Several filaments: export "slider" as 3MF. Its bar and scale are
+//   colour-tagged, so Bambu Studio and Orca open it as a two-colour part and
+//   ask which filament each gets. (Or export "slider_marks" separately.)
 // - One extruder: print the slider face up and change filament at the
-//   first layer above the face (z = slider_t), or
-// - Several: export "slider_marks" too and give it its own filament
-//   (it shares the slider's coordinates).
+//   first layer above the face (z = slide_t).
 // Print both parts flat, as given; neither needs supports.
 // part = "assembly" shows them together at the reading set by "show_at".
 
@@ -156,5 +157,5 @@ if (part == "assembly") {
     slider_at(e) { color("dimgray") slider_bar(); color("white") marks(); }
     echo(str("Shown at ", body_len + e, " mm"));
 } else if (part == "body") body();
-else if (part == "slider") { slider_bar(); marks(); }
+else if (part == "slider") { color("black") slider_bar(); color("white") marks(); }
 else if (part == "slider_marks") marks();
