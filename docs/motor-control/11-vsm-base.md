@@ -450,6 +450,87 @@ hurry. The right set of interfaces is a question for the people who will
 use them.
 
 
+### A rectified-DC variant
+
+The KBIC (§8) runs a universal motor on DC: it rectifies the line with a
+controlled bridge and phase-controls the result. The concept circuit can do
+much the same with one small change in its power path, and no change to
+its isolation, its firing or its control side. Like the other versions, it
+is drawn but not built or tested, by Claude at Bob Drzyzgula's direction.
+
+**The change.** The triac feeds the motor through a bridge rectifier, with
+a freewheeling diode across the motor:
+
+- **The triac stays on the AC side,** fired exactly as before, once per
+  half-cycle after the zero crossing.
+- **The bridge** (600 V, 8 A, GBU8J class) turns the triac's chopped AC
+  into chopped DC, 120 pulses a second.
+- **The freewheeling diode** (a fast-recovery UF5408 class) is the part
+  that matters. At the line's zero crossing, the motor's inductance keeps
+  its current flowing. On AC that current runs on against the reversing
+  line, as in *Inside the Motor*'s triac figures, and the triac drops out
+  only when it reaches zero. Here the current moves onto the diode and
+  circulates through the motor, which never sees a reverse voltage. It
+  decays slowly until the next firing, instead of stopping.
+
+![Simulated, using *Inside the Motor*'s representative motor and load:
+the triac fired at 120° on AC (top) and through a bridge with a freewheeling
+diode (bottom). On AC the current comes in separate humps with nothing
+between them. Through the bridge it never reaches zero: it rises at each
+firing and decays through the diode until the next. The same firing angle
+gives nearly twice the speed.](../images/motors/universal-bridge.svg){width=100%}
+
+**What it gains.** The simulation gives the size of the effect.
+
+- **More speed for the same firing angle.** At 120° the motor runs at
+  about 1,690 rpm, against about 970 rpm on AC.
+- **A lower stall point.** At 135°, where the AC version stalls, it still
+  turns at about 390 rpm.
+- **Torque that is smoothed, not pulsed.** The torque, $K i^2$, now
+  ripples on a steady value instead of coming in kicks. That is the
+  cogging of §5 much reduced, and it is most of what the KBIC gains from
+  rectifying.
+- **An easier triac.** At each zero crossing the motor's current moves
+  onto the diode, so the triac's current falls cleanly to zero, and it
+  turns off with no inductive load to fight.
+
+**What else changes.**
+
+- **The motor leaves the outlet.** Its socket would carry DC, and anything
+  else plugged into it would get DC too. The motor's leads pass through
+  and are hardwired, or end in a keyed connector that cannot be mistaken
+  for a mains one, such as a rectangular Molex. The connector is still at
+  line potential and needs insulation to match. The outlet keeps only the
+  light's socket.
+- **The current transformer moves to the AC side,** into the bridge's AC
+  lead, since a current transformer cannot sense DC. It still sees the
+  full motor current.
+- **The firmware keeps its structure.** The zero-cross, firing and loops
+  are as before, with the gains retuned. Because the motor runs faster on
+  DC at full firing, the speed limit and the stall watchdog matter a
+  little more. This is the open question under "Other options considered"
+  below, whether the 99 reaches its top speed on rectified DC, and here it
+  works in the motor's favor.
+
+The fully DC alternative, rectifying the mains to a filtered 170 V bus and
+chopping it with a transistor, is not pursued. It needs a high-voltage
+switch with an isolated gate drive, and large capacitors that hold a
+dangerous charge after unplugging. That is far more hazard than this
+project warrants, for little gain over the bridge.
+
+![The rectified-DC variant of the concept (not built or tested). The
+mains version with the bridge rectifier (BR1) and freewheeling diode (D3)
+added between the triac and the motor's own keyed connector (J3). The
+outlet (J2) keeps only the light, and the current transformer (T1) is in
+the bridge's AC lead. The KiCad file and its generator are in
+`hardware/mcu-controller-rectified/`.](../images/diagrams/mcu-controller-rectified-schematic.svg){width=100%}
+
+The KiCad drawing, a printed copy and the generator script are in the
+repository at `hardware/mcu-controller-rectified/`. On the motor rig, the
+experiment is the same motor on AC and on rectified DC. The scope should
+show the current change from separate humps to a ripple on a steady
+value.
+
 ### A DC-motor variant
 
 *Inside the Motor*, the companion paper, asks whether a small DC motor

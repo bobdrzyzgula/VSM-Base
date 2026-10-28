@@ -202,6 +202,54 @@ ax.set_xlabel("milliseconds", color=MUTED)
 save(fig, "universal-rheostat.svg")
 print(f"  rheostat {rs:.1f} ohm: {rpm(w[-1]):.0f} rpm, {np.sqrt(np.mean(i**2)):.3f} A rms, pedal {np.mean(rs*i*i):.1f} W")
 
+# 4. the triac feeding the motor through a bridge rectifier, with a freewheeling
+# diode across the motor (the motor-control paper's rectified-DC variant).
+# While the triac conducts the motor sees |v|; at the line's zero the motor's
+# current moves onto the freewheeling diode (drop VF) and the triac drops out;
+# the current then decays until the next firing, or reaches zero and stays there.
+VF = 0.9
+
+
+def sim_bridge(alpha_deg=90.0, t_end=2.5, keep=3 / F):
+    n = int(t_end / DT)
+    t = np.arange(n) * DT
+    v = VPK * np.sin(2 * np.pi * F * t)
+    i, w = 0.0, 300.0
+    alpha = np.radians(alpha_deg)
+    k0 = int((t_end - keep) / DT)
+    I = np.zeros(n - k0); VM = np.zeros(n - k0); WW = np.zeros(n - k0)
+    for k in range(n):
+        th = (2 * np.pi * F * t[k]) % np.pi          # angle into this half-cycle
+        if th >= alpha:                              # triac on: the rectified line
+            vmotor = abs(v[k])
+        elif i > 0:                                  # freewheeling through the diode
+            vmotor = -VF
+        else:                                        # no current: residual field only
+            vmotor = E_RES * w
+        if th >= alpha or i > 0:
+            i = max(i + (vmotor - R * i - K * w * i) / L * DT, 0.0)
+        w += (K * i * i - (T0 + B * w)) / J * DT
+        w = max(w, 0.0)
+        if k >= k0:
+            I[k - k0], VM[k - k0], WW[k - k0] = i, vmotor, w
+    return t[k0:] - t[k0], v[k0:], VM, I, WW
+
+
+fig, axes = plt.subplots(2, 1, figsize=(7.2, 5.4), sharex=True)
+tt, vl, vm, i, w = sim_universal("triac", 120)
+wave_panel(axes[0], tt, vl, vm, i, f"Triac at 120°, motor on AC: {rpm(w[-1]):.0f} rpm, "
+           f"{np.sqrt(np.mean(i**2)):.2f} A rms", ilim=2.2)
+tt, vl, vm, i, w = sim_bridge(120)
+wave_panel(axes[1], tt, vl, vm, i, f"Triac at 120°, through a bridge and freewheeling diode: "
+           f"{rpm(w[-1]):.0f} rpm, {np.sqrt(np.mean(i**2)):.2f} A rms", ilim=2.2)
+axes[0].legend(loc="lower left", frameon=False, fontsize=8, ncol=2)
+axes[-1].set_xlabel("milliseconds", color=MUTED)
+save(fig, "universal-bridge.svg")
+for al in (45, 90, 120, 135, 150):
+    tt, vl, vm, i, w = sim_bridge(al)
+    gap = np.mean(i < 1e-6)
+    print(f"  bridge {al}: {rpm(w[-1]):.0f} rpm, {np.sqrt(np.mean(i**2)):.3f} A rms, min i {i.min():.3f} A, zero {100*gap:.0f}% of the time")
+
 # ------------------------------------------------------------ PM DC on PWM
 VDC, RA, LA, KE = 24.0, 0.98, 0.2e-3, 0.0271
 VD = 0.7            # freewheeling diode drop

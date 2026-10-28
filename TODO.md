@@ -91,6 +91,9 @@ aren't forgotten.* Last gathered October 25, 2026.
   assistive inputs, with switch-only firmware modes.
 - Reflective optical encoders, as the last resort.
 - Danielle's idea: compare the Bernina 730's and 830's pedals side by side.
+- The rectified-DC variant (`hardware/mcu-controller-rectified/`): on the
+  motor rig, the same motor on AC and through a bridge with a freewheeling
+  diode; compare the current on the scope, and the speed at low firing.
 - The DC-motor variant (`hardware/mcu-controller-dc/`): first run a 775 on a
   24 V supply on the motor rig, driven by the H-bridge module the schematic
   uses (Pololu's G2 High-Power Motor Driver 24v13), measuring speed, current
