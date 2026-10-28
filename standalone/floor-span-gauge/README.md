@@ -13,13 +13,15 @@ dark slider coming out to the right](floor-span-gauge.png)
 - **The slider** is a flat bar in the channel, and its front end is the
   other jaw. It carries the scale: millimeters along one edge, numbered
   every 5, and inches along the other, in sixteenths, labeled at the
-  quarters. A spring beam along one side presses on the channel wall, so
+  quarters as 1.25, 1.5 and 1.75. Every line in the scale is at least
+  0.5 mm wide, and the lettering is thickened to match, so a slicer keeps
+  it. A spring beam along one side presses on the channel wall, so
   the slider stays wherever it's left.
 - **It reads 28–46 mm (1.10–1.81")** by default.
 - **It's 3.5 mm tall,** lower than the 158's 4 mm ribs, so both jaws meet
   the ribs' faces rather than riding up over them. Each jaw's lower edge is
   chamfered, so a cast fillet at a rib's foot doesn't hold the jaw off.
-- **It's 16 mm wide,** so it fits inside a 1¼" bay whichever way it's
+- **It's 17 mm wide,** so it fits inside a 1¼" bay whichever way it's
   laid.
 
 ## Using it
@@ -60,12 +62,15 @@ slider's top face:
   body's length (`slide_len` plus the 2 mm back wall) to that plus
   `slide_len − overlap`. A longer slider reaches farther, but closes longer
   too.
-- **`slide_w`**: the slider's width (13 mm). The body is 3.2 mm wider.
+- **`slide_w`**: the slider's width (14 mm). The body is 3.2 mm wider.
 - **`grip`**: the spring beam's interference with the wall (0.3 mm). Raise
   it if the slider is loose, lower it if it's stiff.
 - **`clr`**: the clearance round the slider (0.2 mm).
 - **`chamfer`**: the chamfer on each jaw's lower edge (0.8 mm).
 - **`mark_h`**, **`text_size`**: the scale's height and lettering size.
+- **`line_w`**: the narrowest line in the scale (0.5 mm). Keep it at or a
+  little over your nozzle's width. The first print, with 0.3 mm lines and
+  unthickened lettering, sliced to scattered blobs.
 
 All in one self-contained OpenSCAD file, `floor_span_gauge.scad`, with no
 libraries needed. Its `part` setting gives `body`, `slider`,

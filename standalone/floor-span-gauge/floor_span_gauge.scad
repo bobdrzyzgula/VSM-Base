@@ -33,7 +33,7 @@ part = "assembly"; // [assembly, body, slider, slider_marks]
 /* [Size] */
 // Slider: length, width, thickness
 slide_len = 26;       // [16:0.5:40]
-slide_w = 13;         // [10:0.5:18]
+slide_w = 14;         // [10:0.5:18]
 slide_t = 1.7;        // [1.2:0.1:2.5]
 // The slider stays this far in the channel at full stretch
 overlap = 8;          // [5:0.5:15]
@@ -52,7 +52,9 @@ chamfer = 0.8;        // [0:0.1:1.5]
 
 /* [Scale] */
 mark_h = 0.4;         // [0.2:0.1:1]
-text_size = 2.0;      // [1.4:0.1:3]
+text_size = 2.2;      // [1.4:0.1:3.5]
+// Every line in the scale is at least this wide, so the slicer keeps it (a nozzle's width or a little more)
+line_w = 0.5;         // [0.3:0.05:0.8]
 
 /* [Show] */
 show_at = 36;         // [20:0.5:50]
@@ -118,25 +120,31 @@ module marks() {
         // millimetres, along the y = 0 edge, numbered every 5
         for (v = [ceil(body_len) : floor(max_read)]) {
             d = v - body_len;
-            len = v % 5 == 0 ? 2.6 : 1.5;
-            translate([d - 0.15, y_mm0]) square([0.3, len]);
+            len = v % 5 == 0 ? 2.2 : 1.3;
+            translate([d - line_w / 2, y_mm0]) square([line_w, len]);
             if (v % 5 == 0 && d > 1.2)
-                translate([d, y_mm0 + 2.9]) rotate(180) text(str(v), size = text_size, font = font, halign = "center", valign = "top");
+                translate([d, y_mm0 + 2.5]) rotate(180) fat() text(str(v), size = text_size, font = font, halign = "center", valign = "top");
         }
         // inches, along the y = slide_w edge, ticks every 1/16, labelled at the quarters
+        // in decimals (a font's fraction glyphs have strokes too fine to print)
         for (k = [ceil(body_len / 25.4 * 16) : floor(max_read / 25.4 * 16)]) {
             d = k * 25.4 / 16 - body_len;
             len = k % 4 == 0 ? 2.2 : (k % 2 == 0 ? 1.4 : 0.9);
-            translate([d - 0.15, y_in0 - len]) square([0.3, len]);
+            translate([d - line_w / 2, y_in0 - len]) square([line_w, len]);
             if (k % 4 == 0 && d > 1.2)
-                translate([d, y_in0 - 3.5]) rotate(180) text(k == 16 ? "1" : k == 20 ? "1¼" : k == 24 ? "1½" : k == 28 ? "1¾" : k == 32 ? "2" : str(k / 16),
+                translate([d, y_in0 - 3.0]) rotate(180) fat() text(str(k / 16),
                                                  size = text_size, font = font, halign = "center", valign = "bottom");
         }
         // the units, near the tail (always inside the channel when reading)
-        translate([slide_len - overlap + 0.8, y_mm0 + 2.9]) rotate(180) text("mm", size = text_size * 0.8, font = font, halign = "right", valign = "top");
-        translate([slide_len - overlap + 0.8, y_in0 - 3.5]) rotate(180) text("in", size = text_size * 0.8, font = font, halign = "right", valign = "bottom");
+        translate([slide_len - overlap + 2.5, y_mm0 + 2.5]) rotate(180) fat() text("mm", size = text_size * 0.8, font = font, halign = "right", valign = "top");
+        translate([slide_len - overlap + 2.5, y_in0 - 3.0]) rotate(180) fat() text("in", size = text_size * 0.8, font = font, halign = "right", valign = "bottom");
     }
 }
+
+// thicken lettering so no stroke is narrower than about line_w: a bold font's
+// strokes at this size are only about 0.3 mm, and a slicer drops anything much
+// under its line width (the first print came out as scattered blobs)
+module fat() offset(delta = max(line_w - 0.14 * text_size, 0) / 2) children();
 
 // ---------------------------------------------------------------- views
 // the slider in the body's frame, sticking out by e
