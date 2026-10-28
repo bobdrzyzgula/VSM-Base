@@ -17,8 +17,12 @@
 // gauge out without disturbing the slider and measure foot-bottom to arm-top
 // with calipers, which is the more accurate number.
 //
-// Print: base standing up (foot on the bed); slider upside down (arm's top
-// face on the bed, which keeps the measuring face flat). No supports.
+// Print: base standing up (foot on the bed). Slider as "slider" gives it:
+// upright, sleeve on the bed, with tree supports under the arm (and support
+// interface material if your printer has it). Upside down, the friction
+// tongue would be an island in mid-air for most of its height; no
+// orientation avoids some unsupported cantilever. (Bob Drzyzgula's print,
+// October 2026, came out perfectly this way.)
 // part = "assembly" shows the two together at the reading set by "show_at".
 
 part = "assembly"; // [assembly, base, slider]
@@ -119,5 +123,5 @@ if (part == "assembly") {
     // the shaft (11 mm) resting on the arm, for scale
     color("lightsteelblue", 0.6) translate([sx1 + arm_len / 2 + 1, -15, show_at + 5.5]) rotate([-90, 0, 0]) cylinder(d = 11, h = 35);
 } else if (part == "base") base();
-else if (part == "slider") mirror([0, 0, 1]) slider();   // arm face down
+else if (part == "slider") translate([0, 0, slider_len]) slider();   // upright: support the arm
 echo(str("Reads ", foot[2] + slider_len, " to ", rail_h - 6 + slider_len, " mm (slider kept 6 mm on the rail)"));

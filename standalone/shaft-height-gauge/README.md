@@ -34,9 +34,15 @@ no libraries needed. Its `part` setting gives `base`, `slider`, or
 
 ## Printing
 
-Print the base standing up, on its foot. Print the slider upside down, with
-the arm's measuring face on the bed, which keeps that face flat. Neither
-needs supports.
+Print the base standing up, on its foot; it needs no supports.
+
+Print the slider upright, sleeve on the bed, as the model's `slider` part
+gives it, with tree supports under the arm, using support interface
+material if your printer has it. Upside down, which the first version of
+these notes suggested, doesn't work: the friction tongue is cut free of
+the sleeve's wall on three sides, so it would be an island in mid-air for
+most of its height. No orientation avoids every unsupported cantilever,
+and with tree supports the slider prints cleanly.
 
 ## Settings
 
