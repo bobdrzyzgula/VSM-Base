@@ -118,8 +118,8 @@ and Hall switch, above the floor](enc_exploded.png)
 
 ## Measuring tools
 
-Two printed tools made for fitting this encoder are useful well beyond it,
-so they live with the other standalone projects:
+Three printed tools made for fitting this encoder are useful well beyond
+it, so they live with the other standalone projects:
 
 - [`standalone/shaft-height-gauge/`](../../standalone/shaft-height-gauge/):
   a slide gauge for the height from the casting floor to the underside of
@@ -128,6 +128,9 @@ so they live with the other standalone projects:
   snap-on test collars for finding the bore. On the 158, 12.25 mm stayed
   put but turned under a couple of ounces, 12.5 mm spun freely, and
   12.0 mm went on only with force, so the ring's `ring_bore` is 12.25 mm.
+- [`standalone/floor-span-gauge/`](../../standalone/floor-span-gauge/): a
+  sliding gauge for the clear floor between two ribs, 28–46 mm, for
+  measuring the bay under the shaft and the saddle's `keepouts`.
 
 ## Assembling the ring
 

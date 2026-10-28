@@ -9,8 +9,11 @@ aren't forgotten.* Last gathered October 25, 2026.
 - [ ] **Kenmore 158, for the encoder** (`hardware/encoder/`):
   - [x] the shaft's underside above the casting floor: 20 mm (gauge and
         calipers); shaft about 12.25 mm, so the axis is about 26.1 mm up;
-  - [ ] the floor's ribs: pitch, height and thickness, and where the
-        nearest ones are relative to the shaft, along it and across it;
+  - [ ] the floor's ribs: pitch, height (about 4 mm) and thickness, and
+        where the nearest ones are relative to the shaft, along it and
+        across it. The bay under the target stretch is roughly 1.5" × 1.25";
+        measure it with `standalone/floor-span-gauge/`, photographed from a
+        level camera, with the spring out for some shots;
   - [ ] the clear length of shaft at the chosen spot;
   - [ ] the spring's position next to the shaft;
   - [ ] the room along the shaft at the ring's outer radius, not only at
