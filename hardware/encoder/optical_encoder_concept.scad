@@ -64,10 +64,14 @@ magnet_r = 12;        // radius of the magnet's centre (inside the forks' arms)
 cradle_clear = 0.3;
 // Under the hub: the half sinks this far, and the top is set down to match (raise it if the half sits low)
 cradle_seat = 0.1;
-// Anti-roll ribs, width (the slots are about 1.4 mm wide at the tooth roots)
-key_w = 0.8;
-// Which slots get a rib, in pitches from straight down
-key_slots = [-2, 0, 2];
+// Anti-roll rib, width (the slots are about 1.4 mm wide at the tooth roots)
+key_w = 0.6;
+// Lead-in: the rib narrows to a point over this length at its inner end
+key_lead = 1.5;
+// Which slots get a rib, in pitches from straight down. Keep to [0]: a rib
+// off the vertical meets its slot at an angle as the half drops in, and
+// bends the teeth (the first print broke them with ribs at -2, 0 and 2)
+key_slots = [0];
 
 /* [Forks (generic slotted photo-IC interrupter)] */
 fork_len = 10;        // along the shaft
@@ -172,8 +176,8 @@ module ring_half(top = true) {
 // cradle's top, supported under the hub where the iron presses; built in the
 // ring's frame, then turned to print pocket up.
 // The half rests on the hub (its pocket is set up so it bottoms first, with
-// cradle_seat under it); the teeth hang clear. Ribs in three of the slots stop
-// the half rolling in its round pocket when one insert is pressed.
+// cradle_seat under it); the teeth hang clear. A rib in the slot straight
+// below stops the half rolling in its round pocket when one insert is pressed.
 module insert_cradle() {
     top = -split_gap / 2 - cradle_seat;
     hub_lift = cradle_clear - cradle_seat;   // raise the hub pocket so the hub bottoms before the teeth
@@ -182,8 +186,14 @@ module insert_cradle() {
         // disc and teeth: a round pocket, with ribs left standing in a few slots
         difference() {
             translate([-web_t / 2 - 0.3, 0, 0]) rotate([0, 90, 0]) cylinder(r = R + 0.4, h = web_t + 0.6);
-            for (k = key_slots) rotate([k * pitch, 0, 0])
-                translate([-web_t / 2 - 0.4, -key_w / 2, -R - 1]) cube([web_t + 0.8, key_w, R + 1 - (root_r + 0.5)]);
+            for (k = key_slots) rotate([k * pitch, 0, 0]) {
+                r_in = root_r + 0.5;
+                translate([-web_t / 2 - 0.4, -key_w / 2, -R - 1]) cube([web_t + 0.8, key_w, R + 1 - r_in - key_lead]);
+                hull() {     // the lead-in, pointed toward the axis
+                    translate([-web_t / 2 - 0.4, -key_w / 2, -r_in - key_lead - eps]) cube([web_t + 0.8, key_w, eps]);
+                    translate([-web_t / 2 - 0.4, -0.1, -r_in - eps]) cube([web_t + 0.8, 0.2, eps]);
+                }
+            }
         }
         // magnet boss
         translate([-web_t / 2 - 1.6, 0, 0]) rotate([0, 90, 0]) cylinder(r = magnet_r + magnet[0] / 2 + 0.8 + 0.4, h = 1.6 + eps);

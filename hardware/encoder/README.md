@@ -120,9 +120,13 @@ in on the bench, so nothing small has to be handled inside the machine.
 1. Print `insert_cradle`. Set the bottom half in it, split face up; the
    face sits level with the cradle's top, and the cradle supports the hub
    right under the insert holes. The half rests on its hub, with the teeth
-   hanging clear, and three ribs in the disc's pocket sit in three of its
-   slots, so it can't roll while one insert is pressed. (The first cradle
-   let the half bottom on its teeth, 0.4 mm low, and roll under the iron.)
+   hanging clear, and one thin rib in the disc's pocket, with a pointed
+   lead-in, sits in the slot straight below the bore, so the half can't roll
+   while one insert is pressed. Lower the half straight down onto the rib.
+   (The first cradle let the half bottom on its teeth, 0.4 mm low, and roll
+   under the iron. The second had ribs in three slots; the two off the
+   vertical met their slots at an angle as the half dropped in, and broke
+   teeth.)
 2. Press the two inserts in from the split face with the iron, square to
    the face, and let them cool before lifting the half out.
 3. In the machine, swivel the bottom half around the shaft through the
