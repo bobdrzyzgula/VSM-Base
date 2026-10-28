@@ -60,8 +60,10 @@ aren't forgotten.* Last gathered October 25, 2026.
 
 ## Design (with Claude)
 
-- [ ] A 158 version of the optical encoder, once measured: a low saddle on
-  the floor ribs, notched for the spring, with the forks in pockets.
+- [ ] A 158 version of the optical encoder: a low saddle on the floor,
+  notched for the ribs and the spring, with the forks in pockets. Drafted
+  as the `saddle` part (October 27); its `keepouts` await the rib and
+  spring measurements.
   - [ ] Assembly order: swivel the first ring half through the forks, then
         add the second and clamp.
   - [ ] Removable adhesive, on a degreased floor.

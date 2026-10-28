@@ -6,9 +6,9 @@
 // the casting floor, so the axis is about 26.1 mm up), read by two slotted photo-IC
 // interrupters ("forks") a quarter-slot apart, which gives quadrature: the
 // count and the direction. One magnet in the ring and a Hall switch on the
-// bracket give the index, once a turn. The bracket holds the forks and the
-// Hall switch and is fixed to some anchor on the casting by one screw in a
-// slotted hole, for adjustment.
+// saddle give the index, once a turn. The saddle sits on the casting floor
+// under the ring, holds the forks and the Hall switch, and is set by eye
+// with the ring turning, then glued or taped down.
 //
 // Frame: the shaft runs along X; Z is up; the forks sit below the shaft.
 // part = "assembly" shows it in place; "exploded" pulls it apart;
@@ -16,15 +16,16 @@
 // and insert holes run across the layers, and come out round only when thin.
 // "ring_half" (the top half: screw heads), "ring_half_bottom" (inserts or nut
 // traps, and the magnet), "insert_cradle" (holds the bottom half split face up,
-// level, for pressing in the heat-set inserts) and "bracket" are the printed
+// level, for pressing in the heat-set inserts) and "saddle" are the printed
 // parts, in print orientation.
 //
 // Things this concept does not settle: the fork part (sizes here are
-// generic: check yours), the anchor on the casting, the lead path, and
-// the axial room at the rim (the forks are longer along the shaft than
-// the ring is thick).
+// generic: check yours), the floor's ribs and the spring (cut them out with
+// "keepouts" once measured), the lead path beyond the saddle, and the axial
+// room at the rim (the forks are longer along the shaft than the ring is
+// thick).
 
-part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, insert_cradle, bracket]
+part = "assembly"; // [assembly, exploded, ring_half, ring_half_bottom, insert_cradle, saddle]
 
 /* [Shaft and ring] */
 shaft_d = 12.25;      // Kenmore 158, as measured by calipers (Oct 2026); for the views
@@ -81,9 +82,19 @@ fork_depth = 6;       // slot depth
 fork_base = 3;        // body behind the slot
 aperture_from_tip = 2;// aperture centre, from the tooth tips inward
 
-/* [Bracket] */
-plate_t = 3;
-anchor_drop = 14;     // from the plate down to the anchor tab
+/* [Saddle (Kenmore 158: it sits on the casting floor under the ring)] */
+// Height of the shaft's axis above the casting floor (20 mm to the shaft's underside, plus half the shaft)
+axis_h = 26.1;
+// The saddle's underside above the floor: foam tape's thickness if it's taped down; 0 if it sits on the floor and is glued at its edges
+mount_gap = 0;
+// Saddle width, across the shaft, and the most it rises above the floor at its sides
+saddle_w = 30;
+saddle_h = 10;
+// Keep-outs cut from the saddle (floor ribs, the spring, anything in the way): [x, y, z, dx, dy, dz] each, a box's lower corner and size, x along the shaft from the disc's centre, y across it, z up from the floor
+keepouts = [];
+// Underside channels for the leads: width, and floor left under the fork bodies
+lead_ch_w = 4.4;
+lead_ch_skin = 0.6;
 
 $fn = 96;
 eps = 0.01;
@@ -231,49 +242,58 @@ module hall_at() translate([hall_x, 0, -magnet_r]) hall_model();
 
 module magnet_model() color("orange") translate([web_t / 2 - magnet[1], 0, 0]) yz_at(magnet_r, 0) rotate([0, 90, 0]) cylinder(d = magnet[0], h = magnet[1]);
 
-// ---------------------------------------------------------------- bracket
-// an arc plate under the forks (they sit in pockets on its inner face, leads
-// through), a finger beside the ring carrying the Hall switch, and an arm
-// down to a tab with a slotted hole for the anchor screw
-pl_r0 = fork_out;               // plate's inner face
-pl_r1 = fork_out + plate_t;
-span = fork_sep / 2 + 14;       // plate's half-angle
-fx0 = -fork_len / 2 - 1; fx1 = hall_x + 1.5 + 2.5;   // plate's X extent
-module bracket() {
+// ---------------------------------------------------------------- saddle
+// A low block on the casting floor under the ring. Its top is an arc
+// tip_gap (1 mm) outside the tooth tips; the forks sit in pockets in it,
+// their bodies sunk in and their arms standing up round the rim. A finger
+// rises beside the disc to carry the Hall switch. The leads leave through
+// channels in the underside, toward +X. There is no screw and no slot: the
+// saddle is set by eye with the ring fitted and turning (the disc centred
+// in both forks' slots), then fixed with beads of hot glue or RTV along its
+// edges, or with foam tape (set mount_gap to the tape's thickness).
+zf = -axis_h;                              // the floor
+zb = zf + mount_gap;                       // the saddle's underside
+s_r = fork_out - fork_base;                // its top surface (R + 1)
+fx0 = -fork_len / 2 - 1.2; fx1 = max(hall_x + 1.5 + 2.5, fork_len / 2 + 1.2);   // its extent along X
+// room under each fork body for the leads to bend, at its lowest corner
+lead_room = axis_h - mount_gap - (fork_out * cos(fork_sep / 2) + (fork_w / 2 + 0.15) * sin(fork_sep / 2));
+echo(str("Saddle: ", fx1 - fx0, " x ", saddle_w, " mm, ", -s_r - zb, " mm thick under the disc; ",
+         lead_room, " mm under the fork bodies for their leads", lead_room < 2.0 ? " (TIGHT: check the fork's lead bend)" : ""));
+module saddle() {
     difference() {
         union() {
-            // arc plate
-            translate([fx0, 0, 0]) rotate([0, 90, 0]) rotate([0, 0, 0]) linear_extrude(fx1 - fx0)
-                wedge(pl_r0, pl_r1, -span, span, 24);
-            // pocket walls round each fork
-            for (a = fork_angles) rotate([a, 0, 0]) translate([-fork_len / 2 - 1, -fork_w / 2 - 1, -pl_r0 - eps])
-                difference() { cube([fork_len + 2, fork_w + 2, fork_base + 0.5]); }
+            intersection() {
+                translate([fx0, -saddle_w / 2, zb]) cube([fx1 - fx0, saddle_w, zf + saddle_h - zb]);
+                difference() {
+                    translate([fx0 - 1, -saddle_w, zb - 1]) cube([fx1 - fx0 + 2, 2 * saddle_w, axis_h + 2]);
+                    translate([fx0 - 2, 0, 0]) rotate([0, 90, 0]) cylinder(r = s_r, h = fx1 - fx0 + 4, $fn = 192);
+                }
+            }
             // finger for the Hall switch
-            translate([hall_x + 1.5, -3, -pl_r1]) cube([2.5, 6, pl_r1 - magnet_r + 3]);
-            // arm down, and a tab facing -X for the anchor screw
-            translate([fx0, -5, -pl_r1 - anchor_drop]) cube([fx1 - fx0, 10, anchor_drop + 1]);
-            translate([fx0 - 3, -8, -pl_r1 - anchor_drop]) cube([3 + eps, 16, 18]);
+            translate([hall_x + 1.5, -3, zb]) cube([2.5, 6, -magnet_r + 3 - zb]);
         }
-        // fork pockets and lead holes
+        // fork pockets (open to the top), and their lead holes out through the underside
         for (a = fork_angles) rotate([a, 0, 0]) {
-            translate([-fork_len / 2 - 0.15, -fork_w / 2 - 0.15, -pl_r0 - 1]) cube([fork_len + 0.3, fork_w + 0.3, fork_base + 2]);
-            translate([-2, -2.2, -pl_r1 - 1]) cube([4, 4.4, plate_t + 2]);
+            translate([-fork_len / 2 - 0.15, -fork_w / 2 - 0.15, -fork_out - 0.15]) cube([fork_len + 0.3, fork_w + 0.3, fork_base + 3]);
+            translate([-2, -2.2, -axis_h / cos(a) - 6]) cube([4, 4.4, axis_h / cos(a) + 6 - fork_out]);
         }
-        // Hall leads along the finger
-        translate([hall_x + 1.5 - eps, -2.2, -pl_r1 - 1]) cube([1.2, 4.4, pl_r1 - magnet_r + 2]);
-        // the ring must turn freely: clear its whole envelope, plus a margin
-        translate([-web_t / 2 - hub_len - 1, 0, 0]) rotate([0, 90, 0]) cylinder(r = R + 0.8, h = hub_len + web_t + 1.6);   // to 0.6 mm past the +X face
-        // slotted hole for the anchor screw (along X): sliding it sets the
-        // forks' depth over the teeth; turning it about the screw trims the angle
-        hull() for (dz = [-3, 3]) translate([fx0 - 5, 0, -pl_r1 - anchor_drop + 9 + dz]) rotate([0, 90, 0]) cylinder(d = 3.4, h = 6 + fx1 - fx0);
+        // lead channels in the underside, from under each fork to the +X end
+        for (a = fork_angles) {
+            yc = (fork_out + 1) * sin(a);
+            translate([-2, yc - lead_ch_w / 2, zb - 1]) cube([fx1 - fx0 + 8, lead_ch_w, 1 + max(lead_room - lead_ch_skin, 1)]);
+        }
+        // Hall leads: a groove up the finger's inner face, and a channel out
+        translate([hall_x + 1.5 - eps, -2.2, zb - 1]) cube([1.2, 4.4, -magnet_r + 2 - zb + 1]);
+        translate([hall_x + 1.5 - eps, -2.2, zb - 1]) cube([fx1 - hall_x + 8, 4.4, 2.5]);
+        // keep-outs (ribs, the spring...), measured from the floor
+        for (k = keepouts) translate([k[0], k[1], zf + k[2]]) cube([k[3], k[4], k[5]]);
     }
 }
 
-// a stand-in for whatever on the casting the bracket screws to
-module anchor_model() {
-    // e.g. a face of a web in the casting, square to the shaft, with a tapped hole
-    color("gainsboro", 0.6) translate([fx0 - 3 - 8, -14, -pl_r1 - anchor_drop - 6]) cube([8, 28, 30]);
-    color("silver") translate([fx0 - 3 - eps, 0, -pl_r1 - anchor_drop + 9]) rotate([0, 90, 0]) { cylinder(d = 3, h = 3.2); translate([0, 0, 3.2]) cylinder(d = 5.5, h = 2); }
+// the casting floor, and the keep-outs, for the views
+module floor_model() {
+    color("gainsboro", 0.6) translate([-30, -30, zf - 3]) cube([60, 60, 3]);
+    for (k = keepouts) color("red", 0.4) translate([k[0], k[1], zf + k[2]]) cube([k[3], k[4], k[5]]);
 }
 
 module shaft_model() color("lightsteelblue") translate([-30, 0, 0]) rotate([0, 90, 0]) cylinder(d = shaft_d, h = 60);
@@ -287,9 +307,9 @@ module assembly(ex = 0) {
     translate([0, 0, -2.5 * ex]) {
         for (a = fork_angles) fork_at(a);
         hall_at();
-        color("teal") bracket();
+        color("teal") saddle();
     }
-    translate([0, 0, -3 * ex]) anchor_model();
+    translate([0, 0, -3 * ex]) floor_model();
 }
 
 if (part == "assembly") assembly(0);
@@ -297,4 +317,4 @@ else if (part == "exploded") assembly(12);
 else if (part == "ring_half") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(true);   // prints flat, +X face on the bed, bore vertical
 else if (part == "ring_half_bottom") translate([0, 0, web_t / 2]) rotate([0, 90, 0]) ring_half(false);
 else if (part == "insert_cradle") translate([0, 0, R + 4]) insert_cradle();   // pocket up
-else if (part == "bracket") bracket();
+else if (part == "saddle") translate([0, 0, -zb]) saddle();   // underside on the bed

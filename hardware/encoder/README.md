@@ -11,11 +11,13 @@ the casting floor, measured with the gauge below and confirmed with
 calipers, which puts the axis about 26.1 mm up. The
 measurements behind it are about 5–10 mm of clear shaft at the candidate
 spots, with room for a ring of up to about 40 mm diameter (50 mm in places).
-`optical_encoder_concept.scad` models it. Its parts are `assembly`,
-`exploded`, and the two printed parts, `ring_half` and `bracket`.
+`optical_encoder_concept.scad` models it. Its parts are `assembly` and
+`exploded`, and the printed parts: `ring_half` and `ring_half_bottom`, the
+`insert_cradle` for pressing in the inserts, and the `saddle` that carries
+the forks.
 
-![In place: the slotted ring on the shaft, the two forks below it, the
-bracket and its anchor](enc_iso.png)
+![In place: the slotted ring on the shaft, and the two forks and the Hall
+switch in the saddle on the casting floor below it](enc_iso.png)
 
 ## How it works
 
@@ -38,26 +40,48 @@ both gives four counts per slot, **144 counts a turn, 2.5° each**. A
 
 **The index** comes from a Hall switch working alongside the optics, as Bob suggested, and it works well. One magnet
 sits in a small boss on the disc's face, inside the radius the forks reach,
-and a Hall switch on the bracket reads it once a turn from about a
+and a Hall switch on the saddle reads it once a turn from about a
 millimeter away. Mixing the two technologies has two advantages. The index
 doesn't depend on the optics staying clean. And because the index comes
 round once a turn, the firmware can check that the count is still 144
 since the last index. If it isn't, a fork is fouling or missing edges, and
 the controller can say so instead of stopping in the wrong place.
 
-**The bracket** is a printed arc that sits under the ring. Each fork drops
-into a pocket on the arc's inner face, with its leads passing out through
-the arc. A finger rises beside the disc to carry the Hall switch. An arm
-runs down to a tab with one screw and a vertical slot:
-- sliding the slot sets how deep the forks sit over the teeth;
-- turning the bracket about the screw trims its angle.
+**The saddle** is a low printed block that sits on the casting floor
+under the ring. Under the shaft of a Kenmore 158 there is only about 20 mm,
+and the ring's teeth come within about 6 mm of the floor, so there is no
+room for a bracket hanging from anything. The floor itself is the mount.
 
-The anchor in the model is a stand-in, a face of the casting square to the
-shaft with a tapped hole. On a real machine it would be whatever the casting
-offers.
+- **Its top is an arc** 1 mm outside the tooth tips. At the bottom it is
+  about 5 mm above the floor, and it rises to at most 10 mm at the sides.
+- **The forks sit in pockets** in that arc, at ±21.25° from straight down.
+  Their bodies are sunk in, and their arms stand up round the rim. Each
+  fork's leads go out through a hole under its body, bend toward one end,
+  and leave along a channel in the underside. The model reports the room
+  under the bodies for that bend, about 2.9 mm with the generic fork; it
+  calls it tight below 2 mm.
+- **A finger rises beside the disc** to carry the Hall switch about 1 mm
+  from the magnet, with its own lead groove and channel.
+- **Nothing is screwed.** The ring's position is set by the shaft, so only
+  the saddle's place on the floor needs setting, and that is done by eye.
+  Fit the ring through the forks, and turn it by hand. Slide the saddle
+  until the disc runs centred in both forks' slots all the way round. Then
+  fix the saddle with beads of hot glue or RTV along its edges, which peel
+  off later. Foam tape also works: set `mount_gap` to its thickness.
+- **Its height comes from the measurement.** `axis_h`, 26.1 mm, is the
+  shaft's axis above the floor (20 mm to the underside plus half the
+  shaft). If the forks sit too deep or too shallow over the teeth, change
+  it and reprint.
+- **Ribs and the spring are cut away** with `keepouts`, a list of boxes
+  measured from the floor. It is empty until the ribs and the spring are
+  measured.
+
+![The saddle in print orientation: underside on the bed, the fork pockets
+open upward, the Hall finger standing beside where the disc runs. The lead
+channels are in the underside.](enc_saddle.png)
 
 ![Looking along the shaft: the forks at ±21.25° below it, the Hall finger
-between them](enc_end.png)
+between them, the saddle on the floor](enc_end.png)
 
 ## Cleaning
 
@@ -67,8 +91,8 @@ reached. The ring comes off with two screws, and the forks lift out of
 their pockets. Nothing here holds oil. A wipe of the forks and ring can
 then join the regular oiling and cleaning.
 
-![Exploded: the two ring halves, the shaft, and the bracket with the forks
-and Hall switch](enc_exploded.png)
+![Exploded: the two ring halves, the shaft, and the saddle with the forks
+and Hall switch, above the floor](enc_exploded.png)
 
 ## What the concept does not settle
 
@@ -86,7 +110,7 @@ and Hall switch](enc_exploded.png)
   parts, is per machine.
 - **Runout and end play.** The disc must stay centered in a 3 mm slot
   through a full turn, and its teeth must stay over the apertures. Checking
-  the bracket's adjustment against the shaft's actual play is a job for the
+  the saddle's placement against the shaft's actual play is a job for the
   bench.
 - **Slot count.** 36 slots at 40 mm leaves teeth and slots about 1.6 mm
   wide at the apertures. More slots need a finer aperture, a larger ring,
