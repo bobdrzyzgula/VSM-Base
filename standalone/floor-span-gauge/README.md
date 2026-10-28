@@ -79,5 +79,6 @@ All in one self-contained OpenSCAD file, `floor_span_gauge.scad`, with no
 libraries needed. Its `part` setting gives `body`, `slider`,
 `slider_marks`, or `assembly` to see them together at `show_at`.
 
-*Designed by Claude at Bob Drzyzgula's direction, October 2026. Not yet
-printed.*
+*Designed by Claude at Bob Drzyzgula's direction, October 2026. Printed
+by Bob in PLA (orange body, black slider with a white scale, as a
+two-colour 3MF), October 2026; not yet used in a machine.*
