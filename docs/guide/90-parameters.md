@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 521 parameters; 519 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 545 parameters; 543 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -719,3 +719,32 @@ There are 521 parameters; 519 of them appear in the Customizer. The rest are lis
 | `ot_gusset_d` | `5` | Gusset reach along the floor, from the wall *Range 1 to 15, step 0.5.* |
 | `ot_gusset_h` | `8` | Gusset height up the wall (less on low trays) *Range 1 to 20, step 0.5.* |
 | `ot_gusset_pitch` | `40` | Spacing to aim for between gussets on plain trays *Range 15 to 120, step 1.* |
+
+## Ruler and logos (front face)
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ruler` | `false` | A ruler across the base's front face, from where the left corner's round-over ends to where the right one's begins (on the base and a built-in compartment; not on an attached bay or the extensions) |
+| `ruler_scale_1` | `"inch"` | Scales, from the bottom up: inch, centimeter, custom, or none *Choices: inch, cm, custom, none.* |
+| `ruler_scale_2` | `"cm"` |  *Choices: inch, cm, custom, none.* |
+| `ruler_scale_3` | `"none"` |  *Choices: inch, cm, custom, none.* |
+| `ruler_bottom` | `5` | The ruler's bottom edge above the bottom of the base *Range 0 to 40, step 0.5.* |
+| `ruler_scale_h` | `8` | Height of each scale *Range 5 to 15, step 0.5.* |
+| `ruler_inch_div` | `8` | Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half) *Range 1 to 32, step 1.* |
+| `ruler_inch_mid` | `2` |  *Range 1 to 16, step 1.* |
+| `ruler_cm_div` | `10` | Centimeter scale: divisions per cm, and a longer tick every so many *Range 1 to 20, step 1.* |
+| `ruler_cm_mid` | `5` |  *Range 1 to 10, step 1.* |
+| `ruler_custom_unit` | `10` | Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none) *Range 1 to 100, step 0.01.* |
+| `ruler_custom_div` | `10` |  *Range 1 to 32, step 1.* |
+| `ruler_custom_mid` | `5` |  *Range 1 to 16, step 1.* |
+| `ruler_custom_name` | `""` |  |
+| `ruler_number_every` | `1` | Number every this many units (1 = every inch, every cm) *Range 1 to 10, step 1.* |
+| `ruler_text_size` | `3.5` | Lettering size *Range 2 to 6, step 0.1.* |
+| `ruler_line_w` | `0.6` | Narrowest line in the ruler, ticks and lettering alike (keep it at or over your nozzle's width) *Range 0.3 to 1.2, step 0.05.* |
+| `logo_left` | `""` | Logo files (SVG: clean outlines, no self-crossing paths) for the face's upper left and upper right corners, relative to this file's folder or a full path; blank for none |
+| `logo_right` | `""` |  |
+| `logo_size` | `[25, 15]` | Each logo is stretched to this box, width and height (set it to the logo's own proportions) |
+| `logo_inset` | `6` | Logos' distance in from the face's flat ends and down from where the top's round-over ends *Range 0 to 40, step 0.5.* |
+| `face_relief` | `"raised"` | Ruler and logos: raised from the face, or engraved into it *Choices: raised, engraved.* |
+| `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
+| `face_relief_color` | `"white"` | Color tag for raised marks (a 3MF export keeps it, so a slicer can give them their own filament; needs an OpenSCAD with the Manifold backend) |

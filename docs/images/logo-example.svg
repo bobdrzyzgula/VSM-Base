@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="30" viewBox="0 0 50 30">
+  <!-- An example logo for the front face: plain closed outlines, no crossings -->
+  <path d="M3 27 C3 12 12 3 25 3 C38 3 47 12 47 27 L41 27 C41 15 34 9 25 9 C16 9 9 15 9 27 Z" fill="black"/>
+  <path d="M21 27 L25 14 L29 27 Z" fill="black"/>
+</svg>

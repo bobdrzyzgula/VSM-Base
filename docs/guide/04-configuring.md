@@ -283,6 +283,56 @@
 > ![The same sizes with a lid per bay, lids lifted: each bay in its own
 > rabbet, the bin lids lift-out with finger holes, the inner bays' lids
 > hinged as before.](../images/renders/ext-per-bay.png){width=80%}
+>
+> **Note: a ruler and logos on the front face.** Many machines have a
+> ruler on the front of the bed, handy for a quick length check; the idea
+> of putting one on the base is Danielle's. `ruler = true` puts one across
+> the base's front face, and across a built-in compartment's, but not on
+> an attached bay or the extensions.
+>
+> - **Its extent.** It runs the whole flat face, from where one corner's
+>   round-over ends to where the other's begins. The harness rods enter
+>   the front face near each end, so a ruler low enough to meet their
+>   holes stops just clear of them instead, about 10 mm in from each end.
+>   The console says so, and gives the `ruler_bottom` (12 mm) that runs it
+>   out to the round-overs.
+> - **Its scales.** One to three, stacked from the bottom up
+>   (`ruler_scale_1` to `_3`): `inch`, `cm`, `custom` or `none`. The
+>   default is inches below centimeters, starting 5 mm up (`ruler_bottom`),
+>   8 mm per scale (`ruler_scale_h`).
+> - **Its ticks.** Each scale has its own divisions per unit and a longer
+>   tick every so many: `ruler_inch_div` and `ruler_inch_mid` (8 and 2,
+>   eighths with the quarters longer; 10 and 5 gives tenths with the half
+>   longer), `ruler_cm_div` and `ruler_cm_mid` (10 and 5). A `custom`
+>   scale takes its unit in millimeters, its divisions, its longer tick and
+>   a name (`ruler_custom_*`).
+> - **Its numbers.** Each unit is numbered over its long tick
+>   (`ruler_number_every` thins them), and the scale's name stands over its
+>   first half unit.
+> - **Line widths.** Every line is at least `ruler_line_w` (0.6 mm) wide,
+>   and the lettering is thickened to match, since a slicer drops lines
+>   much finer than its nozzle.
+>
+> `logo_left` and `logo_right` take an SVG file each (a path relative to
+> the model's folder, `scad/`, or a full path), placed in the face's
+> upper corners, `logo_inset` (6 mm) in from the flat's ends and down from
+> the top's round-over. Each is stretched to `logo_size` (25 × 15 mm), so
+> set that to the logo's own proportions. An SVG must be clean outlines:
+> text converted to paths, and overlapping shapes merged. A path that
+> crosses itself makes OpenSCAD 2021.01 drop the whole relief, ruler and
+> all, with "The given mesh is not closed".
+>
+> `face_relief` makes all of them `raised` (the default) or `engraved`, by
+> `face_relief_depth` (0.6 mm). Raised marks are color-tagged
+> (`face_relief_color`, white): exported as 3MF from an OpenSCAD with the
+> Manifold backend, they open in Bambu Studio or Orca as a second color.
+> The base prints standing on its bottom, so the marks are on a vertical
+> face and need no support.
+>
+> ![A ruler on the front face, inches below centimeters, raised, with a
+> logo in each upper corner. The harness rods' holes, near each end, are
+> the reason it stops short of the round-overs
+> there.](../images/renders/ruler.png){width=100%}
 
 ![The five bobbin trays stacked on their center post, lifted out of the
 corner bay (part `bobbin_trays`, printed in PETG), with metal and plastic

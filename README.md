@@ -95,6 +95,9 @@ fit on your printer, and then print a base that fits.
   piece, each with a hinged or lift-out lid (solid or perforated, finger
   hole or thumb tab), and trenches so the bobbin cover can still slide open.
   Each also comes as a freestanding box with the same bay and lid.
+- **A ruler on the front face** (optional): inch, centimeter or custom
+  scales, one to three stacked, raised or engraved, with room for a logo in
+  each upper corner.
 - **Organizer inserts** for the bays: stacking bobbin trays for the corner
   bay (40 class 15/66 bobbins at the defaults), lifted out together by a
   center knob; stacking notion trays for the back or left bay in 10–30 mm

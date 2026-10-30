@@ -45,3 +45,5 @@ preview printed-hinge-exploded "290,195,110,55,0,335,400" -D 'part="exploded"' -
 preview ext-bins        "20,215,30,50,0,20,1250"  -D 'part="extensions_view"' -D explode=400 -D left_ext_double=true -D back_ext_double=true -D 'left_ext_layout="1+2"'
 # Larger extensions, a lid per bay, lids lifted
 preview ext-per-bay     "20,215,60,50,0,20,1400"  -D 'part="extensions_view"' -D explode=60 -D left_ext_double=true -D back_ext_double=true -D 'back_lids="per bay"' -D 'left_lids="per bay"' -D 'corner_lids="per bay"'
+# The front face with a ruler (inch below cm) and a logo in each upper corner
+preview ruler           "216,0,41,90,0,0,760"      -D 'part="base"' -D split=false -D ruler=true -D 'logo_left="../docs/images/logo-example.svg"' -D 'logo_right="../docs/images/logo-example.svg"' --projection=o

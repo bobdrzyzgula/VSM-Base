@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 70
+// VSM Base, version 71
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -342,6 +342,14 @@
 // under the base into the barrel's tapped bottom.
 //
 // v70: barrel hinge: tapped depth 6 mm and washer 13.7 mm, measured.
+//
+// v71: a ruler on the front face (Danielle's idea, after the rulers on many
+// machines' beds): one to three scales stacked from near the bottom (inch,
+// centimeter or custom; inch below cm by default), each with its own
+// divisions and a longer tick every so many, across the whole flat face
+// between the corner round-overs, on the base and a built-in compartment
+// only. Two SVG logos can go in the face's upper corners. Raised (and
+// color-tagged, for a two-color 3MF) or engraved.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1446,6 +1454,48 @@ ot_gusset_d = 5; // [1 : 0.5 : 15]
 ot_gusset_h = 8; // [1 : 0.5 : 20]
 // Spacing to aim for between gussets on plain trays
 ot_gusset_pitch = 40; // [15 : 1 : 120]
+
+/* [Ruler and logos (front face)] */
+// A ruler across the base's front face, from where the left corner's round-over ends to where the right one's begins (on the base and a built-in compartment; not on an attached bay or the extensions)
+ruler = false;
+// Scales, from the bottom up: inch, centimeter, custom, or none
+ruler_scale_1 = "inch"; // [inch, cm, custom, none]
+ruler_scale_2 = "cm"; // [inch, cm, custom, none]
+ruler_scale_3 = "none"; // [inch, cm, custom, none]
+// The ruler's bottom edge above the bottom of the base
+ruler_bottom = 5; // [0 : 0.5 : 40]
+// Height of each scale
+ruler_scale_h = 8; // [5 : 0.5 : 15]
+// Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half)
+ruler_inch_div = 8; // [1 : 1 : 32]
+ruler_inch_mid = 2; // [1 : 1 : 16]
+// Centimeter scale: divisions per cm, and a longer tick every so many
+ruler_cm_div = 10; // [1 : 1 : 20]
+ruler_cm_mid = 5; // [1 : 1 : 10]
+// Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none)
+ruler_custom_unit = 10; // [1 : 0.01 : 100]
+ruler_custom_div = 10; // [1 : 1 : 32]
+ruler_custom_mid = 5; // [1 : 1 : 16]
+ruler_custom_name = "";
+// Number every this many units (1 = every inch, every cm)
+ruler_number_every = 1; // [1 : 1 : 10]
+// Lettering size
+ruler_text_size = 3.5; // [2 : 0.1 : 6]
+// Narrowest line in the ruler, ticks and lettering alike (keep it at or over your nozzle's width)
+ruler_line_w = 0.6; // [0.3 : 0.05 : 1.2]
+// Logo files (SVG: clean outlines, no self-crossing paths) for the face's upper left and upper right corners, relative to this file's folder or a full path; blank for none
+logo_left = "";
+logo_right = "";
+// Each logo is stretched to this box, width and height (set it to the logo's own proportions)
+logo_size = [25, 15];
+// Logos' distance in from the face's flat ends and down from where the top's round-over ends
+logo_inset = 6; // [0 : 0.5 : 40]
+// Ruler and logos: raised from the face, or engraved into it
+face_relief = "raised"; // [raised, engraved]
+// How far they stand out or cut in
+face_relief_depth = 0.6; // [0.3 : 0.1 : 2]
+// Color tag for raised marks (a 3MF export keeps it, so a slicer can give them their own filament; needs an OpenSCAD with the Manifold backend)
+face_relief_color = "white";
 
 /* [Hidden] */
 // Overlap so cutters break cleanly through faces
@@ -3498,6 +3548,89 @@ if (part == "assembly") {
 }
 
 // The base, split into halves if `split` is set.
+// ---------------------------------------------------------------- ruler and logos
+// On the front face (y = 0), drawn in its plane as 2D (x along the base, y
+// up the face) and turned into place: raised out of the face or engraved
+// into it. The flat face runs from x = outer_rounding to the right
+// round-over (or, with an attached bay, to just short of the joint), and
+// from the bottom to where the top edge's round-over begins. The harness
+// rods enter the front face near each end (rod_x in, rod_z up); a ruler low
+// enough to meet their holes starts and ends just clear of them instead.
+rl_scales = [for (s = [ruler_scale_1, ruler_scale_2, ruler_scale_3]) if (s != "none") s];
+face_marks = ruler && len(rl_scales) > 0 || logo_left != "" || logo_right != "";
+rl_top = ruler ? ruler_bottom + len(rl_scales) * ruler_scale_h : ruler_bottom;
+rl_rod = harness_rods && ruler_bottom < rod_z + 0.8 * rod_hole_d + 0.5 && rl_top > rod_z - rod_hole_d / 2 - 0.5;
+rl_end = max(outer_rounding, rl_rod ? rod_x + rod_hole_d / 2 + 1 : 0);   // flat end, or clear of a rod hole
+rl_x0 = rl_end;
+rl_x1 = attached ? base_x1 - (rl_rod ? rl_end : 2) : outer_length - rl_end;
+rl_ztop = outer_depth - outer_rounding;                 // top of the flat face
+// A scale: [unit in mm, divisions, longer tick every, name]
+function rl_spec(s) = s == "inch" ? [in, ruler_inch_div, ruler_inch_mid, "in"]
+                    : s == "cm"   ? [10, ruler_cm_div, ruler_cm_mid, "cm"]
+                    : [ruler_custom_unit, ruler_custom_div, ruler_custom_mid, ruler_custom_name];
+// Lettering thickened so no stroke is much under ruler_line_w (a bold
+// font's strokes are about 0.14 of its size; a slicer drops thinner lines)
+module rl_fat() offset(delta = max(ruler_line_w - 0.14 * ruler_text_size, 0) / 2) children();
+module rl_text(t, x, z)
+    translate([x, z]) rl_fat()
+        text(t, size = ruler_text_size, font = "Liberation Sans:style=Bold", halign = "center", valign = "baseline");
+function rl_text_w(t) = 0.65 * ruler_text_size * len(t);
+// One scale, its baseline at z: a line along the bottom, ticks rising from
+// it (long at each unit, middle every `mid` divisions, short between), and
+// numbers centred over the long ticks, above every tick; the unit's name
+// over the first half unit, where only short ticks stand.
+module rl_scale_2d(sp, z) {
+    unit = sp[0]; div = max(1, sp[1]); mid = max(1, sp[2]); step = unit / div;
+    lw = ruler_line_w; H = ruler_scale_h;
+    xs = rl_x0 + lw / 2;                                  // the zero tick's centre
+    n = floor((rl_x1 - lw / 2 - xs) / step + 1e-6);
+    tz = z + H * 0.45 + 0.5;                              // numbers' baseline
+    translate([rl_x0, z]) square([rl_x1 - rl_x0, lw]);
+    for (i = [0 : n]) let(len = i % div == 0 ? H * 0.45 : i % mid == 0 ? H * 0.33 : H * 0.22)
+        translate([xs + i * step - lw / 2, z]) square([lw, len]);
+    for (u = [ruler_number_every : ruler_number_every : floor((rl_x1 - xs) / unit + 1e-6)])
+        let(t = str(u), x = xs + u * unit)
+            if (x + rl_text_w(t) / 2 <= rl_x1) rl_text(t, x, tz);
+    if (sp[3] != "" && 0.7 * rl_text_w(sp[3]) < unit * 0.5)
+        translate([xs + unit / 2, tz]) rl_fat()
+            text(sp[3], size = 0.7 * ruler_text_size, font = "Liberation Sans:style=Bold", halign = "center", valign = "baseline");
+}
+module logo_2d(file, x0) {
+    translate([x0 + logo_size[0] / 2, rl_ztop - logo_inset - logo_size[1] / 2])
+        resize([logo_size[0], logo_size[1]]) import(file, center = true);
+}
+module face_marks_2d() {
+    if (ruler) for (k = [0 : len(rl_scales) - 1])
+        rl_scale_2d(rl_spec(rl_scales[k]), ruler_bottom + k * ruler_scale_h);
+    if (logo_left != "") logo_2d(logo_left, rl_x0 + logo_inset);
+    if (logo_right != "") logo_2d(logo_right, rl_x1 - logo_inset - logo_size[0]);
+}
+module face_marks_3d() {
+    d = face_relief_depth;
+    if (face_relief == "raised")
+        translate([0, overlap, 0]) rotate([90, 0, 0]) linear_extrude(height = d + overlap, convexity = 10) face_marks_2d();
+    else
+        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 1, convexity = 10) face_marks_2d();
+}
+if (report && face_marks) {
+    if (ruler) echo(str("Ruler: ", round(rl_x1 - rl_x0), " mm (", round((rl_x1 - rl_x0) / in * 100) / 100, " in) along the front face, ",
+                        len(rl_scales), " scale", len(rl_scales) > 1 ? "s" : "", " from the bottom up (", rl_scales,
+                        "), ", ruler_bottom, " to ", rl_top, " mm above the base's bottom; ", face_relief,
+                        rl_rod ? str("; its ends stop clear of the harness rods' holes (", rl_end, " mm in from each end; set ruler_bottom to ",
+                                     ceil(rod_z + 0.8 * rod_hole_d + 0.5), " or more to run it out to the round-overs)") : ""));
+    if (rl_top > rl_ztop) echo("WARNING: the ruler runs above the front face's flat into the top's round-over; lower ruler_bottom or ruler_scale_h, or use fewer scales");
+    if ((logo_left != "" || logo_right != "") && rl_ztop - logo_inset - logo_size[1] < rl_top + 2)
+        echo("WARNING: the logos come down onto the ruler; make logo_size smaller or logo_inset less");
+    if (logo_left != "" && logo_right != "" && rl_x0 + 2 * logo_inset + 2 * logo_size[0] > rl_x1)
+        echo("WARNING: the two logos overlap");
+    if (turn_button && (logo_left != "" || logo_right != ""))
+        let(tx0 = tb_x - tb_Lt / 2 - turn_button_ease, tx1 = tb_x + tb_Lt / 2 + turn_button_ease)
+            if ((logo_left != "" && tx0 < rl_x0 + logo_inset + logo_size[0]) || (logo_right != "" && tx1 > rl_x1 - logo_inset - logo_size[0]))
+                echo("WARNING: a logo runs into the turn button's pad on the front face");
+    if (has_knee && logo_right != "")
+        echo("NOTE: the knee controller's crank and spring housing sit on the right bay's front face; check that the right logo clears them");
+}
+
 module base_halves() {
     if (split) {
         if (split_part != "right")
@@ -3651,8 +3784,11 @@ module base_body() {
                    rounding = outer_rounding, except = BOTTOM,
                    anchor = LEFT + FRONT + BOTTOM);
             if (turn_button) tb_pad();
+            if (face_marks && face_relief == "raised")
+                color(face_relief_color) face_marks_3d();
         }
         if (turn_button) tb_cuts();
+        if (face_marks && face_relief == "engraved") face_marks_3d();
 
         // Bed seat
         translate([seat_x0, seat_y0, seat_floor_z])
