@@ -318,7 +318,11 @@
 > upper corners, `logo_inset` (6 mm) in from the flat's ends and down from
 > the top's round-over. Each is stretched to `logo_size` (25 × 15 mm), so
 > set that to the logo's own proportions. An SVG must be clean outlines:
-> text converted to paths, and overlapping shapes merged. A path that
+> text converted to paths, and overlapping shapes merged. OpenSCAD ignores
+> fill and stroke, so an invisible shape, such as an unfilled rectangle
+> left from a text frame or an artboard, imports as a solid block that
+> buries the logo; delete it (in Illustrator, Object > Path > Clean Up,
+> with Unpainted Objects ticked). A path that
 > crosses itself makes OpenSCAD 2021.01 drop the whole relief, ruler and
 > all, with "The given mesh is not closed".
 >
