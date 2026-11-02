@@ -251,6 +251,15 @@ else under the bed must then be shorter than the feet; the Kenmore 158-14001's
 feet are 63 mm. Note, too, anything that leaves the casting through its
 edge, such as a cord, for `custom_cord_slot`.
 
+In place of plain paper, `tools/make_foot_rig_sheet.py` draws a full-size
+target sheet for the rig, from the same profile: a millimeter grid in
+light blue over the bed's footprint, with coordinates every 10 mm, the
+rig's outline, its marking holes as crosshairs to sight through, its screw
+holes, and four corner markers for squaring up a photograph. It needs a
+large-format printer, about 545 × 335 mm for the Kenmore, and must print
+at 100%: a 200 mm scale bar on the sheet checks that. Ink the feet black,
+so they stand out from the blue grid.
+
 ## The bobbin cover, `left_trench` and `back_trench`
 
 On drop-in bobbin machines the bobbin is reached through a slide plate in
