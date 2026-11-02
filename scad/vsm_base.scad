@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 71
+// VSM Base, version 72
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -350,6 +350,13 @@
 // between the corner round-overs, on the base and a built-in compartment
 // only. Two SVG logos can go in the face's upper corners. Raised (and
 // color-tagged, for a two-color 3MF) or engraved.
+//
+// v72: the ruler and logos can also be inlaid: engraved and filled flush
+// with a separate part. Raised and inlaid marks are color-tagged with
+// random colors, the ruler, each logo and the base each its own (as on the
+// standalone bobbin box), and kept as separate objects, split with the base,
+// so a 3MF export carries each as its own colored part. face_relief_color
+// gives way to face_color_seed.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1490,12 +1497,12 @@ logo_right = "";
 logo_size = [25, 15];
 // Logos' distance in from the face's flat ends and down from where the top's round-over ends
 logo_inset = 6; // [0 : 0.5 : 40]
-// Ruler and logos: raised from the face, or engraved into it
-face_relief = "raised"; // [raised, engraved]
+// Ruler and logos: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: the ruler, each logo and the base each a random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend)
+face_relief = "raised"; // [raised, engraved, inlaid]
 // How far they stand out or cut in
 face_relief_depth = 0.6; // [0.3 : 0.1 : 2]
-// Color tag for raised marks (a 3MF export keeps it, so a slicer can give them their own filament; needs an OpenSCAD with the Manifold backend)
-face_relief_color = "white";
+// Change it for another set of random colors
+face_color_seed = 7; // [0 : 1 : 999]
 
 /* [Hidden] */
 // Overlap so cutters break cleanly through faces
@@ -3308,7 +3315,8 @@ if (report) echo("=======================================");
 // ---------------------------------------------------------------------------
 
 if (part == "assembly") {
-    color("SteelBlue") base();
+    if (fm_tagged) color(fm_cols[0]) base(); else color("SteelBlue") base();
+    if (fm_tagged) for (w = fm_pieces) color(fm_col(w)) face_marks_3d(w, face_relief);
     if (hinge_type == "printed") for (hx = [hinge_x1, hinge_x2]) ph_in_place(hx);
     if (hinge_type == "barrel") for (hx = [hinge_x1, hinge_x2]) barrel_in_place(hx);
     if (ol_wall_exit) color("LightSteelBlue") for (sl = ol_slots) ol_trim(sl);
@@ -3335,7 +3343,7 @@ if (part == "assembly") {
     print_plates();
 } else if (part == "exploded") {
     // Base (split if `split` is set) with every other part pulled clear
-    color("SteelBlue") base_halves();
+    color("SteelBlue") base_halves_marked();
     if (hinge_type == "printed")
         for (hx = [hinge_x1, hinge_x2])
             translate([split ? (hx < cut_x ? -1 : 1) * split_spread / 2 : 0, 0, 0])
@@ -3544,7 +3552,11 @@ if (part == "assembly") {
 } else if (part == "none") {
     // nothing (for use from other files)
 } else {
+    // the base, and its color-tagged face marks as separate objects
     base_halves();
+    face_mark_halves("ruler");
+    face_mark_halves("left");
+    face_mark_halves("right");
 }
 
 // The base, split into halves if `split` is set.
@@ -3599,25 +3611,59 @@ module logo_2d(file, x0) {
     translate([x0 + logo_size[0] / 2, rl_ztop - logo_inset - logo_size[1] / 2])
         resize([logo_size[0], logo_size[1]]) import(file, center = true);
 }
-module face_marks_2d() {
-    if (ruler) for (k = [0 : len(rl_scales) - 1])
+// The marks come in three pieces, "ruler", "left" and "right" (the logos),
+// so each can carry its own color tag
+fm_pieces = [if (ruler && len(rl_scales) > 0) "ruler", if (logo_left != "") "left", if (logo_right != "") "right"];
+module face_marks_2d(w = "all") {
+    if (ruler && (w == "all" || w == "ruler")) for (k = [0 : len(rl_scales) - 1])
         rl_scale_2d(rl_spec(rl_scales[k]), ruler_bottom + k * ruler_scale_h);
-    if (logo_left != "") logo_2d(logo_left, rl_x0 + logo_inset);
-    if (logo_right != "") logo_2d(logo_right, rl_x1 - logo_inset - logo_size[0]);
+    if (logo_left != "" && (w == "all" || w == "left")) logo_2d(logo_left, rl_x0 + logo_inset);
+    if (logo_right != "" && (w == "all" || w == "right")) logo_2d(logo_right, rl_x1 - logo_inset - logo_size[0]);
 }
-module face_marks_3d() {
+// kind: "raised" stands out of the face; "inlaid" fills the recess flush;
+// "cut" is the recess, run out past the face
+// xr, if given, clips them to x0 <= x <= x1 (a half of a split base; at
+// the front face the split is the plane x = cut_x)
+module face_marks_3d(w = "all", kind = "cut", xr = undef) {
     d = face_relief_depth;
-    if (face_relief == "raised")
-        translate([0, overlap, 0]) rotate([90, 0, 0]) linear_extrude(height = d + overlap, convexity = 10) face_marks_2d();
+    if (kind == "raised")
+        translate([0, 0.01, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 0.01, convexity = 40) fm_clip(xr) face_marks_2d(w);
+    else if (kind == "inlaid")
+        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d, convexity = 40) fm_clip(xr) face_marks_2d(w);
     else
-        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 1, convexity = 10) face_marks_2d();
+        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 1, convexity = 40) fm_clip(xr) face_marks_2d(w);
 }
+module fm_clip(xr) {
+    if (is_undef(xr)) children();
+    else intersection() { children(); translate([xr[0], -1e4]) square([xr[1] - xr[0], 2e4]); }
+}
+// Color tags: random, evenly spaced in hue so no two are alike: the base
+// body, the left logo a quarter turn round, the ruler opposite the body (the
+// strongest contrast), and the right logo. Only raised and
+// inlaid marks are tagged; with none, the base keeps its plain colors.
+fm_tagged = face_marks && face_relief != "engraved";
+function fm_hsv(h, s, v) =
+    let (k = v * s, hp = h / 60, x = k * (1 - abs(hp % 2 - 1)), m = v - k,
+         rgb = hp < 1 ? [k, x, 0] : hp < 2 ? [x, k, 0] : hp < 3 ? [0, k, x]
+             : hp < 4 ? [0, x, k] : hp < 5 ? [x, 0, k] : [k, 0, x])
+        rgb + [m, m, m];
+function fm_hx(v) = let (n = round(v * 255)) str("0123456789ABCDEF"[floor(n / 16)], "0123456789ABCDEF"[n % 16]);
+function fm_hex(c) = str("#", fm_hx(c[0]), fm_hx(c[1]), fm_hx(c[2]));
+fm_hue0 = rands(0, 360, 1, face_color_seed)[0];
+fm_cols = [for (i = [0 : 3]) fm_hsv((fm_hue0 + i * 90) % 360, 0.6, 0.9)];
+function fm_col(w) = w == "ruler" ? fm_cols[2] : w == "left" ? fm_cols[1] : fm_cols[3];
 if (report && face_marks) {
     if (ruler) echo(str("Ruler: ", round(rl_x1 - rl_x0), " mm (", round((rl_x1 - rl_x0) / in * 100) / 100, " in) along the front face, ",
                         len(rl_scales), " scale", len(rl_scales) > 1 ? "s" : "", " from the bottom up (", rl_scales,
                         "), ", ruler_bottom, " to ", rl_top, " mm above the base's bottom; ", face_relief,
                         rl_rod ? str("; its ends stop clear of the harness rods' holes (", rl_end, " mm in from each end; set ruler_bottom to ",
                                      ceil(rod_z + 0.8 * rod_hole_d + 0.5), " or more to run it out to the round-overs)") : ""));
+    if (fm_tagged)
+        echo(str("Face marks: ", face_relief, ", color tags: base ", fm_hex(fm_cols[0]),
+                 ruler && len(rl_scales) > 0 ? str(", ruler ", fm_hex(fm_col("ruler"))) : "",
+                 logo_left != "" ? str(", left logo ", fm_hex(fm_col("left"))) : "",
+                 logo_right != "" ? str(", right logo ", fm_hex(fm_cols[3])) : "",
+                 " (export 3MF to keep them)"));
     if (rl_top > rl_ztop) echo("WARNING: the ruler runs above the front face's flat into the top's round-over; lower ruler_bottom or ruler_scale_h, or use fewer scales");
     if ((logo_left != "" || logo_right != "") && rl_ztop - logo_inset - logo_size[1] < rl_top + 2)
         echo("WARNING: the logos come down onto the ruler; make logo_size smaller or logo_inset less");
@@ -3632,21 +3678,49 @@ if (report && face_marks) {
 }
 
 module base_halves() {
+    if (fm_tagged) color(fm_cols[0]) split_halves() base();
+    else split_halves() base();
+}
+// One raised or inlaid face-mark piece ("ruler", "left" or "right"), color-
+// tagged and split with the base (clipped in 2D, which previews cleanly).
+// Kept separate from the body so a 3MF export carries it as its own
+// colored part.
+module face_mark_halves(w) {
+    if (fm_tagged && len([for (q = fm_pieces) if (q == w) 1]) > 0)
+        color(fm_col(w)) {
+            if (split) {
+                if (split_part != "right")
+                    translate([-split_spread / 2, 0, 0]) face_marks_3d(w, face_relief, [-1e4, cut_x]);
+                if (split_part != "left")
+                    translate([split_spread / 2, 0, 0]) face_marks_3d(w, face_relief, [cut_x + split_clearance, 1e4]);
+            } else face_marks_3d(w, face_relief);
+        }
+}
+// The base with its face marks (for views; the "base" part calls these
+// separately, so each is its own object in a 3MF)
+module base_halves_marked() {
+    base_halves();
+    face_mark_halves("ruler");
+    face_mark_halves("left");
+    face_mark_halves("right");
+}
+// Split the child as the base is split, if `split` is set
+module split_halves() {
     if (split) {
         if (split_part != "right")
             translate([-split_spread / 2, 0, 0])
                 intersection() {
-                    base();
+                    children();
                     split_mask(0);
                 }
         if (split_part != "left")
             translate([split_spread / 2, 0, 0])
                 difference() {
-                    base();
+                    children();
                     split_mask(split_clearance);
                 }
     } else {
-        base();
+        children();
     }
 }
 
@@ -3784,11 +3858,11 @@ module base_body() {
                    rounding = outer_rounding, except = BOTTOM,
                    anchor = LEFT + FRONT + BOTTOM);
             if (turn_button) tb_pad();
-            if (face_marks && face_relief == "raised")
-                color(face_relief_color) face_marks_3d();
         }
         if (turn_button) tb_cuts();
-        if (face_marks && face_relief == "engraved") face_marks_3d();
+        // engraved and inlaid marks' recesses (the raised and inlaid pieces
+        // themselves are separate parts: face_mark_halves)
+        if (face_marks && face_relief != "raised") face_marks_3d("all", "cut");
 
         // Bed seat
         translate([seat_x0, seat_y0, seat_floor_z])

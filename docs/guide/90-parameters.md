@@ -745,6 +745,6 @@ There are 545 parameters; 543 of them appear in the Customizer. The rest are lis
 | `logo_right` | `""` |  |
 | `logo_size` | `[25, 15]` | Each logo is stretched to this box, width and height (set it to the logo's own proportions) |
 | `logo_inset` | `6` | Logos' distance in from the face's flat ends and down from where the top's round-over ends *Range 0 to 40, step 0.5.* |
-| `face_relief` | `"raised"` | Ruler and logos: raised from the face, or engraved into it *Choices: raised, engraved.* |
+| `face_relief` | `"raised"` | Ruler and logos: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: the ruler, each logo and the base each a random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
 | `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
-| `face_relief_color` | `"white"` | Color tag for raised marks (a 3MF export keeps it, so a slicer can give them their own filament; needs an OpenSCAD with the Manifold backend) |
+| `face_color_seed` | `7` | Change it for another set of random colors *Range 0 to 999, step 1.* |

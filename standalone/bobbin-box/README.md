@@ -55,7 +55,8 @@ tag.](bobbin-box-images.png)
   slicer.
 - **Export as 3MF, not STL,** to keep the color tags: Bambu Studio and Orca
   open it as a multi-color part and ask which filament each color gets. STL
-  merges everything into one color. Color-tagged 3MF export needs a recent
+  merges everything into one color, and an inlaid image disappears into a
+  plain face. Color-tagged 3MF export needs a recent
   OpenSCAD with the Manifold backend; 2021.01 doesn't write the tags.
 - **Where a second color is practical.** The lid and the bottom print face
   down, so an inlaid image there is in the first few layers, and only those

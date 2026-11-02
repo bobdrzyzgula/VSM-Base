@@ -326,14 +326,25 @@
 > crosses itself makes OpenSCAD 2021.01 drop the whole relief, ruler and
 > all, with "The given mesh is not closed".
 >
-> `face_relief` makes all of them `raised` (the default) or `engraved`, by
-> `face_relief_depth` (0.6 mm). Raised marks are color-tagged
-> (`face_relief_color`, white): exported as 3MF from an OpenSCAD with the
-> Manifold backend, they open in Bambu Studio or Orca as a second color.
-> The base prints standing on its bottom, so the marks are on a vertical
-> face and need no support.
+> `face_relief` makes all of them `raised` (the default), `engraved`, or
+> `inlaid` (engraved and filled flush with a separate part), by
+> `face_relief_depth` (0.6 mm). Raised and inlaid marks are color-tagged
+> for another filament, as on the standalone bobbin box: the base, the
+> ruler and each logo get their own random color, spaced evenly round the
+> color wheel, with the ruler opposite the base for the strongest
+> contrast. `face_color_seed` picks another set, and the console lists
+> them. Export the `base` part as 3MF, not STL, to keep the tags, from an
+> OpenSCAD with the Manifold backend: Bambu Studio and Orca open it as a
+> multi-color part and ask which filament each color gets. An STL merges
+> everything, so inlaid marks disappear into a plain face. The base prints
+> standing on its bottom, so the marks are on a vertical face and need no
+> support, but every layer they run through changes filament: about 16 mm
+> of the base's height for a two-scale ruler, and the logos' height again.
+> On a single-nozzle printer each change costs a purge and time; a printer
+> with several toolheads makes it practical. With `split` set, each mark is
+> split with the base.
 >
-> ![A ruler on the front face, inches below centimeters, raised, with a
+> ![A ruler on the front face, inches below centimeters, inlaid, with a
 > logo in each upper corner. The harness rods' holes, near each end, are
 > the reason it stops short of the round-overs
 > there.](../images/renders/ruler.png){width=100%}
