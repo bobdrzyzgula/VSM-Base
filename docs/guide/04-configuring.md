@@ -344,6 +344,32 @@
 > with several toolheads makes it practical. With `split` set, each mark is
 > split with the base.
 >
+> **Maker's marks on the back and bottom.** Four more SVG places suit a
+> maker's name, a model and serial number, or a build date. Prepare each
+> as an SVG, with text converted to outlines.
+>
+> - `back_logo_left` and `back_logo_right` sit near the back face's lower
+>   corners, as you look at the back, so the left one is at the base's
+>   right end. Each is stretched to `back_logo_size` (40 × 15 mm) and set
+>   `back_logo_inset` (6 mm) in from the face's flat end and up from the
+>   bottom. The flat end is measured from the harness rods' holes, which
+>   come through the back near each lower corner, so the logos clear them.
+>   They follow `face_relief`. The back extension sits against the back
+>   face and hides them, and the console says so.
+> - `bottom_logo_left` and `bottom_logo_right` are centered on the two
+>   halves of the base, where it splits, in the same places whether or not
+>   `split` is set. Each is stretched to `bottom_logo_size` (80 × 40 mm).
+>   They read with the base tipped back onto its back edge, front edge
+>   up. The base prints standing on its bottom, so these can't be raised:
+>   `bottom_relief` makes them `engraved` (the default) or `inlaid`. An
+>   inlay on the bottom is the cheap kind of second color, because it lies
+>   in the first few layers, so only those layers change filament. The
+>   console warns if one reaches a handhold at the end or the split's
+>   mending plates.
+>
+> With all seven places used there are eight color tags: the base, the
+> ruler, and the six logos.
+>
 > ![A ruler on the front face, inches below centimeters, inlaid, with a
 > logo in each upper corner. The harness rods' holes, near each end, are
 > the reason it stops short of the round-overs

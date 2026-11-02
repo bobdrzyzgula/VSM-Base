@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 545 parameters; 543 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 553 parameters; 551 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -720,7 +720,7 @@ There are 545 parameters; 543 of them appear in the Customizer. The rest are lis
 | `ot_gusset_h` | `8` | Gusset height up the wall (less on low trays) *Range 1 to 20, step 0.5.* |
 | `ot_gusset_pitch` | `40` | Spacing to aim for between gussets on plain trays *Range 15 to 120, step 1.* |
 
-## Ruler and logos (front face)
+## Ruler and logos (front, back and bottom)
 
 | Parameter | Default | Description |
 |---------|----|---------------|
@@ -745,6 +745,14 @@ There are 545 parameters; 543 of them appear in the Customizer. The rest are lis
 | `logo_right` | `""` |  |
 | `logo_size` | `[25, 15]` | Each logo is stretched to this box, width and height (set it to the logo's own proportions) |
 | `logo_inset` | `6` | Logos' distance in from the face's flat ends and down from where the top's round-over ends *Range 0 to 40, step 0.5.* |
-| `face_relief` | `"raised"` | Ruler and logos: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: the ruler, each logo and the base each a random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
+| `back_logo_left` | `""` | Back face: SVGs near its lower left and lower right corners, as you look at the back (so the left one is at the base's right end); for a maker's name, model, serial number, date. Blank for none |
+| `back_logo_right` | `""` |  |
+| `back_logo_size` | `[40, 15]` | Each back logo is stretched to this box, width and height |
+| `back_logo_inset` | `6` | Back logos' distance in from the face's flat ends (clear of the harness rods' holes) and up from the bottom *Range 0 to 40, step 0.5.* |
+| `bottom_logo_left` | `""` | Bottom: SVGs centered on the left and right halves of the base (where it splits, whether or not it is split), as you look at the bottom with the base tipped back onto its back edge. Blank for none |
+| `bottom_logo_right` | `""` |  |
+| `bottom_logo_size` | `[80, 40]` | Each bottom logo is stretched to this box, width and height |
+| `face_relief` | `"raised"` | Ruler and logos on the front and back: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: each mark and the base its own random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
+| `bottom_relief` | `"engraved"` | The bottom's logos: engraved, or inlaid (color-tagged). Not raised: the base prints standing on its bottom *Choices: engraved, inlaid.* |
 | `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
 | `face_color_seed` | `7` | Change it for another set of random colors *Range 0 to 999, step 1.* |
