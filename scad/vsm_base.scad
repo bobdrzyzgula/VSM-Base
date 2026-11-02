@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 73
+// VSM Base, version 74
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -363,6 +363,10 @@
 // each half of the base (split or not). The back's follow face_relief; the
 // bottom's are engraved or inlaid (bottom_relief). Each is color-tagged when
 // raised or inlaid; eight colors in all.
+//
+// v74: the assembly and exploded views show lollipop hinges, as a simple
+// stand-in sized from the recess settings and the profile's pin (the model
+// doesn't make them), and the exploded view lifts barrel hinges out too.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -3340,6 +3344,7 @@ if (part == "assembly") {
     for (w = om_pieces) if (fm_piece_tagged(w)) color(fm_col(w)) om_3d(w, om_kind(w));
     if (hinge_type == "printed") for (hx = [hinge_x1, hinge_x2]) ph_in_place(hx);
     if (hinge_type == "barrel") for (hx = [hinge_x1, hinge_x2]) barrel_in_place(hx);
+    if (hinge_type == "lollipop") for (hx = [hinge_x1, hinge_x2]) lollipop_in_place(hx);
     if (ol_wall_exit) color("LightSteelBlue") for (sl = ol_slots) ol_trim(sl);
     if (attached) color("CadetBlue") right_bay();
     if (lid_on("base")) color("LightSteelBlue") lid_part("base");
@@ -3369,6 +3374,13 @@ if (part == "assembly") {
         for (hx = [hinge_x1, hinge_x2])
             translate([split ? (hx < cut_x ? -1 : 1) * split_spread / 2 : 0, 0, 0])
                 ph_exploded(hx, explode);
+    // the bought hinges: lifted out of their recesses (the lollipop's screw further)
+    if (hinge_type == "lollipop" || hinge_type == "barrel")
+        for (hx = [hinge_x1, hinge_x2])
+            translate([split ? (hx < cut_x ? -1 : 1) * split_spread / 2 : 0, 0, explode]) {
+                if (hinge_type == "lollipop") translate([hx, hinge_y, top_z]) lollipop_standin(explode);
+                else barrel_in_place(hx);
+            }
     if (attached) color("CadetBlue") translate([explode + (split ? split_spread / 2 : 0), 0, 0]) right_bay();
     if (harness_rods && rod_plug_len > 0)
         color("LightSteelBlue") translate([0, -explode, 0]) rod_plugs();
@@ -4187,6 +4199,31 @@ module barrel_hinge_cutter(x, y) {
     }
 }
 // The hinge drawn in place, arm tipped back by `tilt`
+// Lollipop hinge, a simple stand-in for the views (the model doesn't make
+// it; it's a bought part): the flanged disc in its recess, a square stub
+// running forward from the body, a round pin on into the bed's hole, and
+// the screw's head. Sized from the recess's settings and the profile's pin.
+// Origin: the disc's center at the rim's top.
+module lollipop_standin(e = 0) {
+    R  = hinge_flange_diameter / 2;
+    pz = -hinge_pin_height / 2;
+    sq = R + hinge_pin_square_projection;                 // the square stub's front, ahead of the center
+    color("DimGray") {
+        translate([0, 0, -hinge_flange_thickness]) cylinder(h = hinge_flange_thickness, d = hinge_flange_diameter, $fn = 48);
+        translate([0, 0, -hinge_thickness]) cylinder(h = hinge_thickness, d = hinge_inner_diameter, $fn = 48);
+        translate([-hinge_pin_thickness / 2, -sq, pz - hinge_pin_height / 2])
+            cube([hinge_pin_thickness, sq, hinge_pin_height]);
+        translate([0, -sq + 0.01, pz]) rotate([90, 0, 0])
+            cylinder(h = hinge_pin_engage_mm + 2, d = hinge_pin_d_mm, $fn = 32);
+    }
+    // #8 flat-head screw: head flush with the flange, shank below
+    color("Silver") translate([0, hinge_screw_dy(), e]) {
+        translate([0, 0, -2.2]) cylinder(h = 2.4, d1 = 4.2, d2 = 8.6, $fn = 32);   // 0.2 proud, to show
+        translate([0, 0, -25.4]) cylinder(h = 25.4 - 2.2, d = 4.1, $fn = 24);
+    }
+}
+module lollipop_in_place(x) translate([x, hinge_y, top_z]) lollipop_standin();
+
 module barrel_in_place(x, tilt = 0) {
     translate([x, hinge_y, bh_z0]) color("DimGray") {
         difference() {
