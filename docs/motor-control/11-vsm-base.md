@@ -20,7 +20,8 @@ control of §5: a BT136 triac, a DB3 diac and an RC timing network, with the
 pot setting the firing angle. It therefore behaves like a good stock pedal. It
 gives no speed regulation; the load sets speed, with the cogging at a crawl
 and the snap-on hysteresis described there. The 2 MΩ trimmer RV2 sets the
-minimum speed; "The timing network and RV2", below, works through how. The knee mechanism improves the command, not the regulation:
+minimum speed (below). The knee mechanism improves the command, not the
+regulation:
 
 - The feel copies a Singer knee controller, measured at the knee 12.5"
   below the shaft: about 1 lb at rest, rising 1.5 lb/in; an inch of dead
@@ -48,7 +49,7 @@ BT136 through R1. RV2 lies across RV1's whole track. At RV1's pin-3 end is an
 off zone where the wiper is open and nothing fires; moving toward pin 1 the
 resistance falls toward zero and speed rises, and RV2, by capping the
 resistance just past the off zone, sets the slowest speed (as long as it is
-at least RV1's 200 kΩ; see below). R3 and C1 are the
+at least RV1's 200 kΩ). R3 and C1 are the
 snubber across the triac. Still to check with a meter: that RV2's wiper is
 tied to its pin-3 end, that RV1's pin 1 and R3 go to the MT2 tab, and which
 of RV1's pins is the wiper.](../images/diagrams/kb3151c-schematic.svg){width=100%}
@@ -60,119 +61,15 @@ the box, as a two-wire lead from a standard cordset. The cordset's junction
 (a three-pin machine plug or a duplex outlet) joins it to the mains cord, and
 cordsets are interchangeable, so one pedal fits many machines.
 
-### The timing network and RV2
-
-The board's timing network is the one in §5's figure, with one addition:
-the 2 MΩ trimmer RV2 is connected around the slide pot RV1 (200 kΩ). As
-traced, RV2 joins RV1's pin 1, which is tied to MT2, to RV1's pin-3 end. So
-current from MT2 can reach RV1's wiper by two paths. One runs directly
-along RV1's track from pin 1 to the wiper. The other runs through RV2 to
-pin 3, then back along the rest of the track to the wiper. The wiper feeds
-C2 through R2.
-
-Two connections still have to be checked with a meter: which of RV1's pins
-is the wiper, and which end of the track RV2 meets. If RV2 meets the pin-1
-end instead, the two sections swap roles. The algebra below is unchanged;
-only the direction of travel through it reverses.
-
-**The parallel resistance.** Let $R$ be RV1's whole track (200 kΩ), $a$ the
-section from pin 1 to the wiper, and $R - a$ the rest. Let $R_v$ be RV2's
-setting, 0 to 2 MΩ. The direct path is $a$, and the other is
-$R_v + (R - a)$. In parallel:
-
-$$R_{eq} = \frac{a\,(R_v + R - a)}{R_v + R}$$
-
-C2 (0.1 µF) charges through $R_{eq}$ plus R2 (1 kΩ). Pressing the pedal
-moves the wiper from the pin-3 end toward pin 1, so $a$ falls from $R$ to
-0. Three things follow from the formula:
-
-- **At full pedal,** $a = 0$ and $R_{eq} = 0$, whatever RV2 is set to.
-  R2 alone sets the top speed.
-- **At the start of the travel,** just past the off zone, $a = R$ and
-  $R_{eq} = R R_v / (R + R_v)$: RV1 and RV2 in parallel. This is RV2's main
-  effect. It lowers the largest timing resistance the pedal can reach,
-  from RV1's 200 kΩ toward zero.
-- **In between,** $dR_{eq}/da = (R_v + R - 2a)/(R_v + R)$, which is zero
-  at $a = (R_v + R)/2$. If $R_v \ge R$, that point is at or past the end
-  of the track. Then $R_{eq}$ rises steadily all the way back to the off
-  zone, and the pedal is monotonic: less pedal, less speed. If $R_v < R$,
-  $R_{eq}$ peaks at $(R_v + R)/4$ partway along the travel and falls again
-  toward the off zone. At $R_v = 0$ it becomes $a(R - a)/R$, a parabola
-  that is zero at both ends and 50 kΩ in the middle.
-
-![The timing resistance through the pedal's travel for six settings of
-RV2, from the formula above. The dashed line is where the motor starts
-from rest; the dotted one is how far it keeps running once
-started.](../images/diagrams/kb3151c-req.svg){width=100%}
-
-**Firing.** §5's two thresholds turn these resistances into speeds. With
-C2 = 0.1 µF on 120 V, the motor starts when the timing resistance falls
-below about 137 kΩ, and it settles at about 125° firing, roughly 40% of
-the line's RMS voltage. Once running, it keeps firing until the resistance
-rises past about 158 kΩ. The next figure runs the board's network through
-the simulation of §5, pressing the pedal from rest and then easing back.
-It plots motor voltage as a stand-in for speed: at light load, a universal
-motor's speed rises with its voltage, though not in proportion.
-
-![The motor voltage through the pedal's travel, simulated, for the same six
-settings of RV2. Solid: pressing from rest. Dashed: easing back, where it
-differs.](../images/diagrams/kb3151c-voltage.svg){width=100%}
-
-| RV2 | $R_{eq}$ at the start of travel | Dead travel | Voltage when it starts | Lowest voltage while running |
-|---|---|---|---|---|
-| 2 MΩ | 182 kΩ | 27% | 38% | 9%, at 15% of travel |
-| 1 MΩ | 167 kΩ | 21% | 38% | 7%, at 7% of travel |
-| about 430 kΩ | 137 kΩ | none | 39% | 39%, at the off zone |
-| 200 kΩ | 100 kΩ | none | 66% | 66% |
-| 100 kΩ | 67 kΩ | none | 83% | 80%, a quarter of the way in |
-| 0 | 0 | none | 100% | 90%, halfway |
-
-**What a sewist notices.** RV2 is the board's minimum-speed adjustment, and
-turning it goes through four distinct behaviors.
-
-- **Turned up, toward 2 MΩ.** The first quarter of the pedal does nothing.
-  Then the motor jumps on at about 40% of line voltage: a brisk start, not
-  a crawl. Easing back, it slows further and keeps firing down to a tenth
-  or less before it quits. Long before that, though, a sewing machine's
-  motor stalls or cogs, so the motor sets the practical floor. The feel is
-  "it starts too fast, but slows if I let off". After a stop, starting
-  again needs the push again.
-- **Turned down to about 430 kΩ.** RV1 and RV2 in parallel then just match
-  the start threshold. The motor starts as soon as the pedal leaves the off
-  zone, at the same 40% or so, with no dead travel. Eased back, it keeps
-  running at that speed right up to the off zone. This setting uses the
-  whole pedal.
-- **Turned further down.** The motor starts at once, but at a higher
-  minimum speed: 66% of line voltage at 200 kΩ. The low end is gone, and
-  the pedal goes from off straight to a fast run.
-- **Below RV1's own 200 kΩ.** The slowest point moves away from the start
-  of the travel. At 100 kΩ the speed dips a little as the pedal goes down,
-  then rises. Near zero the pedal is almost an on-off switch, faster at
-  both ends of the travel than in the middle.
-
-**What RV2 cannot do** is lower the snap-on speed. In every setting with
-dead travel, the motor starts at about 125° firing, near 40% of line
-voltage. RV2 only moves where in the travel that happens. The jump comes
-from the timing capacitor's memory (§5), so a gentler start needs a
-different network, such as §5's two-stage RC, not a different setting.
-
-The start threshold also varies from board to board. A DB3's breakover
-can be anywhere from 28 to 36 V, which alone moves the threshold from
-about 157 kΩ down to 121 kΩ. C2's tolerance and the line voltage move it
-further. So the 430 kΩ setting is a model's figure, not a dial position.
-That is why RV2 is a trimmer, set by ear: back it off until the motor just
-starts as the pedal leaves the off zone.
-
-**In the knee controller,** the slide pot is replaced by the Bourns pot,
-wired as a two-terminal resistor, with RV1's pin-3 pad jumpered to the
-wiper pad. That puts RV2 directly across the pot's working section, so
-$R_{eq} = a \parallel R_v$, which always rises with $a$. The off switch
-covers the dead travel up to the switch point, about 1" of knee travel.
-There the pot's section is about 220 kΩ, and it falls to zero at full
-travel. With RV2 at 2 MΩ, the motor starts when $a$ falls to about
-147 kΩ, a third of the way into the speed inch. At about 360 kΩ, which
-makes 220 kΩ ∥ RV2 = 137 kΩ, it starts as the switch closes. The same
-caveat applies: set it by ear.
+**The trimmer RV2** is a 2 MΩ resistor around the slide pot. Its setting
+decides where in the pedal's travel the motor snaps on: set high, a
+quarter of the travel does nothing; set near 430 kΩ, the motor starts as
+soon as the pedal leaves its off zone; set below the pot's own 200 kΩ, the
+pedal stops being monotonic. In the knee controller, where the pot is
+wired so that RV2 lies across its working section, about 360 kΩ makes the
+motor start as the off switch closes. *Inside a Switching Circuit* (§6
+there) works the parallel resistance through and simulates the pedal
+across RV2's range. Either way, set it by ear.
 
 **Wiring the pot,** in the board's own terms:
 
@@ -278,7 +175,7 @@ motor-enable relay (K1) through the triac (a BTA08-600BW, a snubberless
 type) to the outlet. The relay lets the firmware cut the motor whatever the
 triac is doing: it closes last and opens first. Space is left for an RC
 snubber, to be fitted only if the triac fires falsely or fails to latch
-(§5 explains both).
+(*Inside a Switching Circuit*, §5, explains both).
 
 **Across the barrier.** Four parts span it, and an optional fifth:
 

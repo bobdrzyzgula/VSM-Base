@@ -57,8 +57,9 @@ trace the motor current. In the middle panel, the dashed line shows what a
 plain resistor's current would look like: a slice of sine that stops dead
 at the voltage zero.](../images/motors/universal-triac.svg){width=100%}
 
-**How a triac switches.** A triac is a pair of thyristors (SCRs) back to
-back in one package, so it conducts in either direction. Its gate can turn
+**How a triac switches.** (The companion paper *Inside a Switching
+Circuit* covers the devices themselves.) A triac is a pair of thyristors
+(SCRs) back to back in one package, so it conducts in either direction. Its gate can turn
 it on but cannot turn it off. A short pulse of gate current starts it
 conducting. Once the load current has passed the triac's *latching current*,
 it holds itself on and the gate has no further say. It turns off only when

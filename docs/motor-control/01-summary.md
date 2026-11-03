@@ -33,3 +33,9 @@ universal motor with wound-field DC, permanent-magnet and brushless motors
 and their controls, and shows the waveforms of each control method on the
 wire. It closes by asking whether a small DC motor could drive a vintage
 machine from a version of the MCU controller.
+
+A second companion, *Inside a Switching Circuit*, looks inside the
+controls: the thyristor and triac, a phase-control pedal circuit part by
+part, the snubber, the donor board of the knee controller in detail, and
+the transistor switches (MOSFETs and IGBTs) behind PWM drives and
+variable-frequency drives.

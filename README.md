@@ -211,13 +211,19 @@ lengths rounded up to stock sizes.
   a vintage machine. Its source is in
   [`docs/motor-construction/`](docs/motor-construction/); releases carry it
   as PDF and HTML.
+- **Inside a Switching Circuit**: the second companion paper, on the
+  switches inside the controls. It covers the thyristor and the triac, a
+  phase-control pedal circuit part by part, the snubber, the knee
+  controller's donor board worked through in detail, and the MOSFETs and
+  IGBTs behind PWM and variable-frequency drives. Its source is in
+  [`docs/switching/`](docs/switching/); releases carry it as PDF and HTML.
 - **The motor test rig's guide**: building and using the bench rig in
   [`standalone/motor-rig/`](standalone/motor-rig/); releases carry it as a
   PDF.
 
 To build the documentation, see the [`Makefile`](Makefile): `make params`,
 `make images`, `make pdf`, `make html`, or `make docs` for both. They build
-the guide, the two papers and the rig guide into `build/`.
+the guide, the three papers and the rig guide into `build/`.
 
 - **`make pdf` and `make html`** need pandoc 3.1.2 or later. The PDF also
   needs [Typst](https://typst.app), 0.12 or later with a recent pandoc (the

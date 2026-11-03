@@ -14,9 +14,6 @@
 12. [KBMM variable speed DC motor control](https://motorsandcontrol.com/media/document/file/datasheets/9449.pdf), KB Electronics data sheet D-215.
 13. [KBWC solid-state speed controls](https://moen.nidec.com/drives/-/media/Project/Nidec/KB/documents/triad-fan-controls/data-sheets/kbwc-data-sheet-031919.ashx?la=de-de), KB Electronics / Nidec data sheet.
 14. [KBSI-240D signal isolator](https://motorsandcontrol.com/kb-electronics-9431-kbsi-240d-signal-isolator-stand-alone), Motors & Control product page.
-15. [BTA08, BTB08 and T8 series 8 A triacs](https://www.st.com/en/thyristors-scr-and-ac-switches/bta08.html), STMicroelectronics data sheet (Snubberless BW version).
-16. [BT136 series triacs](https://pdf.elecfans.com/PHILIPS/BT136-600E.html), Philips Semiconductors product specification (BT136-600E).
-17. [MOC3023M random-phase triac driver optocoupler](https://www.onsemi.com/pdf/datasheet/moc3023m-d.pdf), onsemi data sheet.
 
 The base's own parts, used in §11: Bourns 91–99 series panel control datasheet;
 Omron SS subminiature basic switch, Cat. No. B032-E1-14; Schurter KE IEC inlet

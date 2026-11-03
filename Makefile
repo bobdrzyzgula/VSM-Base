@@ -3,7 +3,8 @@
 #   make params   regenerate the parameter reference from the model
 #   make images   render the model views (needs OpenSCAD + BOSL2)
 #   make pdf      build build/vsm-base-guide.pdf, build/vsm-motor-control.pdf,
-#                 build/vsm-inside-the-motor.pdf and build/vsm-motor-rig.pdf
+#                 build/vsm-inside-the-motor.pdf,
+#                 build/vsm-inside-a-switching-circuit.pdf and build/vsm-motor-rig.pdf
 #                 (needs pandoc 3.1.2+ and typst; a recent pandoc (3.7, at least) needs
 #                 typst 0.12 or later. The release build uses pandoc 3.7.0.2
 #                 and typst 0.13.1.) PANDOC= and TYPST= pick other binaries.
@@ -34,6 +35,9 @@ MC_HTML  := $(BUILD)/vsm-motor-control.html
 MX_CHAPTERS := $(sort $(wildcard docs/motor-construction/[0-9]*.md))
 MX_PDF   := $(BUILD)/vsm-inside-the-motor.pdf
 MX_HTML  := $(BUILD)/vsm-inside-the-motor.html
+SW_CHAPTERS := $(sort $(wildcard docs/switching/[0-9]*.md))
+SW_PDF   := $(BUILD)/vsm-inside-a-switching-circuit.pdf
+SW_HTML  := $(BUILD)/vsm-inside-a-switching-circuit.html
 RIG_MD   := standalone/motor-rig/RIG_GUIDE.md
 RIG_PDF  := $(BUILD)/vsm-motor-rig.pdf
 PANDOC   ?= pandoc
@@ -69,9 +73,9 @@ images:
 	python3 tools/make_triac_figures.py
 	sh tools/export_schematic.sh
 
-pdf: $(PDF) $(MC_PDF) $(MX_PDF) $(RIG_PDF)
+pdf: $(PDF) $(MC_PDF) $(MX_PDF) $(SW_PDF) $(RIG_PDF)
 
-html: $(HTML) $(MC_HTML) $(MX_HTML)
+html: $(HTML) $(MC_HTML) $(MX_HTML) $(SW_HTML)
 
 $(PDF): $(CHAPTERS) docs/guide/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
@@ -139,5 +143,24 @@ $(MX_HTML): $(MX_CHAPTERS) docs/motor-construction/metadata.yaml docs/guide/guid
 	    -M lang=en -M pagetitle="Inside the Motor" \
 	    -o ../../$@
 
+# The second companion paper, "Inside a Switching Circuit" (docs/switching/)
+$(SW_PDF): $(SW_CHAPTERS) docs/switching/metadata.yaml $(IMAGES)
+	mkdir -p $(BUILD)
+	cd docs/switching && $(PANDOC) metadata.yaml $(notdir $(SW_CHAPTERS)) \
+	    --from markdown --to typst --standalone --toc --toc-depth=1 \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -o paper.typ
+	$(TYPST) compile --root docs docs/switching/paper.typ $@
+	rm -f docs/switching/paper.typ
+
+$(SW_HTML): $(SW_CHAPTERS) docs/switching/metadata.yaml docs/guide/guide.css $(IMAGES)
+	mkdir -p $(BUILD)
+	cd docs/switching && $(PANDOC) metadata.yaml $(notdir $(SW_CHAPTERS)) \
+	    --from markdown --to html5 --standalone --embed-resources \
+	    --toc --toc-depth=1 --number-sections --css ../guide/guide.css --mathml \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -M lang=en -M pagetitle="Inside a Switching Circuit" \
+	    -o ../../$@
+
 clean:
-	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ
+	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ

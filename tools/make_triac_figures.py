@@ -365,3 +365,83 @@ save(fig, "kb3151c-voltage.svg")
 print("RV2      R_eq at end   starts at   first V   lowest V while running")
 for rv, re, st, v0, vmin in table:
     print(f"{lab(rv):16s} {re/1e3:6.1f}k   {st if st is None else round(st,1)}%   {v0:5.1f}%   {vmin:5.1f}%")
+
+
+# ------------------------------------------------------------------ "Inside a Switching Circuit"
+# (written to docs/images/switching/)
+OUT2 = "docs/images/switching"
+os.makedirs(OUT2, exist_ok=True)
+
+
+def save2(fig, name):
+    fig.savefig(os.path.join(OUT2, name), format="svg", bbox_inches="tight")
+    plt.close(fig)
+    print("wrote", os.path.join(OUT2, name))
+
+
+# SCR: four layers, and the same layers as two transistors
+PCOL, NCOL = "#f2c9b0", "#b9d3ee"
+fig, ax = plt.subplots(figsize=(8.6, 4.2))
+ax.set_aspect("equal")
+ax.axis("off")
+# left: the four-layer stack, anode on top
+lay = [("P", PCOL), ("N", NCOL), ("P", PCOL), ("N", NCOL)]
+for k, (t, col) in enumerate(lay):
+    y = 3.0 - k * 0.75
+    ax.add_patch(Rectangle((0, y), 2.0, 0.75, fc=col, ec=INK, lw=1.0))
+    ax.text(1.0, y + 0.375, t, ha="center", va="center", fontsize=11, weight="bold", color=INK)
+for k, jn in enumerate(("J1", "J2", "J3")):
+    y = 3.0 - k * 0.75
+    ax.plot([2.0, 2.25], [y, y], color=MUTED, lw=0.8)
+    ax.text(2.3, y, jn, va="center", fontsize=8.5, color=MUTED)
+wire(ax, [[1.0, 3.75], [1.0, 4.3]]); note(ax, 1.0, 4.45, "anode (A)", ha="center")
+wire(ax, [[1.0, 0.75], [1.0, 0.2]]); note(ax, 1.0, 0.05, "cathode (K)", ha="center")
+wire(ax, [[0.0, 1.875], [-0.6, 1.875]]); note(ax, -0.7, 1.875, "gate (G)", ha="right")
+note(ax, 1.0, -0.5, "J2 blocks when the anode is positive;\nJ1 and J3 block when it is negative", ha="center",
+     col=MUTED, size=8)
+# right: the same layers as two transistors, side by side at the same heights
+x0, x2 = 4.4, 7.2
+for k, (t, col) in enumerate(lay[:3]):           # PNP (Q1): P N P
+    y = 3.0 - k * 0.75
+    ax.add_patch(Rectangle((x0, y), 1.4, 0.75, fc=col, ec=INK, lw=1.0))
+    ax.text(x0 + 0.7, y + 0.375, t, ha="center", va="center", fontsize=10, weight="bold")
+for k, (t, col) in enumerate(lay[1:]):           # NPN (Q2): N P N, one layer lower
+    y = 2.25 - k * 0.75
+    ax.add_patch(Rectangle((x2, y), 1.4, 0.75, fc=col, ec=INK, lw=1.0))
+    ax.text(x2 + 0.7, y + 0.375, t, ha="center", va="center", fontsize=10, weight="bold")
+note(ax, x0 + 0.7, -0.15, "PNP (Q1)", ha="center")
+note(ax, x2 + 0.7, -0.15, "NPN (Q2)", ha="center")
+# Q2's collector (its N, level 2.25) feeds Q1's base (its N); Q1's collector (its lower P, level 1.5) feeds Q2's base
+ax.add_patch(FancyArrowPatch((x2, 2.625), (x0 + 1.4, 2.625), arrowstyle="-|>", mutation_scale=11,
+                             color=ACCENT, lw=1.5))
+ax.add_patch(FancyArrowPatch((x0 + 1.4, 1.875), (x2, 1.875), arrowstyle="-|>", mutation_scale=11,
+                             color=WARM, lw=1.5))
+note(ax, (x0 + 1.4 + x2) / 2, 3.45, "Q2's collector current\nis Q1's base current", ha="center", col=ACCENT, size=8)
+note(ax, (x0 + 1.4 + x2) / 2, 1.2, "Q1's collector current\nis Q2's base current", ha="center", col=WARM, size=8)
+wire(ax, [[x0 + 0.7, 3.75], [x0 + 0.7, 4.3]]); note(ax, x0 + 0.7, 4.45, "A", ha="center", col=MUTED)
+wire(ax, [[x2 + 0.7, 0.75], [x2 + 0.7, 0.2]]); note(ax, x2 + 1.0, 0.35, "K", col=MUTED)
+wire(ax, [[x2 + 1.4, 1.875], [x2 + 1.9, 1.875]]); note(ax, x2 + 2.0, 1.875, "G", col=MUTED)
+ax.set_xlim(-2.2, 10.2)
+ax.set_ylim(-1.2, 4.8)
+save2(fig, "scr-structure.svg")
+
+# leading edge versus trailing edge, same RMS on a resistive load
+th = np.linspace(0, 720, 2000)
+v = VPK * np.sin(np.radians(th))
+ph = th % 180
+lead = np.where(ph >= 90, v, 0.0)
+trail = np.where(ph <= 90, v, 0.0)
+fig, (b1, b2) = plt.subplots(2, 1, figsize=(8.0, 4.6), sharex=True, gridspec_kw={"hspace": 0.18})
+for axx, w, title in ((b1, lead, "Leading edge (triac): off until 90°, then on to the zero"),
+                      (b2, trail, "Trailing edge (MOSFET or IGBT): on from the zero, off at 90°")):
+    style(axx)
+    axx.plot(th, v, color=GRAY2, lw=1.1)
+    axx.fill_between(th, 0, w, color=WARM, alpha=0.25, lw=0)
+    axx.plot(th, w, color=WARM, lw=1.4)
+    axx.set_ylim(-200, 200)
+    axx.set_ylabel("volts", color=MUTED)
+    axx.set_title(title, loc="left", fontsize=9.5, color=INK)
+b2.set_xticks(np.arange(0, 721, 90))
+b2.set_xlim(0, 720)
+b2.set_xlabel("degrees of the line cycle", color=MUTED)
+save2(fig, "leading-trailing.svg")
