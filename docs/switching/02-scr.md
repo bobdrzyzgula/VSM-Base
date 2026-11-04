@@ -50,6 +50,22 @@ the loop gain is one, and the current is limited only by the external
 circuit. The SCR has switched on, and it stays on with no gate current at
 all.
 
+Why should $\alpha$ rise with current? At low current densities, much of
+the emitter current is lost to recombination, at defects in the junctions'
+depletion regions and at the surface, before it can cross the base. That
+loss grows only slowly with current, so as the current rises, a larger
+share of it gets through. Designers use this. The emitters are shorted to
+the P layer next to them in places, so that small currents (leakage, or
+the displacement current of a fast voltage edge) bypass the emitter
+entirely and can't start the loop. Only a real gate current, or a large
+enough fault, raises the gains to one.
+
+The layers' doping sets the voltages. The N1 layer next to the anode is
+thick and lightly doped, because the blocking junction's depletion region
+spreads into it: the thicker and purer it is, the higher the voltage it
+holds off. It is also where the stored charge sits when the device
+conducts, which is why high-voltage thyristors are slower to turn off.
+
 ## Latching and holding
 
 Two currents describe the latch:

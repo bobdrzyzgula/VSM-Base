@@ -9,6 +9,30 @@ either way, its main terminals aren't called anode and cathode. They are
 **MT1**, the terminal the gate is referenced to, and **MT2**. On a TO-220
 package such as the BT136, MT2 is the metal tab, so the tab is live.
 
+![A triac in cross-section, schematically and not to scale. The same four
+main layers as an SCR, with N-type emitters let into both faces: N2 under
+MT1, N4 under MT2 on the opposite side, and N3 under the gate. One SCR
+(orange) conducts when MT2 is positive, the other (blue), the same layers
+the other way up, when it is negative.](../images/switching/triac-structure.svg){width=100%}
+
+**Inside, it is one chip with two SCRs folded together.** The figure shows
+the layout. The thick, lightly doped N1 layer in the middle blocks the
+voltage in both directions, as in an SCR. Above and below it are P2 and
+P1. The N-type emitters are let into the outer faces at different places:
+
+- **N2, under MT1,** makes P1–N1–P2–N2, an SCR that conducts from MT2 to
+  MT1 when MT2 is positive. This is the left-hand path in the figure.
+- **N4, under MT2,** on the opposite side of the chip, makes P2–N1–P1–N4,
+  an SCR the other way up, conducting from MT1 to MT2 when MT2 is negative.
+  It sits under the part of MT1 that touches P2 directly.
+- **N3, under the gate,** is a small emitter beside the gate's contact to
+  P2. It is what lets a negative gate current fire the triac (below).
+
+Each terminal's metal touches both an N emitter and the P layer beside it.
+That is a deliberate short. It keeps the emitters from injecting until a
+real gate or load current flows, which is what sets the triac's
+sensitivity and its dV/dt rating.
+
 The triac behaves as described for the SCR: it latches, the gate can't turn
 it off, and it turns off when the current through it falls below the
 holding current. So all a control circuit can choose is when to switch it
@@ -32,16 +56,36 @@ a triac in detail.
 A triac can be fired with gate current of either sign, whichever way MT2
 is biased. That gives four combinations, called quadrants:
 
-| Quadrant | MT2 relative to MT1 | Gate current | BT136-600E: gate current to fire (typ / max) |
+| Quadrant | MT2, relative to MT1 | Gate current | BT136-600E: gate current to fire (typ / max) |
 |---|---|---|---|
-| I | + | + (into the gate) | 2.5 / 10 mA |
-| II | + | − (out of the gate) | 4 / 10 mA |
-| III | − | − | 5 / 10 mA |
-| IV | − | + | 11 / 25 mA |
+| I | positive | positive, into the gate | 2.5 / 10 mA |
+| II | positive | negative, out of the gate | 4 / 10 mA |
+| III | negative | negative | 5 / 10 mA |
+| IV | negative | positive | 11 / 25 mA |
 
-The four aren't equally easy. In quadrant IV the gate's current has to work
-through more of the structure, so it needs the most gate current and fires
-the slowest. Circuits avoid it where they can:
+The four work by different routes through the structure, which is why
+they aren't equally easy:
+
+- **Quadrant I** is an ordinary SCR's gate. Current from the gate flows
+  through P2 to N2, forward-biases the P2–N2 junction, and the left-hand
+  SCR fires.
+- **Quadrant II** uses the gate's own emitter. With the gate negative, N3
+  injects electrons into P2. That turns on a small auxiliary SCR,
+  P1–N1–P2–N3, under the gate first. Its current flows sideways through P2
+  to MT1, and acts as a large gate current for the main SCR, which fires
+  next. The auxiliary SCR is a built-in amplifier.
+- **Quadrant III** is a "remote gate". With MT2 negative, the SCR to fire
+  is the right-hand one, which has no gate of its own. Electrons injected
+  by N3 cross P2 into N1. There they lower N1's potential and act as base
+  current for the PNP section, P2–N1–P1, which turns the right-hand SCR
+  on.
+- **Quadrant IV** is the most indirect. Positive gate current
+  forward-biases P2–N2 under MT1, and N2 injects electrons that have to
+  find their way to N1 to fire the right-hand SCR, the far side of the
+  chip. Little of the gate's effort gets there, so it needs the most gate
+  current and fires the slowest.
+
+Circuits avoid quadrant IV where they can:
 
 - **A diac-triggered pedal** fires in I and III. The timing capacitor
   charges with the same sign as MT2, so the gate pulse has the same sign
@@ -82,13 +126,30 @@ This is the case the snubber in §5 is for.
 
 ## The diac
 
+![Left: a diac's three layers, with no gate connection. Right: its
+current against its voltage, schematically: almost nothing until the
+breakover, then a fall in voltage as the current rises, the same either
+way round.](../images/switching/diac-structure.svg){width=100%}
+
 A diac is a three-layer, two-terminal trigger, symmetrical, with no gate.
-It blocks in both directions until the voltage across it reaches its
-breakover voltage, about 32 V for the common DB3 (28–36 V). Then it breaks
-over: its voltage falls back by at least 5 V (the "breakback"), and it
-conducts heavily. That negative-resistance snap is the point. A capacitor
-charged to 32 V dumps part of its charge through the diac into the triac's
-gate as a short, sharp pulse of current, far more than the gate needs.
+In effect it is a transistor with no base connection, built with both
+junctions alike so that it works the same either way round.
+
+With voltage across it, one junction is forward-biased and the other
+reverse-biased. Almost nothing flows until the reverse-biased junction
+reaches its avalanche voltage, about 32 V for the common DB3 (28–36 V).
+The avalanche current flows into the floating middle layer, where it acts
+as base current. The transistor's gain rises with current, as an SCR's
+does (§2), so the more current flows, the less voltage it takes to keep it
+flowing. That is a negative resistance: past breakover, the voltage falls
+back by at least 5 V (the "breakback") as the current rises, until the
+device is conducting heavily at a lower voltage.
+
+That snap is the point. A capacitor charged to 32 V dumps part of its
+charge through the diac into the triac's gate as a short, sharp pulse of
+current, far more than the gate needs. Unlike an SCR, a diac doesn't
+latch: it has no fourth layer, so when the capacitor's current falls
+away, it stops conducting.
 
 Why not feed the gate straight from the capacitor through a resistor? The
 gate fires at a fraction of a volt and a few milliamps, so it would fire

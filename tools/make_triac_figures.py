@@ -445,3 +445,74 @@ b2.set_xticks(np.arange(0, 721, 90))
 b2.set_xlim(0, 720)
 b2.set_xlabel("degrees of the line cycle", color=MUTED)
 save2(fig, "leading-trailing.svg")
+
+# Triac: a cross-section (MT1 and gate on top, MT2 underneath), not to scale
+fig, ax = plt.subplots(figsize=(9.0, 4.6))
+ax.set_aspect("equal")
+ax.axis("off")
+MET = "#9aa0a7"
+W_ = 10.0
+def region(x, y, w, h, col, label, size=10):
+    ax.add_patch(Rectangle((x, y), w, h, fc=col, ec=INK, lw=0.9))
+    if label:
+        ax.text(x + w / 2, y + h / 2, label, ha="center", va="center", fontsize=size, weight="bold", color=INK)
+region(0, 0.25, W_, 0.85, PCOL, "")                  # P1
+region(0, 1.1, W_, 1.6, NCOL, "")                    # N1
+region(0, 2.7, W_, 0.85, PCOL, "")                   # P2
+ax.text(0.45, 0.68, "P1", fontsize=10, weight="bold", va="center")
+ax.text(0.45, 1.9, "N1", fontsize=10, weight="bold", va="center")
+ax.text(0.45, 3.12, "P2", fontsize=10, weight="bold", va="center")
+region(1.0, 3.12, 2.8, 0.43, NCOL, "N2", 9)            # main emitter under MT1
+region(7.6, 3.12, 1.1, 0.43, NCOL, "N3", 9)            # gate emitter
+region(4.0, 0.25, 2.7, 0.45, NCOL, "N4", 9)            # emitter under MT2, opposite MT1's P2 contact
+# metal
+ax.add_patch(Rectangle((0.7, 3.55), 5.7, 0.22, fc=MET, ec=INK, lw=0.8))
+ax.add_patch(Rectangle((7.0, 3.55), 2.4, 0.22, fc=MET, ec=INK, lw=0.8))
+ax.add_patch(Rectangle((0, 0.03), W_, 0.22, fc=MET, ec=INK, lw=0.8))
+wire(ax, [[3.55, 3.77], [3.55, 4.3]]); note(ax, 3.55, 4.45, "MT1", ha="center")
+wire(ax, [[8.2, 3.77], [8.2, 4.3]]); note(ax, 8.2, 4.45, "G (gate)", ha="center")
+wire(ax, [[5.0, 0.03], [5.0, -0.45]]); note(ax, 5.0, -0.6, "MT2 (the tab)", ha="center", va="top")
+# the two current paths
+ax.add_patch(FancyArrowPatch((2.3, 0.45), (2.3, 3.4), arrowstyle="-|>", mutation_scale=12, color=WARM, lw=1.8))
+ax.add_patch(FancyArrowPatch((5.3, 3.4), (5.3, 0.45), arrowstyle="-|>", mutation_scale=12, color=ACCENT, lw=1.8))
+note(ax, 10.3, 2.9, "MT2 positive: current flows up\nthrough P1–N1–P2–N2,\nan SCR on the left", col=WARM, size=8.5)
+note(ax, 10.3, 1.4, "MT2 negative: current flows down\nthrough P2–N1–P1–N4,\nan SCR the other way up", col=ACCENT, size=8.5)
+note(ax, 10.3, 0.35, "MT1's metal also touches P2,\nand MT2's touches P1: each\nemitter is shorted at its edge", col=MUTED, size=8)
+ax.set_xlim(-0.3, 14.8)
+ax.set_ylim(-1.0, 4.8)
+save2(fig, "triac-structure.svg")
+
+# Diac: three layers, and its current-voltage curve
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.0, 3.8), gridspec_kw={"width_ratios": [1, 1.5]})
+a1.set_aspect("equal"); a1.axis("off")
+for k, (t, col) in enumerate((("N", NCOL), ("P", PCOL), ("N", NCOL))):
+    y = 2.0 - k * 0.8
+    a1.add_patch(Rectangle((0, y), 1.8, 0.8 if k != 1 else 0.8, fc=col, ec=INK, lw=1.0))
+    a1.text(0.9, y + 0.4, t, ha="center", va="center", fontsize=11, weight="bold")
+wire(a1, [[0.9, 2.8], [0.9, 3.3]]); a1.text(0.9, 3.45, "A1", ha="center", fontsize=9)
+wire(a1, [[0.9, 0.4], [0.9, -0.1]]); a1.text(0.9, -0.25, "A2", ha="center", va="top", fontsize=9)
+a1.text(2.1, 1.6, "no gate;\nthe middle layer\nfloats", fontsize=8.5, color=MUTED, va="center")
+a1.text(0.9, -0.95, "symmetrical: the same\neither way round", ha="center", fontsize=8.5, color=MUTED)
+a1.set_xlim(-0.3, 4.2); a1.set_ylim(-1.5, 3.8)
+style(a2)
+vb, db = 32.0, 8.0
+def branch(sign):
+    v_off = np.linspace(0, vb, 50); i_off = 0.02 * (v_off / vb) ** 6
+    v_nr = np.linspace(vb, vb - db, 30); i_nr = np.linspace(0.05, 6, 30) ** 1.0
+    v_on = np.linspace(vb - db, vb - db + 3, 30); i_on = np.linspace(6, 40, 30)
+    v = np.concatenate([v_off, v_nr, v_on]); i = np.concatenate([i_off, i_nr, i_on])
+    return sign * v, sign * i
+for sg in (1, -1):
+    v, i = branch(sg)
+    a2.plot(v, i, color=ACCENT, lw=1.6)
+a2.axhline(0, color=MUTED, lw=0.6); a2.axvline(0, color=MUTED, lw=0.6)
+a2.annotate("breakover,\nabout 32 V", (vb, 0.3), xytext=(30, -20), fontsize=8.5, color=INK, ha="center",
+            arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.7))
+a2.annotate("negative resistance:\nthe voltage falls back\nby at least 5 V", (vb - db / 2, 3), xytext=(-2, 26), ha="right",
+            fontsize=8.5, color=INK, arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.7))
+a2.set_xlim(-45, 45); a2.set_ylim(-45, 45)
+a2.set_xlabel("voltage across the diac, V", color=MUTED)
+a2.set_ylabel("current, mA (not to scale)", color=MUTED)
+a2.set_title("DB3-class diac, schematic", loc="left", fontsize=9.5, color=INK)
+fig.tight_layout()
+save2(fig, "diac-structure.svg")
