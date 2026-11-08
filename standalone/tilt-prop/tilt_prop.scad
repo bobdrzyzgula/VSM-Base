@@ -3,6 +3,11 @@
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
+// A copy of this file is also kept in the Sewing Notions repository
+// (github.com/bobdrzyzgula/Sewing-Notions), at tilt-prop/tilt_prop.scad.
+// When either copy changes, ask Bob whether to make the same change in
+// the other.
+//
 // Stand it on the table behind the base and tip the machine back onto it:
 // its top catches the machine's arm (or some other solid part), so the
 // machine stays put for oiling and adjusting, with both hands free, and its
