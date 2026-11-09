@@ -44,6 +44,10 @@ libraries needed.
 Line the top with felt or cork. Print standing on the foot; 15% infill is
 plenty.
 
+**Status:** Printed in basic PLA at the default settings (a 1" cradle, 6"
+high) and in use: it holds a Singer 99 tipped back, including one fitted
+with the chromed light, without much deflection.
+
 Spun off from the [VSM Base](../../README.md), whose main model also makes
 this prop, sized from its machine profiles, as part `tilt_prop`.
 
