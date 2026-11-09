@@ -3,6 +3,11 @@
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
+// A copy of this file is also kept in the Sewing Notions repository
+// (github.com/bobdrzyzgula/Sewing-Notions), at bobbin-box/bobbin_box.scad.
+// When either copy changes, ask Bob whether to make the same change in
+// the other.
+//
 // Holds class 15 / class 66 bobbins (or any round bobbin, set below) on
 // posts, eight to a tray in a 3 x 3 grid with the center left for the
 // handle. The bottom tray carries a center column with a knob just under

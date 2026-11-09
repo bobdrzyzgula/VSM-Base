@@ -12,6 +12,9 @@ It is the corner bay and bobbin trays of the [VSM Base](../../README.md)
 made into a freestanding box, in one self-contained OpenSCAD file,
 `bobbin_box.scad`. You don't need the main model to make it.
 
+A copy is also kept in [Sewing Notions](https://github.com/bobdrzyzgula/Sewing-Notions/tree/main/bobbin-box),
+with a User's Guide and ready-made STLs.
+
 - **Size:** about 95 × 97 × 88 mm at the defaults. The box grows with the
   number of trays and the bobbin size, and the console reports the size.
 - **Settings:** the number of trays, the lid type, the bobbin's diameter

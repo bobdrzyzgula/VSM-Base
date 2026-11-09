@@ -51,6 +51,9 @@ with the chromed light, without much deflection.
 Spun off from the [VSM Base](../../README.md), whose main model also makes
 this prop, sized from its machine profiles, as part `tilt_prop`.
 
+A copy is also kept in [Sewing Notions](https://github.com/bobdrzyzgula/Sewing-Notions/tree/main/tilt-prop),
+with a User's Guide and ready-made STLs.
+
 Designed by Robert Drzyzgula; the OpenSCAD code was written by Claude
 (Anthropic) at his direction. MIT license; see the [LICENSE](../../LICENSE)
 in the main project.
