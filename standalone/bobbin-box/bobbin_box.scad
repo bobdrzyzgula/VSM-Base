@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// Bobbin box: a stack of bobbin trays in a lidded box, v3
+// Bobbin box: a stack of bobbin trays in a lidded box, v4
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -37,6 +37,14 @@
 //     Raised and inlaid images are color-tagged, each face its own random
 //     color and the body another, so a 3MF export opens in Bambu Studio or
 //     Orca as a multi-color part.
+// v4: the hinge bumps are cones defined properly: bump_d across at the
+//     lid's end face, and bump_flank, the angle their sides meet that face
+//     at. The old cones started inside the lid, so they were narrower at
+//     the face (2.3 mm, not 3) and came to a point (0.8 mm at the default
+//     engagement, 0.2 mm at 1.1 mm), at about 55 degrees. The default is now
+//     55 degrees from a full 3 mm base: blunter tips (1.5 mm) that print
+//     solidly. A steeper flank holds the lid harder, which PETG needs. The
+//     recesses in the box don't change.
 //
 // Needs BOSL2 (https://github.com/BelfrySCAD/BOSL2).
 
@@ -75,10 +83,12 @@ lid_clear = 0.3;
 ledge = 2.5;
 
 /* [Hinge] */
-// Bump diameter at its base
+// Bump diameter at its base, on the lid's end face
 bump_d = 3;
 // How far each bump reaches into its recess in the end wall
 bump_engage = 0.8;
+// Angle of the bump's cone, from the lid's end face: steeper is blunter and holds the lid harder (and snaps on harder too)
+bump_flank = 55; // [40 : 5 : 75]
 // Recess diameter beyond the bump's (looser recess: easier to snap in, less firm)
 recess_extra_d = 0.3;
 // Recess depth beyond the bump's reach
@@ -260,11 +270,13 @@ if (lip < bump_engage + 1.6)
 if (scoop_d > lip - 0.4)
     echo("WARNING: the thumb scoop cuts through the lip");
 if (hinged) {
-    echo(str("Hinge: bumps ", bump_d, " mm engaging ", bump_engage, " mm; recesses ",
+    echo(str("Hinge: bumps ", bump_d, " mm, ", bump_flank, " degree flanks, tips ",
+             round((bump_d - 2 * (c + bump_engage) / tan(bump_flank)) * 100) / 100,
+             " mm across, engaging ", bump_engage, " mm; recesses ",
              bump_d + recess_extra_d, " mm, ", bump_engage + recess_extra_depth,
              " deep; flex tabs ", flex_len, " x ", flex_w, " mm; open stop ",
              open_stop ? "on" : "off"));
-    if (bump_d - 2 * (c + bump_engage) < 0.4)
+    if (bump_d - 2 * (c + bump_engage) / tan(bump_flank) < 0.4)
         echo("WARNING: the bumps come to a point; reduce bump_engage or raise bump_d");
     if (bump_d > lid_t - 0.8)
         echo("WARNING: the bumps are nearly as large as the lid is thick");
@@ -448,9 +460,16 @@ module lid_full(alpha = 1) {
 }
 
 // Lid plate in the hinge frame (see hinge_frame_cuts)
+module bump(h, tip) {
+    translate([0, 0, -overlap]) cylinder(h = overlap + 0.01, d = bump_d);
+    cylinder(h = h, d1 = bump_d, d2 = tip);
+}
+
 module lid_plate(A, B, t) {
     ya = -c - t / 2;
     bh = c + bump_engage;
+    // a cone whose flanks meet the lid's end face at bump_flank
+    bump_tip = max(bump_d - 2 * bh / tan(bump_flank), 0.01);
     if (hinged)
         difference() {
             union() {
@@ -458,11 +477,9 @@ module lid_plate(A, B, t) {
                 // rounded hinge edge, turning about the pivot
                 translate([c, ya, -t / 2]) rotate([0, 90, 0])
                     cylinder(h = A - 2 * c, r = t / 2);
-                // bumps
-                translate([c + overlap, ya, -t / 2]) rotate([0, -90, 0])
-                    cylinder(h = bh + overlap, d1 = bump_d, d2 = bump_d - 2 * bh);
-                translate([A - c - overlap, ya, -t / 2]) rotate([0, 90, 0])
-                    cylinder(h = bh + overlap, d1 = bump_d, d2 = bump_d - 2 * bh);
+                // bumps: a cone from each end face, rooted in the lid
+                translate([c, ya, -t / 2]) rotate([0, -90, 0]) bump(bh, bump_tip);
+                translate([A - c, ya, -t / 2]) rotate([0, 90, 0]) bump(bh, bump_tip);
             }
             // slots freeing the flex tabs that carry the bumps
             for (x = [c + flex_w, A - c - flex_w - flex_slot])

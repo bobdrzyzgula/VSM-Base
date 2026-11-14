@@ -26,6 +26,11 @@ with a User's Guide and ready-made STLs.
   of the box and a strip of the lid, to try the hinge).
 - **Printing:** no supports. Print the box upright, the lid top face down
   and the trays floor down.
+- **The hinge in PETG:** PETG is softer and slicker than PLA, and a PETG
+  lid holds weakly at the PLA settings, even with a much wider flex tab.
+  `bump_flank` (version 4) sets the angle of the bumps' cones: the default
+  55° suits PLA; for PETG try 65°, with `bump_engage = 1.0` and
+  `flex_w = 2.9`, on `hinge_test` first. A new lid fits an existing box.
 - **Needs:** OpenSCAD and the [BOSL2](https://github.com/BelfrySCAD/BOSL2)
   library.
 
@@ -83,10 +88,12 @@ tag.](bobbin-box-images.png)
   lid's runs into the hinge's flex slots, and when `img_depth` cuts too deep
   into the floor, lid or walls.
 
-The images have not been printed yet.
+Bob printed the box in November 2026: the box in matte PLA, the trays in
+PETG, and a translucent PETG lid with an inlaid image on top in a second
+PETG. The inlay worked well; the PETG hinge is what led to version 4.
 
 The trays are the same design as the VSM Base's, which have been printed
-and used in PETG. The freestanding box itself has not been printed yet.
+and used in PETG.
 
 Designed and tested by Robert Drzyzgula (images on the faces at his
 request, November 2026); the OpenSCAD code was written by

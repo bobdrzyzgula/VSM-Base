@@ -29,5 +29,5 @@ Sewing Notions also carries rendered STLs (`bobbin-box/stl/`,
 from the new .scad at the default settings, and check that a fresh
 render's triangle count and bounding box match the committed STL.
 
-Last checked on November 13, 2026: both models matched, and the bobbin
-box's box and lid STLs matched fresh renders.
+Last checked on November 14, 2026 (bobbin box v4): both models matched,
+and the bobbin box STLs were re-rendered from v4.
