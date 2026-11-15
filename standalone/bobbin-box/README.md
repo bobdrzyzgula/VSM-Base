@@ -35,11 +35,15 @@ with a User's Guide and ready-made STLs.
   a bobbin on its post and the pin in its socket) and `hinge_test` (the back
   of the box and a strip of the lid, to try the hinge).
 - **Printing:** no supports. Print the box upright, the lid top face down
-  and the trays floor down.
+  and the trays floor down. A fine layer height for the lid (0.12 mm) gives
+  its hinge bumps smoother cones; the box prints fine at 0.20 mm.
 - **The hinge** is the same as the VSM Base's hinged lids, with the same
   defaults (version 4): blunt cone-shaped bumps (`bump_angle`, from the
   axis) in matching cone-shaped recesses, 0.15 mm end float and 4 mm flex
-  tabs. The version 3 bumps came to a point and held weakly in PETG. The
+  tabs. The version 3 bumps came to a point and held weakly in PETG.
+  Version 4's hinge held securely in a November 2026 test with lids in
+  PLA and PETG (0.12 mm layers) on boxes in PLA and PETG (0.20 mm), all
+  four combinations. The
   box's recesses match the lid's bumps, so a lid made with different hinge
   settings needs a box made with the same ones.
 - **Needs:** OpenSCAD and the [BOSL2](https://github.com/BelfrySCAD/BOSL2)

@@ -35,6 +35,14 @@
 > the bumps steeper with a smaller `lid_bump_angle`; if it is hard to snap
 > in, do the opposite. Try changes on `lid_hinge_test`, which prints in a
 > few minutes, before printing a full lid.
+>
+> The same hinge, at the current defaults, was tested again in November
+> 2026: lids printed in PLA and in PETG, each fitted to boxes printed in
+> PLA and in PETG, held securely in all four combinations. The test lids
+> were printed at 0.12 mm layers and the boxes at 0.20 mm. Fine layers
+> give the lid's cone-shaped bumps a smoother, truer flank, and the lid
+> prints quickly enough that they cost little; the base and boxes print
+> fine at 0.20 mm, where finer layers would take far longer.
 
 > **Note: infill near the hinges.** The base has been printed at 15%
 > infill without trouble, and that is enough at the hinges too: around the
