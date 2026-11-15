@@ -26,11 +26,12 @@ with a User's Guide and ready-made STLs.
   of the box and a strip of the lid, to try the hinge).
 - **Printing:** no supports. Print the box upright, the lid top face down
   and the trays floor down.
-- **The hinge in PETG:** PETG is softer and slicker than PLA, and a PETG
-  lid holds weakly at the PLA settings, even with a much wider flex tab.
-  `bump_flank` (version 4) sets the angle of the bumps' cones: the default
-  55° suits PLA; for PETG try 65°, with `bump_engage = 1.0` and
-  `flex_w = 2.9`, on `hinge_test` first. A new lid fits an existing box.
+- **The hinge** is the same as the VSM Base's hinged lids, with the same
+  defaults (version 4): blunt cone-shaped bumps (`bump_angle`, from the
+  axis) in matching cone-shaped recesses, 0.15 mm end float and 4 mm flex
+  tabs. The version 3 bumps came to a point and held weakly in PETG. The
+  box's recesses match the lid's bumps, so a lid made with different hinge
+  settings needs a box made with the same ones.
 - **Needs:** OpenSCAD and the [BOSL2](https://github.com/BelfrySCAD/BOSL2)
   library.
 

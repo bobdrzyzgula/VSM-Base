@@ -37,14 +37,13 @@
 //     Raised and inlaid images are color-tagged, each face its own random
 //     color and the body another, so a 3MF export opens in Bambu Studio or
 //     Orca as a multi-color part.
-// v4: the hinge bumps are cones defined properly: bump_d across at the
-//     lid's end face, and bump_flank, the angle their sides meet that face
-//     at. The old cones started inside the lid, so they were narrower at
-//     the face (2.3 mm, not 3) and came to a point (0.8 mm at the default
-//     engagement, 0.2 mm at 1.1 mm), at about 55 degrees. The default is now
-//     55 degrees from a full 3 mm base: blunter tips (1.5 mm) that print
-//     solidly. A steeper flank holds the lid harder, which PETG needs. The
-//     recesses in the box don't change.
+// v4: the hinge brought into line with the VSM Base's hinged lids (its
+//     v20 hinge, which this box had missed): bumps that are cones bump_d
+//     across at the lid's end face with flanks bump_angle (35 degrees) from
+//     their axis, so they end in a blunt tip instead of a point; recesses
+//     that are matching cones, 0.075 mm clear; 0.15 mm end float at the
+//     hinge ends; 4 mm flex tabs and 1.0 mm engagement. The old bumps came
+//     to a point and held weakly in PETG. A new lid needs a new box.
 //
 // Needs BOSL2 (https://github.com/BelfrySCAD/BOSL2).
 
@@ -77,26 +76,29 @@ wall = 5.5;
 lid_t = 4;
 
 /* [Lid fit] */
-// Lid clearance in its rabbet, per side (also the gap at the hinge ends)
+// Lid clearance in its rabbet, per side (the hinged lid's two hinge ends use hinge_end_clear)
 lid_clear = 0.3;
 // Ledge the lid rests on, inside the lip
 ledge = 2.5;
 
 /* [Hinge] */
+// (The same hinge as the VSM Base's hinged lids, with the same defaults.)
 // Bump diameter at its base, on the lid's end face
-bump_d = 3;
+bump_d = 3; // [1.5 : 0.1 : 6]
 // How far each bump reaches into its recess in the end wall
-bump_engage = 0.8;
-// Angle of the bump's cone, from the lid's end face: steeper is blunter and holds the lid harder (and snaps on harder too)
-bump_flank = 55; // [40 : 5 : 75]
-// Recess diameter beyond the bump's (looser recess: easier to snap in, less firm)
-recess_extra_d = 0.3;
+bump_engage = 1.0;
+// Bump flank angle from its axis: smaller is steeper and holds better (45 is a plain 45-degree cone)
+bump_angle = 35; // [15 : 1 : 60]
+// Clearance at the lid's two hinge ends (less end float keeps both bumps engaged)
+hinge_end_clear = 0.15;
+// Clearance between bump and recess, per side (the recess is a cone matching the bump)
+recess_clear = 0.075;
 // Recess depth beyond the bump's reach
-recess_extra_depth = 0.6;
+recess_extra_depth = 0.3;
 // Flex tab carrying each bump: length (longer: softer snap)
 flex_len = 15;
 // Flex tab width (narrower: softer snap)
-flex_w = 2.5;
+flex_w = 4; // [1.5 : 0.1 : 8]
 // Slot freeing each flex tab
 flex_slot = 1;
 // Lean-back stop: chamfer the back rabbet wall so the open lid rests at about 135 degrees
@@ -182,6 +184,8 @@ $fs = 0.4;
 
 hinged = lid_type == "hinged";
 c      = lid_clear;
+ce     = hinged ? hinge_end_clear : lid_clear;     // the lid's clearance at its two ends
+bump_tip = bump_d - 2 * (ce + bump_engage) * tan(bump_angle);
 
 // Trays
 pitch    = bobbin_d + bobbin_gap;
@@ -270,14 +274,15 @@ if (lip < bump_engage + 1.6)
 if (scoop_d > lip - 0.4)
     echo("WARNING: the thumb scoop cuts through the lip");
 if (hinged) {
-    echo(str("Hinge: bumps ", bump_d, " mm, ", bump_flank, " degree flanks, tips ",
-             round((bump_d - 2 * (c + bump_engage) / tan(bump_flank)) * 100) / 100,
-             " mm across, engaging ", bump_engage, " mm; recesses ",
-             bump_d + recess_extra_d, " mm, ", bump_engage + recess_extra_depth,
+    echo(str("Hinge: bumps ", bump_d, " mm, flanks ", bump_angle, " degrees from the axis, tips ",
+             round(bump_tip * 100) / 100, " mm across, engaging ", bump_engage,
+             " mm; end clearance ", hinge_end_clear, " mm; recesses ", recess_clear,
+             " mm clear, ", bump_engage + recess_extra_depth,
              " deep; flex tabs ", flex_len, " x ", flex_w, " mm; open stop ",
              open_stop ? "on" : "off"));
-    if (bump_d - 2 * (c + bump_engage) / tan(bump_flank) < 0.4)
-        echo("WARNING: the bumps come to a point; reduce bump_engage or raise bump_d");
+    if (bump_tip < 0.6)
+        echo(str("WARNING: the hinge bumps come to a point (tip ", bump_tip,
+                 " mm): reduce bump_engage or bump_angle, or increase bump_d"));
     if (bump_d > lid_t - 0.8)
         echo("WARNING: the bumps are nearly as large as the lid is thick");
     if (flex_len > (ry1 - ry0) / 2)
@@ -302,7 +307,7 @@ if (any_img) {
     if (img_front != "" && top / 2 + img_front_size.y / 2 > z0 - scoop_h - 1)
         echo(str("WARNING: the front image runs into the thumb scoop; keep img_front_size's height under ",
                  2 * (z0 - scoop_h - 1) - top, " mm"));
-    lid_room = [rx1 - rx0 - 2 * c - (hinged ? 2 * (flex_w + flex_slot) : 0) - 2,
+    lid_room = [rx1 - rx0 - 2 * ce - (hinged ? 2 * (flex_w + flex_slot) : 0) - 2,
                 ry1 - ry0 - 2 * c - (hinged ? lid_t : 0) - 2];
     if (img_lid != "" && (img_lid_size.x > lid_room.x || img_lid_size.y > lid_room.y))
         echo(str("WARNING: the lid image is larger than the lid allows (", lid_room.x, " x ",
@@ -411,12 +416,14 @@ module img_2d(f) resize(f[2]) import(f[1], center = true);
 // runs from x = 0 to A, the hinge wall is at y = 0, z = 0 is the top.
 module hinge_frame_cuts(A, t) {
     ya = -c - t / 2;                     // pivot axis
-    sd = bump_d + recess_extra_d;
+    sd = bump_d + 2 * recess_clear;      // a cone matching the bump, just clear of it
     sh = bump_engage + recess_extra_depth;
+    ta = tan(bump_angle);
     for (m = [[0, -1], [A, 1]])
         translate([m[0] - m[1] * overlap, ya, -t / 2])
             rotate([0, m[1] * 90, 0])
-                cylinder(h = sh + overlap, d1 = sd, d2 = max(0.4, sd - 2 * sh));
+                cylinder(h = sh + overlap, d1 = sd + 2 * overlap * ta,
+                         d2 = max(0.4, sd - 2 * sh * ta));
     // Lean-back chamfer: the open lid leans to about 135 degrees and stays
     k  = 0.7071 * t + open_stop_extra;
     yw = c + t / 2;
@@ -460,29 +467,30 @@ module lid_full(alpha = 1) {
 }
 
 // Lid plate in the hinge frame (see hinge_frame_cuts)
-module bump(h, tip) {
-    translate([0, 0, -overlap]) cylinder(h = overlap + 0.01, d = bump_d);
-    cylinder(h = h, d1 = bump_d, d2 = tip);
+// A bump: a cone bump_d across at the lid's end face, its flanks bump_angle
+// from its axis, continued a little into the lid to root it
+module bump(h) {
+    ta = tan(bump_angle);
+    translate([0, 0, -overlap])
+        cylinder(h = h + overlap, d1 = bump_d + 2 * overlap * ta, d2 = max(0.2, bump_tip));
 }
 
 module lid_plate(A, B, t) {
     ya = -c - t / 2;
-    bh = c + bump_engage;
-    // a cone whose flanks meet the lid's end face at bump_flank
-    bump_tip = max(bump_d - 2 * bh / tan(bump_flank), 0.01);
+    bh = ce + bump_engage;               // bump height off the end face
     if (hinged)
         difference() {
             union() {
-                translate([c, -(B - c), -t]) cube([A - 2 * c, B - 2 * c - t / 2, t]);
+                translate([ce, -(B - c), -t]) cube([A - 2 * ce, B - 2 * c - t / 2, t]);
                 // rounded hinge edge, turning about the pivot
-                translate([c, ya, -t / 2]) rotate([0, 90, 0])
-                    cylinder(h = A - 2 * c, r = t / 2);
-                // bumps: a cone from each end face, rooted in the lid
-                translate([c, ya, -t / 2]) rotate([0, -90, 0]) bump(bh, bump_tip);
-                translate([A - c, ya, -t / 2]) rotate([0, 90, 0]) bump(bh, bump_tip);
+                translate([ce, ya, -t / 2]) rotate([0, 90, 0])
+                    cylinder(h = A - 2 * ce, r = t / 2);
+                // bumps, one on each end face
+                translate([ce, ya, -t / 2]) rotate([0, -90, 0]) bump(bh);
+                translate([A - ce, ya, -t / 2]) rotate([0, 90, 0]) bump(bh);
             }
             // slots freeing the flex tabs that carry the bumps
-            for (x = [c + flex_w, A - c - flex_w - flex_slot])
+            for (x = [ce + flex_w, A - ce - flex_w - flex_slot])
                 translate([x, ya - flex_len, -t - overlap])
                     cube([flex_slot, flex_len + t, t + 2 * overlap]);
         }

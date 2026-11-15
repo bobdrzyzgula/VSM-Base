@@ -31,3 +31,13 @@ render's triangle count and bounding box match the committed STL.
 
 Last checked on November 14, 2026 (bobbin box v4): both models matched,
 and the bobbin box STLs were re-rendered from v4.
+
+### The bobbin box's hinge follows the main model's
+
+Since v4 the bobbin box's lid hinge is the same design, with the same
+defaults, as the hinged lids in the main model here (`scad/vsm_base.scad`: `lid_canon` / `lid_frame_canon` and the `lid_bump_*`, `lid_tab_*`, `lid_hinge_end_clearance` and `lid_recess_clearance` settings). The standalone names differ
+(`bump_angle`, `bump_engage`, `flex_w`, `hinge_end_clear`,
+`recess_clear`), but the geometry and defaults should match. The box had
+drifted: it kept the pre-v20 pointed bumps after the main model was
+fixed, and a PETG lid paid for it. When either hinge changes, ask Bob
+whether the other should change too.
