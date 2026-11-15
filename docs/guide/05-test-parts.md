@@ -46,6 +46,16 @@
   insert or through-screw hole, with your outlet and plugs in place.
 - Extension top slices: lip fit, pegs, supports, and the bobbin-plate trench.
 - Lids: snap-in hinge, swing, and the lean-back stop.
+- Front corners (also `part = "front_corner_test"`): the base's front
+  left and right corners, full height and a little deeper than the front
+  wall, each printed upright as in the base, for trying the logos and the
+  ruler: relief depth, line widths, and, raised or inlaid, the filament
+  changes and colors. Each is wide enough for a 40 mm logo, or the logo if
+  wider, with the ruler below it; `test_corner_w` sets the width instead.
+- Ruler and logos: every piece cut from the base carries the raised or
+  inlaid ruler and logos it crosses (the center slice, the top and bottom
+  slices, the corners), each as its own color-tagged part, so export 3MF to
+  keep the colors. (Before version 75 the test pieces left them off.)
 
 > **Note: the hinge coupon as a wooden-base insert.** The hinge coupon has
 > countersunk corner holes for #8 flat-head wood screws, so it can also be

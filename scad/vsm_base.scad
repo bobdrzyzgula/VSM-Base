@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 74
+// VSM Base, version 75
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -367,13 +367,17 @@
 // v74: the assembly and exploded views show lollipop hinges, as a simple
 // stand-in sized from the recess settings and the profile's pin (the model
 // doesn't make them), and the exploded view lifts barrel hinges out too.
+// v75: test pieces cut from the base carry the raised and inlaid ruler and
+// logos they cross, each its own color-tagged object (they had none); new
+// part front_corner_test (also in test_parts): the base's front corners,
+// full height, for trying the logos and the ruler (test_corner_w).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -390,6 +394,8 @@ test_stub_w = 20;
 test_hinge_w = 40;
 // Gap between the two halves of split test parts
 test_split_gap = 10;
+// Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it
+test_corner_w = 0; // [0 : 1 : 150]
 // Split test (part split_test): height of the front-wall stubs; 0 = full height
 split_test_h = 30; // [0 : 1 : 100]
 // Split test: width either side of the split line
@@ -3561,6 +3567,8 @@ if (part == "assembly") {
     else if (report) echo("WARNING: split_test needs split = true");
 } else if (part == "test_parts") {
     test_parts();
+} else if (part == "front_corner_test") {
+    front_corner_test();
 } else if (part == "compartment_test") {
     // the right end of the base: the end wall with its handhold and rods,
     // the compartment, and the divider with both ends of the pass-through
@@ -5931,33 +5939,53 @@ BIG = 2000;
 
 // The base cut to a box, as one piece or as two halves `test_split_gap` apart.
 // The base cut to the shape of its children, whole or as two halves.
+// The raised and inlaid face marks (ruler and logos on the front, the
+// back's and the bottom's logos) are cut the same way, each its own
+// color-tagged object, so a test piece carries the artwork it crosses and
+// a 3MF export keeps its colors. (Engraved marks are already in base().)
+bm_marks = concat(fm_front_tagged ? fm_pieces : [],
+                  [for (w = om_pieces) if (fm_piece_tagged(w)) w]);
+module bm_piece(k) {
+    if (k == "body") base();
+    else if (len([for (q = fm_pieces) if (q == k) 1]) > 0) face_marks_3d(k, face_relief);
+    else om_3d(k, om_kind(k));
+}
+module bm_color(k) {
+    if (fm_tagged) color(k == "body" ? fm_cols[0] : fm_col(k)) children();
+    else children();
+}
 module base_masked(halves) {
-    if (halves) {
-        intersection() { base(); split_mask(0); children(); }
-        translate([test_split_gap, 0, 0])
-            intersection() {
-                difference() { base(); split_mask(split_clearance); }
-                children();
-            }
-    } else {
-        intersection() { base(); children(); }
+    for (k = concat(["body"], bm_marks)) bm_color(k) {
+        if (halves) {
+            intersection() { bm_piece(k); split_mask(0); children(); }
+            translate([test_split_gap, 0, 0])
+                intersection() {
+                    difference() { bm_piece(k); split_mask(split_clearance); }
+                    children();
+                }
+        } else {
+            intersection() { bm_piece(k); children(); }
+        }
     }
 }
 
 module base_box(mn, mx, halves) {
-    if (halves) {
-        intersection() {
-            base(); split_mask(0);
-            translate(mn) cube(mx - mn);
-        }
-        translate([test_split_gap, 0, 0])
-            intersection() {
-                difference() { base(); split_mask(split_clearance); }
-                translate(mn) cube(mx - mn);
-            }
-    } else {
-        intersection() { base(); translate(mn) cube(mx - mn); }
-    }
+    base_masked(halves) translate(mn) cube(mx - mn);
+}
+
+// Front corner test (part front_corner_test, and in test_parts): the
+// base's front left and right corners, full height and a little deeper
+// than the front wall, wide enough for a 40 mm logo (or a wider one) and
+// with the ruler below it. Each prints upright, as in the base: try the
+// logos' and the ruler's relief, inlay and colors before the full base.
+fc_w  = test_corner_w > 0 ? test_corner_w
+      : rl_x0 + logo_inset + max(40, logo_size[0]) + 6;
+fc_y1 = mc_y0 + 3;
+module front_corner_test() {
+    translate([1, 1, 0])
+        base_box([-1, -1, -1], [fc_w, fc_y1, outer_depth + 1], false);
+    translate([fc_w + 1 + explode / 2 - (base_x1 - fc_w), 1, 0])
+        base_box([base_x1 - fc_w, -1, -1], [base_x1 + 1, fc_y1, outer_depth + 1], false);
 }
 
 // Split test: the front of the joint, both halves, for trying the front-wall
@@ -6152,6 +6180,10 @@ module test_parts() {
              : sum_x([for (j = [0 : i - 1]) lid_size(lids[j]).x + g])];
     for (i = [0 : 1 : len(lids) - 1])
         translate([lx[i], row4, 0]) lid_print(lids[i]);
+
+    // Row 5: the front corners, with the logos and the ruler
+    row5 = row4 + (len(lids) > 0 ? max([for (w = lids) lid_size(w).y]) + g : 0);
+    translate([0, row5, 0]) front_corner_test();
 }
 
 function sum_x(v, i = 0) = i >= len(v) ? 0 : v[i] + sum_x(v, i + 1);

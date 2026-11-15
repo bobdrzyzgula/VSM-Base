@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 553 parameters; 551 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 554 parameters; 552 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -17,6 +17,7 @@ There are 553 parameters; 551 of them appear in the Customizer. The rest are lis
 | `test_stub_w` | `20` | Test parts: full-height wall stubs either side of the joint in the center slice |
 | `test_hinge_w` | `40` | Test parts: size of the hinge block (X), centered on the left hinge |
 | `test_split_gap` | `10` | Gap between the two halves of split test parts |
+| `test_corner_w` | `0` | Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it *Range 0 to 150, step 1.* |
 | `split_test_h` | `30` | Split test (part split_test): height of the front-wall stubs; 0 = full height *Range 0 to 100, step 1.* |
 | `split_test_w` | `25` | Split test: width either side of the split line *Range 10 to 60, step 1.* |
 | `printer_size` | `[256, 256, 256]` | Printer build volume, for the size check and the print plates |
