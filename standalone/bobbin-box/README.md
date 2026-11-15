@@ -8,6 +8,16 @@ about 135°, or it can be a plain lift-out plate.
 
 ![The bobbin box (part `assembly`)](bobbin-box.png)
 
+<p>
+<img src="bobbin-box-printed-closed.jpg" width="32%" alt="The printed box, closed: green PLA, with a purple PETG lid inlaid with a grey butterfly">
+<img src="bobbin-box-printed-open.jpg" width="32%" alt="The lid open, resting back, and the grey PETG trays in the box">
+<img src="bobbin-box-printed-trays.jpg" width="32%" alt="The stack of five trays lifted out by its knob, beside the empty box">
+</p>
+
+*As printed, November 2026: the box in matte green PLA, the trays in grey
+PETG, and the lid in translucent purple PETG with a butterfly inlaid in
+grey PETG. Photos by Robert Drzyzgula.*
+
 It is the corner bay and bobbin trays of the [VSM Base](../../README.md)
 made into a freestanding box, in one self-contained OpenSCAD file,
 `bobbin_box.scad`. You don't need the main model to make it.
@@ -94,6 +104,16 @@ tag.](bobbin-box-images.png)
 Bob printed the box in November 2026: the box in matte PLA, the trays in
 PETG, and a translucent PETG lid with an inlaid image on top in a second
 PETG. The inlay worked well; the PETG hinge is what led to version 4.
+
+<p>
+<img src="bobbin-box-printed-inlay.jpg" width="48%" alt="Close-up of the butterfly inlaid in grey PETG in the purple lid">
+<img src="bobbin-box-printed-hinge-bump.jpg" width="48%" alt="Close-up of a blunt hinge bump on the end of a PETG lid">
+</p>
+
+*Left: the inlaid butterfly, crisp down to the dots in the wing tips.
+Right: a steep, blunt hinge bump from the PETG test that led to version 4,
+printed at 0.12 mm layers. The version 3 bumps came to a soft point.
+Photos by Robert Drzyzgula.*
 
 The trays are the same design as the VSM Base's, which have been printed
 and used in PETG.
