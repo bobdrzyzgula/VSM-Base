@@ -52,9 +52,11 @@ tag.](bobbin-box-images.png)
   proportions. Every image reads correctly seen from outside its face. The
   bottom's reads with the box tipped over backward, its front edge at the
   top.
-- **Raised, engraved or inlaid.** `img_relief` sets all of them: `raised`
-  stands `img_depth` (0.6 mm) proud of the face, `engraved` cuts it in, and
-  `inlaid` cuts it in and fills the recess flush with a separate part.
+- **Raised, engraved or inlaid,** set for each face: `img_front_relief`,
+  `img_back_relief` and so on. `raised` stands `img_depth` (0.6 mm) proud
+  of the face, `engraved` cuts it in, and `inlaid` cuts it in and fills the
+  recess flush with a separate part. The four sides default to `raised`,
+  and the bottom and lid to `engraved`, since they print face down.
 - **Colors.** Raised and inlaid images are color-tagged for a second
   filament. The body (box and lid) gets one random color, and each image
   gets its own: up to six in the box (the body and five faces) and two in

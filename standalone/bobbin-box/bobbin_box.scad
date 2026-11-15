@@ -44,6 +44,8 @@
 //     that are matching cones, 0.075 mm clear; 0.15 mm end float at the
 //     hinge ends; 4 mm flex tabs and 1.0 mm engagement. The old bumps came
 //     to a point and held weakly in PETG. A new lid needs a new box.
+//     Each face's image now has its own relief (img_front_relief and so
+//     on) in place of the one img_relief for all six.
 //
 // Needs BOSL2 (https://github.com/BelfrySCAD/BOSL2).
 
@@ -125,23 +127,29 @@ scoop_d = 2.5;
 scoop_h = 6;
 
 /* [Images on the faces] */
-// An SVG for each face: a path relative to this file, or "" for none. Each is centered on its face and stretched to its size, width and height (set that to the image's own proportions)
+// An SVG for each face: a path relative to this file, or "" for none. Each is centered on its face and stretched to its size, width and height (set that to the image's own proportions). Each face's relief is raised from the face, engraved into it, or inlaid (engraved and filled flush); raised and inlaid images are color-tagged for a second filament
 img_front = "";
 img_front_size = [50, 30];
+img_front_relief = "raised"; // [raised, engraved, inlaid]
 img_back = "";
 img_back_size = [50, 30];
+img_back_relief = "raised"; // [raised, engraved, inlaid]
 // The left end, seen from the left
 img_left = "";
 img_left_size = [50, 30];
+img_left_relief = "raised"; // [raised, engraved, inlaid]
 img_right = "";
 img_right_size = [50, 30];
+img_right_relief = "raised"; // [raised, engraved, inlaid]
 // The bottom reads with the box tipped over backward, its front edge at the top
 img_bottom = "";
 img_bottom_size = [50, 30];
+// (The box prints standing on its bottom, so a raised bottom image would keep it off the bed; engraved or inlaid suits it)
+img_bottom_relief = "engraved"; // [raised, engraved, inlaid]
 img_lid = "";
 img_lid_size = [50, 30];
-// Raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid images are color-tagged for a second filament
-img_relief = "raised"; // [raised, engraved, inlaid]
+// (The lid prints top face down, so engraved or inlaid suits it best)
+img_lid_relief = "engraved"; // [raised, engraved, inlaid]
 // Height or depth of the relief
 img_depth = 0.6; // [0.2 : 0.1 : 2]
 // Change it for another set of random colors
@@ -219,19 +227,22 @@ notch_w  = tab_w + 2 * c;
 function fits(sz) = sz.x <= printer_size.x && sz.y <= printer_size.y
                     && sz.z <= printer_size.z;
 
-// Images: each face as [name, file, size, center, right, up, outward normal].
+// Images: each face as [name, file, size, center, right, up, outward normal,
+// relief].
 // right x up = normal, so an image reads correctly seen from outside.
 img_faces = [
-    ["front",  img_front,  img_front_size,  [cx, 0, top / 2],       [1, 0, 0],  [0, 0, 1],  [0, -1, 0]],
-    ["back",   img_back,   img_back_size,   [cx, outer.y, top / 2], [-1, 0, 0], [0, 0, 1],  [0, 1, 0]],
-    ["left",   img_left,   img_left_size,   [0, outer.y / 2, top / 2],       [0, -1, 0], [0, 0, 1], [-1, 0, 0]],
-    ["right",  img_right,  img_right_size,  [outer.x, outer.y / 2, top / 2], [0, 1, 0],  [0, 0, 1], [1, 0, 0]],
-    ["bottom", img_bottom, img_bottom_size, [cx, outer.y / 2, 0],   [1, 0, 0],  [0, -1, 0], [0, 0, -1]]
+    ["front",  img_front,  img_front_size,  [cx, 0, top / 2],       [1, 0, 0],  [0, 0, 1],  [0, -1, 0], img_front_relief],
+    ["back",   img_back,   img_back_size,   [cx, outer.y, top / 2], [-1, 0, 0], [0, 0, 1],  [0, 1, 0], img_back_relief],
+    ["left",   img_left,   img_left_size,   [0, outer.y / 2, top / 2],       [0, -1, 0], [0, 0, 1], [-1, 0, 0], img_left_relief],
+    ["right",  img_right,  img_right_size,  [outer.x, outer.y / 2, top / 2], [0, 1, 0],  [0, 0, 1], [1, 0, 0], img_right_relief],
+    ["bottom", img_bottom, img_bottom_size, [cx, outer.y / 2, 0],   [1, 0, 0],  [0, -1, 0], [0, 0, -1], img_bottom_relief]
 ];
-lid_face = ["lid", img_lid, img_lid_size, [cx, (ry0 + ry1) / 2, top], [1, 0, 0], [0, 1, 0], [0, 0, 1]];
+lid_face = ["lid", img_lid, img_lid_size, [cx, (ry0 + ry1) / 2, top], [1, 0, 0], [0, 1, 0], [0, 0, 1], img_lid_relief];
 box_imgs = [for (f = img_faces) if (f[1] != "") 1];
 any_img  = len(box_imgs) > 0 || img_lid != "";
-tagged   = img_relief != "engraved";
+// raised and inlaid images are separate, color-tagged parts
+function tagged(f) = f[1] != "" && f[7] != "engraved";
+any_tagged = len([for (f = concat(img_faces, [lid_face])) if (tagged(f)) 1]) > 0;
 
 // Random colors, evenly spaced in hue so no two are alike: the body (box
 // and lid), then the front, back, left, right, bottom and lid images
@@ -242,11 +253,13 @@ function hsv(h, s, v) =
         rgb + [m, m, m];
 function hx(v) = let (n = round(v * 255)) str("0123456789ABCDEF"[floor(n / 16)], "0123456789ABCDEF"[n % 16]);
 function hexc(c) = str("#", hx(c[0]), hx(c[1]), hx(c[2]));
-function face_cols(i) = i > 4 ? "" : str(img_faces[i][1] != "" ? str(", ", img_faces[i][0], " ", hexc(cols[i + 1])) : "", face_cols(i + 1));
+function relief_list(i) = let (fs = concat(img_faces, [lid_face])) i > 5 ? ""
+    : str(fs[i][1] != "" ? str(" ", fs[i][0], " ", fs[i][7]) : "", relief_list(i + 1));
+function face_cols(i) = i > 4 ? "" : str(tagged(img_faces[i]) ? str(", ", img_faces[i][0], " ", hexc(cols[i + 1])) : "", face_cols(i + 1));
 hue0  = rands(0, 360, 1, color_seed)[0];
 cols  = [for (i = [0 : 6]) hsv((hue0 + i * 360 / 7) % 360, 0.6, 0.9)];
-box_col = any_img ? cols[0] : "Peru";
-lid_col = any_img ? cols[0] : "BurlyWood";
+box_col = any_tagged ? cols[0] : "Peru";
+lid_col = any_tagged ? cols[0] : "BurlyWood";
 
 // ---------------------------------------------------------------------------
 // Report
@@ -293,10 +306,10 @@ if (tab_w > outer.x - 2 * wall - 2 * box_round)
 if (trays < 1)
     echo("WARNING: no trays");
 if (any_img) {
-    echo(str("Images: ", img_relief, ", ", img_depth, " mm",
-             tagged ? str("; colors: body ", hexc(cols[0]),
+    echo(str("Images, ", img_depth, " mm:", relief_list(0),
+             any_tagged ? str("; colors: body ", hexc(cols[0]),
                  face_cols(0),
-                 img_lid != "" ? str(", lid ", hexc(cols[6])) : "") : ""));
+                 tagged(lid_face) ? str(", lid ", hexc(cols[6])) : "") : ""));
     // room on each face, inside the round-overs, with 1 mm to spare
     room = [[outer.x, top], [outer.x, top], [outer.y, top], [outer.y, top], [outer.x, outer.y]]
          - [for (i = [0 : 4]) [2 * box_round + 2, 2 * box_round + 2]];
@@ -312,9 +325,10 @@ if (any_img) {
     if (img_lid != "" && (img_lid_size.x > lid_room.x || img_lid_size.y > lid_room.y))
         echo(str("WARNING: the lid image is larger than the lid allows (", lid_room.x, " x ",
                  lid_room.y, " mm)", hinged ? ", between the hinge's flex slots" : ""));
-    if (img_relief != "raised" && img_depth > min(box_floor, lid_t, wall) - 1.2)
+    if (len([for (f = concat(img_faces, [lid_face])) if (f[1] != "" && f[7] != "raised") 1]) > 0
+        && img_depth > min(box_floor, lid_t, wall) - 1.2)
         echo("WARNING: the images cut deep into the floor, lid or walls; reduce img_depth");
-    if (img_relief == "raised" && (img_bottom != "" || img_lid != ""))
+    if ((img_bottom != "" && img_bottom_relief == "raised") || (img_lid != "" && img_lid_relief == "raised"))
         echo("NOTE: the bottom and the lid print face down, so a raised image there lands on the bed (and on the bottom it stops the box sitting flat); engraved or inlaid suits those faces");
 }
 echo("==================");
@@ -375,17 +389,15 @@ module box() {
         if (hinged)
             translate([rx0, ry1, top]) hinge_frame_cuts(rx1 - rx0, lid_t);
         // Engraved and inlaid images
-        if (img_relief != "raised")
-            for (f = img_faces) if (f[1] != "") img_solid(f, "cut");
+        for (f = img_faces) if (f[1] != "" && f[7] != "raised") img_solid(f, "cut");
     }
 }
 
 // The box with its raised or inlaid images, each color-tagged
 module box_full() {
     color(box_col) box();
-    if (tagged)
-        for (i = [0 : 4]) let (f = img_faces[i])
-            if (f[1] != "") color(cols[i + 1]) img_solid(f, img_relief);
+    for (i = [0 : 4]) let (f = img_faces[i])
+        if (tagged(f)) color(cols[i + 1]) img_solid(f, f[7]);
 }
 
 // ---------------------------------------------------------------------------
@@ -456,14 +468,14 @@ module lid() {
                             circle(r = tab_r);
                 }
         }
-        if (img_lid != "" && img_relief != "raised") img_solid(lid_face, "cut");
+        if (img_lid != "" && img_lid_relief != "raised") img_solid(lid_face, "cut");
     }
 }
 
 // The lid with its raised or inlaid image, color-tagged
 module lid_full(alpha = 1) {
     color(lid_col, alpha) lid();
-    if (img_lid != "" && tagged) color(cols[6]) img_solid(lid_face, img_relief);
+    if (tagged(lid_face)) color(cols[6]) img_solid(lid_face, img_lid_relief);
 }
 
 // Lid plate in the hinge frame (see hinge_frame_cuts)
