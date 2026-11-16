@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 75
+// VSM Base, version 76
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -371,6 +371,8 @@
 // logos they cross, each its own color-tagged object (they had none); new
 // part front_corner_test (also in test_parts): the base's front corners,
 // full height, for trying the logos and the ruler (test_corner_w).
+// v76: the outlet's through-screw hole, countersink and cap recess are
+// teardrops, point up, so their tops print without sagging.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -5219,19 +5221,25 @@ module hinge_coupon() {
 }
 
 // Through mount: clearance hole through the right end wall, countersunk
-// for a flat head at the outer face, under a cap recess if wanted.
+// for a flat head at the outer face, under a cap recess if wanted. The
+// hole runs horizontally, so the hole, the countersink and the recess are
+// teardrops, point up, with no flat ceiling or steep overhang to sag; the
+// round cap still fits the recess.
 module outlet_through_hole() {
     hd = outlet_screw_head_d;
     sd = outlet_screw_hole_d;
     ck = (hd - sd) / 2 / tan(41);                // 82-degree countersink depth
     translate([0, ol_yc, ol_zc]) rotate([0, 90, 0]) {
         translate([0, 0, st_x1 - overlap])
-            cylinder(h = outer_length - st_x1 + 2 * overlap, d = sd);
+            linear_extrude(height = outer_length - st_x1 + 2 * overlap)
+                rotate(90) teardrop_2d(sd);
         translate([0, 0, outer_length - ol_cb - ck])
-            cylinder(h = ck + 0.01, d1 = sd, d2 = hd);
+            linear_extrude(height = ck + 0.01, scale = hd / sd)
+                rotate(90) teardrop_2d(sd);
         if (ol_cb > 0)
             translate([0, 0, outer_length - ol_cb])
-                cylinder(h = ol_cb + overlap, d = outlet_cap_d + 0.4);
+                linear_extrude(height = ol_cb + overlap)
+                    rotate(90) teardrop_2d(outlet_cap_d + 0.4);
     }
 }
 // The cap, printed on its outer face: a disc with three crush ribs.
