@@ -91,7 +91,7 @@ bushing; a metal-shaft pot must not be substituted.
 - **cordset:** the standard pedal cordset's molded entry and steel clip, copied
   from the original pedal box. The two leads go to the board's tabs, with the
   off switch in one of them.
-- **iec:** a fused IEC C14 inlet (Schurter KE, T2A fuse). The fused line feeds
+- **iec:** a fused IEC C14 inlet (Qualtek 723W-X2/03, T2A fuse). The fused line feeds
   the light directly and the motor through the board and switch, with the
   motor and light leads hardwired at Wago lever connectors under the bed. This
   suits machines whose motor and light were hardwired to their original

@@ -28,7 +28,7 @@ where, and the specification checked.
 
 | Item | Specification | Qty | Use | Source | Notes |
 |---|---|---|---|---|---|
-| Fused IEC C14 inlet | Snap-in, 52.5 × 27.5 mm cutout, 1-pole fuse drawer, 5 × 20 mm fuse | 1 K, 1 R, 1 M | K R M | Dist | Schurter KE16.5100.107 as specified for K; the same cutout serves R. Check the depth behind the panel (`knee_iec_depth`). |
+| Fused IEC C14 inlet | Snap-in, 31.6 × 27.5 mm cutout (R1 corners), 1.5 mm panel, fuse drawer, 5 × 20 mm fuse, 10 A 250 V, UL/CSA/TÜV | 1 K, 1 R, 1 M | K R M | Dist | Qualtek 723W-X2/03 (4.8 mm quick-connect tabs; panel 0.8–2 mm), about $2. Schurter 6200.4315 has the same cutout (6.3 mm tabs, 1.5 mm panel). Check the drawer when it arrives: one fuse and a spare, or both lines fused. Check the depth behind the panel (`knee_iec_depth`). |
 | Fuses, slow-blow 5 × 20 mm | T2A 250 V; T250mA 250 V (M's supply) | a few of each | K R M | Dist | Cheap, but fake fuses are a known hazard. |
 | PCB fuse holders, 5 × 20 mm | Clip or enclosed, 250 V | 2 | M | Check | F1, F2 |
 | Lever connectors | Wago 221-413 (3 positions, 0.2–4 mm²) | 3 K, 6 R | K R | Dist | Genuine Wago only; the copies are not the same. |
@@ -36,6 +36,7 @@ where, and the specification checked.
 | Pedal cordset | Standard sewing-machine pedal controller cordset (plug or duplex at the junction) | 1 | K | Any | `knee_power = "cordset"` only |
 | Speed-control board | XWW KB3151C pedal board, 75 × 35 mm | 1 + spare | K R | Any | The board itself comes from pedal listings. |
 | Quick-disconnects | Female FASTON, 3.2 mm (.125") tab size, insulated | 4 | K R | Any | To fit the KB3151C's tabs (measured). Not the common 6.3 mm (.250") size. |
+| Quick-disconnects, inlet | Female FASTON, 4.8 mm (.187") tab size, insulated, for 18 AWG | 3 per inlet | K R M | Any | For the Qualtek inlet's tabs (6.3 mm for the Schurter 6200.4315) |
 | Triac | BTA08-600BW (snubberless, insulated tab), TO-220 | 2 | M | Dist | BTA16-600BW if more margin is wanted |
 | TO-220 heatsink | Small clip-on or bolt-on, about 10 °C/W | 1 | M | Any | The tab is insulated on the BTA type. |
 | Opto-triac driver | MOC3023, random-phase (not the zero-crossing MOC304x) | 2 | M | Dist | U3 |

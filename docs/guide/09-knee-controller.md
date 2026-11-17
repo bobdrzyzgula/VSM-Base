@@ -104,7 +104,7 @@ The hardware list in the console has the full list, with lengths.
 | Bar | Steel, 3/8" square at the hub end | Out from the hub, bent down 12.5" (`knee_bar_drop`) |
 | Screws | M3 set screws, M3 screws and nuts, M3 heat-set inserts; 2 M2 × 12 or #2-56 × 1/2" for the switch | 2 × M3 × 12 hold the spring housing |
 | Power, `cordset` | A standard pedal controller cordset | Its molded entry and steel clip fit the base's entry |
-| Power, `iec` | Schurter KE16.5100.107 fused C14 inlet (1-pole, snap-in, 2 mm panel), its fuse drawer, a T2A 5 × 20 mm fuse; 3 Wago 221-413 lever connectors | Earth strip (brass or phosphor bronze) for the shaft |
+| Power, `iec` | Qualtek 723W-X2/03 fused C14 inlet (snap-in, 1.5 mm panel; or Schurter 6200.4315), its fuse drawer, a T2A 5 × 20 mm fuse, 4.8 mm (0.187") female quick-disconnects for its tabs (6.3 mm for the Schurter); 3 Wago 221-413 lever connectors | Earth strip (brass or phosphor bronze) for the shaft |
 
 Print the knee parts (`knee_sector`, `knee_idler`, `knee_pinion`,
 `knee_hub`, `knee_spring_housing`, `knee_spring_cap`, `knee_cover`, and
@@ -278,9 +278,10 @@ thickness, hole and dimple are settings.
 
 **`iec`.** A fused IEC C14 inlet in the right end wall feeds the
 controller directly, for machines whose motor and light were hardwired to
-their original controller. The inlet is a Schurter KE snap-in [3] (a
-52.5 × 27.5 mm cutout in a 2 mm panel, pocketed into the end wall), on its
-side above the board cover. Inside, the fused line goes to the light and,
+their original controller. The inlet is a Qualtek 723W-X2/03 snap-in [3]
+(a 31.6 × 27.5 mm cutout in a 1.5 mm panel, pocketed into the end wall), on
+its side above the board cover. The Schurter 6200.4315 has the same cutout
+and fits too. Inside, the fused line goes to the light and,
 through the board and the off switch, to the motor; the leads go through
 the cord pass-through to a junction under the bed: three Wago 221-413
 lever connectors [4] (line, neutral, switched motor) in a cradle on the
@@ -374,11 +375,12 @@ likely to change:
    [Master Electronics](https://www.masterelectronics.com/en/bourns/91a1ab28a25l-10736707.html).
 2. Omron, *SS Subminiature Basic Switch*, Cat. No. B032-E1-14:
    [omronfs.omron.com](https://omronfs.omron.com/en_US/ecb/products/pdf/en-ss.pdf).
-3. Schurter, *KE: IEC Appliance Inlet C14 with Fuseholder 1- or 2-pole*:
-   [schurter.com](https://www.schurter.com/en/datasheet/KE) (order numbers,
-   panel thicknesses, ratings) and the
-   [PDF datasheet](https://www.schurter.com/en/datasheet/typ_KE.pdf)
-   (dimension drawings).
+3. Qualtek, *723W-X2/03 universal snap-in inlet with fuseholder*:
+   [Digi-Key](https://www.digikey.com/en/products/detail/qualtek/723W-X2-03/245546)
+   (ratings, panel thickness) and its
+   [drawing](https://onlinecomponents.com/productfiles/mf-qul/723wx203.pdf)
+   (panel cutout). Alternative: Schurter 6200.4315,
+   [Digi-Key](https://www.digikey.com/en/products/detail/schurter-inc/6200-4315/569925).
 4. WAGO 221-413 lever connector, 3-conductor, 18.8 × 18.8 × 8.6 mm, 0.2–4 mm²
    (24–12 AWG): [automa.net](https://automa.net/wago/221-413).
 5. McMaster-Carr precision compression springs, 9001T46:

@@ -105,9 +105,9 @@ wago_labels = ["L", "N", "PE", "MOT A", "MOT B", "AUX"];
 breadboard = [82.5, 54.6, 8.5];
 
 /* [IEC inlet (as the base's iec mode)] */
-iec_cut = [52.5, 27.5];
-iec_r = 3;
-iec_panel = 2;
+iec_cut = [31.6, 27.5];   // Qualtek 723W-X2/03 or Schurter 6200.4315
+iec_r = 1;
+iec_panel = 1.5;
 iec_depth = 40;
 
 /* [Isolation transformer (Hammond 171B: 200 VA, 115 V : 115 V, corded)] */
@@ -591,7 +591,7 @@ all_rows = [
     [["jack_panel", [0, -42], [219.5, 42]], ["wago_holder", [-11, 0], [148.4, 29.8]],
      ["wago_lid", [0, 0], [130.6, 34]]],
     [["cradle", [-51.2, -35], [102.4, 70]], ["bb_tray", [-11, 0], [109.9, 60]],
-     ["bb_lid", [0, 0], [92.1, 64.2]], ["iec_box", [-11, 0], [90.5, ib_out.y]]],
+     ["bb_lid", [0, 0], [92.1, 64.2]], ["iec_box", [-11, 0], [ib_out.x + 22, ib_out.y]]],
     [["brake", [-23, -16.5], [130, 61.5]], ["load_rail", [-25, 0], [50, 114]],
      ["load_carriage", [-14.8, 0], [29.6, 46]], ["load_pulley", [-30, -30], [60, 60]],
      ["load_spacer", [-6, -6], [12, 12]], ["drag_plunger", [-6, -6], [12, 12]]]];

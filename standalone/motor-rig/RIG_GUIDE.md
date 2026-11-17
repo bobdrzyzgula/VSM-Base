@@ -105,7 +105,7 @@ overview and checklist; they won't all fit one bed).
 | `board_plate`, `board_cover` | 1 each | PETG | The cover prints roof-down |
 | `wago_holder`, `wago_lid` | 1 each | PLA or PETG | |
 | `bb_tray`, `bb_lid` | 1 each | PLA | |
-| `iec_box` | 1 | PETG | Prints roof-down. The top edge of the inlet opening is a 52 mm bridge: support it unless your printer bridges that far cleanly |
+| `iec_box` | 1 | PETG | Prints roof-down. The top edge of the inlet opening is a 32 mm bridge, which most printers manage without support |
 | `jack_panel` | 1 | PETG | Prints face-down, 220 mm long. The middle rib sits between two holes; check that your sockets' rear nuts clear it |
 
 **Notes on filament choices.** Nothing on the rig is loaded anywhere near
@@ -166,7 +166,7 @@ brake jaws if they will see long, heavy runs.
 | Compression spring, about 8 mm OD × 12 mm (optional) | 1 | Smoother drag adjustment |
 | M3 heat-set insert, M3 × 6 screw, washer | 1 | Triac board |
 | Wago 221-413 | 6 | Junctions |
-| IEC C14 fused inlet (52.5 × 27.5 cutout) | 1 | Mains entry |
+| IEC C14 fused inlet: Qualtek 723W-X2/03, or Schurter 6200.4315 (31.6 × 27.5 cutout, 1.5 mm panel) | 1 | Mains entry |
 | 4 mm shrouded panel sockets | 11 | Jack panel; red and black for DC+/DC− |
 | 4 mm safety banana leads | 6–8 | Patching |
 | 4 mm shorting plugs (optional) | 2 | Spare links |

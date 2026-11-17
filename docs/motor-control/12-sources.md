@@ -16,6 +16,6 @@
 14. [KBSI-240D signal isolator](https://motorsandcontrol.com/kb-electronics-9431-kbsi-240d-signal-isolator-stand-alone), Motors & Control product page.
 
 The base's own parts, used in §11: Bourns 91–99 series panel control datasheet;
-Omron SS subminiature basic switch, Cat. No. B032-E1-14; Schurter KE IEC inlet
+Omron SS subminiature basic switch, Cat. No. B032-E1-14; Qualtek 723W-X2/03 IEC inlet
 datasheet; WAGO 221-413. Links are in the User's Guide's knee-controller
 chapter.

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 76
+// VSM Base, version 77
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -373,6 +373,9 @@
 // full height, for trying the logos and the ruler (test_corner_w).
 // v76: the outlet's through-screw hole, countersink and cap recess are
 // teardrops, point up, so their tops print without sagging.
+// v77: the iec inlet is now the Qualtek 723W-X2/03 (or Schurter 6200.4315):
+// a 31.6 x 27.5 mm cutout, R1 corners, in a 1.5 mm panel. The Schurter KE
+// it replaces was out of stock and about ten times the price.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -784,12 +787,12 @@ knee_entry_z = 20; // [6 : 0.5 : 45]
 knee_entry_pos = 0; // [0 : 0.5 : 140]
 // Cordset: lead length inside, from the molded face to the connector tips
 knee_entry_lead = 78; // [30 : 1 : 200]
-// IEC inlet (Schurter KE snap-in, mounted on its side): panel cutout [along the wall, height]
-knee_iec_cutout = [52.5, 27.5];
+// IEC inlet (Qualtek 723W-X2/03 snap-in, or Schurter 6200.4315, mounted on its side): panel cutout [along the wall, height]
+knee_iec_cutout = [31.6, 27.5];
 // IEC inlet: cutout corner radius
-knee_iec_radius = 3; // [0 : 0.5 : 5]
-// IEC inlet: panel thickness (KE: 1.5, 2 or 2.5 mm versions)
-knee_iec_panel = 2; // [1.5 : 0.5 : 2.5]
+knee_iec_radius = 1; // [0 : 0.5 : 5]
+// IEC inlet: panel thickness (723W-X2/03: 0.8 to 2 mm; 6200.4315: 1.5 mm)
+knee_iec_panel = 1.5; // [0.8 : 0.1 : 2.5]
 // IEC inlet: depth behind the panel, with its connectors (check your inlet)
 knee_iec_depth = 40; // [20 : 0.5 : 70]
 // Junction: Wago 221-413 lever connector [width, depth, height]
@@ -3330,8 +3333,8 @@ if (report && has_knee) {
     if (knee_power == "cordset")
         echo("Knee power: a standard pedal controller cordset (molded entry and its steel clip), its two leads to the board's spade tabs, the off switch in one of them");
     if (knee_power == "iec") {
-        echo(str("Knee power: fused IEC C14 inlet, Schurter KE series 1-pole snap-in for a ", knee_iec_panel,
-                 " mm panel (KE16.5100.107 for 2 mm), with its fuse drawer and a T2A 5 x 20 mm fuse; an IEC C13 mains cord"));
+        echo(str("Knee power: fused IEC C14 inlet, Qualtek 723W-X2/03 snap-in (or Schurter 6200.4315) in a ", knee_iec_panel,
+                 " mm panel, with its fuse drawer and a T2A 5 x 20 mm fuse; 4.8 mm (0.187 in) quick-connect tabs on the Qualtek, 6.3 mm on the Schurter; an IEC C13 mains cord"));
         echo(str("Knee junction: ", knee_wago_n, " x Wago 221-413 lever connectors (line, neutral, switched motor)"));
         if (knee_earth) echo("Knee earth: a strip of brass or phosphor bronze bearing on the shaft's end, with the earth lead's ring terminal");
     }

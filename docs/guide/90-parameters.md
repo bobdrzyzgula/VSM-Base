@@ -254,9 +254,9 @@ There are 554 parameters; 552 of them appear in the Customizer. The rest are lis
 | `knee_entry_z` | `20` | Cordset entry: hole center above the bay floor (its pocket must clear the right handhold's ceiling) *Range 6 to 45, step 0.5.* |
 | `knee_entry_pos` | `0` | Cordset entry or IEC inlet: position from the bay's back wall; 0 = beside the board's spade tabs *Range 0 to 140, step 0.5.* |
 | `knee_entry_lead` | `78` | Cordset: lead length inside, from the molded face to the connector tips *Range 30 to 200, step 1.* |
-| `knee_iec_cutout` | `[52.5, 27.5]` | IEC inlet (Schurter KE snap-in, mounted on its side): panel cutout [along the wall, height] |
-| `knee_iec_radius` | `3` | IEC inlet: cutout corner radius *Range 0 to 5, step 0.5.* |
-| `knee_iec_panel` | `2` | IEC inlet: panel thickness (KE: 1.5, 2 or 2.5 mm versions) *Range 1.5 to 2.5, step 0.5.* |
+| `knee_iec_cutout` | `[31.6, 27.5]` | IEC inlet (Qualtek 723W-X2/03 snap-in, or Schurter 6200.4315, mounted on its side): panel cutout [along the wall, height] |
+| `knee_iec_radius` | `1` | IEC inlet: cutout corner radius *Range 0 to 5, step 0.5.* |
+| `knee_iec_panel` | `1.5` | IEC inlet: panel thickness (723W-X2/03: 0.8 to 2 mm; 6200.4315: 1.5 mm) *Range 0.8 to 2.5, step 0.1.* |
 | `knee_iec_depth` | `40` | IEC inlet: depth behind the panel, with its connectors (check your inlet) *Range 20 to 70, step 0.5.* |
 | `knee_wago` | `[18.8, 18.8, 8.6]` | Junction: Wago 221-413 lever connector [width, depth, height] |
 | `knee_wago_n` | `3` | Junction: number of connectors (line, neutral, switched motor) *Range 1 to 6, step 1.* |
