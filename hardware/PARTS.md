@@ -1,6 +1,7 @@
 # Electronic parts: knee controller, test rig, MCU controller
 
-*Compiled by Claude at Bob Drzyzgula's direction, October 2026. A working
+*Compiled by Claude at Bob Drzyzgula's direction, October 2026; updated
+November 2026 with the optical encoder's parts. A working
 shopping list. Mechanical hardware (screws, bearings, springs, belts,
 plywood) stays in each project's own guide.*
 
@@ -63,6 +64,9 @@ where, and the specification checked.
 | Capacitors | 100 nF ceramic (about 12), 1 nF ceramic (4), 10 nF ceramic (1), 10 µF (2) | 1 set | M | Any | |
 | Hand-wheel index sensor | TI DRV5023 unipolar Hall switch (TO-92 for wiring at the sensor), 3.3 V-capable | 2 | M | Dist | U4. Generic A3144 parts need 4.5 V or more; don't substitute those. |
 | Hand-wheel encoder (optional) | TI DRV5013 Hall latch (TO-92), 2.5–38 V supply | 2 + spare | M | Dist | U5, U6: quadrature over a ring of magnets, a quarter-cycle apart |
+| Hand-wheel encoder, optical alternative (optional) | Slotted (transmissive) photo-IC interrupter: infrared LED and detector with a built-in amplifier and logic output (open-collector, pulled up to 3.3 V), slot 3 mm or wider, aperture 1 mm or narrower across the slots. E.g. the Omron EE-SX4xx series with a logic output, or Sharp's OPIC interrupters (GP1A5x class); confirm the output type, supply range and body size from the datasheet | 2 + spare | M | Dist | In place of U5 and U6, for a shaft too small for a magnet ring: the concept in `hardware/encoder/`. The body chosen fixes the saddle's pockets, and the aperture how fine the ring's slots can be. Plain phototransistor forks (no "photo-IC") need a comparator added; avoid them. A dual-channel fork would need the ring's slot pitch to match its detector spacing. |
+| LED resistors, optical encoder | 180–330 Ω 0.25 W, one per fork, from 5 V, sized for the fork's LED current (10–20 mA) | 2 | M | Any | Check the datasheet's forward voltage and current |
+| Pull-up resistors, optical encoder | 4.7–10 kΩ to 3.3 V on each output, if the fork has none | 2 | M | Any | Keeps the RP2350's inputs at 3.3 V logic |
 | Magnets | Neodymium disc, about 6 × 3 mm | 1 + 12 | M | Any | One for the index sensor; twelve for the encoder ring, alternating poles. Check the pole facing each sensor. |
 | Heel switch | Momentary switch, normally open, sized for the pedal's heel (a snap-action microswitch works) | 1 per pedal | M | Any | To GND; on pin 4 of the travel pedal's connector, pin 3 of the pressure pedal's |
 | Knee and pedal sensors | 10 kΩ linear pot, or a linear Hall sensor (DRV5055 or SS49E class) with a magnet | 2 | M | Any | For the knee lever and the travel pedal |
