@@ -69,14 +69,15 @@ where, and the specification checked.
 | Pull-up resistors, optical encoder | 4.7–10 kΩ to 3.3 V on each output, if the fork has none | 2 | M | Any | Keeps the RP2350's inputs at 3.3 V logic |
 | Hand-wheel encoder, reflective (Singer 99K) | Pololu QTR-1A reflectance sensor board (item 2458, sold in pairs): QRE1113-class infrared LED and phototransistor with its resistors, 12.7 × 7.62 mm, analog output | 1 pair + spare pair | M | Dist | Read a striped label on the hand wheel's back face: the concept in `hardware/reflective-encoder/`. Run from 3.3 V so the output stays inside the RP2350's analog range. |
 | Encoder label stock | Matte white polyester or vinyl label sheets for laser printers, removable adhesive | a few sheets | M | Any | Laser toner, not inkjet, unless an inkjet print passes the test card |
-| Magnets | Neodymium disc, about 6 × 3 mm | 1 + 12 | M | Any | One for the index sensor; twelve for the encoder ring, alternating poles. Check the pole facing each sensor. |
+| Magnets | Neodymium disc, about 6 × 3 mm | 1 + 12, + spares | M | Any | One for the index sensor (on the 99K, stuck to the link under the bed, held from sliding by a printed clip or adhesive); twelve for a Hall encoder ring, alternating poles, not needed with the reflective encoder. Check the pole facing each sensor. |
 | Heel switch | Momentary switch, normally open, sized for the pedal's heel (a snap-action microswitch works) | 1 per pedal | M | Any | To GND; on pin 4 of the travel pedal's connector, pin 3 of the pressure pedal's |
 | Knee and pedal sensors | 10 kΩ linear pot, or a linear Hall sensor (DRV5055 or SS49E class) with a magnet | 2 | M | Any | For the knee lever and the travel pedal |
 | Pressure sensor | FSR, Interlink 402 (round) or 406 (square) | 1 | M | Check | The pressure pedal. Clones vary widely in range. |
 | Speed-limit knob | 10 kΩ linear panel pot, with knob | 1 | M | Any | RV2 |
 | Switches | SPDT or SPST panel toggle (needle up/down); momentary push button (single stitch) | 1 each | M | Any | |
 | Pedal and sensor connectors | 4-pin for each pedal (3.3 V, signal, GND, heel); 5-pin for the hand wheel (3.3 V, GND, index, A, B); 3-pin for the knee lever. GX12 aviation or M8; a TRS jack has too few contacts | to suit | M | Any | Low voltage only, but they must never be mistakable for a mains connector. |
-| Cable | 4- and 5-core shielded, 24–26 AWG | a few m | M | Any | Hand-wheel sensors and pedals |
+| Cable | 4- and 5-core shielded, 24–26 AWG | a few m | M | Any | Hand-wheel sensors and pedals. The 99K's reflective head needs 4 cores (3.3 V, ground, two outputs), the index switch 3. |
+| Divider resistors, reflective encoder (only if needed) | 10 kΩ and 20 kΩ 0.25 W, one pair per channel | 2 pairs | M | Any | Only if the QTR-1A boards prove too dim at 3.3 V and run from 5 V: each divider brings its output down to 3.3 V |
 | Prototype board | Perfboard or stripboard; a breadboard for first tests | 1–2 | M R | Any | Keep 6 mm between mains and low-voltage copper. |
 
 ## Test rig panel and patching
