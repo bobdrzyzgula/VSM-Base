@@ -136,7 +136,7 @@ there: near the turnaround the link hardly moves while the shaft turns, so a
 small change in the switch's threshold moves the edge a long way in shaft
 angle. The midpoint cancels that.
 
-**A pair of switches**, as you suggested, would give the link's direction of
+**A pair of switches**, as Bob suggested, would give the link's direction of
 travel, but the encoder already knows the wheel's direction. Two switches
 could still help at power-up, before the wheel has turned through an index.
 Even so, the needle-up stop has to be set again after bobbin winding, so a
