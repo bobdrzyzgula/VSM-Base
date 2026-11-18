@@ -37,7 +37,7 @@ where, and the specification checked.
 | Speed-control board | XWW KB3151C pedal board, 75 × 35 mm | 1 + spare | K R | Any | The board itself comes from pedal listings. |
 | Quick-disconnects | Female FASTON, 3.2 mm (.125") tab size, insulated | 4 | K R | Any | To fit the KB3151C's tabs (measured). Not the common 6.3 mm (.250") size. |
 | Quick-disconnects, inlet | Female FASTON, 4.8 mm (.187") tab size, insulated, for 18 AWG | 3 per inlet | K R M | Any | For the Qualtek inlet's tabs (6.3 mm for the Schurter 6200.4315) |
-| Triac | BTA08-600BW (snubberless, insulated tab), TO-220 | 2 | M | Dist | BTA16-600BW if more margin is wanted |
+| Triac | BTA08-600BW or BTA16-600BW (snubberless, insulated tab), TO-220; the RG suffix is the same part in a tube | 2 | M | Dist | BTA16-600BWRG is a drop-in with more current and surge margin (same pinout and 50 mA gate). Not the BTB parts: their tab is live at mains voltage, so the heatsink would be too. |
 | TO-220 heatsink | Small clip-on or bolt-on, about 10 °C/W | 1 | M | Any | The tab is insulated on the BTA type. |
 | Opto-triac driver | MOC3023, random-phase (not the zero-crossing MOC304x) | 2 | M | Dist | U3 |
 | AC-input optocoupler | H11AA1, or another AC-input optocoupler | 2 | M | Dist | U2 |
