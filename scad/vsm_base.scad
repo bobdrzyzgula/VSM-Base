@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 77
+// VSM Base, version 78
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -376,6 +376,10 @@
 // v77: the iec inlet is now the Qualtek 723W-X2/03 (or Schurter 6200.4315):
 // a 31.6 x 27.5 mm cutout, R1 corners, in a 1.5 mm panel. The Schurter KE
 // it replaces was out of stock and about ten times the price.
+// v78: raised marks on the front and back stand on a 45-degree slope under
+// every downward-facing edge, and engraved marks' recesses have one over
+// every upward-facing edge, so neither prints a flat overhang that curls
+// (face_relief_chamfer). Inlaid marks are filled, so they keep square walls.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1536,6 +1540,8 @@ face_relief = "raised"; // [raised, engraved, inlaid]
 bottom_relief = "engraved"; // [engraved, inlaid]
 // How far they stand out or cut in
 face_relief_depth = 0.6; // [0.3 : 0.1 : 2]
+// Slope the marks' overhangs at 45 degrees: under a raised mark's downward-facing edges, over an engraved recess's upward-facing ones (they print as a flat overhang that curls without it). Not for inlaid marks, which are filled
+face_relief_chamfer = true;
 // Change it for another set of random colors
 face_color_seed = 7; // [0 : 1 : 999]
 
@@ -3683,17 +3689,50 @@ function om_cols_str(i) = i >= len(om_pieces) ? ""
 function om_kind(w) = w == "bottom_left" || w == "bottom_right" ? bottom_relief : face_relief;
 module om_3d(w, kind) {
     f = om_spec(w);
-    d = face_relief_depth;
     multmatrix([[f[3].x, f[4].x, f[5].x, f[2].x],
                 [f[3].y, f[4].y, f[5].y, f[2].y],
                 [f[3].z, f[4].z, f[5].z, f[2].z],
                 [0, 0, 0, 1]])
-        if (kind == "raised")
-            translate([0, 0, -0.01]) linear_extrude(height = d + 0.01, convexity = 20) om_2d(f);
-        else if (kind == "inlaid")
-            translate([0, 0, -d]) linear_extrude(height = d, convexity = 20) om_2d(f);
-        else
-            translate([0, 0, -d]) linear_extrude(height = d + 1, convexity = 20) om_2d(f);
+        // only the back's logos stand on an upright face (the bottom's
+        // print face down, so they have no overhangs to slope)
+        fm_relief_3d(kind, face_relief_chamfer && f[4] == [0, 0, 1]) om_2d(f);
+}
+// A mark in its face's frame: the face at z = 0, outward +z, up +y (up in
+// print, on an upright face). kind: "raised" stands out of the face;
+// "inlaid" fills the recess flush; "cut" is the recess, run out past the
+// face; "engrave" is the recess of an engraved mark (sloped if ch).
+// With ch, a raised mark is built in thin slices, each grown downward by
+// its height below the mark's top, so every downward-facing edge has a
+// 45-degree slope under it and nothing prints as a flat overhang; an
+// engraved recess is grown upward the same way, from its floor out to the
+// face.
+fm_slice = 0.1;
+module fm_relief_3d(kind, ch) {
+    d = face_relief_depth;
+    n = max(2, ceil(d / fm_slice));
+    dt = d / n;
+    if (kind == "raised" && ch) {
+        translate([0, 0, -0.01]) linear_extrude(height = 0.01 + dt, convexity = 40) fm_grow(d - dt / 2, -1) children();
+        for (i = [1 : n - 1]) translate([0, 0, i * dt - 0.005])
+            linear_extrude(height = dt + 0.005, convexity = 40) fm_grow(d - (i + 0.5) * dt, -1) children();
+    } else if (kind == "raised")
+        translate([0, 0, -0.01]) linear_extrude(height = d + 0.01, convexity = 40) children();
+    else if (kind == "inlaid")
+        translate([0, 0, -d]) linear_extrude(height = d, convexity = 40) children();
+    else if (kind == "engrave" && ch) {
+        for (i = [0 : n - 1]) translate([0, 0, -d + i * dt - (i > 0 ? 0.005 : 0)])
+            linear_extrude(height = dt + (i > 0 ? 0.005 : 0), convexity = 40) fm_grow((i + 0.5) * dt, 1) children();
+        translate([0, 0, -0.005]) linear_extrude(height = 1.005, convexity = 40) fm_grow(d, 1) children();
+    } else
+        translate([0, 0, -d]) linear_extrude(height = d + 1, convexity = 40) children();
+}
+// The shape swept g up (dir 1) or down (dir -1)
+module fm_grow(g, dir) {
+    if (g <= 0.001) children();
+    else minkowski() {
+        children();
+        translate([-0.0005, dir > 0 ? 0 : -g]) square([0.001, g]);
+    }
 }
 module om_2d(f) resize([f[1][0], f[1][1]]) import(f[0], center = true);
 module face_marks_2d(w = "all") {
@@ -3702,18 +3741,13 @@ module face_marks_2d(w = "all") {
     if (logo_left != "" && (w == "all" || w == "left")) logo_2d(logo_left, rl_x0 + logo_inset);
     if (logo_right != "" && (w == "all" || w == "right")) logo_2d(logo_right, rl_x1 - logo_inset - logo_size[0]);
 }
-// kind: "raised" stands out of the face; "inlaid" fills the recess flush;
-// "cut" is the recess, run out past the face
+// kind: as for fm_relief_3d
 // xr, if given, clips them to x0 <= x <= x1 (a half of a split base; at
 // the front face the split is the plane x = cut_x)
 module face_marks_3d(w = "all", kind = "cut", xr = undef) {
-    d = face_relief_depth;
-    if (kind == "raised")
-        translate([0, 0.01, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 0.01, convexity = 40) fm_clip(xr) face_marks_2d(w);
-    else if (kind == "inlaid")
-        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d, convexity = 40) fm_clip(xr) face_marks_2d(w);
-    else
-        translate([0, d, 0]) rotate([90, 0, 0]) linear_extrude(height = d + 1, convexity = 40) fm_clip(xr) face_marks_2d(w);
+    // the front face is y = 0, outward -y; rotate([90, 0, 0]) takes the
+    // mark's frame (outward +z, up +y) onto it
+    rotate([90, 0, 0]) fm_relief_3d(kind, face_relief_chamfer) fm_clip(xr) face_marks_2d(w);
 }
 module fm_clip(xr) {
     if (is_undef(xr)) children();
@@ -3985,8 +4019,8 @@ module base_body() {
         if (turn_button) tb_cuts();
         // engraved and inlaid marks' recesses (the raised and inlaid pieces
         // themselves are separate parts: face_mark_halves)
-        if (face_marks && face_relief != "raised") face_marks_3d("all", "cut");
-        for (w = om_pieces) if (om_kind(w) != "raised") om_3d(w, "cut");
+        if (face_marks && face_relief != "raised") face_marks_3d("all", face_relief == "engraved" ? "engrave" : "cut");
+        for (w = om_pieces) if (om_kind(w) != "raised") om_3d(w, om_kind(w) == "engraved" ? "engrave" : "cut");
 
         // Bed seat
         translate([seat_x0, seat_y0, seat_floor_z])

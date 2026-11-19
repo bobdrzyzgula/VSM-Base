@@ -328,7 +328,12 @@
 >
 > `face_relief` makes all of them `raised` (the default), `engraved`, or
 > `inlaid` (engraved and filled flush with a separate part), by
-> `face_relief_depth` (0.6 mm). Raised and inlaid marks are color-tagged
+> `face_relief_depth` (0.6 mm). With `face_relief_chamfer` (on by
+> default), a raised mark stands on a 45-degree slope under each of its
+> downward-facing edges, and an engraved recess has one over each
+> upward-facing edge; square, those edges print as a flat overhang that
+> curls and roughens the mark. Inlaid marks are filled, so they keep
+> square walls. Raised and inlaid marks are color-tagged
 > for another filament, as on the standalone bobbin box: the base, the
 > ruler and each logo get their own random color, spaced evenly round the
 > color wheel, with the ruler opposite the base for the strongest

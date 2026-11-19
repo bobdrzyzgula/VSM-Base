@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 554 parameters; 552 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 555 parameters; 553 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -756,4 +756,5 @@ There are 554 parameters; 552 of them appear in the Customizer. The rest are lis
 | `face_relief` | `"raised"` | Ruler and logos on the front and back: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: each mark and the base its own random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
 | `bottom_relief` | `"engraved"` | The bottom's logos: engraved, or inlaid (color-tagged). Not raised: the base prints standing on its bottom *Choices: engraved, inlaid.* |
 | `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
+| `face_relief_chamfer` | `true` | Slope the marks' overhangs at 45 degrees: under a raised mark's downward-facing edges, over an engraved recess's upward-facing ones (they print as a flat overhang that curls without it). Not for inlaid marks, which are filled |
 | `face_color_seed` | `7` | Change it for another set of random colors *Range 0 to 999, step 1.* |
