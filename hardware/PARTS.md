@@ -30,7 +30,7 @@ where, and the specification checked.
 |---|---|---|---|---|---|
 | Fused IEC C14 inlet | Snap-in, 31.6 × 27.5 mm cutout (R1 corners), 1.5 mm panel, fuse drawer, 5 × 20 mm fuse, 10 A 250 V, UL/CSA/TÜV | 1 K, 1 R, 1 M | K R M | Dist | Qualtek 723W-X2/03 (4.8 mm quick-connect tabs; panel 0.8–2 mm), about $2. Schurter 6200.4315 has the same cutout (6.3 mm tabs, 1.5 mm panel). Check the drawer when it arrives: one fuse and a spare, or both lines fused. Check the depth behind the panel (`knee_iec_depth`). |
 | Fuses, slow-blow 5 × 20 mm | T2A 250 V; T250mA 250 V (M's supply) | a few of each | K R M | Dist | Cheap, but fake fuses are a known hazard. |
-| PCB fuse holders, 5 × 20 mm | Clip or enclosed, 250 V | 2 | M | Check | F1, F2 |
+| PCB fuse holders, 5 × 20 mm | Clip or enclosed, 250 V, e.g. Littelfuse 0PTF0075P/77P/78P (6.3 A, UL 4248-1) with its 00BS0232P cover | 1 + spare | M | Check | F2, the supply's T250mA. F1, the main T2A, is the fused inlet's own drawer. Fit the cover: the clips are live. |
 | Lever connectors | Wago 221-413 (3 positions, 0.2–4 mm²) | 3 K, 6 R | K R | Dist | Genuine Wago only; the copies are not the same. |
 | Duplex outlet | US 15 A duplex receptacle, center screw hole | 1 | B | Any | Its tie bar broken off so LIGHT and MOTOR are separate; size checked by the console |
 | Pedal cordset | Standard sewing-machine pedal controller cordset (plug or duplex at the junction) | 1 | K | Any | `knee_power = "cordset"` only |

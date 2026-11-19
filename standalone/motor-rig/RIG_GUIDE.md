@@ -166,7 +166,7 @@ brake jaws if they will see long, heavy runs.
 | Compression spring, about 8 mm OD × 12 mm (optional) | 1 | Smoother drag adjustment |
 | M3 heat-set insert, M3 × 6 screw, washer | 1 | Triac board |
 | Wago 221-413 | 6 | Junctions |
-| IEC C14 fused inlet: Qualtek 723W-X2/03, or Schurter 6200.4315 (31.6 × 27.5 cutout, 1.5 mm panel) | 1 | Mains entry |
+| IEC C14 fused inlet: Qualtek 723W-X2/03, or Schurter 6200.4315 (31.6 × 27.5 cutout, 1.5 mm panel) | 1 | Mains entry; fuse it T2A slow-blow (5 × 20 mm), or T3.15A if the brake's heaviest loads blow it |
 | 4 mm shrouded panel sockets | 11 | Jack panel; red and black for DC+/DC− |
 | 4 mm safety banana leads | 6–8 | Patching |
 | 4 mm shorting plugs (optional) | 2 | Spare links |
