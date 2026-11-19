@@ -9,7 +9,8 @@
    (20% minimum at 10 mA) and isolation.
 4. LM334 three-terminal adjustable current source, Texas Instruments data
    sheet: set current, temperature coefficient, headroom.
-5. MCP6562 push-pull output comparators, Microchip data sheet.
+5. MCP6561/2/4 push-pull output comparators, Microchip data sheet.
+   G5LE relay, Omron (now Aratas) data sheet: coil current.
 6. [BTA16, BTB16 and T16 series 16 A triacs](https://www.st.com/en/thyristors-scr-and-ac-switches/bta16.html),
    STMicroelectronics data sheet.
 7. Siemens (later Infineon), TCA785 phase control IC data sheet: the

@@ -90,7 +90,7 @@ def rfsr(f, fa=0.5, n=0.8):
 
 
 def vd(f, p, scale=1.0):
-    r = rfsr(f) * scale
+    r = rfsr(f) * scale + p.get("RS", 0.0)
     return VCC * r / (r + p["RM"])
 
 
@@ -100,7 +100,7 @@ def speed(f, p, scale=1.0):
 
 def f_start(p, scale=1.0):
     vp = vpeak(p)
-    r = p["RM"] * vp / (VCC - vp) / scale
+    r = (p["RM"] * vp / (VCC - vp) - p.get("RS", 0.0)) / scale
     return 0.5 * (r / 100e3) ** (-1 / 0.8)
 
 
@@ -384,6 +384,142 @@ def tolerance():
     return out
 
 
+def pedal_curve():
+    """The shared command node with RM = 10 kOhm and 470 ohm in series with
+    each sensor: the pedal (UX 406, foot force straight on the sensor
+    beyond the springs' preload) and the knee's sensor stack."""
+    p = dict(NOM, RM=10e3, RS=470.0)
+    fig, ax = plt.subplots(figsize=(8.4, 4.2))
+    style(ax)
+    sp = speed(FS, p)
+    ax.plot(FS, sp, color=ACCENT, lw=1.8, label="RM = 10 kΩ, 470 Ω in series at the sensor")
+    sp2 = speed(FS, dict(NOM, RM=22e3))
+    ax.plot(FS, sp2, color=GRAY1, lw=1.2, ls=(0, (4, 2)), label="knee-only design (RM = 22 kΩ, no series resistor)")
+    ax.set_xscale("log")
+    ax.set_xlim(0.3, 150)
+    ax.set_ylim(0, 102)
+    ax.set_xticks([0.3, 0.5, 1, 2, 5, 10, 20, 50, 100, 150])
+    ax.set_xticklabels(["0.3", "0.5", "1", "2", "5", "10", "20", "50", "100", "150"])
+    ax.set_xlabel("force on the sensor beyond the springs' preload, N (log scale)", color=MUTED)
+    ax.set_ylabel("motor voltage, % of line (RMS)", color=MUTED)
+    ax.legend(frameon=False, fontsize=8.5, loc="lower right")
+    ax.set_title("With a pedal: the shared command, simulated", loc="left", fontsize=10, color=INK)
+    save(fig, "analog-knee-pedal-curve.svg")
+    k = np.argmax(sp >= 90)
+    return f_start(p), {q: FS[np.argmax(sp >= q)] for q in (25, 50, 75, 90)}, sp.max(), \
+        vd(1e9, p), vd(150, p), alpha(float(vd(150, p)), p)
+
+
+def pedal_drawing():
+    fig, ax = plt.subplots(figsize=(10.0, 5.8))
+    ax.set_aspect("equal")
+    ax.axis("off")
+    T, B = 5.0, 0.0
+    wire(ax, [(0.3, T), (12.0, T)])
+    wire(ax, [(0.3, B), (12.0, B)])
+    note(ax, 0.2, T, "+5 V", ha="right")
+    note(ax, 0.2, B, "0 V", ha="right")
+    # pedal, jack, cable
+    box(ax, -2.4, 1.2, 1.9, 2.0, "", col=WARM, ls=(0, (4, 2)))
+    note(ax, -1.45, 3.45, "the pedal", ha="center", col=WARM)
+    ax.add_patch(plt.Rectangle((-1.6, 1.9), 0.4, 1.0, fill=False, ec=WARM, lw=1.4))
+    vres(ax, -1.4, 1.9, 2.9, n=5, amp=0.08, col=WARM)
+    note(ax, -1.75, 2.4, "FSR", ha="right", col=WARM, size=7.5)
+    vres(ax, -0.85, 1.35, 2.2, n=4, amp=0.07)
+    note(ax, -0.7, 1.75, "470 Ω", size=7.5)
+    wire(ax, [(-1.4, 2.9), (-1.4, 3.05), (-0.85, 3.05), (-0.85, 2.2)])
+    wire(ax, [(-1.4, 1.9), (-1.4, 1.35)])
+    wire(ax, [(-0.85, 1.35), (-0.85, 1.25)])
+    wire(ax, [(-0.85, 1.25), (0.9, 1.25)], col=GRAY1)
+    wire(ax, [(-1.4, 1.35), (-1.4, 0.6), (0.9, 0.6)], col=GRAY1)
+    note(ax, 0.05, 0.92, "2-conductor\nshielded cable", ha="center", col=GRAY1, size=7)
+    ax.add_patch(plt.Rectangle((0.9, 0.45), 0.5, 1.0, fill=False, ec=INK, lw=1.3))
+    note(ax, 1.15, 0.2, "J7 jack", ha="center", size=7.5)
+    wire(ax, [(1.4, 0.6), (1.6, 0.6), (1.6, B)])
+    node(ax, 1.6, B)
+    # D node: RM, knee sensor in parallel, CF
+    wire(ax, [(1.4, 1.25), (2.6, 1.25), (2.6, 2.6)])
+    vres(ax, 2.6, 3.4, T, n=5)
+    node(ax, 2.6, T)
+    note(ax, 2.85, 4.2, "RM 10 kΩ")
+    wire(ax, [(2.6, 3.4), (2.6, 2.6)])
+    node(ax, 2.6, 2.6)
+    note(ax, 2.45, 2.75, "D", ha="right", col=ACCENT)
+    wire(ax, [(2.6, 2.6), (3.6, 2.6), (3.6, 2.2)])
+    node(ax, 3.6, 2.6)
+    ax.add_patch(plt.Rectangle((3.4, 0.9), 0.4, 1.0, fill=False, ec=WARM, lw=1.4))
+    vres(ax, 3.6, 0.9, 1.9, n=5, amp=0.08, col=WARM)
+    vres(ax, 3.6, 1.9, 2.2, n=2, amp=0.05)
+    note(ax, 3.85, 1.4, "knee FSR\n+ 470 Ω", col=WARM, size=7.5)
+    wire(ax, [(3.6, 0.9), (3.6, B)])
+    node(ax, 3.6, B)
+    # comparators
+    def comp(x, y, top, bot, lab):
+        ax.add_patch(plt.Polygon([[x - 0.5, y + 0.5], [x - 0.5, y - 0.5], [x + 0.45, y]], closed=True, fill=False, ec=INK, lw=1.3))
+        note(ax, x - 0.42, y + 0.25, top, size=8)
+        note(ax, x - 0.42, y - 0.25, bot, size=8)
+        note(ax, x, y - 0.75, lab, ha="center", size=7.5)
+    wire(ax, [(2.6, 2.6), (2.6, 2.6)])
+    # C1: fire (as before)
+    note(ax, 5.0, 4.45, "C1: fire, as in §3 (ramp vs D)", size=8, col=MUTED)
+    # C2: enable, D below 3.8 V
+    comp(6.4, 3.3, "−", "+", "C2: pressed\n(D < 3.8 V)")
+    wire(ax, [(3.6, 2.6), (4.9, 2.6), (4.9, 3.55), (5.9, 3.55)])
+    note(ax, 5.3, 3.05, "3.8 V", ha="center", size=7.5, col=ACCENT)
+    wire(ax, [(5.6, 3.05), (5.9, 3.05)])
+    # C3: short, D above 0.15 V
+    comp(6.4, 1.4, "+", "−", "C3: not shorted\n(D > 0.4 V)")
+    wire(ax, [(4.9, 2.6), (4.9, 1.65), (5.9, 1.65)])
+    note(ax, 5.3, 1.15, "0.4 V", ha="center", size=7.5, col=ACCENT)
+    wire(ax, [(5.6, 1.15), (5.9, 1.15)])
+    # diode logic into E
+    def diode(x0, x1, y):
+        xm = (x0 + x1) / 2
+        ax.add_patch(plt.Polygon([[xm - 0.15, y + 0.15], [xm - 0.15, y - 0.15], [xm + 0.15, y]], closed=True, fill=False, ec=INK, lw=1.2))
+        ax.plot([xm + 0.15, xm + 0.15], [y - 0.15, y + 0.15], color=INK, lw=1.3)
+        wire(ax, [(x0, y), (xm - 0.15, y)])
+        wire(ax, [(xm + 0.15, y), (x1, y)])
+    diode(6.85, 7.9, 3.3)
+    wire(ax, [(7.9, 3.3), (8.2, 3.3), (8.2, 1.4)])
+    node(ax, 8.2, 2.35)
+    # clamp diode from E to C3 output (cathode toward C3)
+    xm = 7.55
+    ax.add_patch(plt.Polygon([[xm + 0.15, 1.55], [xm + 0.15, 1.25], [xm - 0.15, 1.4]], closed=True, fill=False, ec=INK, lw=1.2))
+    ax.plot([xm - 0.15, xm - 0.15], [1.25, 1.55], color=INK, lw=1.3)
+    wire(ax, [(6.85, 1.4), (xm - 0.15, 1.4)])
+    wire(ax, [(xm + 0.15, 1.4), (8.2, 1.4)])
+    note(ax, 8.35, 2.6, "E", col=ACCENT)
+    # hold RC
+    wire(ax, [(8.2, 2.35), (8.9, 2.35)])
+    node(ax, 8.9, 2.35)
+    vres(ax, 8.9, B, 1.45, n=4, amp=0.08)
+    wire(ax, [(8.9, 1.45), (8.9, 2.35)])
+    note(ax, 8.65, 0.8, "330 kΩ", ha="right", size=7.5)
+    wire(ax, [(8.9, 2.35), (9.5, 2.35), (9.5, 1.36)])
+    vcap(ax, 9.5, 1.3)
+    wire(ax, [(9.5, 1.24), (9.5, B)])
+    note(ax, 9.65, 1.0, "1 µF", size=7.5)
+    node(ax, 8.9, B); node(ax, 9.5, B)
+    # Q4 and K1
+    wire(ax, [(9.5, 2.35), (10.2, 2.35)])
+    ax.plot([10.2, 10.2], [2.1, 2.6], color=INK, lw=1.4)
+    ax.plot([10.35, 10.35], [2.05, 2.65], color=INK, lw=1.4)
+    wire(ax, [(10.35, 2.6), (10.8, 2.6), (10.8, 3.1)])
+    wire(ax, [(10.35, 2.1), (10.8, 2.1), (10.8, B)])
+    node(ax, 10.8, B)
+    note(ax, 10.3, 1.75, "Q4 2N7000", ha="center", size=7.5)
+    box(ax, 10.5, 3.1, 0.6, 1.0, "K1\ncoil", size=7.5)
+    wire(ax, [(10.8, 4.1), (10.8, T)])
+    node(ax, 10.8, T)
+    note(ax, 10.4, 3.6, "+ 1N4148\nflyback", ha="right", size=7.5)
+    ax.plot([12.3, 12.3], [-0.4, 5.5], color=WARM, lw=1.6, ls=(0, (6, 3)))
+    note(ax, 12.35, 5.3, "barrier", col=WARM, size=8)
+    note(ax, 12.4, 3.6, "K1's contact feeds\nthe triac (mains side)", col=WARM, size=7.5)
+    ax.set_xlim(-2.8, 14.6)
+    ax.set_ylim(-0.6, 5.7)
+    save(fig, "analog-knee-pedal-schematic.svg")
+
+
 drawing()
 f, v_d, al = waveforms(NOM)
 cv = curves()
@@ -407,3 +543,8 @@ for lab, fs0, f90, mx in tol:
 s0 = speed(FS, NOM)
 for pct in (25, 50, 75):
     print(f"nominal {pct}% at {FS[np.argmax(s0 >= pct)]:.2f} N")
+
+pedal_drawing()
+fs0, qs, mx, vrest, v150, a150 = pedal_curve()
+print(f"pedal: starts {fs0:.2f} N; " + ", ".join(f"{q}% at {f:.1f} N" for q, f in qs.items()) + f"; max {mx:.0f}%")
+print(f"pedal: D at rest 5 V (sensor open); at 150 N {float(v150):.2f} V (fires {a150:.0f} deg); sensor itself shorted {5*470/10470:.2f} V; cable or jack shorted 0 V")

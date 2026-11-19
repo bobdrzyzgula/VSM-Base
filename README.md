@@ -126,6 +126,11 @@ fit on your printer, and then print a base that fits.
   [standalone/shaft-height-gauge/](standalone/shaft-height-gauge/),
   [standalone/floor-span-gauge/](standalone/floor-span-gauge/) and
   [standalone/shaft-fit-collars/](standalone/shaft-fit-collars/).
+- **A force-sensing foot pedal (draft)**: a heel-hinged, low-voltage pedal
+  enclosing an Interlink FSR 406 and a small board, for the analog
+  controller in the design study *An Analog Force-Sensing Knee
+  Controller*; not yet printed. See
+  [standalone/fsr-pedal/](standalone/fsr-pedal/).
 - **Test parts** for checking the fit, the joints and the hardware before
   committing to a long print.
 - **Self-checking.** Every render prints the key dimensions and warns about

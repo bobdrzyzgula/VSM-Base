@@ -56,6 +56,12 @@ share it.
   nearly rigid, so that the command really is force. §5 sets out both,
   and how they would fit the existing knee housing.
 
+**A foot pedal too.** §6 adds a passive low-voltage pedal on a
+two-conductor cable, in parallel with the knee's sensor, with the MCU
+controller's relay restored as the motor's cutoff and a check for a
+shorted cable. A printable draft of the pedal is in
+`standalone/fsr-pedal/`.
+
 **What it is not.** It has no speed regulation, needle stops or
 calibration; the MCU controller (speed-control paper, §9) provides those.
 This is the "no code" alternative, built to the same safety standard.
