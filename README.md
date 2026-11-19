@@ -131,6 +131,11 @@ fit on your printer, and then print a base that fits.
   controller in the design study *An Analog Force-Sensing Knee
   Controller*; not yet printed. See
   [standalone/fsr-pedal/](standalone/fsr-pedal/).
+- **A force-sensing knee housing (draft)**: the knee controller's spring
+  housing with a sensor tower beside the return spring, holding an
+  Interlink FSR 402 under a progressive two-spring stack, for the same
+  analog controller; not yet printed. See
+  [standalone/fsr-knee/](standalone/fsr-knee/).
 - **Test parts** for checking the fit, the joints and the hardware before
   committing to a long print.
 - **Self-checking.** Every render prints the key dimensions and warns about

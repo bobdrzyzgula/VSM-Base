@@ -54,7 +54,8 @@ share it.
   speed range into the first few millimeters of travel. A progressive
   spring stack spreads it over the full inch, or the knee can be made
   nearly rigid, so that the command really is force. §5 sets out both,
-  and how they would fit the existing knee housing.
+  and how they would fit the existing knee housing; a printable draft of the
+  housing is in `standalone/fsr-knee/`.
 
 **A foot pedal too.** §6 adds a passive low-voltage pedal on a
 two-conductor cable, in parallel with the knee's sensor, with the MCU

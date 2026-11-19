@@ -74,3 +74,14 @@ snap switch all stay. What changes:
 
 The sensor's tail and its two wires are SELV, so they run to the board
 like any low-voltage lead.
+
+**A printable draft** (`standalone/fsr-knee/fsr_knee_housing.scad`, with
+its README) puts the sensor beside the return spring rather than under it:
+the housing's bottom is already less than 5 mm above the table, and the
+402's pad is wider than the spring's bore. A sensor tower on the shaft
+side, under the crank, holds a 402, a puck, a soft and a stiff spring
+nested together, and a plunger that the crank meets just before the
+switch point. At 38 mm from the shaft the plunger moves 3.2 mm by full
+speed and 4.0 mm by the stop, and the stack reaches 54 N at full speed,
+sized for §6's 10 kΩ divider. Since the sector gear goes, the rest
+switch's cam needs a new home on the shaft.
