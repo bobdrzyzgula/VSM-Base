@@ -224,6 +224,14 @@ lengths rounded up to stock sizes.
   stress on the sensor, the pedal around it, and a test plan. Not yet
   built. Its source is in [`docs/fsr-pedal/`](docs/fsr-pedal/); releases
   carry it as PDF and HTML.
+- **An Analog Force-Sensing Knee Controller**: a design study for a knee
+  controller with no microcontroller, isolated from the mains, in which an
+  FSR sets the speed through a zero-cross-synchronized ramp and a
+  comparator. It shares the MCU controller's mains side, and covers the
+  circuit, its simulated response and tolerances, and how a force sensor
+  can serve a knee lever. Not yet built. Its source is in
+  [`docs/analog-knee/`](docs/analog-knee/); releases carry it as PDF and
+  HTML.
 - **The motor test rig's guide**: building and using the bench rig in
   [`standalone/motor-rig/`](standalone/motor-rig/); releases carry it as a
   PDF.

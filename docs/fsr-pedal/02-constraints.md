@@ -11,7 +11,10 @@ other connection, so whatever is inside it must:
   paper, §6). Before the triac fires in each half-cycle, that is nearly
   the whole line, because the motor drops almost nothing at the timing
   network's few milliamps. After it fires, it is about a volt.
-- **be live throughout.** Either terminal may be the hot one, and nothing
+- **be live throughout.** Either terminal may be the hot one. Unpolarized
+  plugs leave it to chance, and even cordsets with polarized plugs are
+  wired to the pedal at random: in Robert Drzyzgula's experience the
+  makers don't try. Nothing
   inside is referenced to earth. Every part in the pedal, the sensor and
   its tail included, has to be treated as being at mains potential. The
   user is protected by the housing, not by the circuit.
