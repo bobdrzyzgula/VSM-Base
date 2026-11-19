@@ -20,7 +20,7 @@ fuse. The pads for an RC snubber stay, unfitted.
 Two things differ:
 
 - **No relay.** The MCU controller's relay K1 lets the firmware cut the
-  motor. Here, the knee's rest switch does that job (§5): a mains-rated
+  motor. Here, the knee's rest switch does that job (§5; with a foot pedal the relay returns, §6): a mains-rated
   snap switch in series with the motor, open whenever the knee lever is at
   rest. It protects against a shorted triac or any fault in the
   electronics, as the relay does.
