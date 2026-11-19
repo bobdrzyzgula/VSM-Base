@@ -217,6 +217,13 @@ lengths rounded up to stock sizes.
   controller's donor board worked through in detail, and the MOSFETs and
   IGBTs behind PWM and variable-frequency drives. Its source is in
   [`docs/switching/`](docs/switching/); releases carry it as PDF and HTML.
+- **A Force-Sensing Pedal**: a design study for a foot pedal that senses
+  force with a force-sensing resistor and drives a triac with no supply or
+  microcontroller, as a two-terminal device that fits a standard cordset.
+  It covers the circuit, a simulation of its force-to-speed curve, the
+  stress on the sensor, the pedal around it, and a test plan. Not yet
+  built. Its source is in [`docs/fsr-pedal/`](docs/fsr-pedal/); releases
+  carry it as PDF and HTML.
 - **The motor test rig's guide**: building and using the bench rig in
   [`standalone/motor-rig/`](standalone/motor-rig/); releases carry it as a
   PDF.
