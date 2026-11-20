@@ -7335,7 +7335,7 @@ module ct_back_cuts(yi, yo) {
     // jacks: thinned panel round the array, and the cutouts
     translate([ct_jx, yo - ctrl_back_skin - overlap, ct_jz0 - ct_jc[1] / 2 + ct_ja[1] / 2]) rotate([-90, 0, 0])
         linear_extrude(height = ctrl_back_skin - ctrl_jack_panel + overlap) ct_rrect(ct_ja + [m, m], 0);
-    translate([ct_jx, yo + 1, ct_jz0]) rotate([90, 0, 0]) mirror([0, 1, 0])
+    translate([ct_jx, yo + 1, ct_jz0]) rotate([90, 0, 0])
         linear_extrude(height = ctrl_back_skin + 2) ct_jack_cuts_2d();
 }
 
