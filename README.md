@@ -250,6 +250,9 @@ To build the documentation, see the [`Makefile`](Makefile): `make params`,
 `make images`, `make pdf`, `make html`, or `make docs` for both. They build
 the guide, the three papers and the rig guide into `build/`.
 
+Snapshots of the PDFs, committed by hand and not always the latest, are in
+[`pdfs/`](pdfs/), for reading on GitHub or sending as a link.
+
 - **`make pdf` and `make html`** need pandoc 3.1.2 or later. The PDF also
   needs [Typst](https://typst.app), 0.12 or later with a recent pandoc (the
   release build uses pandoc 3.7.0.2 and Typst 0.13.1). `make pdf

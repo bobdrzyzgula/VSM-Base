@@ -13,6 +13,8 @@
 #                 embedded (needs pandoc 3.1.2+)
 #   make docs     pdf and html
 #   make all      params, images, pdf and html
+#   make snapshot copy build/*.pdf into pdfs/, the hand-committed snapshots
+#                 (run make pdf first; committing them is up to you)
 #
 # VERSION labels the guide's title page: `make docs VERSION=0.1.0-alpha`
 # gives "Version 0.1.0-alpha"; without it the guide says "Development
@@ -54,7 +56,7 @@ DEVVER   := $(shell sed -n 's/^\/\/ VSM Base, version \([0-9]*\).*/\1/p' $(MODEL
 LABEL    := $(if $(VERSION),Version $(VERSION),Development Build v$(DEVVER))
 IMAGES   := $(wildcard docs/images/*/*)
 
-.PHONY: presets all params images pdf html docs clean
+.PHONY: presets all params images pdf html docs clean snapshot
 
 all: params presets images docs
 
@@ -208,6 +210,10 @@ $(AK_HTML): $(AK_CHAPTERS) docs/analog-knee/metadata.yaml docs/guide/guide.css $
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -M lang=en -M pagetitle="An Analog Force-Sensing Knee Controller" \
 	    -o ../../$@
+
+snapshot:
+	@ls $(BUILD)/*.pdf >/dev/null 2>&1 || { echo "No PDFs in $(BUILD)/: run make pdf first"; exit 1; }
+	cp $(BUILD)/*.pdf pdfs/
 
 clean:
 	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ
