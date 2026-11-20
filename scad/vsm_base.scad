@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 79
+// VSM Base, version 80
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -387,6 +387,8 @@
 // the floor (heat-set inserts or thread-forming screws), and knock-outs in
 // the pass-through. Parts ctrl_mezzanine (a plate of new posts screwed onto
 // the old ones) and ctrl_panel_test.
+// v80: the controller bay's second row of jacks went down into the first;
+// rows now stack upward from ctrl_jack_z.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
