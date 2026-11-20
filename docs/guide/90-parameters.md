@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 555 parameters; 553 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 594 parameters; 590 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, ctrl_mezzanine, ctrl_panel_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 | `test_top_h` | `12.7` | Test parts: height of the top slices |
 | `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
@@ -30,7 +30,7 @@ There are 555 parameters; 553 of them appear in the Customizer. The rest are lis
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, jack.* |
+| `compartment_option` | `"storage"` | Small-compartment option ("none" = base fitted to the bed alone) *Choices: none, storage, outlet, knee, controller.* |
 | `compartment_mount` | `"built-in"` | How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now) *Choices: built-in, attached.* |
 | `hinge_type` | `"lollipop"` | Hinge type *Choices: lollipop, printed, barrel, none.* |
 | `split` | `true` | Split into two dovetailed halves for printing |
@@ -263,6 +263,50 @@ There are 555 parameters; 553 of them appear in the Customizer. The rest are lis
 | `knee_cord` | `[7.5, 4.5]` | Bare cord: [width, thickness] (flat SPT-2 about 7.5 x 4.5) |
 | `knee_cord_pos` | `14` | Bare cord: position along the right end wall, from the bay's back wall *Range 8 to 120, step 0.5.* |
 | `knee_view` | `0` | Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop) *Range 0 to 1, step 0.05.* |
+
+## Controller compartment
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ctrl_iec_tunnel` | `"left"` | The controller compartment (compartment_option = "controller"): a bay for the boards of an MCU or analog motor controller, with no knee mechanism. A fused IEC C14 inlet stands in one of the two gabled tunnels in the back wall behind the bay, a panel of low-voltage jacks (for a pedal) closes the other, a sparse grid of posts on the floor takes the boards, and knock-out walls close the pass-through to the machine cavity until the motor's leads need it. The wiring is left to the builder. Back-wall tunnel for the IEC inlet, as seen from the front: left (beside the divider and the pass-through, keeping the mains on that side) or right; the jacks take the other *Choices: left, right.* |
+| `ctrl_iec_cutout` | `[27.5, 31.6]` | IEC inlet, standing upright (Qualtek 723W-X2/03 or Schurter 6200.4315 turned on end): panel cutout [width, height] |
+| `ctrl_iec_radius` | `1` | IEC inlet: cutout corner radius *Range 0 to 5, step 0.5.* |
+| `ctrl_iec_panel` | `1.5` | IEC inlet: panel thickness left at the back of its tunnel (723W-X2/03: 0.8 to 2 mm; 6200.4315: 1.5 mm) *Range 0.8 to 2.5, step 0.1.* |
+| `ctrl_iec_z` | `4` | IEC inlet: cutout's bottom edge above the bay floor *Range 0 to 30, step 0.5.* |
+| `ctrl_pocket_clear` | `2` | Clearance around the inlet's body and the jacks' bodies in their tunnels, per side *Range 0.5 to 6, step 0.5.* |
+| `ctrl_back_skin` | `5` | Back wall left behind the two tunnels (it is thinned to the panel thickness only round the cutouts) *Range 2 to 17, step 0.5.* |
+| `ctrl_panel_margin` | `2.5` | Thinned panel's margin round each cutout (or round the jacks' array), for the inlet's and keystones' latches *Range 1 to 8, step 0.5.* |
+| `ctrl_jack_kind` | `"keystone"` | Jacks: snap-in keystone modules (3.5 mm and 1/4" jack inserts are sold for keystone panels), or round holes for panel-mount jacks held by a nut *Choices: keystone, round.* |
+| `ctrl_jacks` | `[1, 2]` | Jacks: [rows, columns] |
+| `ctrl_keystone_cutout` | `[14.5, 16.2]` | Keystone cutout [width, height] (the usual 14.5 x 16.2; the latch is at the top) |
+| `ctrl_jack_hole` | `9.7` | Round jack hole (1/4" jacks with a 3/8" bushing: 9.7; 3.5 mm jacks: about 6.2; check yours) *Range 3 to 16, step 0.1.* |
+| `ctrl_jack_pitch` | `[16.5, 22]` | Jack pitch [across, up] |
+| `ctrl_jack_panel` | `2` | Jack panel thickness (keystones latch on 1.5 to 2.2 mm; panel jacks take up to their thread length) *Range 0.8 to 5, step 0.1.* |
+| `ctrl_jack_z` | `0` | Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides *Range 0 to 60, step 0.5.* |
+| `ctrl_knockouts` | `true` | Close the pass-through with knock-out walls (tap them out when the motor's leads go through; passthrough_knockouts does this for the other options) |
+| `ctrl_posts` | `"grid"` | Posts for the boards: a grid, a list of positions (from a board's own holes), both, or none *Choices: grid, list, both, none.* |
+| `ctrl_grid` | `[5, 2]` | Grid: [rows (front to back), columns (left to right)] |
+| `ctrl_grid_pitch` | `[25.4, 25.4]` | Grid pitch [left to right, front to back] (1" = 25.4, ten 0.1" perfboard holes, so any perfboard can be drilled to fit) |
+| `ctrl_grid_offset` | `[0, 0]` | Grid centre's offset from the middle of the bay floor [x, y] |
+| `ctrl_post_list` | `[[0, 0], [46, 0], [0, 66], [46, 66]]` | List: post positions [[x, y], ...], as measured between a board's mounting holes (here a 50 x 70 mm prototyping board, holes 46 x 66 apart; check yours) *Edit in the file; not shown in the Customizer.* |
+| `ctrl_list_origin` | `[12, 20]` | List: where its [0, 0] falls, from the bay floor's front left corner |
+| `ctrl_post_d` | `8` | Post diameter *Range 5 to 14, step 0.5.* |
+| `ctrl_post_h` | `6` | Post height: board underside above the floor *Range 2 to 30, step 0.5.* |
+| `ctrl_post_hole` | `"insert"` | Post hole: an M3 heat-set insert, or a pilot for a thread-forming screw for plastics (M3 or #4) *Choices: insert, screw.* |
+| `ctrl_insert_d` | `4.6` | Heat-set insert hole (M3) *Range 3 to 6, step 0.05.* |
+| `ctrl_pilot_d` | `2.5` | Pilot hole for a thread-forming screw *Range 1.5 to 4, step 0.05.* |
+| `ctrl_hole_depth` | `8` | Hole depth from the post's top (may run on into the floor) *Range 3 to 15, step 0.5.* |
+| `mezz_posts` | `"list"` | Mezzanine (part ctrl_mezzanine): a plate screwed down to the floor posts, carrying new posts for a board that doesn't fit them; for a base already printed. Its new posts: a grid or a list, in the same frame as the floor's (from the bay floor's front left corner) *Choices: grid, list.* |
+| `mezz_grid` | `[2, 2]` |  |
+| `mezz_grid_pitch` | `[40, 60]` |  |
+| `mezz_grid_offset` | `[0, 0]` |  |
+| `mezz_post_list` | `[[0, 0], [40, 0], [0, 55], [40, 55]]` |  *Edit in the file; not shown in the Customizer.* |
+| `mezz_list_origin` | `[15, 30]` |  |
+| `mezz_plate_t` | `3` | Mezzanine plate thickness *Range 2 to 8, step 0.5.* |
+| `mezz_lift` | `0` | Lift: legs under the plate at the floor posts (0 = plate straight on the posts) *Range 0 to 40, step 0.5.* |
+| `mezz_margin` | `6` | Margin of plate around the posts and holes *Range 3 to 20, step 0.5.* |
+| `mezz_screw_hole` | `3.4` | Screws down into the floor posts: clearance hole *Range 2 to 5, step 0.1.* |
+| `mezz_screw_head` | `6` | Head diameter of those screws (to keep the new posts clear of them) *Range 4 to 10, step 0.5.* |
 
 ## Lollipop hinge
 

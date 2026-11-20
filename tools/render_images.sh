@@ -36,6 +36,9 @@ render end-underside   "-170,-60,-90,15,110,20"    -D 'part="base"' -D 'split=fa
 render split           "211,108,41,60,0,20,800"   -D 'part="base"'
 # Knee controller: cutaway of the right bay with the mechanism in place
 preview knee            "360,85,30,50,0,25,440"    -D 'part="knee_assembly"' -D 'compartment_option="knee"'
+# Controller bay: posts on the floor and the two back-wall tunnels, from above the front; and the back face's inlet and jacks
+render controller-bay     "374,100,30,35,0,15,420"     -D 'part="base"' -D split=false -D 'compartment_option="controller"'
+render controller-back    "374,220,40,75,0,165,330"   -D 'part="base"' -D split=false -D 'compartment_option="controller"'
 render attached-bay       "260,110,40,55,0,25,820"   -D 'part="exploded"' -D 'compartment_mount="attached"' -D back_ext=false -D left_ext=false -D corner_ext=false -D split=false
 # Printed hinge, cut through the middle: at rest and at its stop
 preview printed-hinge   "330,27,10,0,27,10"        -D 'part="printed_hinge_view"' -D 'hinge_type="printed"' -D 'machine="Kenmore 158-14001"' --projection=o

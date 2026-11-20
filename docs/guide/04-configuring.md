@@ -194,7 +194,46 @@
 > a small hammer, and print the outlet lid. To close the pass-through again
 > later, print `passthrough_cover`.
 
-> **Note: a short back extension.** If `back_ext_length` is too short to
+> **Note: a controller bay.** `compartment_option = "controller"` makes the
+> side compartment a bay for a motor controller's boards (the MCU
+> controller, or the analog one in the design study), with no knee
+> mechanism. The two gabled tunnels in the back wall behind the bay run on
+> back to leave a 5 mm skin (`ctrl_back_skin`): one takes a fused IEC C14
+> inlet standing upright, the other a panel of jacks for a low-voltage
+> pedal. Each skin is thinned to its panel's thickness only round its
+> cutouts. By default the inlet takes the tunnel beside the divider, near
+> the cord pass-through, so the mains stays on that side
+> (`ctrl_iec_tunnel`). The jacks are keystone cutouts (keystone inserts are
+> sold with 3.5 mm and 1/4" jacks) or round holes for panel-mount jacks
+> (`ctrl_jack_kind`), in an array of `ctrl_jacks` rows and columns.
+>
+> The floor carries a sparse grid of posts for the boards, on a 1" pitch by
+> default so that a perfboard can be drilled to fit: `ctrl_grid` sets the
+> rows and columns, `ctrl_grid_pitch` and `ctrl_grid_offset` their spacing
+> and place. For a commercial board, give its mounting holes as a list
+> (`ctrl_post_list`, placed by `ctrl_list_origin`), and set `ctrl_posts` to
+> `list`, or to `both` to keep the grid too. Each post takes an M3 heat-set
+> insert or a thread-forming screw for plastics (`ctrl_post_hole`). The
+> pass-through to the machine cavity is closed by knock-out walls until the
+> motor's leads need it (`ctrl_knockouts`). The wiring inside is left to
+> the builder.
+>
+> For a base already printed, part `ctrl_mezzanine` is a plate that screws
+> down onto the floor's posts and carries a new set of posts on top
+> (`mezz_posts`, a grid or a list, in the same frame as the floor's), for a
+> board that doesn't fit the grid. With `mezz_lift`, spacers come with it
+> to raise the plate over whatever stays below. The console lists the posts'
+> positions, and warns if a post falls off the floor, a new post sits over
+> a screw head below, or the inlet and the jacks don't fit their tunnels.
+> Print `ctrl_panel_test` first to try the inlet and the jacks.
+>
+> ![The controller bay from above: the posts on the floor, the pass-through
+> closed by its knock-out wall on the left, and the two tunnels in the back
+> wall.](../images/renders/controller-bay.png){width=80%}
+>
+> ![The back face behind the controller bay: the IEC inlet's cutout and two
+> keystone jacks.](../images/renders/controller-back.png){width=80%}
+ If `back_ext_length` is too short to
 > reach the last back peg hole, the back lip runs on past the body over the
 > base's back rim to reach it (`back_lip_extend`), with a rounded end and a
 > fillet into the body; the console says how far. That extension then fits

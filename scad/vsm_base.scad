@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 78
+// VSM Base, version 79
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -380,13 +380,20 @@
 // every downward-facing edge, and engraved marks' recesses have one over
 // every upward-facing edge, so neither prints a flat overhang that curls
 // (face_relief_chamfer). Inlaid marks are filled, so they keep square walls.
+// v79: compartment_option "controller" (replacing the unused "jack"): a
+// bay for a motor controller's boards, with no knee mechanism. A fused IEC
+// inlet upright in one of the back wall's two tunnels behind the bay, a
+// panel of keystone or round jacks in the other, a grid or list of posts on
+// the floor (heat-set inserts or thread-forming screws), and knock-outs in
+// the pass-through. Parts ctrl_mezzanine (a plate of new posts screwed onto
+// the old ones) and ctrl_panel_test.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
+part = "assembly"; // [assembly, exploded, all, test_parts, tools, tilt_prop, base, right_bay, base_lid, back_ext, back_lid, left_ext, left_lid, corner_ext, corner_lid, bin_lids, back_podium, left_podium, corner_podium, extensions_view, rod_plugs, outlet_cap, hinge_coupon, compartment_test, outlet_trims, foot_rig, foot_rig_left, foot_rig_right, printed_hinges, printed_hinge_test, printed_hinge_view, back_trim, left_trim, cord_slot_trim, back_box, left_box, corner_box, ext_pegs, lid_hinge_test, turn_button, passthrough_cover, split_test, front_corner_test, attach_test, hinge_nut_tool, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, knee_entry_test, ctrl_mezzanine, ctrl_panel_test, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, bobbin_test, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 // Test parts: height of the top slices
@@ -422,7 +429,7 @@ plate_gap = 8; // [2 : 1 : 30]
 
 /* [Options] */
 // Small-compartment option ("none" = base fitted to the bed alone)
-compartment_option = "storage"; // [none, storage, outlet, knee, jack]
+compartment_option = "storage"; // [none, storage, outlet, knee, controller]
 // How the small compartment joins the base: built-in (one body with the base), or attached (a separate bay screwed to the base's right end, for beds too long to print with a built-in compartment; storage only, for now)
 compartment_mount = "built-in"; // [built-in, attached]
 // Hinge type
@@ -809,6 +816,82 @@ knee_cord = [7.5, 4.5];
 knee_cord_pos = 14; // [8 : 0.5 : 120]
 // Part knee_assembly: how far the knee is pushed, 0 (rest) to 1 (hard stop)
 knee_view = 0; // [0 : 0.05 : 1]
+
+/* [Controller compartment] */
+// The controller compartment (compartment_option = "controller"): a bay for the boards of an MCU or analog motor controller, with no knee mechanism. A fused IEC C14 inlet stands in one of the two gabled tunnels in the back wall behind the bay, a panel of low-voltage jacks (for a pedal) closes the other, a sparse grid of posts on the floor takes the boards, and knock-out walls close the pass-through to the machine cavity until the motor's leads need it. The wiring is left to the builder.
+// Back-wall tunnel for the IEC inlet, as seen from the front: left (beside the divider and the pass-through, keeping the mains on that side) or right; the jacks take the other
+ctrl_iec_tunnel = "left"; // [left, right]
+// IEC inlet, standing upright (Qualtek 723W-X2/03 or Schurter 6200.4315 turned on end): panel cutout [width, height]
+ctrl_iec_cutout = [27.5, 31.6];
+// IEC inlet: cutout corner radius
+ctrl_iec_radius = 1; // [0 : 0.5 : 5]
+// IEC inlet: panel thickness left at the back of its tunnel (723W-X2/03: 0.8 to 2 mm; 6200.4315: 1.5 mm)
+ctrl_iec_panel = 1.5; // [0.8 : 0.1 : 2.5]
+// IEC inlet: cutout's bottom edge above the bay floor
+ctrl_iec_z = 4; // [0 : 0.5 : 30]
+// Clearance around the inlet's body and the jacks' bodies in their tunnels, per side
+ctrl_pocket_clear = 2; // [0.5 : 0.5 : 6]
+// Back wall left behind the two tunnels (it is thinned to the panel thickness only round the cutouts)
+ctrl_back_skin = 5; // [2 : 0.5 : 17]
+// Thinned panel's margin round each cutout (or round the jacks' array), for the inlet's and keystones' latches
+ctrl_panel_margin = 2.5; // [1 : 0.5 : 8]
+// Jacks: snap-in keystone modules (3.5 mm and 1/4" jack inserts are sold for keystone panels), or round holes for panel-mount jacks held by a nut
+ctrl_jack_kind = "keystone"; // [keystone, round]
+// Jacks: [rows, columns]
+ctrl_jacks = [1, 2];
+// Keystone cutout [width, height] (the usual 14.5 x 16.2; the latch is at the top)
+ctrl_keystone_cutout = [14.5, 16.2];
+// Round jack hole (1/4" jacks with a 3/8" bushing: 9.7; 3.5 mm jacks: about 6.2; check yours)
+ctrl_jack_hole = 9.7; // [3 : 0.1 : 16]
+// Jack pitch [across, up]
+ctrl_jack_pitch = [16.5, 22];
+// Jack panel thickness (keystones latch on 1.5 to 2.2 mm; panel jacks take up to their thread length)
+ctrl_jack_panel = 2; // [0.8 : 0.1 : 5]
+// Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides
+ctrl_jack_z = 0; // [0 : 0.5 : 60]
+// Close the pass-through with knock-out walls (tap them out when the motor's leads go through; passthrough_knockouts does this for the other options)
+ctrl_knockouts = true;
+// Posts for the boards: a grid, a list of positions (from a board's own holes), both, or none
+ctrl_posts = "grid"; // [grid, list, both, none]
+// Grid: [rows (front to back), columns (left to right)]
+ctrl_grid = [5, 2];
+// Grid pitch [left to right, front to back] (1" = 25.4, ten 0.1" perfboard holes, so any perfboard can be drilled to fit)
+ctrl_grid_pitch = [25.4, 25.4];
+// Grid centre's offset from the middle of the bay floor [x, y]
+ctrl_grid_offset = [0, 0];
+// List: post positions [[x, y], ...], as measured between a board's mounting holes (here a 50 x 70 mm prototyping board, holes 46 x 66 apart; check yours)
+ctrl_post_list = [[0, 0], [46, 0], [0, 66], [46, 66]];
+// List: where its [0, 0] falls, from the bay floor's front left corner
+ctrl_list_origin = [12, 20];
+// Post diameter
+ctrl_post_d = 8; // [5 : 0.5 : 14]
+// Post height: board underside above the floor
+ctrl_post_h = 6; // [2 : 0.5 : 30]
+// Post hole: an M3 heat-set insert, or a pilot for a thread-forming screw for plastics (M3 or #4)
+ctrl_post_hole = "insert"; // [insert, screw]
+// Heat-set insert hole (M3)
+ctrl_insert_d = 4.6; // [3 : 0.05 : 6]
+// Pilot hole for a thread-forming screw
+ctrl_pilot_d = 2.5; // [1.5 : 0.05 : 4]
+// Hole depth from the post's top (may run on into the floor)
+ctrl_hole_depth = 8; // [3 : 0.5 : 15]
+// Mezzanine (part ctrl_mezzanine): a plate screwed down to the floor posts, carrying new posts for a board that doesn't fit them; for a base already printed. Its new posts: a grid or a list, in the same frame as the floor's (from the bay floor's front left corner)
+mezz_posts = "list"; // [grid, list]
+mezz_grid = [2, 2];
+mezz_grid_pitch = [40, 60];
+mezz_grid_offset = [0, 0];
+mezz_post_list = [[0, 0], [40, 0], [0, 55], [40, 55]];
+mezz_list_origin = [15, 30];
+// Mezzanine plate thickness
+mezz_plate_t = 3; // [2 : 0.5 : 8]
+// Lift: legs under the plate at the floor posts (0 = plate straight on the posts)
+mezz_lift = 0; // [0 : 0.5 : 40]
+// Margin of plate around the posts and holes
+mezz_margin = 6; // [3 : 0.5 : 20]
+// Screws down into the floor posts: clearance hole
+mezz_screw_hole = 3.4; // [2 : 0.1 : 5]
+// Head diameter of those screws (to keep the new posts clear of them)
+mezz_screw_head = 6; // [4 : 0.5 : 10]
 
 /* [Lollipop hinge] */
 // Hinge flange diameter
@@ -1900,6 +1983,7 @@ st_y1  = seat_y1 - lid_ledge;
 // against the right end wall, face toward -X
 has_outlet = compartment_option == "outlet";
 has_knee   = compartment_option == "knee";
+has_ctrl   = compartment_option == "controller";
 ol_L  = outlet_size[0];
 ol_W  = outlet_size[1];
 ol_T  = outlet_size[2];
@@ -3216,6 +3300,77 @@ if (has_knee && report) {
 }
 
 // ---------------------------------------------------------------------------
+// Controller compartment (compartment_option "controller")
+// ---------------------------------------------------------------------------
+// The back-wall tunnels behind the bay, as tunnel_run lays them out: the
+// inlet takes the first or the last, the jacks the other, any between stay
+// plain tunnels. Each of the two runs on back to leave its panel.
+ct_floor = [st_x1 - st_x0, st_y1 - st_y0];
+ct_span  = st_x1 - st_tunnel_x0;
+ct_n     = max(1, round((ct_span + tunnel_web) / (tunnel_width + tunnel_web)));
+ct_w     = (ct_span - (ct_n - 1) * tunnel_web) / ct_n;
+ct_tx    = [for (i = [0 : ct_n - 1]) st_tunnel_x0 + ct_w / 2 + i * (ct_w + tunnel_web)];
+ct_ii    = ctrl_iec_tunnel == "left" ? 0 : ct_n - 1;
+ct_ji    = ctrl_iec_tunnel == "left" ? ct_n - 1 : 0;
+ct_jc    = ctrl_jack_kind == "keystone" ? ctrl_keystone_cutout : [ctrl_jack_hole, ctrl_jack_hole];
+ct_ja    = [(ctrl_jacks[1] - 1) * ctrl_jack_pitch[0] + ct_jc[0], (ctrl_jacks[0] - 1) * ctrl_jack_pitch[1] + ct_jc[1]];
+ct_iw    = max(ct_w, ctrl_iec_cutout[0] + 2 * ctrl_pocket_clear);       // pocket widths
+ct_jw    = max(ct_w, ct_ja[0] + 2 * ctrl_pocket_clear);
+function ct_clamp(c, w) = min(max(c, st_tunnel_x0 + w / 2), st_x1 - w / 2);
+ct_ix    = ct_clamp(ct_tx[ct_ii], ct_iw);                                // pocket centres
+ct_jx    = ct_clamp(ct_tx[ct_ji], ct_jw);
+function ct_h(w) = tunnel_peak_z - floor_z - w / 2;                     // straight sides
+ct_iz0   = floor_z + ctrl_iec_z;                                         // inlet cutout's bottom
+ct_jz0   = floor_z + (ctrl_jack_z > 0 ? ctrl_jack_z : (ct_h(ct_jw) - ct_ja[1]) / 2 + ct_jc[1] / 2);   // bottom row's centre
+ct_iec_in = (outer_width - ctrl_back_skin) - st_y1;                     // its tunnel's depth
+// Posts, in the bay floor's frame (its front left corner at [0, 0])
+function ct_grid(g, p, o) = [for (r = [0 : g[0] - 1], c = [0 : g[1] - 1])
+    [ct_floor[0] / 2 + o[0] + (c - (g[1] - 1) / 2) * p[0], ct_floor[1] / 2 + o[1] + (r - (g[0] - 1) / 2) * p[1]]];
+ct_pts = concat(ctrl_posts == "grid" || ctrl_posts == "both" ? ct_grid(ctrl_grid, ctrl_grid_pitch, ctrl_grid_offset) : [],
+                ctrl_posts == "list" || ctrl_posts == "both" ? [for (q = ctrl_post_list) q + ctrl_list_origin] : []);
+mz_pts = mezz_posts == "grid" ? ct_grid(mezz_grid, mezz_grid_pitch, mezz_grid_offset)
+                               : [for (q = mezz_post_list) q + mezz_list_origin];
+ct_hole_d = ctrl_post_hole == "insert" ? ctrl_insert_d : ctrl_pilot_d;
+ct_post_ok = [for (q = ct_pts) if (q[0] < ctrl_post_d / 2 || q[0] > ct_floor[0] - ctrl_post_d / 2
+                                   || q[1] < ctrl_post_d / 2 || q[1] > ct_floor[1] - ctrl_post_d / 2) q];
+
+if (has_ctrl && report) {
+    echo(str("Controller bay: floor ", round(ct_floor[0] * 10) / 10, " x ", round(ct_floor[1] * 10) / 10,
+             ", ", round(seat_floor_z - floor_z), " mm deep to the lid's seat"));
+    echo(str("Controller bay: IEC C14 inlet upright in the ", ctrl_iec_tunnel, " back-wall tunnel (centre ",
+             round((ct_ix - st_x0) * 10) / 10, " mm from the bay's left wall), ", ctrl_iec_cutout[0], " x ", ctrl_iec_cutout[1],
+             " cutout in a ", ctrl_iec_panel, " mm panel; its tunnel is ", round(ct_iec_in), " mm deep"));
+    echo(str("Controller bay: ", ctrl_jacks[0] * ctrl_jacks[1], " ", ctrl_jack_kind, " jack", ctrl_jacks[0] * ctrl_jacks[1] > 1 ? "s" : "",
+             " (", ctrl_jacks[0], " x ", ctrl_jacks[1], ") in the other tunnel (centre ", round((ct_jx - st_x0) * 10) / 10,
+             " mm), in a ", ctrl_jack_panel, " mm panel"));
+    echo(str("Controller bay: ", len(ct_pts), " posts, ", ctrl_post_h, " mm tall, for ",
+             ctrl_post_hole == "insert" ? "M3 heat-set inserts" : "thread-forming screws", ", at (from the floor's front left corner) ",
+             [for (q = ct_pts) [round(q[0] * 10) / 10, round(q[1] * 10) / 10]]));
+    if (ct_n < 2)
+        echo("WARNING: the back wall behind the bay has room for one tunnel only; the inlet and the jacks need two (lengthen storage_inner_length)");
+    if (ct_n >= 2 && abs(ct_jx - ct_ix) - (ct_iw + ct_jw) / 2 < 2)
+        echo("WARNING: the inlet's and the jacks' tunnels leave under 2 mm between them; fewer jacks across, or lengthen storage_inner_length");
+    if (ct_iz0 + ctrl_iec_cutout[1] + ctrl_pocket_clear > floor_z + ct_h(ct_iw))
+        echo("WARNING: the IEC inlet stands higher than its tunnel's straight sides; lower ctrl_iec_z");
+    if (ct_jz0 - ct_jc[1] / 2 - ctrl_pocket_clear < floor_z || ct_jz0 - ct_jc[1] / 2 + ct_ja[1] + ctrl_pocket_clear > floor_z + ct_h(ct_jw))
+        echo("WARNING: the jacks run outside their tunnel's straight sides; fewer rows, a smaller pitch, or move ctrl_jack_z");
+    if (len(ct_post_ok) > 0)
+        echo(str("WARNING: posts off the bay floor (or within half a post of its walls): ", ct_post_ok));
+    if (has_back && bk_x1 > min(ct_ix - ct_iw / 2, ct_jx - ct_jw / 2) - 5)
+        echo("WARNING: the back extension covers the inlet and jacks on the back face");
+    if (back_logo_left != "")
+        echo("WARNING: back_logo_left (at the base's right end) may fall on the inlet or the jacks");
+    if (!has_passthrough)
+        echo("WARNING: no cord pass-through in the divider for the motor's leads");
+}
+if (report && part == "ctrl_mezzanine") {
+    near = [for (u = mz_pts, l = ct_pts) if (norm(u - l) < (ctrl_post_d + mezz_screw_head) / 2) u];
+    echo(str("Mezzanine: ", len(ct_pts), " screws down into the floor posts, ", len(mz_pts), " new posts on top, at ",
+             [for (q = mz_pts) [round(q[0] * 10) / 10, round(q[1] * 10) / 10]]));
+    if (len(near) > 0) echo(str("WARNING: mezzanine posts over a floor post's screw head: ", near));
+}
+
+// ---------------------------------------------------------------------------
 // Hardware list
 // ---------------------------------------------------------------------------
 
@@ -3510,6 +3665,10 @@ if (part == "assembly") {
     if (has_knee) knee_cover_part();
 } else if (part == "knee_cord_clamp") {
     if (has_knee && knee_power == "bare") knee_cord_clamp_part();
+} else if (part == "ctrl_mezzanine") {
+    if (has_ctrl) ctrl_mezzanine_part();
+} else if (part == "ctrl_panel_test") {
+    if (has_ctrl) ctrl_panel_test_part();
 } else if (part == "knee_entry_test") {
     knee_entry_test_part();
 } else if (part == "knee_assembly") {
@@ -4008,7 +4167,8 @@ module base_body() {
     if (has_outlet) outlet_curbs();
     if (ol_chan) outlet_channel_clips();
     if (has_knee) knee_base_add();
-    if (has_passthrough && passthrough_knockouts) passthrough_knockout_walls();
+    if (has_ctrl) ctrl_base_add();
+    if (has_passthrough && (passthrough_knockouts || (has_ctrl && ctrl_knockouts))) passthrough_knockout_walls();
     difference() {
         union() {
             cuboid([outer_length, outer_width, outer_depth],
@@ -4052,6 +4212,7 @@ module base_body() {
             if (has_outlet && outlet_labels) outlet_label_cuts();
             if (ol_wall_exit) outlet_wall_cuts();
             if (has_knee) knee_base_cuts();
+            if (has_ctrl) ctrl_base_cuts();
 
             // Cord pass-through in the divider
             if (compartment_option != "storage")
@@ -4061,7 +4222,7 @@ module base_body() {
                                      divider_thickness + 2, center = true);
 
             // Tunnel behind the small compartment
-            if (lighten_back_wall)
+            if (lighten_back_wall && !has_ctrl)
                 for (r = cut_runs([[st_tunnel_x0, st_x1]],
                                   [for (sl = ol_slots) if (!sl[1]) [sl[0] - outlet_wall_slot_w / 2 - 4, sl[0] + outlet_wall_slot_w / 2 + 4]]))
                     if (r[1] - r[0] >= tunnel_width / 2) tunnel_run(r[0], r[1], st_tunnel_y0, st_tunnel_len);
@@ -7137,5 +7298,113 @@ module knee_in_place(th = 0) {
             for (i = [0 : knee_wago_n - 1])
                 translate([kn_wg_x0 + 1.6 + i * (kn_wg.x + 1.6) + 0.15, kn_wg_y0 + (kn_wg_back ? 0 : 1.6) + 0.15, floor_z + 1])
                     cube([knee_wago[0], knee_wago[1], knee_wago[2]]);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Controller compartment
+// ---------------------------------------------------------------------------
+// Rounded rectangle, centred
+module ct_rrect(sz, r) {
+    if (r > 0) offset(r = r) square(sz - [2 * r, 2 * r], center = true);
+    else square(sz, center = true);
+}
+// The jacks' cutouts, in the panel's plane (X across, Y up), bottom row's
+// centre at y = 0, the array centred on x = 0
+module ct_jack_cuts_2d() {
+    for (r = [0 : ctrl_jacks[0] - 1], c = [0 : ctrl_jacks[1] - 1])
+        translate([(c - (ctrl_jacks[1] - 1) / 2) * ctrl_jack_pitch[0], r * ctrl_jack_pitch[1]])
+            if (ctrl_jack_kind == "keystone") square(ctrl_keystone_cutout, center = true);
+            else circle(d = ctrl_jack_hole, $fn = 48);
+}
+// The inlet's cutout, centre at its middle
+module ct_iec_cut_2d() { ct_rrect(ctrl_iec_cutout, ctrl_iec_radius); }
+
+// The inlet's and the jacks' tunnels, run back to leave ctrl_back_skin, the
+// panels thinned round the cutouts, and the cutouts; the back face at y = yo,
+// the tunnels starting at y = yi
+module ct_back_cuts(yi, yo) {
+    for (t = [[ct_ix, ct_iw], [ct_jx, ct_jw]])
+        translate([t[0], yi, floor_z]) gable_tunnel(t[1], ct_h(t[1]), yo - ctrl_back_skin - yi);
+    m = 2 * ctrl_panel_margin;
+    // inlet: thinned panel and cutout
+    translate([ct_ix, yo - ctrl_back_skin - overlap, ct_iz0 + ctrl_iec_cutout[1] / 2]) rotate([-90, 0, 0])
+        linear_extrude(height = ctrl_back_skin - ctrl_iec_panel + overlap) ct_rrect(ctrl_iec_cutout + [m, m], 0);
+    translate([ct_ix, yo + 1, ct_iz0 + ctrl_iec_cutout[1] / 2]) rotate([90, 0, 0])
+        linear_extrude(height = ctrl_back_skin + 2) ct_iec_cut_2d();
+    // jacks: thinned panel round the array, and the cutouts
+    translate([ct_jx, yo - ctrl_back_skin - overlap, ct_jz0 - ct_jc[1] / 2 + ct_ja[1] / 2]) rotate([-90, 0, 0])
+        linear_extrude(height = ctrl_back_skin - ctrl_jack_panel + overlap) ct_rrect(ct_ja + [m, m], 0);
+    translate([ct_jx, yo + 1, ct_jz0]) rotate([90, 0, 0]) mirror([0, 1, 0])
+        linear_extrude(height = ctrl_back_skin + 2) ct_jack_cuts_2d();
+}
+
+// The back wall's cuts, any plain tunnels between, and the posts' holes on
+// into the floor
+module ctrl_base_cuts() {
+    ct_back_cuts(st_y1 - overlap, outer_width);
+    if (lighten_back_wall && ct_n > 2)
+        for (i = [1 : ct_n - 2])
+            translate([ct_tx[i], st_tunnel_y0, floor_z]) gable_tunnel(ct_w, ct_h(ct_w), st_tunnel_len);
+    for (q = ct_pts)
+        let(d = ctrl_hole_depth - ctrl_post_h)
+            if (d > 0) translate([st_x0 + q[0], st_y0 + q[1], floor_z - d]) cylinder(d = ct_hole_d, h = d + overlap, $fn = 24);
+}
+// The posts on the floor
+module ctrl_base_add() {
+    for (q = ct_pts)
+        translate([st_x0 + q[0], st_y0 + q[1], floor_z - overlap]) difference() {
+            cylinder(d = ctrl_post_d, h = ctrl_post_h + overlap, $fn = 40);
+            translate([0, 0, ctrl_post_h + overlap - ctrl_hole_depth]) cylinder(d = ct_hole_d, h = ctrl_hole_depth + 1, $fn = 24);
+            // lead-in chamfer
+            translate([0, 0, ctrl_post_h + overlap - 0.6]) cylinder(d1 = ct_hole_d, d2 = ct_hole_d + 1.4, h = 0.61, $fn = 24);
+        }
+}
+
+// Mezzanine: a plate with clearance holes over the floor posts, carrying new
+// posts; with a lift, spacer sleeves for the screws, laid out beside it.
+// The plate in the bay floor's frame, shifted to the origin; printed flat.
+module ctrl_mezzanine_part() {
+    pts = concat(ct_pts, mz_pts);
+    m = mezz_margin + ctrl_post_d / 2;
+    lo = [min([for (q = pts) q[0]]) - m, min([for (q = pts) q[1]]) - m];
+    hi = [max([for (q = pts) q[0]]) + m, max([for (q = pts) q[1]]) + m];
+    t = mezz_plate_t;
+    translate([-lo[0], -lo[1], 0]) difference() {
+        union() {
+            translate([lo[0], lo[1], 0]) linear_extrude(height = t)
+                offset(r = 3) offset(delta = -3) square(hi - lo);
+            for (q = mz_pts) translate([q[0], q[1], t - overlap]) cylinder(d = ctrl_post_d, h = ctrl_post_h + overlap, $fn = 40);
+        }
+        for (q = ct_pts) translate([q[0], q[1], -1]) cylinder(d = mezz_screw_hole, h = t + 2, $fn = 24);
+        for (q = mz_pts) translate([q[0], q[1], t + ctrl_post_h - ctrl_hole_depth]) {
+            cylinder(d = ct_hole_d, h = ctrl_hole_depth + 1, $fn = 24);
+            translate([0, 0, ctrl_hole_depth - 0.6]) cylinder(d1 = ct_hole_d, d2 = ct_hole_d + 1.4, h = 0.61, $fn = 24);
+        }
+    }
+    // spacers, one per floor post
+    if (mezz_lift > 0)
+        for (i = [0 : len(ct_pts) - 1])
+            translate([hi[0] - lo[0] + 6 + ctrl_post_d / 2 + (i % 4) * (ctrl_post_d + 3), ctrl_post_d / 2 + floor(i / 4) * (ctrl_post_d + 3), 0])
+                difference() {
+                    cylinder(d = ctrl_post_d, h = mezz_lift, $fn = 40);
+                    translate([0, 0, -1]) cylinder(d = mezz_screw_hole, h = mezz_lift + 2, $fn = 24);
+                }
+}
+
+// Panel test: the back wall's outer part, behind the inlet and the jacks,
+// with a short length of each tunnel; printed face down, to try the inlet
+// and the jacks before the base
+module ctrl_panel_test_part() {
+    ln = 6;                                             // tunnel kept in front of the skin
+    yt = ctrl_back_skin + ln;
+    m = ctrl_panel_margin;
+    x0 = min(ct_ix - max(ct_iw, ctrl_iec_cutout[0] + 2 * m) / 2, ct_jx - max(ct_jw, ct_ja[0] + 2 * m) / 2) - 4;
+    x1 = max(ct_ix + max(ct_iw, ctrl_iec_cutout[0] + 2 * m) / 2, ct_jx + max(ct_jw, ct_ja[0] + 2 * m) / 2) + 4;
+    zt = tunnel_peak_z + 4;
+    // turned face down: the back face on the bed
+    translate([0, -(floor_z - 4), yt]) rotate([-90, 0, 0]) translate([-x0, 0, 0]) difference() {
+        translate([x0, 0, floor_z - 4]) cube([x1 - x0, yt, zt - floor_z + 4]);
+        ct_back_cuts(-1, yt);
     }
 }
