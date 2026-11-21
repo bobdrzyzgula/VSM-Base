@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# The documents snapshot is built output: keep it out of GitHub's language
+# statistics, and collapse it in diffs.
+docs-snapshot/** linguist-generated=true
