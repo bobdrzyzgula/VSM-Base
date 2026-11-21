@@ -2,7 +2,7 @@
 
 The documents as single, self-contained HTML pages (pictures and diagrams
 included), published at
-**[bobdrzyzgula.github.io/VSM-Base](https://bobdrzyzgula.github.io/VSM-Base/)**.
+**[vsm-base.ephemeral-bozonics.com](https://vsm-base.ephemeral-bozonics.com/)**.
 GitHub shows HTML files here as source; open them from that page.
 
 **They may not be the latest versions.** They are copied here by hand from

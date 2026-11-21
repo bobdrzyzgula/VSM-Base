@@ -252,7 +252,7 @@ the guide, the three papers and the rig guide into `build/`.
 
 A snapshot of the documents as HTML pages, committed by hand and not always
 the latest, is published at
-[bobdrzyzgula.github.io/VSM-Base](https://bobdrzyzgula.github.io/VSM-Base/)
+[vsm-base.ephemeral-bozonics.com](https://vsm-base.ephemeral-bozonics.com/)
 (from [`docs-snapshot/`](docs-snapshot/)), for reading online or sending as
 a link.
 
