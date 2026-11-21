@@ -3,6 +3,13 @@
 *This chapter is an outline, still to be written. It will cover:*
 
 - Opening the model and using OpenSCAD's Customizer.
+- The Customizer's groups run roughly in the order a new builder will
+  want them: what to render and the main options, the machine and the
+  printer; then what to build (extensions and boxes, lids, ruler and logos,
+  handholds, rods, turn button, the organizer inserts); then the side
+  compartment and its options; then the fine detail of the body, joints
+  and hinges, which matters only for non-standard parts; and last the
+  tools and the test parts' own settings.
 - The settings that decide the fit (machine bed, reliefs, hinges) and the ones that are a matter of taste (compartment, extensions, rounding).
 - The `part` setting and the views it gives: assembly, all, test parts, individual parts.
 - Reading the console: what each line means, and every WARNING with what to do about it.

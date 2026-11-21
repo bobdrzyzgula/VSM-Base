@@ -10,21 +10,6 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 |---------|----|---------------|
 | `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
-| `test_top_h` | `12.7` | Test parts: height of the top slices |
-| `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
-| `test_coupon_w` | `40` | Test parts: width of the dovetail coupon (X) |
-| `test_slice_w` | `112` | Test parts: width of the center slice (X); covers the plates at 112 |
-| `test_stub_w` | `20` | Test parts: full-height wall stubs either side of the joint in the center slice |
-| `test_hinge_w` | `40` | Test parts: size of the hinge block (X), centered on the left hinge |
-| `test_split_gap` | `10` | Gap between the two halves of split test parts |
-| `test_corner_w` | `0` | Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it *Range 0 to 150, step 1.* |
-| `split_test_h` | `30` | Split test (part split_test): height of the front-wall stubs; 0 = full height *Range 0 to 100, step 1.* |
-| `split_test_w` | `25` | Split test: width either side of the split line *Range 10 to 60, step 1.* |
-| `printer_size` | `[256, 256, 256]` | Printer build volume, for the size check and the print plates |
-| `printer_margin` | `8` | Keep parts this far inside the bed's edges (room for supports, brims and skirts) *Range 0 to 30, step 1.* |
-| `print_plate` | `0` | Print plates (part all): 0 = every plate, laid out side by side; N = plate N only *Range 0 to 30, step 1.* |
-| `purge_tower_size` | `40` | Purge tower kept clear on plates with supported parts (square, mm); 0 = none *Range 0 to 80, step 5.* |
-| `plate_gap` | `8` | Space between parts on a plate *Range 2 to 30, step 1.* |
 
 ## Options
 
@@ -74,28 +59,294 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `custom_relief_6_edge` | `"none"` | IGNORED unless machine = Custom. Casting relief 6: edge *Choices: none, left, right, back, front.* |
 | `custom_relief_6` | `[0, 0, 0]` | IGNORED unless machine = Custom. Casting relief 6, mm: [center, length, thickness] |
 
-## Bed seat
+## Printer
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `bed_clearance` | `0.75` | Clearance between bed and seat wall, per side |
-| `bed_ledge` | `8` | How far the bed rests on the ledge around the machine cavity *Range 3 to 15, step 0.5.* |
-| `rabbit_depth` | `4` | Depth of the bed seat and lid rabbet below the top surface *Range 2 to 8, step 0.1.* |
+| `printer_size` | `[256, 256, 256]` | Printer build volume, for the size check and the print plates |
+| `printer_margin` | `8` | Keep parts this far inside the bed's edges (room for supports, brims and skirts) *Range 0 to 30, step 1.* |
+| `print_plate` | `0` | Print plates (part all): 0 = every plate, laid out side by side; N = plate N only *Range 0 to 30, step 1.* |
+| `purge_tower_size` | `40` | Purge tower kept clear on plates with supported parts (square, mm); 0 = none *Range 0 to 80, step 5.* |
+| `plate_gap` | `8` | Space between parts on a plate *Range 2 to 30, step 1.* |
 
-## Body
+## Extensions
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `rim_width` | `9` | Top rim: outer face to seat/rabbet edge, front, left and right *Range 5 to 20, step 0.5.* |
-| `end_wall` | `22.225` | End wall thickness at the bottom, left and right (7/8" = 22.225) |
-| `base_depth` | `0` | Base depth front to back: a standard class, so bases of a class share extensions; auto = the smallest that fits *Choices: 0:Auto, 200:200 mm, 230:230 mm, 250:250 mm.* |
-| `back_rim_width` | `0` | Top rim: back of the bed seat to outer back face (0 = from the hinge and base_depth; set it to override the class) |
-| `back_rim_thin` | `12` | With no hinges: the back rim before rounding up to the depth class *Range 8 to 40, step 0.5.* |
-| `hinge_back_skin` | `5` | With automatic back rim: solid behind the hinge's rear edge *Range 2 to 15, step 0.5.* |
-| `bottom_thickness` | `12.7` | Bottom thickness (the base may be raised above this to bring the bed to ext_height) |
-| `inner_depth` | `70` | Cavity depth below the top surface |
-| `divider_web` | `4` | Solid web at the top between the bed seat and the lid rabbet *Range 2 to 10, step 0.5.* |
-| `outer_rounding` | `5` | Outer edge rounding (top and vertical edges) *Range 0 to 10, step 0.5.* |
+| `back_ext` | `true` | Include the back extension (outfeed support / compartment) |
+| `left_ext` | `true` | Include the left extension |
+| `corner_ext` | `true` | Include the left-rear corner piece (needs both of the above) |
+| `back_ext_length` | `240` | Back extension length (X), from the base's left face |
+| `back_ext_depth` | `100` | Back extension body depth (Y), behind the base *Range 100 to 300, step 0.5.* |
+| `left_ext_width` | `100` | Left extension body width (X), left of the base *Range 100 to 300, step 0.5.* |
+| `left_ext_double` | `false` | Left extension and corner: make the width for an outer bin matching the inner one (overrides left_ext_width) |
+| `back_ext_double` | `false` | Back extension and corner: make the depth for an outer bin matching the inner one (overrides back_ext_depth) |
+| `left_ext_layout` | `"1+1"` | Left extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2) *Choices: 1+1, 1+2.* |
+| `back_ext_layout` | `"1+1"` | Back extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2) *Choices: 1+1, 1+2.* |
+| `corner_layout` | `"2x2"` | Corner piece past 100 mm: the bobbin bin stays in the inner corner, and the rest becomes open bins left of it and behind it; with both, the far corner gets its own bin (2x2), or the left or back bin runs the full length *Choices: 2x2, long left, long back.* |
+| `ext_divider` | `2.5` | Divider wall between bins *Range 1.2 to 6, step 0.1.* |
+| `ext_bin_min` | `10` | Least bin width inside; a narrower strip is left solid *Range 5 to 30, step 0.5.* |
+| `back_lids` | `"one"` | Lids: one over each piece, or one per bay (on rabbets in the dividers' tops) *Choices: one, per bay.* |
+| `left_lids` | `"one"` |  *Choices: one, per bay.* |
+| `corner_lids` | `"one"` |  *Choices: one, per bay.* |
+| `bin_lid_type` | `"lift-out"` | Per-bay lids on the outer bins: type (the inner bay's lid keeps its piece's settings) *Choices: lift-out, hinged, none.* |
+| `bin_lid_hinge` | `"back"` | Per-bay lids on the outer bins: hinge edge *Choices: left, right, front, back.* |
+| `bin_lid_min` | `15` | Least lid: a bin narrower than this inside gets no lid of its own *Range 10 to 40, step 1.* |
+| `ext_divider_notch` | `true` | Finger notch at the middle of each divider, for reaching into narrow bins (one lid only) |
+| `ext_notch_w` | `30` | Finger notch width and depth *Range 10 to 60, step 1.* |
+| `ext_notch_d` | `20` |  *Range 5 to 60, step 1.* |
+| `ext_gap` | `0.3` | Gap between an extension body and the base or another extension |
+| `lip_clearance` | `0.2` | Clearance between the lip and the base top |
+| `lip_min_t` | `5.4` | Least lip thickness: where the bed stands less than this above the rim (a bed set flush, say), the rim is cut down under the lips so they keep it, and trim strips (parts back_trim, left_trim) fill the cuts when the extensions are off *Range 3 to 10, step 0.1.* |
+| `lip_cut_clearance` | `0.25` | Clearance around the recessed lips and the trims, per side *Range 0.1 to 0.6, step 0.05.* |
+| `ext_top_adjust` | `0` | Trim to the extensions' top plane (lids, lips, trenches) against the real bed, mm; negative lowers it *Range -3 to 3, step 0.1.* |
+| `ext_floor` | `3` | Extension floor thickness *Range 1.5 to 8, step 0.1.* |
+| `ext_standard` | `true` | Standard extension height: every extension's top at ext_height above the table, with the same bays (the base is raised, or the extensions stand on podiums, to match the bed) |
+| `ext_height` | `88.225` | Standard extension height: the 99K's bed top *Range 60 to 140, step 0.005.* |
+| `podium_min` | `5` | Least podium under an extension, when the bed stands above ext_height *Range 3 to 20, step 0.5.* |
+| `podium_wall` | `6` | Podium wall (it is a frame, open below) *Range 3 to 15, step 0.5.* |
+| `ext_frame` | `4` | Frame width around each lid, at the top *Range 2 to 10, step 0.1.* |
+| `ext_ledge` | `4` | Ledge the lid rests on, inside the frame *Range 2 to 10, step 0.1.* |
+| `ext_lid_thickness` | `4` | Lid thickness (= depth of the lid rabbet) *Range 2 to 8, step 0.1.* |
+| `ext_lid_clearance` | `0.3` | Clearance around the lid in its rabbet, per side |
+| `ext_hinge_margin` | `0.5` | Hinged lids: the ledge on the hinge side is widened so the open lid stays this far clear of the bay |
+| `ext_finger_hole` | `22` | Finger hole in each lid |
+| `ext_rounding` | `3` | Rounding of the extensions' exposed edges *Range 0 to 8, step 0.5.* |
+
+## Freestanding boxes
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `make_back_box` | `false` | Also make a freestanding version of the back extension (part back_box): same bay and lid, no lip, pegs or dovetails |
+| `make_left_box` | `false` | Also make a freestanding left box (part left_box) |
+| `make_corner_box` | `false` | Also make a freestanding corner box (part corner_box) |
+
+## Lid hinges
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `base_lid_hinge` | `"right"` | Lid edge each lid hinges on *Choices: left, right, front, back.* |
+| `back_lid_hinge` | `"back"` |  *Choices: left, right, front, back.* |
+| `left_lid_hinge` | `"left"` |  *Choices: left, right, front, back.* |
+| `corner_lid_hinge` | `"back"` |  *Choices: left, right, front, back.* |
+| `base_lid_type` | `"hinged"` | Base compartment lid: hinged (snap-in dimple hinge), lift-out (plain lid resting on the ledge), or none (rabbet left for a lid later) *Choices: hinged, lift-out, none.* |
+| `back_lid_type` | `"hinged"` | Back extension lid type *Choices: hinged, lift-out, none.* |
+| `left_lid_type` | `"hinged"` | Left extension lid type *Choices: hinged, lift-out, none.* |
+| `corner_lid_type` | `"hinged"` | Corner piece lid type *Choices: hinged, lift-out, none.* |
+| `base_lid_style` | `"solid"` | Base compartment lid style: solid, or perforated for ventilation *Choices: solid, perforated.* |
+| `back_lid_style` | `"solid"` | Back extension lid style *Choices: solid, perforated.* |
+| `left_lid_style` | `"solid"` | Left extension lid style *Choices: solid, perforated.* |
+| `corner_lid_style` | `"solid"` | Corner piece lid style *Choices: solid, perforated.* |
+| `base_lid_grip` | `"finger hole"` | Base compartment lid grip: finger hole, or a thumb tab reaching over a notch in the wall *Choices: finger hole, tab.* |
+| `base_lid_tab_edge` | `"front"` | Base lid tab edge (front only is practical, on a lift-out lid) *Choices: front, back, left, right.* |
+| `back_lid_grip` | `"finger hole"` | Back extension lid grip *Choices: finger hole, tab.* |
+| `back_lid_tab_edge` | `"right"` | Back lid tab edge (back or right) *Choices: front, back, left, right.* |
+| `left_lid_grip` | `"finger hole"` | Left extension lid grip *Choices: finger hole, tab.* |
+| `left_lid_tab_edge` | `"front"` | Left lid tab edge (front or left) *Choices: front, back, left, right.* |
+| `corner_lid_grip` | `"finger hole"` | Corner piece lid grip *Choices: finger hole, tab.* |
+| `corner_lid_tab_edge` | `"left"` | Corner lid tab edge (left or back) *Choices: front, back, left, right.* |
+| `grip_tab_w` | `25` | Thumb tab width |
+| `grip_tab_over` | `1.5` | Thumb tab overhang past the outer face |
+| `grip_tab_r` | `2` | Thumb tab corner radius *Range 0 to 5, step 0.5.* |
+| `grip_scoop_d` | `2.5` | Thumb scoop below the tab: depth into the outer face |
+| `grip_scoop_h` | `6` | Thumb scoop height below the lid *Range 2 to 12, step 0.5.* |
+| `base_lid_notch_r` | `4` | Base lid motor-boss notch (size from the machine profile): inner corner radius *Range 0 to 10, step 0.5.* |
+| `base_lid_notch_flare` | `10` | Notch: radius blending it into the lid edge |
+| `base_lid_notch_offset` | `0` | Notch: front-to-back offset from the middle of the lid *Range -50 to 50, step 0.5.* |
+| `lid_perf_d` | `5` | Perforation hole diameter *Range 2 to 12, step 0.5.* |
+| `lid_perf_pitch` | `8` | Perforation pitch (hex grid) *Range 4 to 20, step 0.5.* |
+| `lid_perf_margin` | `6` | Solid margin kept around the lid's edges, finger hole and hinge *Range 2 to 20, step 0.5.* |
+| `lid_bump_d` | `3` | Hinge bump diameter at its base *Range 1.5 to 6, step 0.1.* |
+| `lid_bump_engage` | `1.0` | How far each bump engages the wall |
+| `lid_tab_len` | `15` | Flex tab carrying each bump: length along the end |
+| `lid_tab_w` | `4` | Flex tab width *Range 1.5 to 8, step 0.1.* |
+| `lid_slot_w` | `1` | Slot that frees the flex tab *Range 0.5 to 3, step 0.1.* |
+| `lid_bump_angle` | `35` | Bump flank angle from its axis: smaller is steeper and holds better (45 = the v19 cone) *Range 15 to 60, step 1.* |
+| `lid_hinge_end_clearance` | `0.15` | Clearance at the lid's two hinge ends (less end float keeps both bumps engaged) |
+| `lid_recess_clearance` | `0.075` | Clearance between bump and recess, per side |
+| `lid_open_stop` | `true` | Cut a chamfer behind the hinge so an open lid leans back and stays up |
+
+## Ruler and logos (front, back and bottom)
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ruler` | `false` | A ruler across the base's front face, from where the left corner's round-over ends to where the right one's begins (on the base and a built-in compartment; not on an attached bay or the extensions) |
+| `ruler_scale_1` | `"inch"` | Scales, from the bottom up: inch, centimeter, custom, or none *Choices: inch, cm, custom, none.* |
+| `ruler_scale_2` | `"cm"` |  *Choices: inch, cm, custom, none.* |
+| `ruler_scale_3` | `"none"` |  *Choices: inch, cm, custom, none.* |
+| `ruler_bottom` | `5` | The ruler's bottom edge above the bottom of the base *Range 0 to 40, step 0.5.* |
+| `ruler_scale_h` | `8` | Height of each scale *Range 5 to 15, step 0.5.* |
+| `ruler_inch_div` | `8` | Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half) *Range 1 to 32, step 1.* |
+| `ruler_inch_mid` | `2` |  *Range 1 to 16, step 1.* |
+| `ruler_cm_div` | `10` | Centimeter scale: divisions per cm, and a longer tick every so many *Range 1 to 20, step 1.* |
+| `ruler_cm_mid` | `5` |  *Range 1 to 10, step 1.* |
+| `ruler_custom_unit` | `10` | Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none) *Range 1 to 100, step 0.01.* |
+| `ruler_custom_div` | `10` |  *Range 1 to 32, step 1.* |
+| `ruler_custom_mid` | `5` |  *Range 1 to 16, step 1.* |
+| `ruler_custom_name` | `""` |  |
+| `ruler_number_every` | `1` | Number every this many units (1 = every inch, every cm) *Range 1 to 10, step 1.* |
+| `ruler_text_size` | `3.5` | Lettering size *Range 2 to 6, step 0.1.* |
+| `ruler_line_w` | `0.6` | Narrowest line in the ruler, ticks and lettering alike (keep it at or over your nozzle's width) *Range 0.3 to 1.2, step 0.05.* |
+| `logo_left` | `""` | Logo files (SVG: clean outlines, no self-crossing paths) for the face's upper left and upper right corners, relative to this file's folder or a full path; blank for none |
+| `logo_right` | `""` |  |
+| `logo_size` | `[25, 15]` | Each logo is stretched to this box, width and height (set it to the logo's own proportions) |
+| `logo_inset` | `6` | Logos' distance in from the face's flat ends and down from where the top's round-over ends *Range 0 to 40, step 0.5.* |
+| `back_logo_left` | `""` | Back face: SVGs near its lower left and lower right corners, as you look at the back (so the left one is at the base's right end); for a maker's name, model, serial number, date. Blank for none |
+| `back_logo_right` | `""` |  |
+| `back_logo_size` | `[40, 15]` | Each back logo is stretched to this box, width and height |
+| `back_logo_inset` | `6` | Back logos' distance in from the face's flat ends (clear of the harness rods' holes) and up from the bottom *Range 0 to 40, step 0.5.* |
+| `bottom_logo_left` | `""` | Bottom: SVGs centered on the left and right halves of the base (where it splits, whether or not it is split), as you look at the bottom with the base tipped back onto its back edge. Blank for none |
+| `bottom_logo_right` | `""` |  |
+| `bottom_logo_size` | `[80, 40]` | Each bottom logo is stretched to this box, width and height |
+| `face_relief` | `"raised"` | Ruler and logos on the front and back: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: each mark and the base its own random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
+| `bottom_relief` | `"engraved"` | The bottom's logos: engraved, or inlaid (color-tagged). Not raised: the base prints standing on its bottom *Choices: engraved, inlaid.* |
+| `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
+| `face_relief_chamfer` | `true` | Slope the marks' overhangs at 45 degrees: under a raised mark's downward-facing edges, over an engraved recess's upward-facing ones (they print as a flat overhang that curls without it). Not for inlaid marks, which are filled |
+| `face_color_seed` | `7` | Change it for another set of random colors *Range 0 to 999, step 1.* |
+
+## Handholds
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `handholds` | `true` | Handholds under each end |
+| `handhold_bottom_len` | `76.2` | Handhold length along the end, at the bottom face (3") |
+| `handhold_top_len` | `50.8` | Handhold length at its top (2") |
+| `handhold_height` | `12.7` | Handhold height above the bottom face (1/2") |
+| `handhold_depth` | `15.875` | Handhold depth into the end wall (5/8") |
+| `handhold_lip_flat` | `4` | Flat underside of the lip at the face, before the ceiling climbs *Range 0 to 10, step 0.5.* |
+| `handhold_lip_round` | `2` | Radius rounding the lip's outer edge *Range 0 to 6, step 0.5.* |
+| `handhold_knockout` | `true` | Knock-out wall under the lip, removed after printing |
+| `knockout_t` | `1.2` | Knock-out wall thickness |
+| `knockout_gap` | `0.2` | Gap between the knock-out wall and the lip |
+| `knockout_tab` | `true` | Breakaway tab tying one end of the knock-out wall to the pocket end |
+| `knockout_tab_h` | `0.8` | Tab height (the tab sits just under the lip gap) |
+| `knockout_brim` | `true` | Brim around the foot of each knock-out wall, so it stands until the tab joins it |
+| `knockout_brim_w` | `5` | Brim width each side of the wall |
+| `knockout_brim_h` | `0.2` | Brim height (about one first layer) |
+
+## Harness rods
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `harness_rods` | `true` | Rod notches and rods either side of each handhold |
+| `rod_d` | `4.7625` | Rod diameter (3/16") |
+| `rod_hole_d` | `4.95` | Rod hole diameter (printed as a teardrop, point up) |
+| `rod_x` | `7` | Rod center in from the end face *Range 3 to 15, step 0.1.* |
+| `rod_z` | `7` | Rod center above the bottom face *Range 3 to 15, step 0.1.* |
+| `notch_len` | `25` | Notch length along the rod |
+| `notch_clear` | `4` | Clear space around the rod in the notch, behind and above it *Range 1 to 10, step 0.5.* |
+| `notch_inset` | `25` | Distance from each outer face (front, back) to its notch |
+| `rod_stop` | `5` | Material left between a rod's blind end and the handhold |
+| `rod_plug_len` | `5` | Printed plug closing the open end of each rod hole (0 = no plugs; rods run to the face) *Range 0 to 10, step 0.5.* |
+| `rod_plug_clearance` | `0.1` | Plug clearance in the hole, per side (the crush ribs make the press fit) |
+| `rod_plug_rib` | `0.15` | Crush rib interference, beyond the hole wall |
+
+## Turn button
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `turn_button` | `false` | Turn button on the front rim that holds the bed's front edge down (off by default) |
+| `turn_button_x` | `0` | Position along the front rim (X); 0 = automatic, between the split and the compartment |
+| `turn_button_overlap` | `4` | How far the button reaches over the bed's front edge *Range 1 to 10, step 0.5.* |
+| `turn_button_w` | `9` | Button width *Range 6 to 16, step 0.5.* |
+| `turn_button_t` | `4` | Button thickness *Range 2 to 8, step 0.5.* |
+| `turn_button_gap` | `0.3` | Gap between the button and the bed top |
+| `turn_button_ease` | `10` | Easing: how far the pad's smooth slopes run out along the rim, each side |
+| `turn_button_swell` | `3` | How far the pad swells out of the front face, enclosing the nut *Range 0 to 8, step 0.5.* |
+| `turn_button_swell_taper` | `10` | Below the nut, the swelling blends back into the front face over this height |
+| `turn_button_nut_spec` | `"#8-32"` | Nut for the button screw (BOSL2 spec) |
+
+## Inserts
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ins_spacing` | `10` | Spacing between parts in the insert print layouts *Range 0 to 50, step 1.* |
+| `bobbin_d` | `20.6375` | Bobbin diameter (class 15 and 66: 13/16"), for the bobbin trays and the spool tray |
+| `bobbin_t` | `11.1125` | Bobbin thickness (class 15 and 66: 7/16") |
+
+## Bobbin trays (corner bay)
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `bb_trays` | `0` | Number of trays, bottom included; 0 = as many as fit under the lid *Range 0 to 10, step 1.* |
+| `bb_post_d` | `5` | Post diameter (class 15 and 66 bores are a little over 6 mm) *Range 3 to 10, step 0.1.* |
+| `bb_grid` | `[3, 3]` | Post grid [columns (X), rows (Y)]; cells that would crowd the center column are left empty |
+| `bb_floor` | `3` | Tray floor thickness *Range 1.2 to 6, step 0.1.* |
+| `bb_bobbin_clear` | `1` | Clearance between a bobbin's top and the tray above *Range 0 to 4, step 0.1.* |
+| `bb_wall_clear` | `0.75` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
+| `bb_corner_r` | `2` | Tray corner radius *Range 0 to 10, step 0.5.* |
+| `bb_top_clear` | `1` | Clearance between the top of the knob and the lid *Range 0 to 5, step 0.1.* |
+| `bb_lighten` | `true` | Lightening holes where four cells meet |
+| `bb_lighten_d` | `12` | Lightening hole diameter *Range 4 to 20, step 0.5.* |
+| `bb_pin_d` | `3` | Pin on each post tip: diameter *Range 1.5 to 6, step 0.1.* |
+| `bb_pin_h` | `2` | Pin height above the post shoulder *Range 0.5 to 5, step 0.1.* |
+| `bb_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
+| `bb_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
+| `bb_socket_chamfer` | `0.6` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
+| `bb_column_d` | `12` | Handle column diameter *Range 6 to 20, step 0.5.* |
+| `bb_column_flare` | `2` | Flare radius at the column's foot *Range 0 to 5, step 0.5.* |
+| `bb_knob_d` | `18` | Knob diameter *Range 8 to 30, step 0.5.* |
+| `bb_knob_h` | `8` | Knob height *Range 3 to 20, step 0.5.* |
+| `bb_hole_clear` | `0.5` | Clearance between the knob and the upper trays' center holes, per side *Range 0.1 to 2, step 0.05.* |
+
+## Notion trays (back or left bay)
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ot_bay` | `"back"` | Bay the notion and spool trays go in *Choices: back, left.* |
+| `ot_custom_h` | `12` | Custom tray height *Range 5 to 80, step 0.5.* |
+| `ot_show` | `[25, 20, 15, 10]` | Tray heights shown stacked in part notion_assembly |
+| `ot_wall_clear` | `1` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
+| `ot_wall` | `1.2` | Wall thickness *Range 0.8 to 4, step 0.1.* |
+| `ot_floor` | `1.6` | Floor thickness *Range 0.8 to 4, step 0.1.* |
+| `ot_corner_r` | `2` | Outer corner radius *Range 0 to 10, step 0.5.* |
+| `ot_boss` | `9` | Corner boss size (square, from the outer corner) *Range 5 to 20, step 0.5.* |
+| `ot_pin_d` | `3` | Pin diameter *Range 1.5 to 6, step 0.1.* |
+| `ot_pin_h` | `2` | Pin height above the wall tops *Range 0.5 to 5, step 0.1.* |
+| `ot_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
+| `ot_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
+| `ot_socket_chamfer` | `0.5` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
+| `ot_grip_w` | `40` | Finger-hold lip length along each end wall *Range 10 to 120, step 1.* |
+| `ot_grip_reach` | `5` | How far the lip reaches in from the wall *Range 0 to 15, step 0.5.* |
+| `ot_grip_t` | `1.5` | Thickness of the lip at its top, above the 45-degree underside *Range 0.8 to 4, step 0.1.* |
+| `ot_top_clear` | `1` | Clearance between the top tray's pins and the lid *Range 0 to 5, step 0.1.* |
+
+## Notion tray compartments
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ot_compartments` | `false` | Divide the plain notion trays (not the spool tray) into compartments |
+| `ot_cell` | `50.8` | Target compartment size; the grid divides the tray evenly to come closest to it (2" gives 2 x 4 in the back or left bay; 1" gives 3 x 8) *Range 10 to 100, step 0.1.* |
+| `ot_cols` | `0` | Compartments along the tray's length (0 = from ot_cell) *Range 0 to 20, step 1.* |
+| `ot_rows` | `0` | Compartments across the tray's width (0 = from ot_cell) *Range 0 to 20, step 1.* |
+| `ot_divider_frac` | `0.8` | Divider height, as a fraction of the tray height *Range 0.2 to 1, step 0.05.* |
+| `ot_divider_t` | `1.2` | Divider thickness *Range 0.8 to 4, step 0.1.* |
+
+## Spool tray
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ot_spool_d` | `38` | Spool diameter *Range 20 to 80, step 0.5.* |
+| `ot_spool_h` | `44` | Spool height *Range 20 to 100, step 0.5.* |
+| `ot_spool_post_d` | `5` | Post diameter at the top, through the bobbin *Range 3 to 15, step 0.1.* |
+| `ot_spool_post_base_d` | `7` | Post diameter at the floor; the post tapers to the top diameter at the spool top *Range 3 to 20, step 0.1.* |
+| `ot_spool_bore` | `7.5` | Smallest spool bore you expect (for the console check) *Range 3 to 20, step 0.1.* |
+| `ot_spool_gap` | `1.5` | Space between neighboring spools *Range 0 to 10, step 0.1.* |
+| `ot_spool_wall_gap` | `0.5` | Space between the spools and the tray walls and corner bosses *Range 0 to 5, step 0.1.* |
+| `ot_spool_top_clear` | `1` | Clearance between the bobbin tops and the tray above *Range 0 to 5, step 0.1.* |
+| `ot_spool_open_sides` | `true` | Cut the long side walls down to a curb between the corner bosses, so the spools can be grasped from the side |
+| `ot_spool_curb` | `14` | Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends) *Range 3 to 40, step 0.5.* |
+| `ot_spool_cut_r` | `5` | Radius at the bottom corners of the cutaway *Range 0 to 20, step 0.5.* |
+
+## Tray gussets
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ot_gussets` | `true` | Small triangular ribs at the foot of the trays' long walls, where a thin wall meets the floor at one layer line |
+| `ot_gusset_t` | `1` | Gusset thickness (on the spool tray it must fit between neighboring spools) *Range 0.6 to 3, step 0.1.* |
+| `ot_gusset_d` | `5` | Gusset reach along the floor, from the wall *Range 1 to 15, step 0.5.* |
+| `ot_gusset_h` | `8` | Gusset height up the wall (less on low trays) *Range 1 to 20, step 0.5.* |
+| `ot_gusset_pitch` | `40` | Spacing to aim for between gussets on plain trays *Range 15 to 120, step 1.* |
 
 ## Small compartment
 
@@ -103,36 +354,6 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 |---------|----|---------------|
 | `storage_inner_length` | `70` | Inner length of the small compartment (X) |
 | `lid_ledge` | `10` | Lid ledge width around the small compartment *Range 5 to 20, step 0.5.* |
-
-## Attached bay
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `attached_lid_type` | `"none"` | Attached bay's lid: none (the default, since cords from the machine may lie over the bay's edge), hinged (on the edge set by base_lid_hinge), or lift-out *Choices: none, hinged, lift-out.* |
-| `attach_screw_spec` | `"M5"` | Joint screws: socket-head cap screws through the base's right end wall, from inside the machine cavity, into heat-set inserts in the bay's inner wall |
-| `attach_screw_hole` | `5.5` | Joint screw clearance hole *Range 3 to 8, step 0.1.* |
-| `attach_head_d` | `9.5` | Joint screw head counterbore, in the base's end wall from the cavity side *Range 5 to 14, step 0.1.* |
-| `attach_head_seat` | `8` | Wall left under each screw head *Range 4 to 15, step 0.5.* |
-| `attach_insert_d` | `6.4` | Heat-set insert hole in the bay's inner wall (M5) *Range 3 to 9, step 0.05.* |
-| `attach_insert_depth` | `10` | Heat-set insert hole depth *Range 5 to 14, step 0.5.* |
-| `attach_screw_inset` | `12` | Joint screws: distance in from the machine cavity's front and back walls *Range 6 to 40, step 0.5.* |
-| `attach_dowel_depth` | `10` | Dowels (rod_d rod, two): depth into each part *Range 5 to 13, step 0.5.* |
-| `attach_dowel_press` | `0.1` | Dowel hole in the base: press fit (diameter under rod_d) *Range 0 to 0.5, step 0.05.* |
-| `attach_dowel_slip` | `0.2` | Dowel hole in the bay: slip fit (diameter over rod_d) *Range 0 to 0.6, step 0.05.* |
-| `attach_web` | `4` | Bay's top web between the joint and its lid rabbet *Range 2 to 10, step 0.5.* |
-
-## Cord pass-through
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `cord_hole_width` | `46` | Cord pass-through width (wide enough for both plugs' cords side by side) |
-| `cord_hole_height` | `36` | Cord pass-through height (without gable) |
-| `passthrough_knockouts` | `false` | Close both ends of the pass-through with knock-out walls (tap them out with a punch when you fit the outlet) |
-| `passthrough_knockout_t` | `1.6` | Knock-out wall thickness *Range 0.8 to 3, step 0.1.* |
-| `passthrough_score_depth` | `0.6` | Score groove around each knock-out wall's edge, on its tunnel side: depth (deeper = easier to knock out) *Range 0.2 to 1.5, step 0.1.* |
-| `passthrough_score_w` | `0.8` | Score groove width *Range 0.4 to 2, step 0.1.* |
-| `passthrough_cover` | `false` | Make a removable cover for the pass-through (part passthrough_cover), pushed into its compartment end |
-| `passthrough_cover_depth` | `6` | Cover: depth of the plug into the tunnel *Range 3 to 15, step 0.5.* |
 
 ## Outlet compartment
 
@@ -308,6 +529,129 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `mezz_screw_hole` | `3.4` | Screws down into the floor posts: clearance hole *Range 2 to 5, step 0.1.* |
 | `mezz_screw_head` | `6` | Head diameter of those screws (to keep the new posts clear of them) *Range 4 to 10, step 0.5.* |
 
+## Attached bay
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `attached_lid_type` | `"none"` | Attached bay's lid: none (the default, since cords from the machine may lie over the bay's edge), hinged (on the edge set by base_lid_hinge), or lift-out *Choices: none, hinged, lift-out.* |
+| `attach_screw_spec` | `"M5"` | Joint screws: socket-head cap screws through the base's right end wall, from inside the machine cavity, into heat-set inserts in the bay's inner wall |
+| `attach_screw_hole` | `5.5` | Joint screw clearance hole *Range 3 to 8, step 0.1.* |
+| `attach_head_d` | `9.5` | Joint screw head counterbore, in the base's end wall from the cavity side *Range 5 to 14, step 0.1.* |
+| `attach_head_seat` | `8` | Wall left under each screw head *Range 4 to 15, step 0.5.* |
+| `attach_insert_d` | `6.4` | Heat-set insert hole in the bay's inner wall (M5) *Range 3 to 9, step 0.05.* |
+| `attach_insert_depth` | `10` | Heat-set insert hole depth *Range 5 to 14, step 0.5.* |
+| `attach_screw_inset` | `12` | Joint screws: distance in from the machine cavity's front and back walls *Range 6 to 40, step 0.5.* |
+| `attach_dowel_depth` | `10` | Dowels (rod_d rod, two): depth into each part *Range 5 to 13, step 0.5.* |
+| `attach_dowel_press` | `0.1` | Dowel hole in the base: press fit (diameter under rod_d) *Range 0 to 0.5, step 0.05.* |
+| `attach_dowel_slip` | `0.2` | Dowel hole in the bay: slip fit (diameter over rod_d) *Range 0 to 0.6, step 0.05.* |
+| `attach_web` | `4` | Bay's top web between the joint and its lid rabbet *Range 2 to 10, step 0.5.* |
+
+## Cord pass-through
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `cord_hole_width` | `46` | Cord pass-through width (wide enough for both plugs' cords side by side) |
+| `cord_hole_height` | `36` | Cord pass-through height (without gable) |
+| `passthrough_knockouts` | `false` | Close both ends of the pass-through with knock-out walls (tap them out with a punch when you fit the outlet) |
+| `passthrough_knockout_t` | `1.6` | Knock-out wall thickness *Range 0.8 to 3, step 0.1.* |
+| `passthrough_score_depth` | `0.6` | Score groove around each knock-out wall's edge, on its tunnel side: depth (deeper = easier to knock out) *Range 0.2 to 1.5, step 0.1.* |
+| `passthrough_score_w` | `0.8` | Score groove width *Range 0.4 to 2, step 0.1.* |
+| `passthrough_cover` | `false` | Make a removable cover for the pass-through (part passthrough_cover), pushed into its compartment end |
+| `passthrough_cover_depth` | `6` | Cover: depth of the plug into the tunnel *Range 3 to 15, step 0.5.* |
+
+## Split
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `split_part` | `"both"` | Which part to render when split *Choices: both, left, right.* |
+| `split_spread` | `30` | Separation between the two halves when both are shown |
+| `split_balance` | `true` | Put the split where the two halves, the left one's dovetail keys included, come out the same length (else at the middle) |
+| `split_clearance` | `0.1` | Clearance in the joint, per face |
+| `key_neck` | `8` | Dovetail key width at the cut line (neck) *Range 4 to 16, step 0.5.* |
+| `key_flare_angle` | `30` | Dovetail flare, per side, in degrees; steeper = less pull-apart play |
+| `key_depth` | `8` | Dovetail key length, past the cut line into the right half *Range 4 to 16, step 0.5.* |
+| `key_ys` | `[]` | Key positions in Y; empty = automatic (floor keys between plate rows, one centered in the back wall) *Edit in the file; not shown in the Customizer.* |
+| `serrations` | `true` | Vertical V-serrations across the front wall's joint faces |
+| `serration_pitch` | `3` | Serration pitch (ridge to ridge) *Range 2 to 6, step 0.1.* |
+| `serration_height` | `1.5` | Serration height (ridge tip beyond the cut line); pitch / 2 gives a 90-degree V |
+| `serration_setback` | `2.5` | Solid wall kept between the serrations and each face of the front wall (outer skin and cavity side) |
+| `serration_top_gap` | `3` | Serrations stop this far below the bed ledge *Range 1 to 10, step 0.5.* |
+| `serration_top_clear` | `0.5` | Extra clearance at the top of each groove, so the ridges never bottom out |
+
+## Body
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `rim_width` | `9` | Top rim: outer face to seat/rabbet edge, front, left and right *Range 5 to 20, step 0.5.* |
+| `end_wall` | `22.225` | End wall thickness at the bottom, left and right (7/8" = 22.225) |
+| `base_depth` | `0` | Base depth front to back: a standard class, so bases of a class share extensions; auto = the smallest that fits *Choices: 0:Auto, 200:200 mm, 230:230 mm, 250:250 mm.* |
+| `back_rim_width` | `0` | Top rim: back of the bed seat to outer back face (0 = from the hinge and base_depth; set it to override the class) |
+| `back_rim_thin` | `12` | With no hinges: the back rim before rounding up to the depth class *Range 8 to 40, step 0.5.* |
+| `hinge_back_skin` | `5` | With automatic back rim: solid behind the hinge's rear edge *Range 2 to 15, step 0.5.* |
+| `bottom_thickness` | `12.7` | Bottom thickness (the base may be raised above this to bring the bed to ext_height) |
+| `inner_depth` | `70` | Cavity depth below the top surface |
+| `divider_web` | `4` | Solid web at the top between the bed seat and the lid rabbet *Range 2 to 10, step 0.5.* |
+| `outer_rounding` | `5` | Outer edge rounding (top and vertical edges) *Range 0 to 10, step 0.5.* |
+
+## Bed seat
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `bed_clearance` | `0.75` | Clearance between bed and seat wall, per side |
+| `bed_ledge` | `8` | How far the bed rests on the ledge around the machine cavity *Range 3 to 15, step 0.5.* |
+| `rabbit_depth` | `4` | Depth of the bed seat and lid rabbet below the top surface *Range 2 to 8, step 0.1.* |
+
+## Back wall lightening
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `lighten_back_wall` | `true` | Hollow the back wall between the hinges |
+| `back_skin` | `17` | Back wall thickness left behind the tunnels *Range 6 to 40, step 0.5.* |
+| `back_top_skin` | `6` | Solid material above the tunnel peaks *Range 2 to 20, step 0.5.* |
+| `tunnel_width` | `30` | Target tunnel width |
+| `tunnel_web` | `6` | Web between tunnels |
+| `hinge_tunnel_margin` | `7.5` | Extra solid kept beyond each side of the hinge footprint |
+| `split_keepout` | `15` | Solid zone kept on either side of the split, from the cut line |
+
+## Extension pegs
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ext_peg_holes` | `true` | Holes in the base rim for the extension pegs |
+| `ext_peg_style` | `"insert"` | Pegs: insert (separate printed pegs, part ext_pegs, printed lying down), pin (cut from rod_d rod), or molded into the lip (as before v20) *Choices: insert, pin, molded.* |
+| `peg_d` | `4` | Peg diameter (printed pegs) *Range 3 to 8, step 0.1.* |
+| `peg_len` | `3` | Peg length below the lip *Range 1.5 to 6, step 0.1.* |
+| `peg_hole_d` | `4.4` | Hole diameter in the base (for printed pegs; pins use rod_d + 0.2) |
+| `peg_lip_clearance` | `0.2` | Peg hole in the lip, over the peg diameter (the peg's crush ribs make the press fit) |
+| `pin_lip_interference` | `0.1` | Metal pins: press fit in the lip, hole under the rod diameter |
+| `peg_hole_depth` | `3.5` | Hole depth in the base |
+| `back_peg_xs` | `[16, 160]` | Back-rim peg positions (X), from the base's left face: standard for every machine, so back extensions fit any base of their class; keep clear of the hinges and the split |
+| `left_peg_ys` | `[35, 150]` | Left-rim peg positions (Y) |
+| `right_peg_ys` | `[35, 150]` | Right-rim peg positions (Y), for future right-side extensions; [] for none |
+
+## Corner dovetails
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ext_dt_neck` | `6` | Dovetail width at the mating face *Range 3 to 12, step 0.5.* |
+| `ext_dt_head` | `9` | Dovetail width at its head *Range 4 to 16, step 0.5.* |
+| `ext_dt_depth` | `4` | Dovetail depth into the mating wall *Range 2 to 10, step 0.5.* |
+| `ext_dt_clearance` | `0.2` | Dovetail clearance per face |
+
+## Left lip
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `lip_edge_round` | `2` | Radius of the rounded top edge along the lip front (also the free edges of an extended back lip) *Range 0 to 5, step 0.5.* |
+| `lip_fillet` | `5` | Radius of the inside corner where the lip front meets the body (also an extended back lip's corners) *Range 0 to 15, step 0.5.* |
+
+## Back lip
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `back_lip_extend` | `true` | Run the back lip on past a short back extension, over the base's back rim, to reach the last back peg hole |
+| `back_lip_peg_margin` | `10` | How far the lip runs past the last peg's center *Range 6 to 30, step 0.5.* |
+
 ## Lollipop hinge
 
 | Parameter | Default | Description |
@@ -325,6 +669,24 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `hinge_pin_sweep_depth` | `1` | Extra depth below the pin for its corner to sweep through *Range 0 to 4, step 0.1.* |
 | `hinge_mounting_hole_diameter` | `5` | Hinge mounting hole diameter *Range 2 to 10, step 0.1.* |
 | `hinge_mounting_hole_offset` | `9.5` | Mounting hole center, inward from the flange's back edge |
+
+## Barrel hinge
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `barrel_d` | `15.2` | Barrel hinge (hinge_type = "barrel", from vintage portable cases): barrel diameter *Range 8 to 30, step 0.05.* |
+| `barrel_h` | `17.5` | Barrel height (its top was flush with the case) *Range 8 to 40, step 0.05.* |
+| `barrel_pin_z` | `11.8` | Arm's pin axis above the barrel's bottom, arm level *Range 3 to 30, step 0.05.* |
+| `barrel_pivot_z` | `14.3` | Cross pin (the arm's pivot) above the barrel's bottom *Range 3 to 30, step 0.05.* |
+| `barrel_pivot_dy` | `4.5` | Cross pin in front of the barrel's axis, toward the bed *Range 0 to 10, step 0.05.* |
+| `barrel_reach` | `30` | Barrel axis to the pin's tip, arm level *Range 15 to 60, step 0.1.* |
+| `barrel_block` | `[16.4, 9.3, 7.1]` | Arm's block: length (along the arm), height, width |
+| `barrel_pin` | `[6.85, 18.8]` | Arm's pin: diameter, and length from the block to the tip |
+| `barrel_tilt` | `65` | How far the arm tips back *Range 30 to 110, step 1.* |
+| `barrel_clear` | `0.3` | Clearance round the barrel and the arm's swing *Range 0.1 to 1, step 0.05.* |
+| `barrel_screw` | `[35.4, 4.78, 11, 7]` | Screw: length overall, head height, head diameter, thread diameter |
+| `barrel_washer` | `[1.5, 13.7]` | Washer under the screw head: thickness and outside diameter |
+| `barrel_tap_depth` | `6` | Depth of the barrel's tapped hole the screw may use *Range 3 to 12, step 0.5.* |
 
 ## Printed hinge
 
@@ -351,6 +713,56 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `ph_tail` | `12` | Tail length behind the pivot (longer: less force on the stop, deeper block) *Range 6 to 25, step 0.5.* |
 | `ph_min_cover` | `2.5` | Least plastic over the rods where the arm and cheeks are cut down to the rim *Range 1.5 to 5, step 0.25.* |
 | `ph_test_step` | `0.1` | Rod-fit test (part printed_hinge_test): the step between its five holes, around ph_pin_press and ph_press (0.05 for a finer second bar) *Range 0.02 to 0.2, step 0.01.* |
+
+## Hinge nut traps
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `hinge_nut_spec` | `"#8-32"` | Nut for the hinge screws (BOSL2 spec, e.g. "#8-32", "M4") |
+| `hinge_nut_width` | `0` | Nut width across flats; 0 = from the spec *Range 0 to 20, step 0.05.* |
+| `hinge_nut_depth` | `21` | Depth of the nut's upper face below the top surface *Range 8 to 60, step 0.5.* |
+| `hinge_nut_bridge` | `0.2` | Sacrificial bridge over the nut trap (0 = none; drill through after printing) |
+| `hinge_nut_tool_tip` | `3.0` | Nut tool (part hinge_nut_tool): tip diameter, to fit the nut's bore (a nylon-insert locknut's insert: 1/8") *Range 1.5 to 6, step 0.05.* |
+
+## Hinge coupon
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `hinge_coupon_margin` | `12` | Solid margin around the hinge flange (room for the corner screws) |
+| `hinge_coupon_floor` | `4` | Floor left under the deepest hinge cut *Range 2 to 10, step 0.5.* |
+| `hinge_coupon_screw_d` | `4.6` | Corner holes for #8 flat-head wood screws: clearance hole |
+| `hinge_coupon_head_d` | `8.4` | Corner holes: countersink diameter at the top face |
+
+## Mending plates
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `plate_count` | `3` | Number of plates across the split (0 = none) |
+| `plate_length` | `101.6` | Plate length (McMaster 1394A34: 4") |
+| `plate_width` | `15.875` | Plate width (5/8") |
+| `plate_thickness` | `1.778` | Plate thickness (0.070") |
+| `plate_holes` | `[[-33.866, 2.375], [-11.289, -2.375], [11.289, 2.375], [33.866, -2.375]]` | Hole centers [along, across] from the plate center (0.889" pitch, staggered 0.094") *Edit in the file; not shown in the Customizer.* |
+| `plate_hole_bridge` | `0.3` | Sacrificial layer over each screw hole at the pocket ceiling (0 = none); drill through |
+| `plate_pocket_clearance` | `0.5` | Clearance around the plate in its pocket, per side |
+| `plate_standoff` | `1.0` | How far the plate sits up inside its pocket, so screw heads stay off the table |
+| `plate_screw_clearance` | `4.6` | Screw clearance hole diameter (#8) |
+| `plate_nut_spec` | `"#8-32"` | Nut for the plate screws (BOSL2 spec) |
+| `plate_nut_width` | `0` | Nut width across flats; 0 = from the spec *Range 0 to 20, step 0.05.* |
+| `plate_nut_trap_depth` | `3.5` | Nut trap depth into the cavity floor |
+| `plate_wall_margin` | `8` | Minimum distance from the cavity walls to the plate edge *Range 2 to 20, step 0.5.* |
+
+## Nut fit
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `nut_clearance` | `0.15` | Extra clearance added to nut width (applied to each side) |
+
+## Casting reliefs
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `relief_clearance` | `1` | Clearance below the casting in a relief (the reliefs themselves come from the machine profile) *Range 0 to 4, step 0.1.* |
+| `relief_margin` | `2` | Extra length added at each end of a relief *Range 0 to 10, step 0.5.* |
 
 ## Foot-locating rig
 
@@ -386,419 +798,17 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `tilt_prop_w` | `38.1` | Cradle width, along the arm (1.5") *Range 20 to 80, step 0.5.* |
 | `tilt_prop_foot` | `[80, 110]` | Foot: width along the arm, and depth front to back *Range 40 to 200, step 1.* |
 
-## Barrel hinge
+## Test parts
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `barrel_d` | `15.2` | Barrel hinge (hinge_type = "barrel", from vintage portable cases): barrel diameter *Range 8 to 30, step 0.05.* |
-| `barrel_h` | `17.5` | Barrel height (its top was flush with the case) *Range 8 to 40, step 0.05.* |
-| `barrel_pin_z` | `11.8` | Arm's pin axis above the barrel's bottom, arm level *Range 3 to 30, step 0.05.* |
-| `barrel_pivot_z` | `14.3` | Cross pin (the arm's pivot) above the barrel's bottom *Range 3 to 30, step 0.05.* |
-| `barrel_pivot_dy` | `4.5` | Cross pin in front of the barrel's axis, toward the bed *Range 0 to 10, step 0.05.* |
-| `barrel_reach` | `30` | Barrel axis to the pin's tip, arm level *Range 15 to 60, step 0.1.* |
-| `barrel_block` | `[16.4, 9.3, 7.1]` | Arm's block: length (along the arm), height, width |
-| `barrel_pin` | `[6.85, 18.8]` | Arm's pin: diameter, and length from the block to the tip |
-| `barrel_tilt` | `65` | How far the arm tips back *Range 30 to 110, step 1.* |
-| `barrel_clear` | `0.3` | Clearance round the barrel and the arm's swing *Range 0.1 to 1, step 0.05.* |
-| `barrel_screw` | `[35.4, 4.78, 11, 7]` | Screw: length overall, head height, head diameter, thread diameter |
-| `barrel_washer` | `[1.5, 13.7]` | Washer under the screw head: thickness and outside diameter |
-| `barrel_tap_depth` | `6` | Depth of the barrel's tapped hole the screw may use *Range 3 to 12, step 0.5.* |
-
-## Hinge coupon
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `hinge_coupon_margin` | `12` | Solid margin around the hinge flange (room for the corner screws) |
-| `hinge_coupon_floor` | `4` | Floor left under the deepest hinge cut *Range 2 to 10, step 0.5.* |
-| `hinge_coupon_screw_d` | `4.6` | Corner holes for #8 flat-head wood screws: clearance hole |
-| `hinge_coupon_head_d` | `8.4` | Corner holes: countersink diameter at the top face |
-
-## Hinge nut traps
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `hinge_nut_spec` | `"#8-32"` | Nut for the hinge screws (BOSL2 spec, e.g. "#8-32", "M4") |
-| `hinge_nut_width` | `0` | Nut width across flats; 0 = from the spec *Range 0 to 20, step 0.05.* |
-| `hinge_nut_depth` | `21` | Depth of the nut's upper face below the top surface *Range 8 to 60, step 0.5.* |
-| `hinge_nut_bridge` | `0.2` | Sacrificial bridge over the nut trap (0 = none; drill through after printing) |
-| `hinge_nut_tool_tip` | `3.0` | Nut tool (part hinge_nut_tool): tip diameter, to fit the nut's bore (a nylon-insert locknut's insert: 1/8") *Range 1.5 to 6, step 0.05.* |
-
-## Mending plates
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `plate_count` | `3` | Number of plates across the split (0 = none) |
-| `plate_length` | `101.6` | Plate length (McMaster 1394A34: 4") |
-| `plate_width` | `15.875` | Plate width (5/8") |
-| `plate_thickness` | `1.778` | Plate thickness (0.070") |
-| `plate_holes` | `[[-33.866, 2.375], [-11.289, -2.375], [11.289, 2.375], [33.866, -2.375]]` | Hole centers [along, across] from the plate center (0.889" pitch, staggered 0.094") *Edit in the file; not shown in the Customizer.* |
-| `plate_hole_bridge` | `0.3` | Sacrificial layer over each screw hole at the pocket ceiling (0 = none); drill through |
-| `plate_pocket_clearance` | `0.5` | Clearance around the plate in its pocket, per side |
-| `plate_standoff` | `1.0` | How far the plate sits up inside its pocket, so screw heads stay off the table |
-| `plate_screw_clearance` | `4.6` | Screw clearance hole diameter (#8) |
-| `plate_nut_spec` | `"#8-32"` | Nut for the plate screws (BOSL2 spec) |
-| `plate_nut_width` | `0` | Nut width across flats; 0 = from the spec *Range 0 to 20, step 0.05.* |
-| `plate_nut_trap_depth` | `3.5` | Nut trap depth into the cavity floor |
-| `plate_wall_margin` | `8` | Minimum distance from the cavity walls to the plate edge *Range 2 to 20, step 0.5.* |
-
-## Nut fit
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `nut_clearance` | `0.15` | Extra clearance added to nut width (applied to each side) |
-
-## Casting reliefs
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `relief_clearance` | `1` | Clearance below the casting in a relief (the reliefs themselves come from the machine profile) *Range 0 to 4, step 0.1.* |
-| `relief_margin` | `2` | Extra length added at each end of a relief *Range 0 to 10, step 0.5.* |
-
-## Back wall lightening
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `lighten_back_wall` | `true` | Hollow the back wall between the hinges |
-| `back_skin` | `17` | Back wall thickness left behind the tunnels *Range 6 to 40, step 0.5.* |
-| `back_top_skin` | `6` | Solid material above the tunnel peaks *Range 2 to 20, step 0.5.* |
-| `tunnel_width` | `30` | Target tunnel width |
-| `tunnel_web` | `6` | Web between tunnels |
-| `hinge_tunnel_margin` | `7.5` | Extra solid kept beyond each side of the hinge footprint |
-| `split_keepout` | `15` | Solid zone kept on either side of the split, from the cut line |
-
-## Split
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `split_part` | `"both"` | Which part to render when split *Choices: both, left, right.* |
-| `split_spread` | `30` | Separation between the two halves when both are shown |
-| `split_balance` | `true` | Put the split where the two halves, the left one's dovetail keys included, come out the same length (else at the middle) |
-| `split_clearance` | `0.1` | Clearance in the joint, per face |
-| `key_neck` | `8` | Dovetail key width at the cut line (neck) *Range 4 to 16, step 0.5.* |
-| `key_flare_angle` | `30` | Dovetail flare, per side, in degrees; steeper = less pull-apart play |
-| `key_depth` | `8` | Dovetail key length, past the cut line into the right half *Range 4 to 16, step 0.5.* |
-| `key_ys` | `[]` | Key positions in Y; empty = automatic (floor keys between plate rows, one centered in the back wall) *Edit in the file; not shown in the Customizer.* |
-| `serrations` | `true` | Vertical V-serrations across the front wall's joint faces |
-| `serration_pitch` | `3` | Serration pitch (ridge to ridge) *Range 2 to 6, step 0.1.* |
-| `serration_height` | `1.5` | Serration height (ridge tip beyond the cut line); pitch / 2 gives a 90-degree V |
-| `serration_setback` | `2.5` | Solid wall kept between the serrations and each face of the front wall (outer skin and cavity side) |
-| `serration_top_gap` | `3` | Serrations stop this far below the bed ledge *Range 1 to 10, step 0.5.* |
-| `serration_top_clear` | `0.5` | Extra clearance at the top of each groove, so the ridges never bottom out |
-
-## Extensions
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `back_ext` | `true` | Include the back extension (outfeed support / compartment) |
-| `left_ext` | `true` | Include the left extension |
-| `corner_ext` | `true` | Include the left-rear corner piece (needs both of the above) |
-| `back_ext_length` | `240` | Back extension length (X), from the base's left face |
-| `back_ext_depth` | `100` | Back extension body depth (Y), behind the base *Range 100 to 300, step 0.5.* |
-| `left_ext_width` | `100` | Left extension body width (X), left of the base *Range 100 to 300, step 0.5.* |
-| `left_ext_double` | `false` | Left extension and corner: make the width for an outer bin matching the inner one (overrides left_ext_width) |
-| `back_ext_double` | `false` | Back extension and corner: make the depth for an outer bin matching the inner one (overrides back_ext_depth) |
-| `left_ext_layout` | `"1+1"` | Left extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2) *Choices: 1+1, 1+2.* |
-| `back_ext_layout` | `"1+1"` | Back extension past 100 mm: its outer bin whole (1+1), or split in two along its length (1+2) *Choices: 1+1, 1+2.* |
-| `corner_layout` | `"2x2"` | Corner piece past 100 mm: the bobbin bin stays in the inner corner, and the rest becomes open bins left of it and behind it; with both, the far corner gets its own bin (2x2), or the left or back bin runs the full length *Choices: 2x2, long left, long back.* |
-| `ext_divider` | `2.5` | Divider wall between bins *Range 1.2 to 6, step 0.1.* |
-| `ext_bin_min` | `10` | Least bin width inside; a narrower strip is left solid *Range 5 to 30, step 0.5.* |
-| `back_lids` | `"one"` | Lids: one over each piece, or one per bay (on rabbets in the dividers' tops) *Choices: one, per bay.* |
-| `left_lids` | `"one"` |  *Choices: one, per bay.* |
-| `corner_lids` | `"one"` |  *Choices: one, per bay.* |
-| `bin_lid_type` | `"lift-out"` | Per-bay lids on the outer bins: type (the inner bay's lid keeps its piece's settings) *Choices: lift-out, hinged, none.* |
-| `bin_lid_hinge` | `"back"` | Per-bay lids on the outer bins: hinge edge *Choices: left, right, front, back.* |
-| `bin_lid_min` | `15` | Least lid: a bin narrower than this inside gets no lid of its own *Range 10 to 40, step 1.* |
-| `ext_divider_notch` | `true` | Finger notch at the middle of each divider, for reaching into narrow bins (one lid only) |
-| `ext_notch_w` | `30` | Finger notch width and depth *Range 10 to 60, step 1.* |
-| `ext_notch_d` | `20` |  *Range 5 to 60, step 1.* |
-| `ext_gap` | `0.3` | Gap between an extension body and the base or another extension |
-| `lip_clearance` | `0.2` | Clearance between the lip and the base top |
-| `lip_min_t` | `5.4` | Least lip thickness: where the bed stands less than this above the rim (a bed set flush, say), the rim is cut down under the lips so they keep it, and trim strips (parts back_trim, left_trim) fill the cuts when the extensions are off *Range 3 to 10, step 0.1.* |
-| `lip_cut_clearance` | `0.25` | Clearance around the recessed lips and the trims, per side *Range 0.1 to 0.6, step 0.05.* |
-| `ext_top_adjust` | `0` | Trim to the extensions' top plane (lids, lips, trenches) against the real bed, mm; negative lowers it *Range -3 to 3, step 0.1.* |
-| `ext_floor` | `3` | Extension floor thickness *Range 1.5 to 8, step 0.1.* |
-| `ext_standard` | `true` | Standard extension height: every extension's top at ext_height above the table, with the same bays (the base is raised, or the extensions stand on podiums, to match the bed) |
-| `ext_height` | `88.225` | Standard extension height: the 99K's bed top *Range 60 to 140, step 0.005.* |
-| `podium_min` | `5` | Least podium under an extension, when the bed stands above ext_height *Range 3 to 20, step 0.5.* |
-| `podium_wall` | `6` | Podium wall (it is a frame, open below) *Range 3 to 15, step 0.5.* |
-| `ext_frame` | `4` | Frame width around each lid, at the top *Range 2 to 10, step 0.1.* |
-| `ext_ledge` | `4` | Ledge the lid rests on, inside the frame *Range 2 to 10, step 0.1.* |
-| `ext_lid_thickness` | `4` | Lid thickness (= depth of the lid rabbet) *Range 2 to 8, step 0.1.* |
-| `ext_lid_clearance` | `0.3` | Clearance around the lid in its rabbet, per side |
-| `ext_hinge_margin` | `0.5` | Hinged lids: the ledge on the hinge side is widened so the open lid stays this far clear of the bay |
-| `ext_finger_hole` | `22` | Finger hole in each lid |
-| `ext_rounding` | `3` | Rounding of the extensions' exposed edges *Range 0 to 8, step 0.5.* |
-
-## Turn button
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `turn_button` | `false` | Turn button on the front rim that holds the bed's front edge down (off by default) |
-| `turn_button_x` | `0` | Position along the front rim (X); 0 = automatic, between the split and the compartment |
-| `turn_button_overlap` | `4` | How far the button reaches over the bed's front edge *Range 1 to 10, step 0.5.* |
-| `turn_button_w` | `9` | Button width *Range 6 to 16, step 0.5.* |
-| `turn_button_t` | `4` | Button thickness *Range 2 to 8, step 0.5.* |
-| `turn_button_gap` | `0.3` | Gap between the button and the bed top |
-| `turn_button_ease` | `10` | Easing: how far the pad's smooth slopes run out along the rim, each side |
-| `turn_button_swell` | `3` | How far the pad swells out of the front face, enclosing the nut *Range 0 to 8, step 0.5.* |
-| `turn_button_swell_taper` | `10` | Below the nut, the swelling blends back into the front face over this height |
-| `turn_button_nut_spec` | `"#8-32"` | Nut for the button screw (BOSL2 spec) |
-
-## Freestanding boxes
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `make_back_box` | `false` | Also make a freestanding version of the back extension (part back_box): same bay and lid, no lip, pegs or dovetails |
-| `make_left_box` | `false` | Also make a freestanding left box (part left_box) |
-| `make_corner_box` | `false` | Also make a freestanding corner box (part corner_box) |
-
-## Extension pegs
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ext_peg_holes` | `true` | Holes in the base rim for the extension pegs |
-| `ext_peg_style` | `"insert"` | Pegs: insert (separate printed pegs, part ext_pegs, printed lying down), pin (cut from rod_d rod), or molded into the lip (as before v20) *Choices: insert, pin, molded.* |
-| `peg_d` | `4` | Peg diameter (printed pegs) *Range 3 to 8, step 0.1.* |
-| `peg_len` | `3` | Peg length below the lip *Range 1.5 to 6, step 0.1.* |
-| `peg_hole_d` | `4.4` | Hole diameter in the base (for printed pegs; pins use rod_d + 0.2) |
-| `peg_lip_clearance` | `0.2` | Peg hole in the lip, over the peg diameter (the peg's crush ribs make the press fit) |
-| `pin_lip_interference` | `0.1` | Metal pins: press fit in the lip, hole under the rod diameter |
-| `peg_hole_depth` | `3.5` | Hole depth in the base |
-| `back_peg_xs` | `[16, 160]` | Back-rim peg positions (X), from the base's left face: standard for every machine, so back extensions fit any base of their class; keep clear of the hinges and the split |
-| `left_peg_ys` | `[35, 150]` | Left-rim peg positions (Y) |
-| `right_peg_ys` | `[35, 150]` | Right-rim peg positions (Y), for future right-side extensions; [] for none |
-
-## Corner dovetails
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ext_dt_neck` | `6` | Dovetail width at the mating face *Range 3 to 12, step 0.5.* |
-| `ext_dt_head` | `9` | Dovetail width at its head *Range 4 to 16, step 0.5.* |
-| `ext_dt_depth` | `4` | Dovetail depth into the mating wall *Range 2 to 10, step 0.5.* |
-| `ext_dt_clearance` | `0.2` | Dovetail clearance per face |
-
-## Handholds
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `handholds` | `true` | Handholds under each end |
-| `handhold_bottom_len` | `76.2` | Handhold length along the end, at the bottom face (3") |
-| `handhold_top_len` | `50.8` | Handhold length at its top (2") |
-| `handhold_height` | `12.7` | Handhold height above the bottom face (1/2") |
-| `handhold_depth` | `15.875` | Handhold depth into the end wall (5/8") |
-| `handhold_lip_flat` | `4` | Flat underside of the lip at the face, before the ceiling climbs *Range 0 to 10, step 0.5.* |
-| `handhold_lip_round` | `2` | Radius rounding the lip's outer edge *Range 0 to 6, step 0.5.* |
-| `handhold_knockout` | `true` | Knock-out wall under the lip, removed after printing |
-| `knockout_t` | `1.2` | Knock-out wall thickness |
-| `knockout_gap` | `0.2` | Gap between the knock-out wall and the lip |
-| `knockout_tab` | `true` | Breakaway tab tying one end of the knock-out wall to the pocket end |
-| `knockout_tab_h` | `0.8` | Tab height (the tab sits just under the lip gap) |
-| `knockout_brim` | `true` | Brim around the foot of each knock-out wall, so it stands until the tab joins it |
-| `knockout_brim_w` | `5` | Brim width each side of the wall |
-| `knockout_brim_h` | `0.2` | Brim height (about one first layer) |
-
-## Harness rods
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `harness_rods` | `true` | Rod notches and rods either side of each handhold |
-| `rod_d` | `4.7625` | Rod diameter (3/16") |
-| `rod_hole_d` | `4.95` | Rod hole diameter (printed as a teardrop, point up) |
-| `rod_x` | `7` | Rod center in from the end face *Range 3 to 15, step 0.1.* |
-| `rod_z` | `7` | Rod center above the bottom face *Range 3 to 15, step 0.1.* |
-| `notch_len` | `25` | Notch length along the rod |
-| `notch_clear` | `4` | Clear space around the rod in the notch, behind and above it *Range 1 to 10, step 0.5.* |
-| `notch_inset` | `25` | Distance from each outer face (front, back) to its notch |
-| `rod_stop` | `5` | Material left between a rod's blind end and the handhold |
-| `rod_plug_len` | `5` | Printed plug closing the open end of each rod hole (0 = no plugs; rods run to the face) *Range 0 to 10, step 0.5.* |
-| `rod_plug_clearance` | `0.1` | Plug clearance in the hole, per side (the crush ribs make the press fit) |
-| `rod_plug_rib` | `0.15` | Crush rib interference, beyond the hole wall |
-
-## Left lip
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `lip_edge_round` | `2` | Radius of the rounded top edge along the lip front (also the free edges of an extended back lip) *Range 0 to 5, step 0.5.* |
-| `lip_fillet` | `5` | Radius of the inside corner where the lip front meets the body (also an extended back lip's corners) *Range 0 to 15, step 0.5.* |
-
-## Back lip
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `back_lip_extend` | `true` | Run the back lip on past a short back extension, over the base's back rim, to reach the last back peg hole |
-| `back_lip_peg_margin` | `10` | How far the lip runs past the last peg's center *Range 6 to 30, step 0.5.* |
-
-## Lid hinges
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `base_lid_hinge` | `"right"` | Lid edge each lid hinges on *Choices: left, right, front, back.* |
-| `back_lid_hinge` | `"back"` |  *Choices: left, right, front, back.* |
-| `left_lid_hinge` | `"left"` |  *Choices: left, right, front, back.* |
-| `corner_lid_hinge` | `"back"` |  *Choices: left, right, front, back.* |
-| `base_lid_type` | `"hinged"` | Base compartment lid: hinged (snap-in dimple hinge), lift-out (plain lid resting on the ledge), or none (rabbet left for a lid later) *Choices: hinged, lift-out, none.* |
-| `back_lid_type` | `"hinged"` | Back extension lid type *Choices: hinged, lift-out, none.* |
-| `left_lid_type` | `"hinged"` | Left extension lid type *Choices: hinged, lift-out, none.* |
-| `corner_lid_type` | `"hinged"` | Corner piece lid type *Choices: hinged, lift-out, none.* |
-| `base_lid_style` | `"solid"` | Base compartment lid style: solid, or perforated for ventilation *Choices: solid, perforated.* |
-| `back_lid_style` | `"solid"` | Back extension lid style *Choices: solid, perforated.* |
-| `left_lid_style` | `"solid"` | Left extension lid style *Choices: solid, perforated.* |
-| `corner_lid_style` | `"solid"` | Corner piece lid style *Choices: solid, perforated.* |
-| `base_lid_grip` | `"finger hole"` | Base compartment lid grip: finger hole, or a thumb tab reaching over a notch in the wall *Choices: finger hole, tab.* |
-| `base_lid_tab_edge` | `"front"` | Base lid tab edge (front only is practical, on a lift-out lid) *Choices: front, back, left, right.* |
-| `back_lid_grip` | `"finger hole"` | Back extension lid grip *Choices: finger hole, tab.* |
-| `back_lid_tab_edge` | `"right"` | Back lid tab edge (back or right) *Choices: front, back, left, right.* |
-| `left_lid_grip` | `"finger hole"` | Left extension lid grip *Choices: finger hole, tab.* |
-| `left_lid_tab_edge` | `"front"` | Left lid tab edge (front or left) *Choices: front, back, left, right.* |
-| `corner_lid_grip` | `"finger hole"` | Corner piece lid grip *Choices: finger hole, tab.* |
-| `corner_lid_tab_edge` | `"left"` | Corner lid tab edge (left or back) *Choices: front, back, left, right.* |
-| `grip_tab_w` | `25` | Thumb tab width |
-| `grip_tab_over` | `1.5` | Thumb tab overhang past the outer face |
-| `grip_tab_r` | `2` | Thumb tab corner radius *Range 0 to 5, step 0.5.* |
-| `grip_scoop_d` | `2.5` | Thumb scoop below the tab: depth into the outer face |
-| `grip_scoop_h` | `6` | Thumb scoop height below the lid *Range 2 to 12, step 0.5.* |
-| `base_lid_notch_r` | `4` | Base lid motor-boss notch (size from the machine profile): inner corner radius *Range 0 to 10, step 0.5.* |
-| `base_lid_notch_flare` | `10` | Notch: radius blending it into the lid edge |
-| `base_lid_notch_offset` | `0` | Notch: front-to-back offset from the middle of the lid *Range -50 to 50, step 0.5.* |
-| `lid_perf_d` | `5` | Perforation hole diameter *Range 2 to 12, step 0.5.* |
-| `lid_perf_pitch` | `8` | Perforation pitch (hex grid) *Range 4 to 20, step 0.5.* |
-| `lid_perf_margin` | `6` | Solid margin kept around the lid's edges, finger hole and hinge *Range 2 to 20, step 0.5.* |
-| `lid_bump_d` | `3` | Hinge bump diameter at its base *Range 1.5 to 6, step 0.1.* |
-| `lid_bump_engage` | `1.0` | How far each bump engages the wall |
-| `lid_tab_len` | `15` | Flex tab carrying each bump: length along the end |
-| `lid_tab_w` | `4` | Flex tab width *Range 1.5 to 8, step 0.1.* |
-| `lid_slot_w` | `1` | Slot that frees the flex tab *Range 0.5 to 3, step 0.1.* |
-| `lid_bump_angle` | `35` | Bump flank angle from its axis: smaller is steeper and holds better (45 = the v19 cone) *Range 15 to 60, step 1.* |
-| `lid_hinge_end_clearance` | `0.15` | Clearance at the lid's two hinge ends (less end float keeps both bumps engaged) |
-| `lid_recess_clearance` | `0.075` | Clearance between bump and recess, per side |
-| `lid_open_stop` | `true` | Cut a chamfer behind the hinge so an open lid leans back and stays up |
-
-## Inserts
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ins_spacing` | `10` | Spacing between parts in the insert print layouts *Range 0 to 50, step 1.* |
-| `bobbin_d` | `20.6375` | Bobbin diameter (class 15 and 66: 13/16"), for the bobbin trays and the spool tray |
-| `bobbin_t` | `11.1125` | Bobbin thickness (class 15 and 66: 7/16") |
-
-## Bobbin trays (corner bay)
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `bb_trays` | `0` | Number of trays, bottom included; 0 = as many as fit under the lid *Range 0 to 10, step 1.* |
-| `bb_post_d` | `5` | Post diameter (class 15 and 66 bores are a little over 6 mm) *Range 3 to 10, step 0.1.* |
-| `bb_grid` | `[3, 3]` | Post grid [columns (X), rows (Y)]; cells that would crowd the center column are left empty |
-| `bb_floor` | `3` | Tray floor thickness *Range 1.2 to 6, step 0.1.* |
-| `bb_bobbin_clear` | `1` | Clearance between a bobbin's top and the tray above *Range 0 to 4, step 0.1.* |
-| `bb_wall_clear` | `0.75` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
-| `bb_corner_r` | `2` | Tray corner radius *Range 0 to 10, step 0.5.* |
-| `bb_top_clear` | `1` | Clearance between the top of the knob and the lid *Range 0 to 5, step 0.1.* |
-| `bb_lighten` | `true` | Lightening holes where four cells meet |
-| `bb_lighten_d` | `12` | Lightening hole diameter *Range 4 to 20, step 0.5.* |
-| `bb_pin_d` | `3` | Pin on each post tip: diameter *Range 1.5 to 6, step 0.1.* |
-| `bb_pin_h` | `2` | Pin height above the post shoulder *Range 0.5 to 5, step 0.1.* |
-| `bb_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
-| `bb_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
-| `bb_socket_chamfer` | `0.6` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
-| `bb_column_d` | `12` | Handle column diameter *Range 6 to 20, step 0.5.* |
-| `bb_column_flare` | `2` | Flare radius at the column's foot *Range 0 to 5, step 0.5.* |
-| `bb_knob_d` | `18` | Knob diameter *Range 8 to 30, step 0.5.* |
-| `bb_knob_h` | `8` | Knob height *Range 3 to 20, step 0.5.* |
-| `bb_hole_clear` | `0.5` | Clearance between the knob and the upper trays' center holes, per side *Range 0.1 to 2, step 0.05.* |
-
-## Notion trays (back or left bay)
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ot_bay` | `"back"` | Bay the notion and spool trays go in *Choices: back, left.* |
-| `ot_custom_h` | `12` | Custom tray height *Range 5 to 80, step 0.5.* |
-| `ot_show` | `[25, 20, 15, 10]` | Tray heights shown stacked in part notion_assembly |
-| `ot_wall_clear` | `1` | Clearance between the trays and the bay walls, per side *Range 0.2 to 3, step 0.05.* |
-| `ot_wall` | `1.2` | Wall thickness *Range 0.8 to 4, step 0.1.* |
-| `ot_floor` | `1.6` | Floor thickness *Range 0.8 to 4, step 0.1.* |
-| `ot_corner_r` | `2` | Outer corner radius *Range 0 to 10, step 0.5.* |
-| `ot_boss` | `9` | Corner boss size (square, from the outer corner) *Range 5 to 20, step 0.5.* |
-| `ot_pin_d` | `3` | Pin diameter *Range 1.5 to 6, step 0.1.* |
-| `ot_pin_h` | `2` | Pin height above the wall tops *Range 0.5 to 5, step 0.1.* |
-| `ot_socket_clear` | `0.2` | Socket clearance around the pin, per side *Range 0 to 1, step 0.05.* |
-| `ot_socket_extra` | `0.4` | Socket depth beyond the pin *Range 0 to 2, step 0.1.* |
-| `ot_socket_chamfer` | `0.5` | Chamfer at the socket mouth (also absorbs elephant's foot) *Range 0 to 2, step 0.1.* |
-| `ot_grip_w` | `40` | Finger-hold lip length along each end wall *Range 10 to 120, step 1.* |
-| `ot_grip_reach` | `5` | How far the lip reaches in from the wall *Range 0 to 15, step 0.5.* |
-| `ot_grip_t` | `1.5` | Thickness of the lip at its top, above the 45-degree underside *Range 0.8 to 4, step 0.1.* |
-| `ot_top_clear` | `1` | Clearance between the top tray's pins and the lid *Range 0 to 5, step 0.1.* |
-
-## Notion tray compartments
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ot_compartments` | `false` | Divide the plain notion trays (not the spool tray) into compartments |
-| `ot_cell` | `50.8` | Target compartment size; the grid divides the tray evenly to come closest to it (2" gives 2 x 4 in the back or left bay; 1" gives 3 x 8) *Range 10 to 100, step 0.1.* |
-| `ot_cols` | `0` | Compartments along the tray's length (0 = from ot_cell) *Range 0 to 20, step 1.* |
-| `ot_rows` | `0` | Compartments across the tray's width (0 = from ot_cell) *Range 0 to 20, step 1.* |
-| `ot_divider_frac` | `0.8` | Divider height, as a fraction of the tray height *Range 0.2 to 1, step 0.05.* |
-| `ot_divider_t` | `1.2` | Divider thickness *Range 0.8 to 4, step 0.1.* |
-
-## Spool tray
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ot_spool_d` | `38` | Spool diameter *Range 20 to 80, step 0.5.* |
-| `ot_spool_h` | `44` | Spool height *Range 20 to 100, step 0.5.* |
-| `ot_spool_post_d` | `5` | Post diameter at the top, through the bobbin *Range 3 to 15, step 0.1.* |
-| `ot_spool_post_base_d` | `7` | Post diameter at the floor; the post tapers to the top diameter at the spool top *Range 3 to 20, step 0.1.* |
-| `ot_spool_bore` | `7.5` | Smallest spool bore you expect (for the console check) *Range 3 to 20, step 0.1.* |
-| `ot_spool_gap` | `1.5` | Space between neighboring spools *Range 0 to 10, step 0.1.* |
-| `ot_spool_wall_gap` | `0.5` | Space between the spools and the tray walls and corner bosses *Range 0 to 5, step 0.1.* |
-| `ot_spool_top_clear` | `1` | Clearance between the bobbin tops and the tray above *Range 0 to 5, step 0.1.* |
-| `ot_spool_open_sides` | `true` | Cut the long side walls down to a curb between the corner bosses, so the spools can be grasped from the side |
-| `ot_spool_curb` | `14` | Curb height left along the long sides (it stiffens the floor when the tray is lifted by its ends) *Range 3 to 40, step 0.5.* |
-| `ot_spool_cut_r` | `5` | Radius at the bottom corners of the cutaway *Range 0 to 20, step 0.5.* |
-
-## Tray gussets
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ot_gussets` | `true` | Small triangular ribs at the foot of the trays' long walls, where a thin wall meets the floor at one layer line |
-| `ot_gusset_t` | `1` | Gusset thickness (on the spool tray it must fit between neighboring spools) *Range 0.6 to 3, step 0.1.* |
-| `ot_gusset_d` | `5` | Gusset reach along the floor, from the wall *Range 1 to 15, step 0.5.* |
-| `ot_gusset_h` | `8` | Gusset height up the wall (less on low trays) *Range 1 to 20, step 0.5.* |
-| `ot_gusset_pitch` | `40` | Spacing to aim for between gussets on plain trays *Range 15 to 120, step 1.* |
-
-## Ruler and logos (front, back and bottom)
-
-| Parameter | Default | Description |
-|---------|----|---------------|
-| `ruler` | `false` | A ruler across the base's front face, from where the left corner's round-over ends to where the right one's begins (on the base and a built-in compartment; not on an attached bay or the extensions) |
-| `ruler_scale_1` | `"inch"` | Scales, from the bottom up: inch, centimeter, custom, or none *Choices: inch, cm, custom, none.* |
-| `ruler_scale_2` | `"cm"` |  *Choices: inch, cm, custom, none.* |
-| `ruler_scale_3` | `"none"` |  *Choices: inch, cm, custom, none.* |
-| `ruler_bottom` | `5` | The ruler's bottom edge above the bottom of the base *Range 0 to 40, step 0.5.* |
-| `ruler_scale_h` | `8` | Height of each scale *Range 5 to 15, step 0.5.* |
-| `ruler_inch_div` | `8` | Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half) *Range 1 to 32, step 1.* |
-| `ruler_inch_mid` | `2` |  *Range 1 to 16, step 1.* |
-| `ruler_cm_div` | `10` | Centimeter scale: divisions per cm, and a longer tick every so many *Range 1 to 20, step 1.* |
-| `ruler_cm_mid` | `5` |  *Range 1 to 10, step 1.* |
-| `ruler_custom_unit` | `10` | Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none) *Range 1 to 100, step 0.01.* |
-| `ruler_custom_div` | `10` |  *Range 1 to 32, step 1.* |
-| `ruler_custom_mid` | `5` |  *Range 1 to 16, step 1.* |
-| `ruler_custom_name` | `""` |  |
-| `ruler_number_every` | `1` | Number every this many units (1 = every inch, every cm) *Range 1 to 10, step 1.* |
-| `ruler_text_size` | `3.5` | Lettering size *Range 2 to 6, step 0.1.* |
-| `ruler_line_w` | `0.6` | Narrowest line in the ruler, ticks and lettering alike (keep it at or over your nozzle's width) *Range 0.3 to 1.2, step 0.05.* |
-| `logo_left` | `""` | Logo files (SVG: clean outlines, no self-crossing paths) for the face's upper left and upper right corners, relative to this file's folder or a full path; blank for none |
-| `logo_right` | `""` |  |
-| `logo_size` | `[25, 15]` | Each logo is stretched to this box, width and height (set it to the logo's own proportions) |
-| `logo_inset` | `6` | Logos' distance in from the face's flat ends and down from where the top's round-over ends *Range 0 to 40, step 0.5.* |
-| `back_logo_left` | `""` | Back face: SVGs near its lower left and lower right corners, as you look at the back (so the left one is at the base's right end); for a maker's name, model, serial number, date. Blank for none |
-| `back_logo_right` | `""` |  |
-| `back_logo_size` | `[40, 15]` | Each back logo is stretched to this box, width and height |
-| `back_logo_inset` | `6` | Back logos' distance in from the face's flat ends (clear of the harness rods' holes) and up from the bottom *Range 0 to 40, step 0.5.* |
-| `bottom_logo_left` | `""` | Bottom: SVGs centered on the left and right halves of the base (where it splits, whether or not it is split), as you look at the bottom with the base tipped back onto its back edge. Blank for none |
-| `bottom_logo_right` | `""` |  |
-| `bottom_logo_size` | `[80, 40]` | Each bottom logo is stretched to this box, width and height |
-| `face_relief` | `"raised"` | Ruler and logos on the front and back: raised from the face, engraved into it, or inlaid (engraved and filled flush). Raised and inlaid marks are color-tagged for another filament: each mark and the base its own random color (export 3MF to keep them; needs an OpenSCAD with the Manifold backend) *Choices: raised, engraved, inlaid.* |
-| `bottom_relief` | `"engraved"` | The bottom's logos: engraved, or inlaid (color-tagged). Not raised: the base prints standing on its bottom *Choices: engraved, inlaid.* |
-| `face_relief_depth` | `0.6` | How far they stand out or cut in *Range 0.3 to 2, step 0.1.* |
-| `face_relief_chamfer` | `true` | Slope the marks' overhangs at 45 degrees: under a raised mark's downward-facing edges, over an engraved recess's upward-facing ones (they print as a flat overhang that curls without it). Not for inlaid marks, which are filled |
-| `face_color_seed` | `7` | Change it for another set of random colors *Range 0 to 999, step 1.* |
+| `test_top_h` | `12.7` | Test parts: height of the top slices |
+| `test_floor_extra` | `3` | Test parts: height of the base bottom slice above the cavity floor |
+| `test_coupon_w` | `40` | Test parts: width of the dovetail coupon (X) |
+| `test_slice_w` | `112` | Test parts: width of the center slice (X); covers the plates at 112 |
+| `test_stub_w` | `20` | Test parts: full-height wall stubs either side of the joint in the center slice |
+| `test_hinge_w` | `40` | Test parts: size of the hinge block (X), centered on the left hinge |
+| `test_split_gap` | `10` | Gap between the two halves of split test parts |
+| `test_corner_w` | `0` | Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it *Range 0 to 150, step 1.* |
+| `split_test_h` | `30` | Split test (part split_test): height of the front-wall stubs; 0 = full height *Range 0 to 100, step 1.* |
+| `split_test_w` | `25` | Split test: width either side of the split line *Range 10 to 60, step 1.* |
