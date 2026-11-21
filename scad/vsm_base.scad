@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 82
+// VSM Base, version 83
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -404,6 +404,8 @@
 // and hinges' fine settings; tools and test parts last. Part's printer and
 // test settings are now groups of their own (Printer, Test parts). No
 // setting changed.
+// v83: test_passthrough_whole prints the pass-through test in one piece,
+// as in the base, the tunnel sealed between its walls.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1649,6 +1651,8 @@ test_stub_w = 20;
 test_hinge_w = 40;
 // Gap between the two halves of split test parts
 test_split_gap = 10;
+// Pass-through test: print it whole, as in the base, the tunnel sealed between its two knock-out walls (leave it as one object in the slicer: split into shells, the tunnel's lining becomes a solid of its own), rather than cut in two down the divider
+test_passthrough_whole = false;
 // Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it
 test_corner_w = 0; // [0 : 1 : 150]
 // Split test (part split_test): height of the front-wall stubs; 0 = full height
@@ -6401,10 +6405,14 @@ module outlet_test() {
 pt_0 = [divider_x0 - 3, cord_hole_y - cord_hole_width / 2 - 6, floor_z - 3];
 pt_1 = [divider_x1 + 3, cord_hole_y + cord_hole_width / 2 + 6, floor_z + cord_hole_height + cord_hole_width / 2 + 5];
 pt_xm = (divider_x0 + divider_x1) / 2;
-pt_test_w = pt_1.x - pt_0.x + test_split_gap + 4;
+pt_test_w = pt_1.x - pt_0.x + (test_passthrough_whole ? 0 : test_split_gap + 4);
 module passthrough_test() {
-    translate(-pt_0) base_box(pt_0, [pt_xm, pt_1.y, pt_1.z], false);
-    translate([test_split_gap + 4, 0, 0]) translate(-pt_0) base_box([pt_xm, pt_0.y, pt_0.z], pt_1, false);
+    if (test_passthrough_whole)
+        translate(-pt_0) base_box(pt_0, pt_1, false);
+    else {
+        translate(-pt_0) base_box(pt_0, [pt_xm, pt_1.y, pt_1.z], false);
+        translate([test_split_gap + 4, 0, 0]) translate(-pt_0) base_box([pt_xm, pt_0.y, pt_0.z], pt_1, false);
+    }
 }
 // Turn button: a slice of the front rim with the pad and nut slot, and the
 // button beside it

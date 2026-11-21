@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 594 parameters; 590 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 595 parameters; 591 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -809,6 +809,7 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `test_stub_w` | `20` | Test parts: full-height wall stubs either side of the joint in the center slice |
 | `test_hinge_w` | `40` | Test parts: size of the hinge block (X), centered on the left hinge |
 | `test_split_gap` | `10` | Gap between the two halves of split test parts |
+| `test_passthrough_whole` | `false` | Pass-through test: print it whole, as in the base, the tunnel sealed between its two knock-out walls (leave it as one object in the slicer: split into shells, the tunnel's lining becomes a solid of its own), rather than cut in two down the divider |
 | `test_corner_w` | `0` | Front corner test: width (X) of each corner piece, from the base's end; 0 = wide enough for a 40 mm logo (or the logo, if wider) and the ruler below it *Range 0 to 150, step 1.* |
 | `split_test_h` | `30` | Split test (part split_test): height of the front-wall stubs; 0 = full height *Range 0 to 100, step 1.* |
 | `split_test_w` | `25` | Split test: width either side of the split line *Range 10 to 60, step 1.* |

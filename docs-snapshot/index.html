@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VSM Base: documents</title>
+<style>
+:root { --bg: #fdfdfb; --fg: #1f2328; --muted: #5d6670; --rule: #d8dcd6; --link: #1f5fa8;
+        --note-bg: #f3f5f0; --note-bar: #8aa37b; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #17191c; --fg: #e3e5e8; --muted: #9aa3ad; --rule: #353a40; --link: #79aef0;
+          --note-bg: #1f2420; --note-bar: #6f8a62; }
+}
+html { font-size: 17px; }
+body { margin: 0 auto; padding: 2rem 16px 4rem; max-width: 46rem; background: var(--bg); color: var(--fg);
+       font: 1rem/1.6 Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif; }
+h1, h2 { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.25; }
+h1 { font-size: 2rem; margin: 0 0 .3rem; }
+h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.sub, .meta, footer { color: var(--muted); }
+.note { margin: 1.5rem 0; padding: .6rem 1rem; background: var(--note-bg);
+        border-left: 3px solid var(--note-bar); border-radius: 0 4px 4px 0; }
+dl { margin: 0; }
+dt { margin-top: 1rem; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-weight: 600; }
+dd { margin: .2rem 0 0 0; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: .9rem; }
+</style>
+</head>
+<body>
+<h1>VSM Base</h1>
+<p class="sub">A 3D-printable base for vintage sewing machines, and the papers on motor speed control written alongside it.</p>
+<p class="meta">Snapshot of Development Build v83, taken November 20, 2026.</p>
+
+<div class="note">
+<p><strong>These may not be the latest versions.</strong> They are copied here by hand from time to time,
+not built automatically, so the sources in the <a href="https://github.com/bobdrzyzgula/VSM-Base">repository</a>
+may have moved on since. Each release on its
+<a href="https://github.com/bobdrzyzgula/VSM-Base/releases">Releases page</a> carries the documents built from
+that release; <code>make html</code> or <code>make pdf</code> in a copy of the repository builds them from the
+current source.</p>
+<p>Each document is a single self-contained page, its pictures and diagrams included. To read one offline,
+save the page from your browser (as a complete web page, or HTML only; either works) and open the saved file.</p>
+</div>
+
+<h2>The base</h2>
+<dl>
+<dt><a href="vsm-base-guide.html">VSM Base: User's Guide</a></dt>
+<dd>What you need, measuring the machine, configuring the model, test parts, printing, assembly, other machines, the knee controller, and every parameter.</dd>
+</dl>
+
+<h2>Motor speed control</h2>
+<dl>
+<dt><a href="vsm-motor-control.html">Speed Control of Universal Motors in Sewing Machines</a></dt>
+<dd>With the two controller designs for the VSM Base.</dd>
+<dt><a href="vsm-inside-the-motor.html">Inside the Motor</a></dt>
+<dd>Construction, waveforms and DC alternatives for sewing-machine drives.</dd>
+<dt><a href="vsm-inside-a-switching-circuit.html">Inside a Switching Circuit</a></dt>
+<dd>Thyristors, triacs and transistor switches in sewing-machine speed controls.</dd>
+</dl>
+
+<h2>Design studies</h2>
+<dl>
+<dt><a href="vsm-force-sensing-pedal.html">A Force-Sensing Pedal</a></dt>
+<dd>A passive two-wire phase control driven by a force-sensing resistor.</dd>
+<dt><a href="vsm-analog-knee-controller.html">An Analog Force-Sensing Knee Controller</a></dt>
+<dd>A microcontroller-free phase control, isolated from the mains, driven by a force-sensing resistor.</dd>
+</dl>
+
+<h2>Tools</h2>
+<dl>
+<dt><a href="vsm-motor-rig.html">Sewing-Motor Test Rig: User's Guide</a></dt>
+<dd>A plywood board of 3D-printed modules for characterizing sewing-machine motors and studying a commercial triac speed control.</dd>
+</dl>
+
+<footer>
+<p>Written by Claude (Anthropic) at the direction of Robert Drzyzgula. The model and its sources are at
+<a href="https://github.com/bobdrzyzgula/VSM-Base">github.com/bobdrzyzgula/VSM-Base</a>.</p>
+</footer>
+</body>
+</html>

@@ -13,8 +13,9 @@
 #                 embedded (needs pandoc 3.1.2+)
 #   make docs     pdf and html
 #   make all      params, images, pdf and html
-#   make snapshot copy build/*.pdf into pdfs/, the hand-committed snapshots
-#                 (run make pdf first; committing them is up to you)
+#   make snapshot copy build/*.html into docs-snapshot/, the hand-committed
+#                 snapshot published on GitHub Pages, and stamp its index
+#                 (run make html first; committing them is up to you)
 #
 # VERSION labels the guide's title page: `make docs VERSION=0.1.0-alpha`
 # gives "Version 0.1.0-alpha"; without it the guide says "Development
@@ -49,6 +50,7 @@ AK_PDF   := $(BUILD)/vsm-analog-knee-controller.pdf
 AK_HTML  := $(BUILD)/vsm-analog-knee-controller.html
 RIG_MD   := standalone/motor-rig/RIG_GUIDE.md
 RIG_PDF  := $(BUILD)/vsm-motor-rig.pdf
+RIG_HTML := $(BUILD)/vsm-motor-rig.html
 PANDOC   ?= pandoc
 TYPST    ?= typst
 VERSION  ?=
@@ -86,7 +88,7 @@ images:
 
 pdf: $(PDF) $(MC_PDF) $(MX_PDF) $(SW_PDF) $(FP_PDF) $(AK_PDF) $(RIG_PDF)
 
-html: $(HTML) $(MC_HTML) $(MX_HTML) $(SW_HTML) $(FP_HTML) $(AK_HTML)
+html: $(HTML) $(MC_HTML) $(MX_HTML) $(SW_HTML) $(FP_HTML) $(AK_HTML) $(RIG_HTML)
 
 $(PDF): $(CHAPTERS) docs/guide/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
@@ -116,6 +118,15 @@ $(RIG_PDF): $(RIG_MD) standalone/motor-rig/metadata.yaml standalone/motor-rig/ri
 	    -o rig.typ
 	$(TYPST) compile --root . standalone/motor-rig/rig.typ $@
 	rm -f standalone/motor-rig/rig.typ
+
+$(RIG_HTML): $(RIG_MD) standalone/motor-rig/metadata.yaml standalone/motor-rig/rig_iso.png docs/guide/guide.css
+	mkdir -p $(BUILD)
+	cd standalone/motor-rig && sed '1,4d' RIG_GUIDE.md | $(PANDOC) metadata.yaml - --shift-heading-level-by=-1 \
+	    --from markdown --to html5 --standalone --embed-resources \
+	    --toc --toc-depth=1 --css ../../docs/guide/guide.css --mathml \
+	    -M date="$(LABEL), $$(date +'%B %Y')" \
+	    -M lang=en -M pagetitle="Sewing-Motor Test Rig: User's Guide" \
+	    -o ../../$@
 
 $(MC_PDF): $(MC_CHAPTERS) docs/motor-control/metadata.yaml $(IMAGES)
 	mkdir -p $(BUILD)
@@ -212,8 +223,9 @@ $(AK_HTML): $(AK_CHAPTERS) docs/analog-knee/metadata.yaml docs/guide/guide.css $
 	    -o ../../$@
 
 snapshot:
-	@ls $(BUILD)/*.pdf >/dev/null 2>&1 || { echo "No PDFs in $(BUILD)/: run make pdf first"; exit 1; }
-	cp $(BUILD)/*.pdf pdfs/
+	@ls $(BUILD)/*.html >/dev/null 2>&1 || { echo "No HTML in $(BUILD)/: run make html first"; exit 1; }
+	cp $(BUILD)/*.html docs-snapshot/
+	sed -e "s/@LABEL@/$(LABEL)/" -e "s/@DATE@/$$(date +'%B %-d, %Y')/" tools/snapshot_index.html > docs-snapshot/index.html
 
 clean:
 	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ

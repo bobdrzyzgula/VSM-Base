@@ -52,7 +52,8 @@
   each with one of the two knock-out walls, as the base has one on each
   face of the divider. Try knocking each out. (Before version 81 it was one
   piece, with the tunnel sealed inside it between the walls; a slicer that
-  split it into its shells filled the tunnel solid.)
+  split it into its shells filled the tunnel solid.) Set `test_passthrough_whole` to print it whole
+  instead, as the base has it; then leave it as one object in the slicer.
 - Turn button (`turn_button_test`, with `turn_button` on): a slice of the
   front rim with the button's pad and nut slot, and the button.
 - Outlet block (`outlet_test`, outlet compartment only): curbs, screw height, and the
