@@ -6,10 +6,11 @@ name: Publish the documents snapshot
 on:
   push:
     branches: [main]
-    paths: ["docs-snapshot/**"]
+    paths: ["docs-snapshot/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -25,9 +26,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs-snapshot
       - id: deployment
