@@ -34,7 +34,8 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   for the back bay. On the spool tray, in silk PLA, a curb split from the
   floor at the first layer above it; the gussets and taller curb added
   since have not been printed yet;
-- test pieces printed in November 2026: the outlet block (`outlet_test`)
+- test pieces printed in November 2026, in Sunlu High-Speed PETG Matte
+  (grey), dried and calibrated: the outlet block (`outlet_test`)
   with its teardrop screw recess and printed cap (`outlet_cap`), the cap
   snapping in flush and holding firmly until pushed out from behind; and
   the pass-through (`passthrough_test`), whose knock-out walls hold until
