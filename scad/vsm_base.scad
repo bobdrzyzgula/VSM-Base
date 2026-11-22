@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 84
+// VSM Base, version 85
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -409,6 +409,9 @@
 // v84: dovetail_test and center_test (and their places in test_parts)
 // need split = true: with split off they were cut as if split, but
 // without the mending-plate pockets, which follow split.
+// v85: one knock-out setting, passthrough_knockouts = auto, on or off
+// (auto: on for the controller bay only), replacing ctrl_knockouts, which
+// overrode passthrough_knockouts = false for the controller bay.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1220,8 +1223,6 @@ ctrl_jack_pitch = [16.5, 22];
 ctrl_jack_panel = 2; // [0.8 : 0.1 : 5]
 // Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides
 ctrl_jack_z = 0; // [0 : 0.5 : 60]
-// Close the pass-through with knock-out walls (tap them out when the motor's leads go through; passthrough_knockouts does this for the other options)
-ctrl_knockouts = true;
 // Posts for the boards: a grid, a list of positions (from a board's own holes), both, or none
 ctrl_posts = "grid"; // [grid, list, both, none]
 // Grid: [rows (front to back), columns (left to right)]
@@ -1295,8 +1296,8 @@ attach_web = 4; // [2 : 0.5 : 10]
 cord_hole_width = 46;
 // Cord pass-through height (without gable)
 cord_hole_height = 36;
-// Close both ends of the pass-through with knock-out walls (tap them out with a punch when you fit the outlet)
-passthrough_knockouts = false;
+// Knock-out walls closing the pass-through, to tap out when a cord or the motor's leads go through: auto puts them in for the controller bay only
+passthrough_knockouts = "auto"; // [auto, on, off]
 // Knock-out wall thickness
 passthrough_knockout_t = 1.6; // [0.8 : 0.1 : 3]
 // Score groove around each knock-out wall's edge, on its tunnel side: depth (deeper = easier to knock out)
@@ -2019,6 +2020,9 @@ st_y1  = seat_y1 - lid_ledge;
 has_outlet = compartment_option == "outlet";
 has_knee   = compartment_option == "knee";
 has_ctrl   = compartment_option == "controller";
+// passthrough_knockouts: auto, on or off (true and false, from older settings, as on and off)
+pt_knockouts = passthrough_knockouts == true || passthrough_knockouts == "on"
+               || (passthrough_knockouts == "auto" && has_ctrl);
 ol_L  = outlet_size[0];
 ol_W  = outlet_size[1];
 ol_T  = outlet_size[2];
@@ -4232,7 +4236,7 @@ module base_body() {
     if (ol_chan) outlet_channel_clips();
     if (has_knee) knee_base_add();
     if (has_ctrl) ctrl_base_add();
-    if (has_passthrough && (passthrough_knockouts || (has_ctrl && ctrl_knockouts))) passthrough_knockout_walls();
+    if (has_passthrough && pt_knockouts) passthrough_knockout_walls();
     difference() {
         union() {
             cuboid([outer_length, outer_width, outer_depth],

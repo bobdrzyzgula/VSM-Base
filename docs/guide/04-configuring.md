@@ -192,7 +192,7 @@
 > `compartment_mount = "attached"`).](../images/renders/attached-bay.png){width=80%}
 >
 > **Note: an outlet base used for storage first.** Set
-> `compartment_option = "outlet"` and `passthrough_knockouts = true`: the
+> `compartment_option = "outlet"` and `passthrough_knockouts = "on"`: the
 > base gets the outlet's curbs and screw hole, but the cord pass-through is
 > closed at both ends by thin walls, so the compartment works for storage.
 > Cover the outside screw hole with the printed cap. For a storage lid,
@@ -222,7 +222,9 @@
 > `list`, or to `both` to keep the grid too. Each post takes an M3 heat-set
 > insert or a thread-forming screw for plastics (`ctrl_post_hole`). The
 > pass-through to the machine cavity is closed by knock-out walls until the
-> motor's leads need it (`ctrl_knockouts`). The wiring inside is left to
+> motor's leads need it: `passthrough_knockouts` is `auto` by default,
+> which puts them in for the controller bay only; `off` leaves the
+> pass-through open, and `on` closes it for the other options too. The wiring inside is left to
 > the builder.
 >
 > For a base already printed, part `ctrl_mezzanine` is a plate that screws

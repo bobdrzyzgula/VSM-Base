@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 595 parameters; 591 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 594 parameters; 590 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -504,7 +504,6 @@ There are 595 parameters; 591 of them appear in the Customizer. The rest are lis
 | `ctrl_jack_pitch` | `[16.5, 22]` | Jack pitch [across, up] |
 | `ctrl_jack_panel` | `2` | Jack panel thickness (keystones latch on 1.5 to 2.2 mm; panel jacks take up to their thread length) *Range 0.8 to 5, step 0.1.* |
 | `ctrl_jack_z` | `0` | Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides *Range 0 to 60, step 0.5.* |
-| `ctrl_knockouts` | `true` | Close the pass-through with knock-out walls (tap them out when the motor's leads go through; passthrough_knockouts does this for the other options) |
 | `ctrl_posts` | `"grid"` | Posts for the boards: a grid, a list of positions (from a board's own holes), both, or none *Choices: grid, list, both, none.* |
 | `ctrl_grid` | `[5, 2]` | Grid: [rows (front to back), columns (left to right)] |
 | `ctrl_grid_pitch` | `[25.4, 25.4]` | Grid pitch [left to right, front to back] (1" = 25.4, ten 0.1" perfboard holes, so any perfboard can be drilled to fit) |
@@ -552,7 +551,7 @@ There are 595 parameters; 591 of them appear in the Customizer. The rest are lis
 |---------|----|---------------|
 | `cord_hole_width` | `46` | Cord pass-through width (wide enough for both plugs' cords side by side) |
 | `cord_hole_height` | `36` | Cord pass-through height (without gable) |
-| `passthrough_knockouts` | `false` | Close both ends of the pass-through with knock-out walls (tap them out with a punch when you fit the outlet) |
+| `passthrough_knockouts` | `"auto"` | Knock-out walls closing the pass-through, to tap out when a cord or the motor's leads go through: auto puts them in for the controller bay only *Choices: auto, on, off.* |
 | `passthrough_knockout_t` | `1.6` | Knock-out wall thickness *Range 0.8 to 3, step 0.1.* |
 | `passthrough_score_depth` | `0.6` | Score groove around each knock-out wall's edge, on its tunnel side: depth (deeper = easier to knock out) *Range 0.2 to 1.5, step 0.1.* |
 | `passthrough_score_w` | `0.8` | Score groove width *Range 0.4 to 2, step 0.1.* |
