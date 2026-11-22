@@ -12,8 +12,8 @@
   tilt prop (`tilt_prop`). Each tool is also a part of its own.
 - Top slice of the base (`top_test`): does the bed drop in and sit flat, and do the hinge pins line up?
 - Bottom slice (`bottom_test`): the floor, a little way up into the cavity.
-- Dovetail coupon (`dovetail_test`): joint clearance (`split_clearance`, `key_flare_angle`) and the plate-pocket bridge.
-- Center slice (`center_test`): all three dovetails with the plates installed, the front seam, and clearance under the machine.
+- Dovetail coupon (`dovetail_test`, split base only): joint clearance (`split_clearance`, `key_flare_angle`) and the plate-pocket bridge.
+- Center slice (`center_test`, split base only): all three dovetails with the plates installed, the front seam, and clearance under the machine.
 - Left-end strip (`end_strip_test`): handhold feel, knock-out wall, rod fit (`rod_hole_d`).
 - Hinge block (`hinge_block_test`): hinge fit and bolt length.
 - Hinge coupon (also `part = "hinge_coupon"`): a quick check of the hinge

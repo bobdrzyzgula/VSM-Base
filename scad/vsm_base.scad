@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 83
+// VSM Base, version 84
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -406,6 +406,9 @@
 // setting changed.
 // v83: test_passthrough_whole prints the pass-through test in one piece,
 // as in the base, the tunnel sealed between its walls.
+// v84: dovetail_test and center_test (and their places in test_parts)
+// need split = true: with split off they were cut as if split, but
+// without the mending-plate pockets, which follow split.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -3779,9 +3782,11 @@ if (part == "assembly") {
     if (ext_test_any) ext_top_test();
     else if (report) echo("WARNING: ext_top_test needs an extension or a freestanding box");
 } else if (part == "dovetail_test") {
-    dovetail_test();
+    if (split) dovetail_test();
+    else if (report) echo("WARNING: dovetail_test tests the split joint; set split = true (with split off the base has no joint, and the piece would have no mending-plate pockets)");
 } else if (part == "center_test") {
-    center_test();
+    if (split) center_test();
+    else if (report) echo("WARNING: center_test tests the split joint; set split = true (with split off the base has no joint, and the piece would have no mending-plate pockets)");
 } else if (part == "hinge_block_test") {
     if (has_hinges) hinge_block_test();
     else if (report) echo("WARNING: hinge_block_test needs the base's lollipop hinges");
@@ -6452,9 +6457,11 @@ module test_parts() {
 
     // Row 3: dovetail coupon, center slice, hinge block, end strip, rod
     // plugs, hinge coupon, turn button, outlet block, pass-through
-    translate([0, row3, 0]) dovetail_test();
+    // the joint's pieces only when the base is split (an unsplit base has
+    // no joint, and no mending-plate pockets to test)
+    if (split) translate([0, row3, 0]) dovetail_test();
     x_sl = test_coupon_w + test_split_gap + g;
-    translate([x_sl, row3, 0]) center_test();
+    if (split) translate([x_sl, row3, 0]) center_test();
     x_hg = x_sl + test_slice_w + test_split_gap + g;
     if (has_hinges) translate([x_hg, row3, 0]) hinge_block_test();
     x_en = x_hg + test_hinge_w + g;
