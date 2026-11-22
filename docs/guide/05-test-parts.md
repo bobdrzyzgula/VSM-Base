@@ -57,7 +57,12 @@
 - Turn button (`turn_button_test`, with `turn_button` on): a slice of the
   front rim with the button's pad and nut slot, and the button.
 - Outlet block (`outlet_test`, outlet compartment only): curbs, screw height, and the
-  insert or through-screw hole, with your outlet and plugs in place.
+  insert or through-screw hole, with your outlet and plugs in place. With a
+  through screw, try the printed cap (`outlet_cap`) in its recess: printed
+  in November 2026 from dried, calibrated filament, it snapped in flush and
+  held until pushed out from behind. An earlier print from damp filament,
+  before the recess became a teardrop, fitted poorly; if the cap is loose
+  or won't seat, look to the filament and the printer's calibration first.
 - Extension top slices (`ext_top_test`): lip fit, pegs, supports, and the bobbin-plate trench.
 - Lids (each its own part: `base_lid`, `back_lid` and so on): snap-in hinge, swing, and the lean-back stop.
 - Front corners (`front_corner_test`): the base's front

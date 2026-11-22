@@ -33,14 +33,21 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   full stack of five bobbin trays; a spool tray and a divided notion tray
   for the back bay. On the spool tray, in silk PLA, a curb split from the
   floor at the first layer above it; the gussets and taller curb added
-  since have not been printed yet.
+  since have not been printed yet;
+- test pieces printed in November 2026: the outlet block (`outlet_test`)
+  with its teardrop screw recess and printed cap (`outlet_cap`), the cap
+  snapping in flush and holding firmly until pushed out from behind; and
+  the pass-through (`passthrough_test`), whose knock-out walls hold until
+  struck with a hammer and then break out, leaving some flash round the
+  opening to trim, much like trimming supports.
 
 These were printed from development versions of the model as it evolved,
 not from the current one: later changes (the split joint's serrations, for
 one) have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
-printed in one piece; the outlet, knee-controller and controller compartments;
+printed in one piece; the outlet compartment as a whole (beyond its test block and cap), the
+knee-controller and controller compartments;
 the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158-14001 profile; the turn button; the ruler and logos on the front face, and the logos on the back and bottom; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
