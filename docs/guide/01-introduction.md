@@ -19,8 +19,9 @@ in the model, but not built.
 
 Tested, on a Singer 99K (the default machine profile), printed in PETG:
 
-- the base in its default form: split into two halves with the dovetail
-  keys and mending plates, the storage compartment, the handholds and
+- the base in its default form (version 15): split into two halves with
+  the dovetail keys and mending plates, the plates' pockets, screw holes
+  and nut traps working well, the storage compartment, the handholds and
   harness rods;
 - the back, left and corner extensions with their hinged lids, the printed
   extension pegs (tapped into the lips with a hammer; they then mate with
@@ -40,11 +41,15 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   snapping in flush and holding firmly until pushed out from behind; and
   the pass-through (`passthrough_test`), whose knock-out walls hold until
   struck with a hammer and then break out, leaving some flash round the
-  opening to trim, much like trimming supports.
+  opening to trim, much like trimming supports; and the center slice
+  (`center_test`), whose dovetails seat with fine, even seams and whose
+  front-wall serrations print cleanly, their 45° tops intact, and mate
+  between the halves. (It was printed with split off by mistake, so
+  without the mending-plate pockets; the pockets were last printed in the
+  version 15 base.)
 
 These were printed from development versions of the model as it evolved,
-not from the current one: later changes (the split joint's serrations, for
-one) have not all been printed yet.
+not from the current one: later changes have not all been printed yet.
 
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet compartment as a whole (beyond its test block and cap), the
