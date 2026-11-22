@@ -59,7 +59,8 @@
 - Outlet block (`outlet_test`, outlet compartment only): curbs, screw height, and the
   insert or through-screw hole, with your outlet and plugs in place. With a
   through screw, try the printed cap (`outlet_cap`) in its recess: printed
-  in November 2026 in Sunlu High-Speed PETG Matte, dried and calibrated, it snapped in flush and
+  in November 2026 in Sunlu High-Speed PETG Matte, dried and calibrated, at 0.08 mm
+  layers (Bambu Studio's "0.08mm High Quality" profile), it snapped in flush and
   held until pushed out from behind. An earlier print from damp filament,
   before the recess became a teardrop, fitted poorly; if the cap is loose
   or won't seat, look to the filament and the printer's calibration first.
