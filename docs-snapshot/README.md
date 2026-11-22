@@ -16,8 +16,7 @@ saved file; nothing else is needed.
 
 ## Updating the snapshot
 
-    make html
-    make snapshot          # copies build/*.html here and stamps index.html
+    make snapshot          # builds the HTML, copies it here, stamps index.html
     git add docs-snapshot
     git commit -m "Update the documents snapshot"
 

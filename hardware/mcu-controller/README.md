@@ -43,9 +43,10 @@ side: a 100 Ω burden gives about 0.1 V per amp, centered on a 1.65 V bias,
 filtered into ADC4.
 
 **Control side (SELV).** The RP2350B core board, fed 5 V into VSYS from
-the module through a Schottky diode (so its USB port can stay plugged in),
-its own regulator supplying 3.3 V to the sensors; the relay driver (2N7002,
-flyback diode); the triac driver's LED, straight from a GPIO at 8–12 mA
+the module through a Schottky diode (so USB and the module can both be
+connected), its own regulator supplying 3.3 V to the sensors; the relay
+driver (2N7002, with a 100 kΩ gate pull-down that holds the relay open
+through boot and reset, and a flyback diode); the triac driver's LED, straight from a GPIO at 8–12 mA
 drive; the zero-cross input; the Hall sensor (DRV5023, open drain, drawn at
 the hand-wheel end of its three-wire cable) with a pull-up and RC filter;
 the knee lever, a travel pedal, a pressure pedal (FSR) and a speed-limit
@@ -108,7 +109,9 @@ Hall sensor's period, from edge timestamps, gives the hand-wheel speed. A PI
 loop updates the firing delay once per half-cycle (120 Hz on 60 Hz mains),
 with a rate limit on the firing angle and a stall watchdog (no Hall pulses
 for some time: stop firing, open K1). Fire only after a zero-cross has been
-seen and the speed command is zero; close K1 last and open it first.
+seen and the speed command is zero; close K1 last and open it first. If
+zero crossings stop arriving, stop firing and open K1 until they return
+and the command has been back at zero.
 
 **Needle position.** With the encoder fitted, a PIO program counts its
 quadrature edges in either direction (the Pico SDK's quadrature-encoder
@@ -140,9 +143,11 @@ paper's "Fitting the encoder" (§11).
 
 ## Cautions
 
-- The control side is isolated, so the board's USB port may stay connected
-  with the mains on, for UF2 flashing and the serial line; step-through
-  debugging needs an SWD probe.
+- The control side is designed to be isolated, but the board has not been
+  built: until a built board's isolation has been checked with an
+  insulation tester, unplug the mains before connecting USB or an SWD
+  probe, or connect through a USB isolator. A computer on the USB port is
+  earthed through its own supply.
 - Never connect a scope's ground to the line side (see the test rig's
   guide).
 - Values to check on the bench: R7/R8 set about 3.9 mA peak through the

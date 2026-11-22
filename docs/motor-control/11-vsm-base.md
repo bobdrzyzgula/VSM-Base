@@ -168,8 +168,9 @@ the controller, its pedals and its debug port are all at a safe low
 voltage. The drawing runs the isolation barrier across the sheet, with the
 live side above it.
 
-**Line side (live).** An IEC inlet with earth feeds a 2 A slow fuse and a
-150 V MOV. The base's duplex outlet keeps its two sockets: the light's is
+**Line side (live).** An IEC inlet with earth feeds a 2 A slow fuse and,
+after the fuse, a 150 V MOV, so that a MOV that fails shorted blows the
+fuse. The base's duplex outlet keeps its two sockets: the light's is
 always on, the motor's is controlled. The motor's hot lead runs from a
 motor-enable relay (K1) through the triac (a BTA08-600BW, a snubberless
 type) to the outlet. The relay lets the firmware cut the motor whatever the
@@ -181,8 +182,9 @@ snubber, to be fitted only if the triac fires falsely or fails to latch
 
 - a MOC3023 random-phase opto-triac, which fires the triac's gate;
 - an H11AA1 AC-input optocoupler, whose LEDs are fed from the mains
-  through two 22 kΩ resistors and whose transistor gives a pulse at each
-  zero crossing;
+  through two 22 kΩ, 0.5 W resistors (about 0.16 W each on 120 V, so
+  through-hole parts rated for the line voltage, not small surface-mount
+  ones) and whose transistor gives a pulse at each zero crossing;
 - the relay, whose coil is on the control side and its contact on the
   line side;
 - an isolated 5 V supply module (Mean Well IRM-05-5 class);
@@ -190,9 +192,11 @@ snubber, to be fitted only if the triac fires falsely or fails to latch
   the load compensation described under "Directions" below.
 
 **Control side (low voltage).** The RP2350B core board takes 5 V from the
-module into its VSYS pin through a Schottky diode, so its USB port can stay
-plugged in; its own regulator supplies 3.3 V to the sensors. A 2N7002
-drives the relay coil. The opto-triac's LED is driven straight from a GPIO
+module into its VSYS pin through a Schottky diode, so that USB and the
+module can both be connected; its own regulator supplies 3.3 V to the
+sensors. A 2N7002 drives the relay coil, with a 100 kΩ pull-down on its
+gate, so that the relay stays open while the microcontroller boots or
+resets and its pins are not yet driven. The opto-triac's LED is driven straight from a GPIO
 set to 8–12 mA drive. The zero-cross output has a pull-up and a small filter
 capacitor. The hand-wheel index sensor is a DRV5023 Hall switch; one magnet
 gives one pulse per stitch. An optional encoder beside it, two Hall
@@ -238,6 +242,10 @@ supply already passes through a diode, so the supply module can feed its
   sending pulses.
 - Nothing fires until a zero crossing has been seen and the speed command
   is zero, so the machine cannot start on power-up.
+- If zero crossings stop arriving (the mains has dropped out, or the
+  zero-cross optocoupler has failed), firing stops and the relay opens;
+  nothing fires again until crossings return and the command has been
+  back at zero.
 
 **What a sewist asks of a pedal.** Danielle, who has sewn for more than
 five decades and works with Bob Drzyzgula on repairing and re-homing
@@ -297,12 +305,17 @@ placed a quarter-cycle apart over a ring of twelve alternating magnets give
 program; the index pulse sets and checks the count once a turn. Without
 the encoder the controller still stops by the index alone, more roughly.
 
-**Two practical consequences.** Because the control side is isolated, the
-board's USB port can stay connected to a computer with the mains on, for
-flashing (by dragging a UF2 file onto it in BOOTSEL mode) and for the
-debug serial line; step-through debugging needs a separate SWD probe, such
-as Raspberry Pi's Debug Probe. And as with the test rig, a scope's ground
-must never be connected to the line side.
+**Two practical consequences.** The control side is meant to be isolated,
+so that in the finished design a computer could stay connected to the
+board's USB port with the mains on, for flashing (by dragging a UF2 file
+onto it in BOOTSEL mode) and for the debug serial line. But that isolation
+is a barrier on a board that has not been built, and a computer on the USB
+port is earthed through its own supply: until a built board's isolation has
+been checked (with an insulation tester, across the barrier), unplug the
+mains before connecting USB, or connect through a USB isolator.
+Step-through debugging needs a separate SWD probe, such as Raspberry Pi's
+Debug Probe, under the same rule. And as with the test rig, a scope's
+ground must never be connected to the line side.
 
 ![The MCU phase controller as a first concept (not built or tested). The
 isolation barrier runs across the sheet, with the live side above it.

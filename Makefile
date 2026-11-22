@@ -13,9 +13,9 @@
 #                 embedded (needs pandoc 3.1.2+)
 #   make docs     pdf and html
 #   make all      params, images, pdf and html
-#   make snapshot copy build/*.html into docs-snapshot/, the hand-committed
-#                 snapshot published on GitHub Pages, and stamp its index
-#                 (run make html first; committing them is up to you)
+#   make snapshot build the HTML, copy it into docs-snapshot/ (the
+#                 hand-committed snapshot published on GitHub Pages) and
+#                 stamp its index; committing it is up to you
 #
 # VERSION labels the guide's title page: `make docs VERSION=0.1.0-alpha`
 # gives "Version 0.1.0-alpha"; without it the guide says "Development
@@ -192,7 +192,7 @@ $(FP_PDF): $(FP_CHAPTERS) docs/fsr-pedal/metadata.yaml $(IMAGES)
 	    -M date="$(LABEL), $$(date +'%B %Y')" \
 	    -o paper.typ
 	$(TYPST) compile --root docs docs/fsr-pedal/paper.typ $@
-	rm -f docs/fsr-pedal/paper.typ docs/analog-knee/paper.typ
+	rm -f docs/fsr-pedal/paper.typ
 
 $(FP_HTML): $(FP_CHAPTERS) docs/fsr-pedal/metadata.yaml docs/guide/guide.css $(IMAGES)
 	mkdir -p $(BUILD)
@@ -222,10 +222,10 @@ $(AK_HTML): $(AK_CHAPTERS) docs/analog-knee/metadata.yaml docs/guide/guide.css $
 	    -M lang=en -M pagetitle="An Analog Force-Sensing Knee Controller" \
 	    -o ../../$@
 
-snapshot:
-	@ls $(BUILD)/*.html >/dev/null 2>&1 || { echo "No HTML in $(BUILD)/: run make html first"; exit 1; }
+snapshot: html
 	cp $(BUILD)/*.html docs-snapshot/
 	sed -e "s/@LABEL@/$(LABEL)/" -e "s/@DATE@/$$(date +'%B %-d, %Y')/" tools/snapshot_index.html > docs-snapshot/index.html
 
 clean:
-	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ
+	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ \
+	    docs/fsr-pedal/paper.typ docs/analog-knee/paper.typ standalone/motor-rig/rig.typ
