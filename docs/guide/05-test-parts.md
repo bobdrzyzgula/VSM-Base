@@ -57,7 +57,9 @@
 - Turn button (`turn_button_test`, with `turn_button` on): a slice of the
   front rim with the button's pad and nut slot, and the button.
 - Outlet block (`outlet_test`, outlet compartment only): curbs, screw height, and the
-  insert or through-screw hole, with your outlet and plugs in place. With a
+  insert or through-screw hole, with your outlet and plugs in place (a
+  cordset's duplex outlet on a 2" #8-32 screw, as the console asks,
+  fitted the test block's hole and curbs in November 2026). With a
   through screw, try the printed cap (`outlet_cap`) in its recess: printed
   in November 2026 in Sunlu High-Speed PETG Matte, dried and calibrated, at 0.08 mm
   layers (Bambu Studio's "0.08mm High Quality" profile), it snapped in flush and

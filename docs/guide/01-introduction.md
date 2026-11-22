@@ -38,7 +38,10 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
 - test pieces printed in November 2026, in Sunlu High-Speed PETG Matte
   (grey), dried and calibrated: the outlet block (`outlet_test`)
   with its teardrop screw recess and printed cap (`outlet_cap`), the cap
-  snapping in flush and holding firmly until pushed out from behind; and
+  snapping in flush and holding firmly until pushed out from behind, and
+  with a cordset's duplex outlet mounted on it by the 2" #8-32 screw the
+  model calls for, in from outside with a nut on the outlet's face: the
+  screw hole and the low curbs fall where the outlet needs them; and
   the pass-through (`passthrough_test`), whose knock-out walls hold until
   struck with a hammer and then break out, leaving some flash round the
   opening to trim, much like trimming supports; and the center slice
