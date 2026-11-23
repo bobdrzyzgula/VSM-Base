@@ -13,6 +13,17 @@ that casting, and that prints in two halves on an ordinary desktop printer.
 
 ## What has been tested
 
+These documents use these words for how far a thing has got: a
+*concept* is drawn or modeled only; *simulated* means modeled numerically
+from assumed values, not measured; a *fit sample* is printed and fitted,
+unpowered; a *low-voltage prototype* is built and run without mains; a
+*mains-connected research rig* is a live bench apparatus; a *machine
+modification* is fitted to a working machine. "Build" means a physical
+object, never a drawing or a simulation. As of now, the base's printed
+parts are fit samples or mechanical builds; no low-voltage prototype, no
+mains rig and no controller of any kind has been built; and every
+controller design is a concept, some of them simulated.
+
 Only a small part of what the model can make has been printed and used.
 Treat everything else as **untested on a real printer**: it has been checked
 in the model, but not built.
@@ -62,17 +73,24 @@ pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
 
-> **Safety status of the motor controls: research only.** None of the motor-
-> control designs in this project, including the knee controller option
-> (chapter 9) and the circuits in the papers, is safe to build as drawn.
-> They are research artifacts, published as the work progresses: studies of
-> how existing and historical controls work, what their hazards are, and
-> what a safer replacement would need. None has been built, tested,
-> measured, or assessed against an electrical safety standard, and printed
-> plastic is not an assessed insulation system or fire enclosure. Do not
-> build a controller from these documents or connect one to the mains. The
-> base, its trays, the outlet compartment's printed parts and the other
-> printed objects are not motor controls and are not covered by this.
+> **Research use only: not a safe, buildable design.** The motor-control
+> circuits, schematics, enclosures, mechanisms, test procedures and software
+> in this project have not been safety-designed, safety-validated,
+> certified, or tested as a complete appliance. None of the controller
+> designs, including the base's knee controller option (chapter 9) and the
+> circuits in the papers, should be built or connected to the mains as
+> drawn, and none should be operated. A concept drawing, simulation,
+> component listing, historical example or commercial component is not
+> evidence of compliance or safety; printed plastic is not an assessed
+> insulation system or fire enclosure, and a barrier drawn on a schematic is
+> not proof of isolation. The work is meant to support understanding of how
+> existing and historical controls work and what hazards they carry, and to
+> guide the development of safer alternatives. Any future buildable design
+> would need a new system-level engineering assessment, independent review,
+> qualified implementation, complete-product testing and applicable
+> certification; `docs/VALIDATION.md` lists what that would cover. The base,
+> its trays, the outlet compartment's printed parts and the other printed
+> objects are not motor controls; this notice is about the controls.
 
 If you build one of the printed parts from the untested list (not a motor
 control), please report how it went as an issue on the project's GitHub

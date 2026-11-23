@@ -1,8 +1,18 @@
-# Testing it, and the open questions
+# Testing, and the open questions
 
-## Testing order
+## What testing would involve
 
-Build and test in this order, so that each step answers one question:
+> **Mains testing.** Do not perform the mains experiments described here
+> unless you are qualified to work on mains circuits, are using an
+> appropriately controlled test facility and protective equipment (including
+> residual-current protection: a GFCI in the US), and have had the setup
+> reviewed by an appropriate person. An isolation transformer does not make
+> such work safe.
+
+If the design were taken further, testing would go in this order, each
+step answering one question. The sensor measurements involve no mains;
+the mains steps are described as research, for a qualified person in a
+controlled setup, not as instructions:
 
 1. **Measure the sensors.** Before any mains wiring, measure each FSR's
    resistance against force: the three pre-terminated 402s (base, X and
@@ -17,7 +27,7 @@ Build and test in this order, so that each step answers one question:
    Keep the ones near 32 V.
 3. **The voltage test on the sensor.** This is the test that decides the
    design (below).
-4. **The circuit on the bench, with a lamp.** Build it on the isolation
+4. **The circuit on the bench, with a lamp.** On the isolation
    transformer (the Hammond 171B), with a 60 to 100 W incandescent bulb as
    the load. A bulb is close to the model's resistive load, so the scope
    should show §4's waveforms, and the firing angle against force can be

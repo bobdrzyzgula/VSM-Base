@@ -3,17 +3,21 @@
 *Drawn by Claude at Bob Drzyzgula's direction, November 2026. A draft to
 print and try; it has not been printed, fitted or tested.*
 
-> **Safety status: research only.** None of the motor-control designs in
-> this repository is safe to build as drawn. They are research artifacts,
-> published as the work progresses: studies of how existing and historical
-> controls work, what their hazards are, and what a safer replacement would
-> need. None has been built, tested, measured, or assessed against an
-> electrical safety standard. That a design has been analyzed or simulated
-> here, or is used in commercial or historical products, is not evidence
-> that it, or any copy or modification of it, is safe. Printed plastic is
-> not an assessed insulation system or fire enclosure, and a barrier drawn
-> on a schematic is not proof of isolation. Do not build a controller from
-> these documents or connect one to the mains. This housing is the
+> **Research use only: not a safe, buildable design.** The motor-control
+> circuits, schematics, enclosures, mechanisms, test procedures and software
+> in this project have not been safety-designed, safety-validated,
+> certified, or tested as a complete appliance. None of the controller
+> designs should be built or connected to the mains as drawn, and none
+> should be operated. A concept drawing, simulation, component listing,
+> historical example or commercial component is not evidence of compliance
+> or safety; printed plastic is not an assessed insulation system or fire
+> enclosure, and a barrier drawn on a schematic is not proof of isolation.
+> The work is meant to support understanding of how existing and historical
+> controls work and what hazards they carry, and to guide the development of
+> safer alternatives. Any future buildable design would need a new system-
+> level engineering assessment, independent review, qualified
+> implementation, complete-product testing and applicable certification;
+> `docs/VALIDATION.md` lists what that would cover. This housing is the
 > mechanical half of a controller that exists only on paper.
 
 The VSM Base's knee controller turns a pot through two gear stages. This

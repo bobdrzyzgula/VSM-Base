@@ -5,16 +5,25 @@ November 2026 with the optical encoder's parts. A working
 shopping list. Mechanical hardware (screws, bearings, springs, belts,
 plywood) stays in each project's own guide.*
 
-> **Safety status: research only.** A part on this list is not an
-> endorsement of building the design that uses it. None of the motor-control
-> designs in this repository (the knee controller, the MCU controller and
-> its variants, the papers' circuits) is safe to build as drawn: they are
-> research artifacts, not built, tested, measured, or assessed against an
-> electrical safety standard. Parts marked K or M are listed so the designs
-> can be studied and prototyped at low voltage, not so they can be connected
-> to the mains. The rig (R) is a research instrument that carries mains
-> voltage and has not been safety-assessed; see the notice and rules at the
-> start of its guide.
+> A part on this list is not an endorsement of building the design that uses
+> it. Parts marked K or M are listed so the designs can be studied and
+> prototyped at low voltage, not so they can be connected to the mains. The
+> rig (R) carries mains voltage; see the notice at the start of its guide.
+> **Research use only: not a safe, buildable design.** The motor-control
+> circuits, schematics, enclosures, mechanisms, test procedures and software
+> in this project have not been safety-designed, safety-validated,
+> certified, or tested as a complete appliance. None of the controller
+> designs should be built or connected to the mains as drawn, and none
+> should be operated. A concept drawing, simulation, component listing,
+> historical example or commercial component is not evidence of compliance
+> or safety; printed plastic is not an assessed insulation system or fire
+> enclosure, and a barrier drawn on a schematic is not proof of isolation.
+> The work is meant to support understanding of how existing and historical
+> controls work and what hazards they carry, and to guide the development of
+> safer alternatives. Any future buildable design would need a new system-
+> level engineering assessment, independent review, qualified
+> implementation, complete-product testing and applicable certification;
+> `docs/VALIDATION.md` lists what that would cover.
 
 **Where each part is used:**
 - **K:** the knee controller (User's Guide, chapter 9);

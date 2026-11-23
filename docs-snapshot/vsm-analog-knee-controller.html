@@ -106,7 +106,7 @@ The circuit simulated</a></li>
 <li><a href="#the-knee" id="toc-the-knee"><span class="toc-section-number">5</span> The knee</a></li>
 <li><a href="#adding-a-foot-pedal" id="toc-adding-a-foot-pedal"><span class="toc-section-number">6</span> Adding a foot pedal</a></li>
 <li><a href="#safety-and-construction" id="toc-safety-and-construction"><span class="toc-section-number">7</span> Safety and construction</a></li>
-<li><a href="#testing-it-and-the-open-questions" id="toc-testing-it-and-the-open-questions"><span class="toc-section-number">8</span> Testing it, and the open
+<li><a href="#testing-and-the-open-questions" id="toc-testing-and-the-open-questions"><span class="toc-section-number">8</span> Testing, and the open
 questions</a></li>
 <li><a href="#sources" id="toc-sources"><span class="toc-section-number">9</span> Sources</a></li>
 </ul>
@@ -122,18 +122,24 @@ speed-control paper”). It is a design study: nothing in it has been
 built or measured yet. The sources are listed in the last section;
 please report errors as issues on the project’s GitHub repository.</p>
 <blockquote>
-<p><strong>Safety status: research only.</strong> None of the
-motor-control designs in this repository is safe to build as drawn. They
-are research artifacts, published as the work progresses: studies of how
-existing and historical controls work, what their hazards are, and what
-a safer replacement would need. None has been built, tested, measured,
-or assessed against an electrical safety standard. That a design has
-been analyzed or simulated here, or is used in commercial or historical
-products, is not evidence that it, or any copy or modification of it, is
-safe. Printed plastic is not an assessed insulation system or fire
-enclosure, and a barrier drawn on a schematic is not proof of isolation.
-Do not build a controller from these documents or connect one to the
-mains. Its isolation exists only on paper.</p>
+<p><strong>Research use only: not a safe, buildable design.</strong> The
+motor-control circuits, schematics, enclosures, mechanisms, test
+procedures and software in this project have not been safety-designed,
+safety-validated, certified, or tested as a complete appliance. None of
+the controller designs should be built or connected to the mains as
+drawn, and none should be operated. A concept drawing, simulation,
+component listing, historical example or commercial component is not
+evidence of compliance or safety; printed plastic is not an assessed
+insulation system or fire enclosure, and a barrier drawn on a schematic
+is not proof of isolation. The work is meant to support understanding of
+how existing and historical controls work and what hazards they carry,
+and to guide the development of safer alternatives. Any future buildable
+design would need a new system- level engineering assessment,
+independent review, qualified implementation, complete-product testing
+and applicable certification; <code>docs/VALIDATION.md</code> lists what
+that would cover. Its isolation exists only on paper. Its curves and
+figures are simulations from assumed component and motor values, not
+measurements, and are not evidence of performance or safety.</p>
 </blockquote>
 <p><strong>The question.</strong> The pedal paper designed a
 force-sensing pedal for a stock cordset, where everything has to live at
@@ -268,8 +274,9 @@ an RC snubber stay, unfitted.</p>
 firmware cut the motor. Here, the knee’s rest switch does that job (§5;
 with a foot pedal the relay returns, §6): a mains-rated snap switch in
 series with the motor, open whenever the knee lever is at rest. It
-protects against a shorted triac or any fault in the electronics, as the
-relay does.</li>
+guards against a shorted triac or a fault in the electronics, as the
+relay does, but it is one layer, not a protection that survives a single
+fault of its own (a welded contact, a jammed lever; see §7).</li>
 <li><strong>The zero-cross pull-up.</strong> The MCU controller pulls
 U2’s output up through 10 kΩ; here, RZ is 100 kΩ (below).</li>
 </ul>
@@ -622,7 +629,8 @@ crank pin engages at the switch point. The return spring keeps its job,
 returning the knee and giving its preload, and carries most of the
 knee’s force.</li>
 <li><strong>The rest switch stays exactly as it is</strong>, now the
-motor’s only mechanical cutoff (§3).</li>
+motor’s only mechanical cutoff (§3): one layer of protection, not a
+single-fault-proof safety device (§7).</li>
 <li><strong>The hard stop protects the sensor.</strong> At the stop, the
 crank’s pin meets the stop screw, so the sensor never sees more than the
 stack’s force at full travel.</li>
@@ -836,9 +844,21 @@ is not a guarantee: a welded or stuck switch, a jammed knee mechanism or
 a broken return spring defeats it. A rest switch is one layer of
 protection, not a complete safety function; its own failure modes, and
 those of whatever else stops the motor, would need validating.</p>
-<h1 data-number="8" id="testing-it-and-the-open-questions"><span class="header-section-number">8</span> Testing it, and the open
+<h1 data-number="8" id="testing-and-the-open-questions"><span class="header-section-number">8</span> Testing, and the open
 questions</h1>
-<h2 data-number="8.1" id="testing-order"><span class="header-section-number">8.1</span> Testing order</h2>
+<h2 data-number="8.1" id="what-testing-would-involve"><span class="header-section-number">8.1</span> What testing would involve</h2>
+<blockquote>
+<p><strong>Mains testing.</strong> Do not perform the mains experiments
+described here unless you are qualified to work on mains circuits, are
+using an appropriately controlled test facility and protective equipment
+(including residual-current protection: a GFCI in the US), and have had
+the setup reviewed by an appropriate person. An isolation transformer
+does not make such work safe.</p>
+</blockquote>
+<p>If the design were taken further, testing would go in this order. The
+low-voltage and sensor steps involve no mains; the mains steps are
+described as research, for a qualified person in a controlled setup, not
+as instructions:</p>
 <ol type="1">
 <li><strong>The low-voltage side alone, on the bench.</strong> Power it
 from a 5 V bench supply, with a signal generator’s 60 Hz square wave

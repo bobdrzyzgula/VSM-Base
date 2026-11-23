@@ -2,16 +2,20 @@
 
 *Written by Claude at Bob Drzyzgula's direction, October 2026. Draft 1.*
 
-> **Safety status: a research instrument, not safety-assessed.** The rig
-> carries mains voltage at its jack panel and in several modules, and it has
-> not been assessed against any electrical safety standard. It is a tool for
-> measuring motors and studying existing controls, described here as that
-> work progresses. It is not a controller design, and nothing in this guide
-> makes the KB3151C board, or any other control it is used to study, safe to
-> use on a machine. Build or use it only if you are experienced with live
-> mains work, and follow every one of the rules in §1 below: above all,
-> change connections only with the cord unplugged, and put the scope on the
-> AC side only through the isolation transformer.
+> **Hazardous research documentation, not a safe construction or operating
+> guide.** The rig is a live bench apparatus: its jack panel, the Wago
+> blocks, the board's tabs, the decade box, the breadboard and every patch
+> lead can carry mains voltage, and it has not been assessed against any
+> electrical safety standard. It is described here as a tool for measuring
+> motors and studying existing controls, as that work progresses; nothing in
+> this guide makes the KB3151C board, or any other control it is used to
+> study, safe to use on a machine. The rules in §1 are necessary but are not
+> a complete system of risk control. **Mains testing.** Do not perform the
+> mains experiments described here unless you are qualified to work on mains
+> circuits, are using an appropriately controlled test facility and
+> protective equipment (including residual-current protection: a GFCI in the
+> US), and have had the setup reviewed by an appropriate person. An
+> isolation transformer does not make such work safe.
 
 The rig is a plywood board carrying 3D-printed modules for two jobs:
 
@@ -56,6 +60,23 @@ Rules:
    at least 0.3 W. Change its setting only with the cord unplugged.
 7. **The brake and load stand get hot.** Keep each loaded point to 10–20
    seconds and let them cool between points.
+
+These rules are necessary, not sufficient. In particular:
+
+- **Residual-current protection.** Feed the rig from a GFCI (RCD) outlet.
+  It guards the mains side of the rig. On the isolation transformer's
+  secondary it sees nothing, because the isolated side has no path to
+  earth for it to detect. The two protect against different faults, and
+  neither protects against touching two live points at once.
+- **A floating rig is still live.** Through the isolation transformer the
+  rig floats from earth. Anything else connected to it (the scope, a meter,
+  a computer on the scope's USB port) can pick up its potential, or tie
+  it to earth at an unintended point.
+- **Polarity is not known.** A two-wire plug can be wired either way, and
+  either leg may be the live one; a ground clip on the "neutral" may be on
+  the line.
+- **Procedures.** Write down the setup and procedure for each experiment,
+  and have it reviewed by someone qualified, before energizing it.
 8. **Strap the motor down** before every run. Its starting torque will roll
    it in the cradle.
 

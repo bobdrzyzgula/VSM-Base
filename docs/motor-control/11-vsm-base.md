@@ -246,7 +246,10 @@ supply already passes through a diode, so the supply module can feed its
 - A stall watchdog stops firing and opens the relay if the hand wheel stops
   sending pulses.
 - Nothing fires until a zero crossing has been seen and the speed command
-  is zero, so the machine cannot start on power-up.
+  is zero, so that the machine should not start on power-up. Like every
+  rule here, this depends on the firmware and hardware working: a shorted
+  triac or a welded relay contact defeats it. None of these rules is a
+  validated safety function.
 - If zero crossings stop arriving (the mains has dropped out, or the
   zero-cross optocoupler has failed), firing stops and the relay opens;
   nothing fires again until crossings return and the command has been

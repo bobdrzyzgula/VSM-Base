@@ -1,6 +1,18 @@
-# Testing it, and the open questions
+# Testing, and the open questions
 
-## Testing order
+## What testing would involve
+
+> **Mains testing.** Do not perform the mains experiments described here
+> unless you are qualified to work on mains circuits, are using an
+> appropriately controlled test facility and protective equipment (including
+> residual-current protection: a GFCI in the US), and have had the setup
+> reviewed by an appropriate person. An isolation transformer does not make
+> such work safe.
+
+If the design were taken further, testing would go in this order. The
+low-voltage and sensor steps involve no mains; the mains steps are
+described as research, for a qualified person in a controlled setup, not
+as instructions:
 
 1. **The low-voltage side alone, on the bench.** Power it from a 5 V bench
    supply, with a signal generator's 60 Hz square wave standing in for Z.

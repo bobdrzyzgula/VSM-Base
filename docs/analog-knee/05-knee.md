@@ -67,7 +67,8 @@ snap switch all stay. What changes:
   engages at the switch point. The return spring keeps its job, returning
   the knee and giving its preload, and carries most of the knee's force.
 - **The rest switch stays exactly as it is**, now the motor's only
-  mechanical cutoff (§3).
+  mechanical cutoff (§3): one layer of protection, not a single-fault-proof
+  safety device (§7).
 - **The hard stop protects the sensor.** At the stop, the crank's pin
   meets the stop screw, so the sensor never sees more than the stack's
   force at full travel.

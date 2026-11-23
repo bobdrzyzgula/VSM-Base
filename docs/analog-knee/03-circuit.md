@@ -22,8 +22,10 @@ Two things differ:
 - **No relay.** The MCU controller's relay K1 lets the firmware cut the
   motor. Here, the knee's rest switch does that job (§5; with a foot pedal the relay returns, §6): a mains-rated
   snap switch in series with the motor, open whenever the knee lever is at
-  rest. It protects against a shorted triac or any fault in the
-  electronics, as the relay does.
+  rest. It guards against a shorted triac or a fault in the
+  electronics, as the relay does, but it is one layer, not a protection
+  that survives a single fault of its own (a welded contact, a jammed
+  lever; see §7).
 - **The zero-cross pull-up.** The MCU controller pulls U2's output up
   through 10 kΩ; here, RZ is 100 kΩ (below).
 

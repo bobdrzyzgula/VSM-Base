@@ -105,7 +105,7 @@ with</a></li>
 <li><a href="#the-circuit-simulated" id="toc-the-circuit-simulated"><span class="toc-section-number">4</span>
 The circuit simulated</a></li>
 <li><a href="#the-pedal-around-it" id="toc-the-pedal-around-it"><span class="toc-section-number">5</span> The pedal around it</a></li>
-<li><a href="#testing-it-and-the-open-questions" id="toc-testing-it-and-the-open-questions"><span class="toc-section-number">6</span> Testing it, and the open
+<li><a href="#testing-and-the-open-questions" id="toc-testing-and-the-open-questions"><span class="toc-section-number">6</span> Testing, and the open
 questions</a></li>
 <li><a href="#sources" id="toc-sources"><span class="toc-section-number">7</span> Sources</a></li>
 </ul>
@@ -121,19 +121,25 @@ nothing in it has been built or measured yet. The sources are listed in
 the last section; please report errors as issues on the project’s GitHub
 repository.</p>
 <blockquote>
-<p><strong>Safety status: research only.</strong> None of the
-motor-control designs in this repository is safe to build as drawn. They
-are research artifacts, published as the work progresses: studies of how
-existing and historical controls work, what their hazards are, and what
-a safer replacement would need. None has been built, tested, measured,
-or assessed against an electrical safety standard. That a design has
-been analyzed or simulated here, or is used in commercial or historical
-products, is not evidence that it, or any copy or modification of it, is
-safe. Printed plastic is not an assessed insulation system or fire
-enclosure, and a barrier drawn on a schematic is not proof of isolation.
-Do not build a controller from these documents or connect one to the
-mains. This pedal in particular would put every part of itself at mains
-potential.</p>
+<p><strong>Research use only: not a safe, buildable design.</strong> The
+motor-control circuits, schematics, enclosures, mechanisms, test
+procedures and software in this project have not been safety-designed,
+safety-validated, certified, or tested as a complete appliance. None of
+the controller designs should be built or connected to the mains as
+drawn, and none should be operated. A concept drawing, simulation,
+component listing, historical example or commercial component is not
+evidence of compliance or safety; printed plastic is not an assessed
+insulation system or fire enclosure, and a barrier drawn on a schematic
+is not proof of isolation. The work is meant to support understanding of
+how existing and historical controls work and what hazards they carry,
+and to guide the development of safer alternatives. Any future buildable
+design would need a new system- level engineering assessment,
+independent review, qualified implementation, complete-product testing
+and applicable certification; <code>docs/VALIDATION.md</code> lists what
+that would cover. This pedal in particular would put every part of
+itself at mains potential. Its curves and figures are simulations from
+assumed component and motor values, not measurements, and are not
+evidence of performance or safety.</p>
 </blockquote>
 <p><strong>The question.</strong> Many vintage machines take a standard
 cordset: a cord from the wall to a molded block on the machine, and a
@@ -667,11 +673,21 @@ cordsets carry a third conductor to the pedal, for a lamp or a two-speed
 switch, and that conductor must not be connected to anything in this
 design. A pedal from the same cordset family, opened and traced, answers
 it in a minute.</p>
-<h1 data-number="6" id="testing-it-and-the-open-questions"><span class="header-section-number">6</span> Testing it, and the open
+<h1 data-number="6" id="testing-and-the-open-questions"><span class="header-section-number">6</span> Testing, and the open
 questions</h1>
-<h2 data-number="6.1" id="testing-order"><span class="header-section-number">6.1</span> Testing order</h2>
-<p>Build and test in this order, so that each step answers one
-question:</p>
+<h2 data-number="6.1" id="what-testing-would-involve"><span class="header-section-number">6.1</span> What testing would involve</h2>
+<blockquote>
+<p><strong>Mains testing.</strong> Do not perform the mains experiments
+described here unless you are qualified to work on mains circuits, are
+using an appropriately controlled test facility and protective equipment
+(including residual-current protection: a GFCI in the US), and have had
+the setup reviewed by an appropriate person. An isolation transformer
+does not make such work safe.</p>
+</blockquote>
+<p>If the design were taken further, testing would go in this order,
+each step answering one question. The sensor measurements involve no
+mains; the mains steps are described as research, for a qualified person
+in a controlled setup, not as instructions:</p>
 <ol type="1">
 <li><strong>Measure the sensors.</strong> Before any mains wiring,
 measure each FSR’s resistance against force: the three pre-terminated
@@ -686,8 +702,8 @@ through a 100 kΩ resistor across each diac and note the voltage where it
 snaps. Keep the ones near 32 V.</li>
 <li><strong>The voltage test on the sensor.</strong> This is the test
 that decides the design (below).</li>
-<li><strong>The circuit on the bench, with a lamp.</strong> Build it on
-the isolation transformer (the Hammond 171B), with a 60 to 100 W
+<li><strong>The circuit on the bench, with a lamp.</strong> On the
+isolation transformer (the Hammond 171B), with a 60 to 100 W
 incandescent bulb as the load. A bulb is close to the model’s resistive
 load, so the scope should show §4’s waveforms, and the firing angle
 against force can be checked directly against the simulation. Look at
