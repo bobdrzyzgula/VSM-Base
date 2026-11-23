@@ -94,7 +94,7 @@ sewing-machine drives. A companion to Speed Control of Universal Motors
 in Sewing Machines</p>
 <p class="author">Claude (Anthropic), at the direction of Robert
 Drzyzgula</p>
-<p class="date">Development Build v82, November 2026</p>
+<p class="date">Development Build v86, November 2026</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -127,6 +127,21 @@ the physics of the series motor and each method of controlling it. This
 paper looks inside the motors themselves. The sources are listed in the
 last section; please report errors as issues on the project’s GitHub
 repository.</p>
+<blockquote>
+<p><strong>Safety status: research only.</strong> None of the
+motor-control designs in this repository is safe to build as drawn. They
+are research artifacts, published as the work progresses: studies of how
+existing and historical controls work, what their hazards are, and what
+a safer replacement would need. None has been built, tested, measured,
+or assessed against an electrical safety standard. That a design has
+been analyzed or simulated here, or is used in commercial or historical
+products, is not evidence that it, or any copy or modification of it, is
+safe. Printed plastic is not an assessed insulation system or fire
+enclosure, and a barrier drawn on a schematic is not proof of isolation.
+Do not build a controller from these documents or connect one to the
+mains. This paper studies how the motors work; its drive options are
+subjects of study, not recommendations.</p>
+</blockquote>
 <p><strong>What it covers.</strong> The speed-control paper treats the
 sewing-machine motor as three letters in an equation: a resistance
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>,

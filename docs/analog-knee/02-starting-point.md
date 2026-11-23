@@ -9,18 +9,22 @@ so even those give no help), and everything live. In the VSM Base:
 - **An earthed IEC inlet** brings line, neutral and earth into the base, as
   in the MCU controller (its README in `hardware/mcu-controller/`).
 - **An isolated 5 V supply**, the Mean Well IRM-05-5, is certified for
-  reinforced isolation between its mains input and its output. Everything
-  on its output side is safety extra-low voltage (SELV): safe to touch.
+  reinforced isolation between its mains input and its output. The
+  module's certification covers the module; the design means the
+  circuits on its output side to be safety extra-low voltage (SELV), but
+  whether a built controller achieves that depends on its layout, wiring,
+  enclosure and testing, none of which exists yet.
 - **Two optocouplers** carry the only signals across the barrier: the
   H11AA1, which tells the low-voltage side when the line crosses zero,
   and the MOC3023, which lets the low-voltage side fire the triac. Each is
   rated for several kilovolts of isolation.
 
-So the knee, its sensor, its cable and all the control circuitry can be
-SELV, touchable and wired like any low-voltage gadget. Only the triac, its
-driver's output, the zero-cross detector's input, the supply's input and
-the protection parts are live, and they sit in one place, on one side of
-one barrier.
+So the design aims for the knee, its sensor, its cable and all the control
+circuitry to be SELV, wired like any low-voltage gadget. Only the triac,
+its driver's output, the zero-cross detector's input, the supply's input
+and the protection parts would be live, in one place, on one side of one
+barrier. That is the intent of the drawing, not a property of anything
+built: a barrier drawn on a schematic is not proof of isolation (see §7).
 
 ## The principle: ramp and compare
 

@@ -11,6 +11,22 @@ plates.
 *The first complete build: a Singer 99K in its base, with the back, left
 and corner extensions and their lids, in gray and gold PETG.*
 
+> **Safety status: research only.** None of the motor-control designs in
+> this repository is safe to build as drawn. They are research artifacts,
+> published as the work progresses: studies of how existing and historical
+> controls work, what their hazards are, and what a safer replacement would
+> need. None has been built, tested, measured, or assessed against an
+> electrical safety standard. That a design has been analyzed or simulated
+> here, or is used in commercial or historical products, is not evidence
+> that it, or any copy or modification of it, is safe. Printed plastic is
+> not an assessed insulation system or fire enclosure, and a barrier drawn
+> on a schematic is not proof of isolation. Do not build a controller from
+> these documents or connect one to the mains. The base itself, its trays
+> and its other printed parts are ordinary printed objects; this applies to
+> the motor controls: the knee controller option, the controller bay's
+> intended contents, the papers' circuits, and the standalone pedal and knee
+> drafts.
+
 ![The model, with all three extensions](docs/images/renders/assembly.png)
 
 ## Status: what has been tested

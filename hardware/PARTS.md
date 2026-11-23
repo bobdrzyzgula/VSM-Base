@@ -5,6 +5,17 @@ November 2026 with the optical encoder's parts. A working
 shopping list. Mechanical hardware (screws, bearings, springs, belts,
 plywood) stays in each project's own guide.*
 
+> **Safety status: research only.** A part on this list is not an
+> endorsement of building the design that uses it. None of the motor-control
+> designs in this repository (the knee controller, the MCU controller and
+> its variants, the papers' circuits) is safe to build as drawn: they are
+> research artifacts, not built, tested, measured, or assessed against an
+> electrical safety standard. Parts marked K or M are listed so the designs
+> can be studied and prototyped at low voltage, not so they can be connected
+> to the mains. The rig (R) is a research instrument that carries mains
+> voltage and has not been safety-assessed; see the notice and rules at the
+> start of its guide.
+
 **Where each part is used:**
 - **K:** the knee controller (User's Guide, chapter 9);
 - **R:** the motor test rig (`standalone/motor-rig/RIG_GUIDE.md`);

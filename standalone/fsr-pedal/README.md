@@ -3,12 +3,26 @@
 *Drawn by Claude at Bob Drzyzgula's direction, November 2026. A draft to
 print and try; it has not been printed or tested.*
 
+> **Safety status: research only.** None of the motor-control designs in
+> this repository is safe to build as drawn. They are research artifacts,
+> published as the work progresses: studies of how existing and historical
+> controls work, what their hazards are, and what a safer replacement would
+> need. None has been built, tested, measured, or assessed against an
+> electrical safety standard. That a design has been analyzed or simulated
+> here, or is used in commercial or historical products, is not evidence
+> that it, or any copy or modification of it, is safe. Printed plastic is
+> not an assessed insulation system or fire enclosure, and a barrier drawn
+> on a schematic is not proof of isolation. Do not build a controller from
+> these documents or connect one to the mains. The pedal is meant to carry
+> only low voltage, but that depends entirely on the isolation of the
+> controller it plugs into, which exists only as an unbuilt design.
+
 A low-voltage foot pedal built around an Interlink FSR 406 (UX series,
 0.5–150 N). It is passive: the sensor, a 470 Ω resistor in series, and a
 two-conductor shielded cable to a jack on the base. It is designed for the
 analog controller in the design study *An Analog Force-Sensing Knee
 Controller* (`docs/analog-knee/`, §6), where it runs in parallel with the
-knee lever's sensor. Everything in it is low voltage: it carries no mains.
+knee lever's sensor. It is meant to carry only low voltage: no mains, provided the controller's isolation holds.
 
 ![The pedal assembled, tread shown translucent: the sensor (gold) on the
 pedestal, its board (green) behind it, the puck over the sensor's center,

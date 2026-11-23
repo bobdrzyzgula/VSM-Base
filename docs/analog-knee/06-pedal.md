@@ -6,7 +6,7 @@ a resistor, on a light two-conductor cable to a jack on the base. This
 section covers the changes to the base's circuit; the pedal itself is a
 printable draft in `standalone/fsr-pedal/` (§6.4).
 
-![The additions. The pedal's FSR, with 470 Ω in series, reaches the
+![Research only: not built or tested, and not safe to build as drawn. The additions. The pedal's FSR, with 470 Ω in series, reaches the
 command node D through jack J7, in parallel with the knee's sensor (also
 with 470 Ω in series); RM drops to 10 kΩ. Comparators C2 and C3 close the
 relay K1 whenever a sensor is pressed and the command isn't shorted. C1 is

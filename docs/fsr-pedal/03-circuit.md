@@ -1,6 +1,6 @@
 # The circuit
 
-![The proposed pedal: a two-terminal device in series with the motor, as
+![Research only: not built or tested, and not safe to build as drawn. The proposed pedal: a two-terminal device in series with the motor, as
 the KB3151C is. RD and the back-to-back zeners D1 and D2 make a clamped
 supply at node N. RS and the FSR charge C from it; RB bleeds C and sets the
 force at which the motor starts. When C reaches the DB3's breakover, the

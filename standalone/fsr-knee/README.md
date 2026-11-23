@@ -3,6 +3,19 @@
 *Drawn by Claude at Bob Drzyzgula's direction, November 2026. A draft to
 print and try; it has not been printed, fitted or tested.*
 
+> **Safety status: research only.** None of the motor-control designs in
+> this repository is safe to build as drawn. They are research artifacts,
+> published as the work progresses: studies of how existing and historical
+> controls work, what their hazards are, and what a safer replacement would
+> need. None has been built, tested, measured, or assessed against an
+> electrical safety standard. That a design has been analyzed or simulated
+> here, or is used in commercial or historical products, is not evidence
+> that it, or any copy or modification of it, is safe. Printed plastic is
+> not an assessed insulation system or fire enclosure, and a barrier drawn
+> on a schematic is not proof of isolation. Do not build a controller from
+> these documents or connect one to the mains. This housing is the
+> mechanical half of a controller that exists only on paper.
+
 The VSM Base's knee controller turns a pot through two gear stages. This
 draft replaces the gears and the pot with an Interlink FSR 402 in the knee's
 spring housing, for the analog controller in the design study *An Analog

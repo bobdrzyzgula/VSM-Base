@@ -82,9 +82,12 @@ It is set at full speed: with the bar held at 2", the wiper is put just at
 the pin-1 end (0 Ω) and the pinion clamped. At rest it then reads about
 445 kΩ. From full speed to the stop the pot turns another 13° into the dead
 zone past its electrical end, well short of its mechanical stop. The pot's
-plastic shaft and the printed pinion are the isolation between the
+plastic shaft and the printed pinion are all that stand between the
 touchable bar and mains, with the pot's 1,500 VAC rating between element and
-bushing; a metal-shaft pot must not be substituted.
+bushing; a metal-shaft pot must not be substituted. That is a necessary
+condition, not an assessed insulation system: the whole assembly (pot,
+shaft, enclosure, wiring, creepage and clearance, cord entry, aging) has not
+been evaluated, and the board has no isolated control side at all.
 
 **Power.** Three ways in (`knee_power`), all at mains potential:
 
@@ -99,8 +102,10 @@ bushing; a metal-shaft pot must not be substituted.
 - **bare:** a bare cord through a printed clamp.
 
 **Limits.** The board is labeled 1.0 A. Its BT136 is a 4 A part but has no
-heatsink, so a motor over 1 A (one here draws 1.3 A) needs a clip-on heatsink,
-which is live with the triac's tab, and vents in the cover. Sewing-machine
+heatsink, so a motor over 1 A (one here draws 1.3 A, more than the label)
+would need a clip-on heatsink, live with the triac's tab, and vents in the
+cover; a heatsink is a workaround, not a rating, and a stalled motor or a
+failed triac can still overheat the board or its enclosure. Sewing-machine
 universal motors here are 110–120 V AC/DC machines, typically 0.5–1.0 A.
 
 **What it leaves on the table.** Everything the feedback sections describe:
@@ -317,7 +322,7 @@ Step-through debugging needs a separate SWD probe, such as Raspberry Pi's
 Debug Probe, under the same rule. And as with the test rig, a scope's
 ground must never be connected to the line side.
 
-![The MCU phase controller as a first concept (not built or tested). The
+![The MCU phase controller as a first concept (research only: not built or tested, and not safe to build as drawn). The
 isolation barrier runs across the sheet, with the live side above it.
 Line side, left to right: the IEC inlet and fuse, the surge suppressor, the
 outlet, the triac stage, and the line sides of the opto-triac (U3), the
@@ -544,7 +549,7 @@ switch with an isolated gate drive, and large capacitors that hold a
 dangerous charge after unplugging. That is far more hazard than this
 project warrants, for little gain over the bridge.
 
-![The rectified-DC variant of the concept (not built or tested). The
+![The rectified-DC variant of the concept (research only: not built or tested, and not safe to build as drawn). The
 mains version with the bridge rectifier (BR1) and freewheeling diode (D3)
 added between the triac and the motor's own keyed connector (J3). The
 outlet (J2) keeps only the light, and the current transformer (T1) is in
@@ -630,7 +635,7 @@ braking, which spends the energy in the motor's own resistance. It also
 watches the bus voltage and, if the bus rises anyway, stops driving and
 fires the chopper.
 
-![The DC-motor variant of the concept (not built or tested). The 24 V
+![The DC-motor variant of the concept (research only: not built or tested, and not safe to build as drawn). The 24 V
 power section is above the dashed line, which here separates high current
 from logic, not live from safe. Left to right: the 24 V input with its
 fuse, TVS and bulk capacitors; the 5 V buck; the optional brake chopper;
@@ -654,9 +659,13 @@ temporary bracket.
   manual and set aside for now: it is proprietary, so it teaches little and
   appeals less to hobbyists; it costs about $100; and it is too large for the
   right-hand bay, so it would need its own enclosure under the machine. It
-  remains the fallback if the purpose-built MCU controller proves too hard,
-  and would then still need a check that its DC output reaches the 99's top
-  speed.
+  remains a possible fallback if the purpose-built MCU controller proves too
+  hard, but only conditionally: its DC output, its suitability for the
+  motor, its enclosure, the isolation of its command, and the safety of the
+  whole installation would all still need validating. A commercial board's
+  own listing does not cover a custom enclosure, pedal, wiring, machine or
+  use, and an isolated command removes the exposure at the pedal, not the
+  hazards of the power stage, its wiring, the motor or the earth.
 
 A bench rig for these measurements is in the repository at
 `standalone/motor-rig/` (its guide is `RIG_GUIDE.md`). Two bench measurements

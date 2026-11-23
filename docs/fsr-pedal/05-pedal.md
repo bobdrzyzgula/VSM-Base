@@ -40,8 +40,10 @@ the curve to suit.
 
 Every part of this pedal is at mains potential, the FSR, its tail and the
 puck's underside included. The user is protected by the housing alone, as
-in a carbon-pile pedal, so the housing has to provide what standards call
-reinforced insulation:
+in a carbon-pile pedal, so the housing would have to provide what standards
+call reinforced insulation. The list below names what that involves; it is
+not an assessment, and nothing here shows that a printed housing can meet
+it:
 
 - **Only insulating material where a foot or hand can reach**: a printed
   or molded tread, no metal screws or plates exposed, and fasteners
@@ -51,10 +53,15 @@ reinforced insulation:
   insulation barrier, so the puck itself must be plastic, and the tread
   plastic above it.
 - **Creepage and clearance.** The spacing between live parts and the
-  outside of the housing, along surfaces and through air, should follow
-  what IEC 60335-1 (household appliances) requires for reinforced
-  insulation at 120 V, several millimeters. Printed parts make this easy
-  to design in.
+  outside of the housing, along surfaces and through air, would have to
+  follow what IEC 60335-1 (household appliances) requires for reinforced
+  insulation at 120 V, for the pollution degree, the material's tracking
+  index (CTI) and the working voltage. Spacing is only part of it. Common
+  printing filament is not a rated insulation material, a printed wall's
+  layers and voids are not a solid barrier, and a housing would also have
+  to answer for its cord entry and strain relief, fasteners, temperature,
+  flammability, mechanical damage, moisture and cleaning, assembly
+  tolerances and aging. None of that has been assessed.
 - **Strain relief** on the cord, as on any pedal, so a yank can't pull
   live conductors against the housing or out of the board.
 - **Heat.** About 1.5 W in the triac and 0.2 W in RD, in a closed box

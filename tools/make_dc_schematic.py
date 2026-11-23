@@ -544,6 +544,7 @@ for (t, x, y) in [("24 V IN: FUSE, TVS, BULK", 20.32, 38.1), ("5 V BUCK", 114.3,
                   ("OPERATOR INPUTS (RC-filtered ADC)", 20.32, 139.7)]:
     text(t, x, y, 1.5, True)
 notes = [
+ "RESEARCH ONLY: NOT SAFE TO BUILD AS DRAWN. Not built, tested, measured or safety-assessed; a barrier drawn here is not proof of isolation.",
  "NOTES. A concept drawn by Claude at Bob Drzyzgula's direction, October 2026: not built, not tested, values not checked.",
  "1. The mains version's control side unchanged; the triac, zero-cross, relay and isolated supply replaced by a 24 V adapter, a buck and an H-bridge.",
  "2. Pins (RP2350B): PWM GP4 (20 kHz, PWM slice 2); DIR GP5; SLP GP6; FLT GP13 (internal pull-up); BRAKE GP1; HALL GP7; ENC_A/B GP2/GP3;",
@@ -568,7 +569,8 @@ sch = f"""(kicad_sch (version 20230121) (generator eeschema)
     (date "2026-10-27")
     (rev "draft-1")
     (comment 1 "The mains controller's control side, driving a 775 brushed PM motor through a G2 H-bridge")
-    (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested"))
+    (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested")
+    (comment 3 "RESEARCH ONLY: not safe to build as drawn"))
   (lib_symbols
 {libs})
 {chr(10).join(out)}

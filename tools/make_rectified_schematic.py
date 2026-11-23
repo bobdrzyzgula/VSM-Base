@@ -560,6 +560,7 @@ for (t, x, y) in [("MAINS IN, FUSE, SURGE; LIGHT OUTLET (always on)", 20.32, 38.
                   ("OPERATOR INPUTS (RC-filtered ADC)", 20.32, 139.7)]:
     text(t, x, y, 1.5, True)
 notes = [
+ "RESEARCH ONLY: NOT SAFE TO BUILD AS DRAWN. Not built, tested, measured or safety-assessed; a barrier drawn here is not proof of isolation.",
  "NOTES. A concept drawn by Claude at Bob Drzyzgula's direction, October 2026: not built, not tested, values not checked.",
  "1. After Freescale AN1662: zero-cross interrupt sets a timer alarm (or a PIO program); at the firing delay a ~100 us gate pulse fires the",
  "   triac; hand-wheel period from edge timestamps; speed loop every half-cycle (120 Hz); stall watchdog. Added: isolation, relay, inputs.",
@@ -586,7 +587,8 @@ sch = f"""(kicad_sch (version 20230121) (generator eeschema)
     (date "2026-10-27")
     (rev "draft-4r")
     (comment 1 "After Freescale AN1662, with an isolated control side; RP2350B core board")
-    (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested"))
+    (comment 2 "Drafted by Claude at the direction of Robert Drzyzgula; not built or tested")
+    (comment 3 "RESEARCH ONLY: not safe to build as drawn"))
   (lib_symbols
 {libs})
 {chr(10).join(out)}

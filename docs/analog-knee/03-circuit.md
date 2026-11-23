@@ -1,6 +1,6 @@
 # The circuit
 
-![The low-voltage side. U2's output transistor, pulled up by RZ, goes high
+![Research only: not built or tested, and not safe to build as drawn. The low-voltage side. U2's output transistor, pulled up by RZ, goes high
 for a few degrees around each zero crossing (Z); Q3 then empties the ramp
 capacitor CR. The LM334 charges CR at a constant 45 µA the rest of the
 time. RM and the FSR divide the 5 V supply into the command D, filtered

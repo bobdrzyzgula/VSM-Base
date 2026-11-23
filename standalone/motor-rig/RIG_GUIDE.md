@@ -2,6 +2,17 @@
 
 *Written by Claude at Bob Drzyzgula's direction, October 2026. Draft 1.*
 
+> **Safety status: a research instrument, not safety-assessed.** The rig
+> carries mains voltage at its jack panel and in several modules, and it has
+> not been assessed against any electrical safety standard. It is a tool for
+> measuring motors and studying existing controls, described here as that
+> work progresses. It is not a controller design, and nothing in this guide
+> makes the KB3151C board, or any other control it is used to study, safe to
+> use on a machine. Build or use it only if you are experienced with live
+> mains work, and follow every one of the rules in §1 below: above all,
+> change connections only with the cord unplugged, and put the scope on the
+> AC side only through the isolation transformer.
+
 The rig is a plywood board carrying 3D-printed modules for two jobs:
 
 1. **Characterizing a universal sewing-machine motor**: winding resistance,

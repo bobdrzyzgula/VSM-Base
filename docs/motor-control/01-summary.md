@@ -7,6 +7,20 @@ hardware, made the design decisions for the VSM Base controllers, and
 reviewed it. The sources it draws on are listed in the last section; please
 report errors as issues on the project's GitHub repository.
 
+> **Safety status: research only.** None of the motor-control designs in
+> this repository is safe to build as drawn. They are research artifacts,
+> published as the work progresses: studies of how existing and historical
+> controls work, what their hazards are, and what a safer replacement would
+> need. None has been built, tested, measured, or assessed against an
+> electrical safety standard. That a design has been analyzed or simulated
+> here, or is used in commercial or historical products, is not evidence
+> that it, or any copy or modification of it, is safe. Printed plastic is
+> not an assessed insulation system or fire enclosure, and a barrier drawn
+> on a schematic is not proof of isolation. Do not build a controller from
+> these documents or connect one to the mains. It applies equally to the
+> commercial and historical pedals this paper describes, and to the three
+> controller concepts in §11.
+
 A sewing machine's universal motor is a series-wound machine whose speed
 depends strongly on load, so the controller matters as much as the motor. A
 pedal that only lowers the voltage (rheostat, carbon pile, variac, simple

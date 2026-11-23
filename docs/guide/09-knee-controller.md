@@ -5,6 +5,27 @@ not yet built. The feel (force and travel) follows a Singer knee controller
 as measured; the pot's gearing is a placeholder until the board's speed
 against resistance has been measured.*
 
+> **Safety status: research only; do not build this to run a machine.** The
+> knee option puts a mains-connected, non-isolated triac board (the KB3151C,
+> from an inexpensive pedal) inside the base, in series with the motor, with
+> its live parts kept from the knee bar only by a plastic pot shaft and
+> printed parts. That is not an assessed insulation system, the board is not
+> rated for this use or this enclosure, and the design has not been built or
+> tested. It is documented as a study of how such a control works and what
+> its hazards are; the project has since set the KB3151C aside as a basis
+> for new designs. The model's knee parts can be printed to study the
+> mechanism. **Safety status: research only.** None of the motor-control
+> designs in this repository is safe to build as drawn. They are research
+> artifacts, published as the work progresses: studies of how existing and
+> historical controls work, what their hazards are, and what a safer
+> replacement would need. None has been built, tested, measured, or assessed
+> against an electrical safety standard. That a design has been analyzed or
+> simulated here, or is used in commercial or historical products, is not
+> evidence that it, or any copy or modification of it, is safe. Printed
+> plastic is not an assessed insulation system or fire enclosure, and a
+> barrier drawn on a schematic is not proof of isolation. Do not build a
+> controller from these documents or connect one to the mains.
+
 With `compartment_option = "knee"`, the base's right bay becomes a knee
 speed control, in the manner of Singer's own knee-lever machines. A bar
 hangs down past the table edge. Pressing it with your knee turns a shaft
@@ -145,9 +166,12 @@ From the Bourns datasheet [1]:
   is 100,000 cycles.
 
 The plastic shaft matters. The bar, hub, shaft and gears are things you
-touch. The pot's plastic shaft and the printed pinion are what keep them
-apart from mains, together with the pot's 1,500 VAC rating between element
-and bushing. **Don't substitute a pot with a metal shaft.**
+touch. The pot's plastic shaft and the printed pinion are all that stand
+between them and mains, with the pot's 1,500 VAC rating between element and
+bushing. **Don't substitute a pot with a metal shaft.** But a plastic shaft
+and a printed gear are a necessary condition, not an assessed insulation
+system: whether the whole assembly (pot, shaft, enclosure, wiring, creepage
+and clearance, cord entry, aging) protects the user has not been evaluated.
 
 The pot mounts from behind the bulkhead, with its bushing through the
 3 mm panel and its nut on the front. The lug goes into the small hole
@@ -251,7 +275,10 @@ front notch, by the divider, for the pot and switch leads and the motor
 lead; the side notch, beside the spade tabs, for the power leads.
 
 **Heat.** The board is labeled 1.0 A. Its BT136 triac is a 4 A part, but
-it has no heatsink, and at more than 1 A it runs hot in a closed box. If
+it has no heatsink, and at more than 1 A it runs hot in a closed box. The
+motor on the bench here draws about 1.3 A, more than the board's label: a
+heatsink is a workaround, not a rating, and a stalled motor or a failed
+triac can overheat the board or the box. If
 your motor draws more (`knee_motor_amps`), fit a small clip-on heatsink to
 the triac and the cover gets vent slots. The triac's tab is live, so the
 heatsink is too: keep it inside the cover.

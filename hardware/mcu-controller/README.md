@@ -3,6 +3,18 @@
 *Drafted by Claude at Bob Drzyzgula's direction, October 2026. Not built or
 tested.*
 
+> **Safety status: research only.** None of the motor-control designs in
+> this repository is safe to build as drawn. They are research artifacts,
+> published as the work progresses: studies of how existing and historical
+> controls work, what their hazards are, and what a safer replacement would
+> need. None has been built, tested, measured, or assessed against an
+> electrical safety standard. That a design has been analyzed or simulated
+> here, or is used in commercial or historical products, is not evidence
+> that it, or any copy or modification of it, is safe. Printed plastic is
+> not an assessed insulation system or fire enclosure, and a barrier drawn
+> on a schematic is not proof of isolation. Do not build a controller from
+> these documents or connect one to the mains.
+
 **A concept, not a design.** Drawn but not built, simulated or tested;
 part values are first estimates; the core board is drawn by GPIO number,
 not as any particular board; the firmware does not exist. The motor-control
@@ -42,7 +54,7 @@ compensation without a machine sensor"). Its secondary is on the control
 side: a 100 Ω burden gives about 0.1 V per amp, centered on a 1.65 V bias,
 filtered into ADC4.
 
-**Control side (SELV).** The RP2350B core board, fed 5 V into VSYS from
+**Control side (intended to be SELV; not built or verified).** The RP2350B core board, fed 5 V into VSYS from
 the module through a Schottky diode (so USB and the module can both be
 connected), its own regulator supplying 3.3 V to the sensors; the relay
 driver (2N7002, with a 100 kΩ gate pull-down that holds the relay open

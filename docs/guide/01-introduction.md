@@ -62,8 +62,21 @@ pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.
 
-If you build something from the untested list, please report how it went
-as an issue on the project's GitHub repository.
+> **Safety status of the motor controls: research only.** None of the motor-
+> control designs in this project, including the knee controller option
+> (chapter 9) and the circuits in the papers, is safe to build as drawn.
+> They are research artifacts, published as the work progresses: studies of
+> how existing and historical controls work, what their hazards are, and
+> what a safer replacement would need. None has been built, tested,
+> measured, or assessed against an electrical safety standard, and printed
+> plastic is not an assessed insulation system or fire enclosure. Do not
+> build a controller from these documents or connect one to the mains. The
+> base, its trays, the outlet compartment's printed parts and the other
+> printed objects are not motor controls and are not covered by this.
+
+If you build one of the printed parts from the untested list (not a motor
+control), please report how it went as an issue on the project's GitHub
+repository.
 
 ## Why this exists
 
