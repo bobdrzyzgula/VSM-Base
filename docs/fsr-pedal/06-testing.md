@@ -63,8 +63,10 @@ A test that answers it:
 - **Pass.** The powered sensors drift no more than the unpowered control,
   and the unloaded resistance stays above 10 MΩ.
 
-If the sensors pass, design (a) stands as drawn. If they drift, the
-fallbacks are, in order:
+If the sensors passed, the sensor question would be settled in the
+design's favor; the design itself would still be a research concept,
+needing everything in `docs/VALIDATION.md` before it could be built. If
+they drift, the fallbacks are, in order:
 
 - **Lower the voltage.** A lower clamp (back-to-back 43 V zeners, with
   DB3s selected below 32 V) cuts the sensor's peak voltage by a quarter,

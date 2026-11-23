@@ -7,7 +7,7 @@ force at which the motor starts. When C reaches the DB3's breakover, the
 diac fires the triac through RG. F1 and the MOV protect it. Every part is
 at mains potential.](../images/fsr-pedal/fsr-pedal-schematic.svg){width=100%}
 
-## How it works
+## How it would work
 
 **A clamped timing supply.** RD (22 kΩ) runs from the triac's MT2 side to
 node N, and two 56 V zeners, back to back, clamp N to MT1. Until the triac
@@ -50,17 +50,16 @@ triac. A diac fires the triac in quadrants I and III only, which is all a
 snubberless "W" triac needs (switching paper, §3).
 
 **Protection.** F1 (T2A, slow-blow for the motor's inrush) is in series
-with the pedal, so it carries the motor current. The MOV (the 241KD14 the
-project is buying) sits across the pedal on the inner side of the fuse, so
+with the pedal, so it carries the motor current. The MOV (a 241KD14) sits across the pedal on the inner side of the fuse, so
 a MOV that fails short blows F1 instead of burning. It clamps surges to
 about 395 V, well inside the triac's 600 V.
 
 **No snubber.** The snubberless BTA16-600BW is rated to commutate an
-inductive load without one (switching paper, §5). Pads for a 100 Ω
-resistor and a 47 nF X2 capacitor across the triac are worth leaving on
-the board in case the bench shows otherwise.
+inductive load without one (switching paper, §5). A board would want pads
+for a 100 Ω resistor and a 47 nF X2 capacitor across the triac, in case
+testing showed otherwise.
 
-## Parts
+## Parts as drawn
 
 | Part | Value | Notes |
 |---|---|---|
@@ -86,5 +85,5 @@ it carries up to about 115 V.
 At full force the triac fires at about 49°, the motor gets 94% of the
 line, and RD dissipates almost nothing, because the voltage across the
 pedal is gone for most of each half-cycle. The triac itself dissipates
-about 1.5 W at a 99K's current, as in any triac pedal; the heatsink
-already chosen for the knee controller is enough.
+about 1.5 W at a 99K's current, as in any triac pedal, which would need a
+small clip heatsink. These figures are simulated, like the rest of §4.

@@ -2,6 +2,10 @@
 
 ## The model
 
+Everything in this chapter is simulated from assumed values. Nothing in
+it has been measured, and none of it is evidence of how a built pedal would
+behave or whether it would be safe.
+
 The figures in this section come from `tools/make_fsr_pedal_figures.py`,
 the same kind of half-cycle model the switching paper uses for the
 KB3151C (its §4 and §6). Its assumptions:

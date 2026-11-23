@@ -61,5 +61,5 @@ the pot was would work at first. The question is how long.
 
 There is also a gate problem. The KB3151C drives its BT136-600E through a
 1 kΩ resistor, which suits that sensitive-gate triac (10 mA). The
-snubberless BTA16-600BW the project is buying needs up to 50 mA, so its
+snubberless BTA16-600BW the design uses needs up to 50 mA, so its
 gate resistor must be smaller (§3).

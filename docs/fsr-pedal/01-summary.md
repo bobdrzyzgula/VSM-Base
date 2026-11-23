@@ -67,6 +67,8 @@ like the KB3151C board but driven by the FSR?
 
 **What it is not.** A passive pedal has no speed regulation, no
 needle-position stop and no calibration: the MCU controller (speed-control
-paper, §9) does all of those. This design is the simplest thing that fits
+paper, §9) does all of those. This design would be the simplest thing that fits
 a stock cordset and gives a force pedal a better feel than a slide pot and
-a weak spring.
+a weak spring, as a concept; as a device it would put a mains-potential
+sensor under the user's foot, and nothing here shows that a housing could
+make that safe.

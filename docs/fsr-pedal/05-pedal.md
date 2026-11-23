@@ -77,7 +77,7 @@ straight into the circuit, as long as the voltage across it is acceptable
 
 The pedal needs only its two terminals, so it fits any cordset that wires
 the pedal in series with the motor. Most do, the Kenmore's among them as
-far as this paper knows, but check before building: some cordsets carry a
+far as this paper knows, but it would need checking: some cordsets carry a
 third conductor to the pedal, for a lamp or a two-speed switch, and that
 conductor must not be connected to anything in this design. A pedal from
 the same cordset family, opened and traced, answers it in a minute.
