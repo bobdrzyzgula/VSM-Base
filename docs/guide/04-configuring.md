@@ -351,7 +351,8 @@
 > - **Its ticks.** Each scale has its own divisions per unit and a longer
 >   tick every so many: `ruler_inch_div` and `ruler_inch_mid` (8 and 2,
 >   eighths with the quarters longer; 10 and 5 gives tenths with the half
->   longer), `ruler_cm_div` and `ruler_cm_mid` (10 and 5). A `custom`
+>   longer), `ruler_cm_div` and `ruler_cm_mid` (2 and 1, half centimeters;
+>   10 and 5 gives millimeters with the half longer). A `custom`
 >   scale takes its unit in millimeters, its divisions, its longer tick and
 >   a name (`ruler_custom_*`).
 > - **Its numbers.** Each unit is numbered over its long tick

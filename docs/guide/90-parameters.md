@@ -178,8 +178,8 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `ruler_scale_h` | `8` | Height of each scale *Range 5 to 15, step 0.5.* |
 | `ruler_inch_div` | `8` | Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half) *Range 1 to 32, step 1.* |
 | `ruler_inch_mid` | `2` |  *Range 1 to 16, step 1.* |
-| `ruler_cm_div` | `10` | Centimeter scale: divisions per cm, and a longer tick every so many *Range 1 to 20, step 1.* |
-| `ruler_cm_mid` | `5` |  *Range 1 to 10, step 1.* |
+| `ruler_cm_div` | `2` | Centimeter scale: divisions per cm, and a longer tick every so many (2 and 1: half centimeters; 10 and 5: millimeters, longer at the half) *Range 1 to 20, step 1.* |
+| `ruler_cm_mid` | `1` |  *Range 1 to 10, step 1.* |
 | `ruler_custom_unit` | `10` | Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none) *Range 1 to 100, step 0.01.* |
 | `ruler_custom_div` | `10` |  *Range 1 to 32, step 1.* |
 | `ruler_custom_mid` | `5` |  *Range 1 to 16, step 1.* |

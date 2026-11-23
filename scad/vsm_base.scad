@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 85
+// VSM Base, version 86
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -412,6 +412,8 @@
 // v85: one knock-out setting, passthrough_knockouts = auto, on or off
 // (auto: on for the controller bay only), replacing ctrl_knockouts, which
 // overrode passthrough_knockouts = false for the controller bay.
+// v86: the centimeter ruler marks half centimeters by default
+// (ruler_cm_div 2, ruler_cm_mid 1); millimeters are too fine to read.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -684,9 +686,9 @@ ruler_scale_h = 8; // [5 : 0.5 : 15]
 // Inch scale: divisions per inch, and a longer tick every so many (8 and 2: eighths, longer at the quarters; 10 and 5: tenths, longer at the half)
 ruler_inch_div = 8; // [1 : 1 : 32]
 ruler_inch_mid = 2; // [1 : 1 : 16]
-// Centimeter scale: divisions per cm, and a longer tick every so many
-ruler_cm_div = 10; // [1 : 1 : 20]
-ruler_cm_mid = 5; // [1 : 1 : 10]
+// Centimeter scale: divisions per cm, and a longer tick every so many (2 and 1: half centimeters; 10 and 5: millimeters, longer at the half)
+ruler_cm_div = 2; // [1 : 1 : 20]
+ruler_cm_mid = 1; // [1 : 1 : 10]
 // Custom scale: the numbered unit in mm, its divisions, a longer tick every so many, and its name (blank for none)
 ruler_custom_unit = 10; // [1 : 0.01 : 100]
 ruler_custom_div = 10; // [1 : 1 : 32]
