@@ -6,7 +6,7 @@ capacitor CR. The LM334 charges CR at a constant 45 µA the rest of the
 time. RM and the FSR divide the 5 V supply into the command D, filtered
 by CF. When the ramp rises past D, U4's output goes low and lights U3's
 LED, which fires the triac. Everything to the left of the barrier is
-SELV; the mains side is the MCU controller's.](../images/analog-knee/analog-knee-schematic.svg){width=100%}
+intended to be SELV (not verified); the mains side is the MCU controller's.](../images/analog-knee/analog-knee-schematic.svg){width=100%}
 
 ## The mains side
 
@@ -60,7 +60,7 @@ node D, and the FSR from D to ground. With the knee at rest the FSR is
 open, D sits at 5 V, above the ramp's peak, and nothing fires: no
 current, no hum. Pressing lowers the FSR's resistance and pulls D down.
 CF (0.1 µF) filters D, with a time constant of at most 2 ms, too short for
-a knee to notice. The FSR never sees more than 5 V or carries more than
+a knee to notice. In normal operation the FSR sees no more than 5 V or carries more than
 about 0.23 mA, well within Interlink's typical drive and current limit.
 
 **The comparator (U4).** An MCP6562, a dual comparator with rail-to-rail

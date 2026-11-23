@@ -14,7 +14,10 @@ tested.*
 > enclosure, and a barrier drawn on a schematic is not proof of isolation.
 > The work is meant to support understanding of how existing and historical
 > controls work and what hazards they carry, and to guide the development of
-> safer alternatives. Any future buildable design would need a new system-
+> safer alternatives.
+> It is personal learning done in public, not a product, and anyone who
+> uses or builds on any of it does so on their own responsibility.
+> Any future buildable design would need a new system-
 > level engineering assessment, independent review, qualified
 > implementation, complete-product testing and applicable certification;
 > `docs/VALIDATION.md` lists what that would cover.
@@ -82,8 +85,10 @@ and current limiting
 | H | L | A low, B high | reverse |
 | L | X | both low | brake |
 
-- **Pulled to a safe state.** The board pulls PWM low and SLP high
-  itself, so a resetting or unprogrammed MCU leaves the motor braked.
+- **Pulled toward braking.** The board pulls PWM low and SLP high
+  itself, so a resetting or unprogrammed MCU should leave the motor
+  braked. That is a default, not a validated safety function; a failed
+  driver or a wiring fault can defeat it.
 - **The current limit.** The default limit is about 30 A, more than the
   775's 24 A stall current (24 V across about 1 Ω). A resistor from VREF to
   GND lowers it: R4, nominally 47 kΩ, to be chosen on the bench for about
@@ -154,10 +159,12 @@ Plain C on the Pico SDK, as for the mains version.
   $(D\,V_{bus} - I R)/K_e$. Either gives load compensation for the
   pedal-first, feedback-free mode, something the universal motor can't
   offer.
-- **Safety.** Nothing drives until the speed command is zero after power-up.
-  The hardware watchdog resets the MCU, and a reset leaves the bridge
-  braked. A stall watchdog drops to zero if the encoder stops while the
-  current is high.
+- **Intended firmware behavior (not a safety function).** Nothing drives
+  until the speed command is zero after power-up. The hardware watchdog
+  resets the MCU, and a reset should leave the bridge braked. A stall
+  watchdog drops to zero if the encoder stops while the current is high.
+  All of this depends on the firmware and hardware working; none of it has
+  been built, tested or validated.
 
 ## Cautions
 

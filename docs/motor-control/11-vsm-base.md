@@ -169,8 +169,10 @@ the mains zero crossing, with a speed sensor closing the loop. AN1662 runs
 its microcontroller at line potential, with a resistor from the mains
 straight to an input pin for zero-cross detection. Here every connection
 between the mains and the controller passes through an isolating part, so
-the controller, its pedals and its debug port are all at a safe low
-voltage. The drawing runs the isolation barrier across the sheet, with the
+that the controller, its pedals and its debug port are meant to be at a low
+voltage. That is an intention only: whether they would stay there, in normal
+running and after a fault, depends on parts, layout, creepage and testing,
+none of which has been done. The drawing runs the isolation barrier across the sheet, with the
 live side above it.
 
 **Line side (live).** An IEC inlet with earth feeds a 2 A slow fuse and,
@@ -242,7 +244,7 @@ supply already passes through a diode, so the supply module can feed its
 - The hand wheel's period, from timestamps of its edges, gives the speed.
 - A PI loop sets the next firing delay once per half-cycle, 120 times a
   second on 60 Hz mains. A limit on how fast the firing angle may change
-  keeps a jammed needle from getting a sudden full-power pulse.
+  is meant to keep a jammed needle from getting a sudden full-power pulse.
 - A stall watchdog stops firing and opens the relay if the hand wheel stops
   sending pulses.
 - Nothing fires until a zero crossing has been seen and the speed command
@@ -640,7 +642,7 @@ fires the chopper.
 
 ![The DC-motor variant of the concept (research only: not built or tested, and not safe to build as drawn). The 24 V
 power section is above the dashed line, which here separates high current
-from logic, not live from safe. Left to right: the 24 V input with its
+from logic, not live from low-voltage. Left to right: the 24 V input with its
 fuse, TVS and bulk capacitors; the 5 V buck; the optional brake chopper;
 the bus-voltage sense; the G2 H-bridge module with its current-limit and
 current-sense resistors; the 775 motor with its suppression capacitor; and

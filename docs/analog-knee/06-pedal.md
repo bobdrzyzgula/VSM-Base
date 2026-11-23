@@ -50,8 +50,9 @@ a reason to:
 
 - **C2, "pressed":** high when D is below 3.8 V, just above the ramp's
   3.6 V peak. D crosses 3.8 V on the way down before the triac starts
-  firing, so the relay closes about a half-cycle *before* any current
-  flows, and its contact never makes under load.
+  firing, so the relay is meant to close about a half-cycle *before* any
+  current flows, and its contact should not make under load in normal
+  operation.
 - **C3, "not shorted":** high when D is above 0.4 V. A healthy sensor,
   with its 470 Ω, can't bring D below about 0.64 V; a sensor failed short
   brings it to 0.22 V, and a shorted cable or jack to zero.

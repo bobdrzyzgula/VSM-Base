@@ -73,8 +73,9 @@ snap switch all stay. What changes:
   meets the stop screw, so the sensor never sees more than the stack's
   force at full travel.
 
-The sensor's tail and its two wires are SELV, so they run to the board
-like any low-voltage lead.
+The sensor's tail and its two wires would be on the side intended to be
+SELV (§7), so they would run to the board like any low-voltage lead; that
+the isolation holds is for testing to show, not assume.
 
 **A printable draft** (`standalone/fsr-knee/fsr_knee_housing.scad`, with
 its README) puts the sensor beside the return spring rather than under it:

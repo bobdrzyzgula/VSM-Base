@@ -39,8 +39,9 @@ charges from it to the diac's 32 V at about 84°, then drops to 22 V and
 drains through RS, the FSR and RB for the rest of the half-cycle. The motor
 gets the shaded part of each half-cycle.](../images/fsr-pedal/fsr-pedal-waveforms.svg){width=100%}
 
-The figure shows what the clamp buys. Node N never exceeds 57 V, so
-neither does anything downstream of it. The highest voltage the FSR sees
+The figure shows what the clamp buys. In the simulation, node N stays
+below 57 V, and so does everything downstream of it; a real clamp's
+tolerance, aging and failure modes are not modeled. The highest voltage the FSR sees
 is when it is barely pressed and C swings from one polarity to the other:
 about 66 V (§4.5).
 

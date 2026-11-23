@@ -36,5 +36,5 @@ non-isolated drives with external signals
 ([KBSI-240D](https://motorsandcontrol.com/kb-electronics-9431-kbsi-240d-signal-isolator-stand-alone)).
 A pedal wired straight to a KBIC is therefore live. The KBIC also accepts an
 isolated 0–9 V DC signal in voltage-following mode (KBIC D-210). Feeding that
-input from an isolated pedal or MCU is the clean way to keep the pedal at a
-safe voltage.
+input from an isolated pedal or MCU is how KB intends a pedal to be kept off
+the line; any particular build's isolation would still have to be verified.

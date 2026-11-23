@@ -132,8 +132,8 @@ tool, shows a sharp peak at the switching frequency. There are two cautions:
   trigger's position, so the pitch moves as the trigger is squeezed.
 
 The certain answer is a scope across the motor's leads, which shows the
-frequency and the duty cycle at once, at a battery voltage that is safe to
-probe.
+frequency and the duty cycle at once, at battery voltage, which, unlike the
+mains, an ordinary grounded scope can probe.
 
 **Measured: a drill and an impact driver.** Two DeWalt 20 V Max tools
 were measured this way in a quiet room, with a phone's microphone and a

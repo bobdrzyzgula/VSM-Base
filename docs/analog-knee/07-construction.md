@@ -20,8 +20,9 @@ protection and the MOV's failure behavior. On the board:
   as the optocouplers' own pin rows, about 7 mm on a DIP-6, and wider
   where the layout allows; on perfboard, cut a slot along the boundary.
   This is a rule of thumb, not a creepage figure from a standard.
-- **Wiring.** Mains wiring in 300 V-rated wire, routed and tied down so a
-  loose wire can't reach the SELV side; SELV wiring kept away from it.
+- **Wiring.** Mains wiring in 300 V-rated wire, routed and tied down so that a
+  loose wire could not reach the SELV side (something to check on the built
+  board, not assume); SELV wiring kept away from it.
 
 ## Earth
 

@@ -101,7 +101,10 @@ all.
 > insulation system or fire enclosure, and a barrier drawn on a schematic is
 > not proof of isolation. The work is meant to support understanding of how
 > existing and historical controls work and what hazards they carry, and to
-> guide the development of safer alternatives. Any future buildable design
+> guide the development of safer alternatives.
+> It is personal learning done in public, not a product, and anyone who
+> uses or builds on any of it does so on their own responsibility.
+> Any future buildable design
 > would need a new system-level engineering assessment, independent review,
 > qualified implementation, complete-product testing and applicable
 > certification; `docs/VALIDATION.md` lists what that would cover. The base,
