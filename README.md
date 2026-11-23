@@ -302,6 +302,17 @@ a link.
   The figures are committed to the repository, so building the documents
   doesn't need `make images` unless a figure has changed.
 
+To check the model after a significant change, `make matrix` runs it over
+every combination of machine, compartment, mount, hinge, split and
+extensions (a few minutes), and `make matrix-full` also renders the
+printable parts (about a quarter of an hour on two cores). Both compare the
+failed asserts, warnings, broken renders and solid counts with a committed
+baseline, report in `build/test-matrix.md`, and fail if anything changed;
+see [`tools/test_matrix.py`](tools/test_matrix.py). Passing means only that
+the model generates what it did before, not that anything prints, fits or
+holds. The moving parts (hinges, lids, the knee mechanism) are not swept
+through their travel for collisions; that is left as an exercise.
+
 A version tag (`v*`) builds the documents and attaches them to a GitHub
 release (see
 [`.github/workflows/release.yml`](.github/workflows/release.yml)).

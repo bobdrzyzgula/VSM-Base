@@ -58,7 +58,7 @@ DEVVER   := $(shell sed -n 's/^\/\/ VSM Base, version \([0-9]*\).*/\1/p' $(MODEL
 LABEL    := $(if $(VERSION),Version $(VERSION),Development Build v$(DEVVER))
 IMAGES   := $(wildcard docs/images/*/*)
 
-.PHONY: presets all params images pdf html docs clean snapshot
+.PHONY: presets all params images pdf html docs clean snapshot matrix matrix-full
 
 all: params presets images docs
 
@@ -229,3 +229,13 @@ snapshot: html
 clean:
 	rm -rf $(BUILD) docs/guide/guide.typ docs/motor-control/paper.typ docs/motor-construction/paper.typ docs/switching/paper.typ \
 	    docs/fsr-pedal/paper.typ docs/analog-knee/paper.typ standalone/motor-rig/rig.typ
+
+# Configuration test matrix (tools/test_matrix.py): "matrix" evaluates every
+# combination of the main options (minutes); "matrix-full" also renders the
+# printable parts (about a quarter of an hour on two cores). Both compare
+# with the committed baseline, write build/test-matrix.md, and fail if anything changed.
+matrix:
+	python3 tools/test_matrix.py --level quick
+
+matrix-full:
+	python3 tools/test_matrix.py --level full

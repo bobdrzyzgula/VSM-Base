@@ -1,0 +1,2036 @@
+{
+ "full: compartment_mount=attached, compartment_option=storage, machine=Kenmore 158-14001, part=right_bay": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: compartment_mount=attached, compartment_option=storage, machine=Singer 99K, part=right_bay": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: compartment_option=controller, hinge_type=barrel, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=barrel, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=lollipop, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=lollipop, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=none, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=none, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=printed, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=controller, hinge_type=printed, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 3
+ },
+ "full: compartment_option=knee, hinge_type=barrel, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=barrel, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=lollipop, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=lollipop, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=none, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=none, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=printed, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=knee, hinge_type=printed, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=barrel, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=barrel, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=lollipop, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=lollipop, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=none, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=none, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=printed, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=none, hinge_type=printed, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=barrel, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=barrel, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=lollipop, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=lollipop, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=none, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=none, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=printed, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=outlet, hinge_type=printed, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=barrel, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=barrel, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=lollipop, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=lollipop, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=none, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=none, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=printed, machine=Kenmore 158-14001, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: compartment_option=storage, hinge_type=printed, machine=Singer 99K, part=base": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 2
+ },
+ "full: hinge_type=printed, machine=Kenmore 158-14001, part=printed_hinges": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 4
+ },
+ "full: hinge_type=printed, machine=Singer 99K, part=printed_hinges": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 4
+ },
+ "full: machine=Kenmore 158-14001, part=back_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=back_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=base_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=corner_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=corner_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=ext_pegs": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 4
+ },
+ "full: machine=Kenmore 158-14001, part=left_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=left_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Kenmore 158-14001, part=test_parts": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 29
+ },
+ "full: machine=Singer 99K, part=back_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=back_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=base_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=corner_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=corner_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=ext_pegs": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 4
+ },
+ "full: machine=Singer 99K, part=left_ext": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=left_lid": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: machine=Singer 99K, part=test_parts": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 28
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=attached, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=controller, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=knee, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=none, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=outlet, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=barrel, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=lollipop, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=none, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=False, compartment_mount=built-in, compartment_option=storage, corner_ext=False, hinge_type=printed, left_ext=False, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin",
+   "WARNING: right_bay ([106.225, 250]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=attached, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=controller, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=knee, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [454.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([454.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [231.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([231.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([231.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [339.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([339.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=none, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=outlet, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=barrel, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=lollipop, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 230, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 35.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 230]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 200, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 200]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=none, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=False": {
+  "problems": [
+   "Base part: [546.95, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_whole ([546.95, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Kenmore 158-14001, part=base, split=True": {
+  "problems": [
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [114.525, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: left_ext ([114.525, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([96, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=False": {
+  "problems": [
+   "Base part: [431.513, 230, 82.7]  WARNING: exceeds printer",
+   "WARNING: base_whole ([431.513, 230]) is larger than the bed inside the margin"
+  ],
+  "rc": 0
+ },
+ "quick: back_ext=True, compartment_mount=built-in, compartment_option=storage, corner_ext=True, hinge_type=printed, left_ext=True, machine=Singer 99K, part=base, split=True": {
+  "problems": [],
+  "rc": 0
+ }
+}
