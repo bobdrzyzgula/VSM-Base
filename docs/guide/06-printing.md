@@ -30,6 +30,14 @@
   `cord_slot_trim` upright, and the outlet's wall-slot trims
   (`outlet_trims`) lying on their sides, all without supports.
 - Features removed after printing: knock-out walls under the handholds, sacrificial membranes over screw holes.
+- The controller bay's back-wall cutouts, printed upright in the base:
+  each keystone cutout's top edge is a 14.5 mm bridge, which prints
+  without supports. If the slicer adds supports there anyway, block them
+  from the bars between cutouts. In the compartment test a 2 mm bar broke
+  when its supports were pried out; the bars are now 4 mm by default
+  (`ctrl_jack_pitch`), and the console warns below that. The IEC inlet's
+  27.5 mm top edge is a longer bridge; support it if your printer sags
+  over that span.
 
 > **Note: lid hinges in PLA and PETG.** The hinge defaults
 > (`lid_tab_w = 4`, `lid_bump_engage = 1.0`) come from test prints in both

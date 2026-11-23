@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 86
+// VSM Base, version 87
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -414,6 +414,11 @@
 // overrode passthrough_knockouts = false for the controller bay.
 // v86: the centimeter ruler marks half centimeters by default
 // (ruler_cm_div 2, ruler_cm_mid 1); millimeters are too fine to read.
+// v87: keystone jacks 18.5 mm apart across (ctrl_jack_pitch [18.5, 22],
+// was 16.5), so the bar between two cutouts is 4 mm, not 2: a 2 mm bar
+// broke in the compartment test when its supports came out. To keep two
+// columns fitting beside the inlet, ctrl_pocket_clear is 1.5 (was 2). A
+// warning when a bar is under 4 mm.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -1206,7 +1211,7 @@ ctrl_iec_panel = 1.5; // [0.8 : 0.1 : 2.5]
 // IEC inlet: cutout's bottom edge above the bay floor
 ctrl_iec_z = 4; // [0 : 0.5 : 30]
 // Clearance around the inlet's body and the jacks' bodies in their tunnels, per side
-ctrl_pocket_clear = 2; // [0.5 : 0.5 : 6]
+ctrl_pocket_clear = 1.5; // [0.5 : 0.5 : 6]
 // Back wall left behind the two tunnels (it is thinned to the panel thickness only round the cutouts)
 ctrl_back_skin = 5; // [2 : 0.5 : 17]
 // Thinned panel's margin round each cutout (or round the jacks' array), for the inlet's and keystones' latches
@@ -1219,8 +1224,8 @@ ctrl_jacks = [1, 2];
 ctrl_keystone_cutout = [14.5, 16.2];
 // Round jack hole (1/4" jacks with a 3/8" bushing: 9.7; 3.5 mm jacks: about 6.2; check yours)
 ctrl_jack_hole = 9.7; // [3 : 0.1 : 16]
-// Jack pitch [across, up]
-ctrl_jack_pitch = [16.5, 22];
+// Jack pitch [across, up]; keep the bars between keystone cutouts 4 mm or more (a 2 mm bar broke when its supports came out)
+ctrl_jack_pitch = [18.5, 22];
 // Jack panel thickness (keystones latch on 1.5 to 2.2 mm; panel jacks take up to their thread length)
 ctrl_jack_panel = 2; // [0.8 : 0.1 : 5]
 // Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides
@@ -3395,6 +3400,9 @@ if (has_ctrl && report) {
         echo("WARNING: the IEC inlet stands higher than its tunnel's straight sides; lower ctrl_iec_z");
     if (ct_jz0 - ct_jc[1] / 2 - ctrl_pocket_clear < floor_z || ct_jz0 - ct_jc[1] / 2 + ct_ja[1] + ctrl_pocket_clear > floor_z + ct_h(ct_jw))
         echo("WARNING: the jacks run outside their tunnel's straight sides; fewer rows, a smaller pitch, or move ctrl_jack_z");
+    if ((ctrl_jacks[1] > 1 && ctrl_jack_pitch[0] - ct_jc[0] < 4) || (ctrl_jacks[0] > 1 && ctrl_jack_pitch[1] - ct_jc[1] < 4))
+        echo(str("WARNING: the bars between the jack cutouts are under 4 mm (", ctrl_jack_pitch[0] - ct_jc[0], " across, ",
+                 ctrl_jack_pitch[1] - ct_jc[1], " up) and may break when supports come out; widen ctrl_jack_pitch"));
     if (len(ct_post_ok) > 0)
         echo(str("WARNING: posts off the bay floor (or within half a post of its walls): ", ct_post_ok));
     if (has_back && bk_x1 > min(ct_ix - ct_iw / 2, ct_jx - ct_jw / 2) - 5)

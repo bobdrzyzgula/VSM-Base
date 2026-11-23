@@ -494,14 +494,14 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `ctrl_iec_radius` | `1` | IEC inlet: cutout corner radius *Range 0 to 5, step 0.5.* |
 | `ctrl_iec_panel` | `1.5` | IEC inlet: panel thickness left at the back of its tunnel (723W-X2/03: 0.8 to 2 mm; 6200.4315: 1.5 mm) *Range 0.8 to 2.5, step 0.1.* |
 | `ctrl_iec_z` | `4` | IEC inlet: cutout's bottom edge above the bay floor *Range 0 to 30, step 0.5.* |
-| `ctrl_pocket_clear` | `2` | Clearance around the inlet's body and the jacks' bodies in their tunnels, per side *Range 0.5 to 6, step 0.5.* |
+| `ctrl_pocket_clear` | `1.5` | Clearance around the inlet's body and the jacks' bodies in their tunnels, per side *Range 0.5 to 6, step 0.5.* |
 | `ctrl_back_skin` | `5` | Back wall left behind the two tunnels (it is thinned to the panel thickness only round the cutouts) *Range 2 to 17, step 0.5.* |
 | `ctrl_panel_margin` | `2.5` | Thinned panel's margin round each cutout (or round the jacks' array), for the inlet's and keystones' latches *Range 1 to 8, step 0.5.* |
 | `ctrl_jack_kind` | `"keystone"` | Jacks: snap-in keystone modules (3.5 mm and 1/4" jack inserts are sold for keystone panels), or round holes for panel-mount jacks held by a nut *Choices: keystone, round.* |
 | `ctrl_jacks` | `[1, 2]` | Jacks: [rows, columns] |
 | `ctrl_keystone_cutout` | `[14.5, 16.2]` | Keystone cutout [width, height] (the usual 14.5 x 16.2; the latch is at the top) |
 | `ctrl_jack_hole` | `9.7` | Round jack hole (1/4" jacks with a 3/8" bushing: 9.7; 3.5 mm jacks: about 6.2; check yours) *Range 3 to 16, step 0.1.* |
-| `ctrl_jack_pitch` | `[16.5, 22]` | Jack pitch [across, up] |
+| `ctrl_jack_pitch` | `[18.5, 22]` | Jack pitch [across, up]; keep the bars between keystone cutouts 4 mm or more (a 2 mm bar broke when its supports came out) |
 | `ctrl_jack_panel` | `2` | Jack panel thickness (keystones latch on 1.5 to 2.2 mm; panel jacks take up to their thread length) *Range 0.8 to 5, step 0.1.* |
 | `ctrl_jack_z` | `0` | Jacks: bottom row's centre above the bay floor; 0 = centred in the tunnel's straight sides *Range 0 to 60, step 0.5.* |
 | `ctrl_posts` | `"grid"` | Posts for the boards: a grid, a list of positions (from a board's own holes), both, or none *Choices: grid, list, both, none.* |
