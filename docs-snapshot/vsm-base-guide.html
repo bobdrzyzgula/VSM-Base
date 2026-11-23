@@ -125,7 +125,10 @@ base</a></li>
 Configuring the model</a></li>
 <li><a href="#test-parts" id="toc-test-parts"><span class="toc-section-number">5</span> Test parts</a></li>
 <li><a href="#printing" id="toc-printing"><span class="toc-section-number">6</span> Printing</a></li>
-<li><a href="#assembly" id="toc-assembly"><span class="toc-section-number">7</span> Assembly</a></li>
+<li><a href="#assembly" id="toc-assembly"><span class="toc-section-number">7</span> Assembly</a>
+<ul>
+<li><a href="#carrying" id="toc-carrying"><span class="toc-section-number">7.1</span> Carrying</a></li>
+</ul></li>
 <li><a href="#other-machines-and-hinges" id="toc-other-machines-and-hinges"><span class="toc-section-number">8</span> Other machines and hinges</a></li>
 <li><a href="#knee-controller" id="toc-knee-controller"><span class="toc-section-number">9</span> Knee controller</a>
 <ul>
@@ -207,17 +210,35 @@ casting; it produces a base whose seat, hinge recesses and clearances
 fit that casting, and that prints in two halves on an ordinary desktop
 printer.</p>
 <h2 data-number="1.1" id="what-has-been-tested"><span class="header-section-number">1.1</span> What has been tested</h2>
+<blockquote>
+<p><strong>Open source, at your own risk.</strong> This is an
+open-source hobby project, not a product. It is published under the MIT
+license, which provides it “as is”, without warranty of any kind, and
+anyone who prints, builds or uses anything from it does so at their own
+risk. It is tested as far as one person can test it at a workbench: fit
+samples, printed parts tried on a real machine, and a working base used
+at home. It has not had the structural, endurance, environmental and
+safety testing a product would need (loads, cycles, carrying, heat,
+aging, misuse), and its motor-control designs are research only. A
+configuration the model can generate is not one that has been printed,
+fitted, load-tested or shown suitable for use. Anyone who wants to make
+a product from this work takes on the whole of that validation;
+<code>docs/VALIDATION.md</code> outlines what it would involve.</p>
+</blockquote>
 <p>These documents use these words for how far a thing has got: a
-<em>concept</em> is drawn or modeled only; <em>simulated</em> means
-modeled numerically from assumed values, not measured; a <em>fit
-sample</em> is printed and fitted, unpowered; a <em>low-voltage
-prototype</em> is built and run without mains; a <em>mains-connected
-research rig</em> is a live bench apparatus; a <em>machine
-modification</em> is fitted to a working machine. “Build” means a
-physical object, never a drawing or a simulation. As of now, the base’s
-printed parts are fit samples or mechanical builds; no low-voltage
-prototype, no mains rig and no controller of any kind has been built;
-and every controller design is a concept, some of them simulated.</p>
+<em>concept</em> is drawn or modeled only; a part that has
+<em>rendered</em> has been generated without error, which shows nothing
+about how it prints or holds; <em>simulated</em> means modeled
+numerically from assumed values, not measured; a <em>fit sample</em> is
+printed and fitted, unpowered; a <em>low-voltage prototype</em> is built
+and run without mains; a <em>mains-connected research rig</em> is a live
+bench apparatus; a <em>machine modification</em> is fitted to a working
+machine; <em>load-tested</em> means tested for strength and endurance,
+which nothing here has been. “Build” means a physical object, never a
+drawing or a simulation. As of now, the base’s printed parts are fit
+samples or mechanical builds; no low-voltage prototype, no mains rig and
+no controller of any kind has been built; and every controller design is
+a concept, some of them simulated.</p>
 <p>Only a small part of what the model can make has been printed and
 used. Treat everything else as <strong>untested on a real
 printer</strong>: it has been checked in the model, but not built.</p>
@@ -265,13 +286,14 @@ printed yet.</p>
 base printed in one piece; the outlet compartment as a whole (beyond its
 test block and cap), the knee-controller and controller compartments;
 the freestanding boxes, the standalone bobbin box, the motor test rig
-and the attached bay; a base without hinges; the printed hinge; flush
-beds, beds on their feet, recessed lips, trims and the cord slot; the
-Kenmore 158-14001 profile; the turn button; the ruler and logos on the
-front face, and the logos on the back and bottom; pin or molded
-extension pegs; the pass-through cover; and every option set away from
-its default. The knee controller and the motor-control paper’s designs
-have not been built at all.</p>
+and the attached bay; a base without hinges; the printed hinge
+(experimental: it has not been printed as a complete hinge); flush beds,
+beds on their feet, recessed lips, trims and the cord slot; the Kenmore
+158-14001 profile; the turn button; the ruler and logos on the front
+face, and the logos on the back and bottom; pin or molded extension
+pegs; the pass-through cover; and every option set away from its
+default. The knee controller and the motor-control paper’s designs have
+not been built at all.</p>
 <blockquote>
 <p><strong>Research use only: not a safe, buildable design.</strong> The
 motor-control circuits, schematics, enclosures, mechanisms, test
@@ -520,7 +542,9 @@ must add up to the bed length:</p>
 </blockquote>
 <p>If they don’t add up, measure again before going any further. If the
 two insets really differ by more than about 1/32”, the model’s symmetric
-placement won’t fit your machine; see the chapter on other machines.</p>
+placement won’t fit your machine; see the chapter on other machines.
+This is a limit of the model: don’t force asymmetric holes into the
+symmetric settings.</p>
 <h3 data-number="3.5.2" id="hole-height-hinge_hole_drop_in"><span class="header-section-number">3.5.2</span> Hole height,
 <code>hinge_hole_drop_in</code></h3>
 <p>Measure how far the <strong>center</strong> of the hinge hole is
@@ -640,7 +664,14 @@ increase <code>inner_depth</code>; if anything is too close to the edge,
 reduce <code>bed_ledge</code> or add a relief.</p>
 <p>The center slice in the test parts (see the chapter on test parts)
 has the full inside profile of the base, and is the best check: slide it
-along the underside of the machine and see that nothing touches.</p>
+along the underside of the machine and see that nothing touches. For a
+new profile this check is required, not optional, and it has to cover
+the machine moving, not only at rest: turn the hand wheel through a full
+stitch and work the feed, the shuttle or hook drive and anything else
+that moves underneath, check the belt, cords and covers, check with the
+bed cushions in place and compressed, and check again with the machine
+tilted back. A static slice can miss a part that only swings low at one
+point in its travel.</p>
 <p>A machine that stands on cast feet under the casting can be carried
 on them instead (see <em>a bed set flush, or standing on its feet</em>
 in Configuring the model): stand it on a flat surface and measure from
@@ -995,7 +1026,11 @@ so carry the machine and base separately, or strap them together; to
 reach the cavity (an attached bay’s screws, say), lift the machine out.
 Decide at print time: hinge recesses can’t be added well to a printed
 base later.</p>
-<p><strong>Note: the printed hinge.</strong>
+<p><strong>Note: the printed hinge.</strong> <em>Experimental: the
+printed hinge has not yet been printed and assembled as a complete
+hinge, and it has not been load- or cycle-tested. Don’t treat it as
+equivalent to a metal hinge until it has been; print
+<code>hinge_block_test</code> first.</em>
 <code>hinge_type = &quot;printed&quot;</code> is a hinge to print, for a machine
 whose hinges are missing or broken, or which came in a molded base whose
 hinges went with it (most portable Kenmores, for one). Each hinge is a
@@ -1042,43 +1077,45 @@ about 90°. On the way there the machine passes its balance point (about
 55° on a 99K), where it takes the least effort to hold, and past about
 75° the machine’s weight behind the base outweighs the base, so the base
 starts to tip up unless you hold the machine or brace its arm (on a 99K
-at 90°, about 6” above the table behind). The tilt prop (part
-<code>tilt_prop</code>, one of the tools) does the bracing: a stand on
-the table behind the base whose cradle, lined with felt, catches the arm
-at 90°, so you can work with both hands while the machine’s weight goes
-into the table instead of tipping the base. Its height and the cradle’s
-radius come from the machine profile (6” and 1” for the 99K;
-<code>custom_tilt_prop_mm</code>, or <code>tilt_prop_h</code> and
-<code>tilt_prop_r</code>, for others): tip the machine back to 90° on a
-level gauge and measure from the table to the underside of the arm. For
-a machine whose arm isn’t round, a cradle radius of 0 in the profile, or
-<code>tilt_prop_top = &quot;flat&quot;</code>, gives a flat, level top instead. A
-standalone version, with no machine settings but a sloping top and a
-foot sized for stability, is in <code>standalone/tilt-prop/</code>.
-Because the base tips first, the stop never has to hold more than a few
-newton-metres, well within the pins and the plastic; don’t drop the
-machine onto it all the same. Set <code>ph_stop_angle</code> between 45°
-and 110°, or 0 for no stop. Check that nothing on your machine reaches
-the base’s back rim before the stop. Print the hinges in PETG or another
-tough filament; their rods are cut-to-length steel rod or dowel pins.
-The pin’s diameter and how far it goes into the hole come from the
-machine profile (1/4” and 12 mm for the 99K, 6 mm and 16 mm for the
-Kenmore 158-14001), unless you set <code>ph_pin_d</code> and
-<code>ph_pin_engage</code>; the pivot is <code>ph_pivot_d</code> (1/4”).
-Hardened dowel pins make good rods and save cutting: set
-<code>ph_pin_len</code> to a stock pin’s length, and the pin goes into
-the bed’s hole by whatever is left past the arm; the console gives the
-range of lengths that fit, from 8 mm into the hole up to just short of
-its depth (<code>hinge_hole_depth_mm</code> in the profile: 22 mm on
-both the 99K and the Kenmore, so their pins may be 30.5–43 mm long; a 6
-× 40 mm pin goes 17.5 mm in, a 9/32” × 1 1/2” pin about 15 mm). Set
-<code>ph_pivot_len</code> to a stock pivot’s length (1 1/8”, 28.575 mm,
-say) and the block’s cheeks widen or narrow to suit. Precision dowel
-pins are made a few hundredths of a millimetre over size (an m6 6 mm pin
-is 6.004–6.012 mm), so try one in the bed’s hole before buying a set.
-The console’s <em>Printed hinge</em> lines give the sizes, the rod
-lengths, and where the parts stand against the rim. The printed hinge is
-new in v34 (its tail stop in v35) and hasn’t been printed yet.</p>
+at 90°, about 6” above the table behind). <strong>Use the tilt prop
+whenever you tip the machine back to work on it.</strong> The tilt prop
+(part <code>tilt_prop</code>, one of the tools) does the bracing: a
+stand on the table behind the base whose cradle, lined with felt,
+catches the arm at 90°, so you can work with both hands while the
+machine’s weight goes into the table instead of tipping the base. Its
+height and the cradle’s radius come from the machine profile (6” and 1”
+for the 99K; <code>custom_tilt_prop_mm</code>, or
+<code>tilt_prop_h</code> and <code>tilt_prop_r</code>, for others): tip
+the machine back to 90° on a level gauge and measure from the table to
+the underside of the arm. For a machine whose arm isn’t round, a cradle
+radius of 0 in the profile, or <code>tilt_prop_top = &quot;flat&quot;</code>,
+gives a flat, level top instead. A standalone version, with no machine
+settings but a sloping top and a foot sized for stability, is in
+<code>standalone/tilt-prop/</code>. Because the base tips first, the
+stop never has to hold more than a few newton-metres, well within the
+pins and the plastic; don’t drop the machine onto it all the same. Set
+<code>ph_stop_angle</code> between 45° and 110°, or 0 for no stop. Check
+that nothing on your machine reaches the base’s back rim before the
+stop. Print the hinges in PETG or another tough filament; their rods are
+cut-to-length steel rod or dowel pins. The pin’s diameter and how far it
+goes into the hole come from the machine profile (1/4” and 12 mm for the
+99K, 6 mm and 16 mm for the Kenmore 158-14001), unless you set
+<code>ph_pin_d</code> and <code>ph_pin_engage</code>; the pivot is
+<code>ph_pivot_d</code> (1/4”). Hardened dowel pins make good rods and
+save cutting: set <code>ph_pin_len</code> to a stock pin’s length, and
+the pin goes into the bed’s hole by whatever is left past the arm; the
+console gives the range of lengths that fit, from 8 mm into the hole up
+to just short of its depth (<code>hinge_hole_depth_mm</code> in the
+profile: 22 mm on both the 99K and the Kenmore, so their pins may be
+30.5–43 mm long; a 6 × 40 mm pin goes 17.5 mm in, a 9/32” × 1 1/2” pin
+about 15 mm). Set <code>ph_pivot_len</code> to a stock pivot’s length (1
+1/8”, 28.575 mm, say) and the block’s cheeks widen or narrow to suit.
+Precision dowel pins are made a few hundredths of a millimetre over size
+(an m6 6 mm pin is 6.004–6.012 mm), so try one in the bed’s hole before
+buying a set. The console’s <em>Printed hinge</em> lines give the sizes,
+the rod lengths, and where the parts stand against the rim. The printed
+hinge is new in v34 (its tail stop in v35) and hasn’t been printed
+yet.</p>
 <p><strong>Note: a bed set flush, or standing on its feet.</strong> Some
 machines sit with the bed’s top level with the base’s rim: the Kenmores
 of the 1960s, whose bobbin covers lift on hinges rather than sliding out
@@ -1232,6 +1269,18 @@ instead.</li>
 sit at 16 and 160 mm from the base’s left face
 (<code>back_peg_xs</code>), clear of the hinges and the split on both
 machines.</li>
+<li><strong>Pegs.</strong> The printed peg inserts
+(<code>ext_peg_style = &quot;insert&quot;</code>) are tested and cheap to replace,
+but printed pegs wear, can split when tapped in, and loosen their holes
+over many removals. For extensions you take on and off often,
+<code>ext_peg_style = &quot;pin&quot;</code> uses steel pins instead: 3/16” steel
+rod or dowel pin, cut to the console’s length (8.5 mm on the 99K) and
+pressed into the lip, with the base’s holes sized for it. A stock dowel
+pin works if its length is no more than the console’s; 3/8” is too long
+for the default <code>peg_hole_depth</code>. Pins with clinch heads,
+such as PEM’s TPS captive pins, are made to be clinched into sheet metal
+and don’t suit printed lips. Check the pegs, and the plastic round them,
+for cracks when fitting.</li>
 </ul>
 <p>Bases of the same machine and class share extensions. Machines whose
 beds are set flush, like the Kenmore, won’t share extensions with
@@ -1575,6 +1624,11 @@ included, are the same length. Even so, the Kenmore’s halves (231.5 ×
 250 mm) only just fit a 256 mm bed: in Bambu Studio, rotate each until
 the keys clear the excluded corner.</li>
 <li>Extensions: printed upright with supports under the lips.</li>
+<li>The printer check is a geometric envelope check, not a guarantee
+that a part prints: excluded corners, clips, the purge tower, the first
+layer’s usable area and the slicer’s rotation all matter. A part close
+to the limit, like the Kenmore’s halves on a 256 mm bed, is
+printer-sensitive; record which printer and orientation worked.</li>
 <li>Print plates: <code>part = &quot;all&quot;</code> gives every part of the
 build in print orientation, grouped into plates for your
 <code>printer_size</code> and <code>printer_margin</code>;
@@ -1714,12 +1768,117 @@ in.</li>
 cord down into its wall slot (with <code>rear</code>, press the
 controller cord on edge into the floor channel first, past its lips,
 starting at the bend), then press the trims in from above.</li>
-<li>Harness rods and carrying.</li>
+<li>Harness rods: push one into each hole, plug the hole with a printed
+plug (<code>rod_plugs</code>) if the console calls for them. See
+<em>Carrying</em>, below.</li>
 <li>An attached bay: inserts into its inner wall, dowels into the base’s
 end face, then the four screws from inside the machine cavity.</li>
 <li>Extensions on their pegs, the corner piece’s dovetails, and snapping
 in the lids.</li>
 </ul>
+<h2 data-number="7.1" id="carrying"><span class="header-section-number">7.1</span> Carrying</h2>
+<p><em>This section describes what the base is meant to carry and a
+harness for it. The harness has not been made, and none of it has been
+load-tested: see the note at the end.</em></p>
+<p><strong>What is meant to be carried.</strong> In its basic build, the
+base is a base:</p>
+<ul>
+<li><strong>Across a room,</strong> lift the base, machine and all, by
+its two handholds, one hand at each end, and keep it level.</li>
+<li><strong>Farther,</strong> use a harness on the four harness rods
+(below).</li>
+<li><strong>Take the extensions off first.</strong> They are
+accessories, not part of what the base carries: lift them off their pegs
+and carry them separately. (There is no good way yet to carry them; a
+box or bag sized to them is one answer.)</li>
+<li><strong>Close the lids</strong>, or take them off, so nothing falls
+out.</li>
+<li><strong>Keep the machine in its seat.</strong> With hinges, the
+hinge pins hold the machine’s back edge, but nothing holds the front
+down if the base is tilted: keep it level, and consider the turn button
+(<code>turn_button</code>, not yet printed), which holds the bed’s front
+edge down, or a strap round the bed. With
+<code>hinge_type = &quot;none&quot;</code>, <strong>nothing at all holds the
+machine</strong>: carry the machine and the base separately, or strap
+them together.</li>
+<li><strong>Never lift by the machine’s arm</strong>, or by the
+extensions or lids.</li>
+<li><strong>If a hinge, peg, dovetail, mending plate, handhold or rod is
+cracked, loose or bent, don’t carry the base with a machine in
+it</strong> until it is repaired or reprinted.</li>
+</ul>
+<p>A commercial portable base would come with a cover and a handle on
+the cover. That needs a very large printer and solves harder structural
+problems, so it isn’t part of this project.</p>
+<p><strong>A harness.</strong> One way to make one, sketched below: two
+lengths of 1” polyester or nylon webbing, each running from a front
+corner’s rod to the opposite back corner’s, crossing in an X above the
+machine. Sew them together where they cross (a box-and-X stitch, with
+bonded nylon or polyester thread), and pass them through a handle there.
+A snap hook at each end clips onto the rod where it is exposed in its
+notch.</p>
+<figure>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4NzYnIGhlaWdodD0nODYzJyB2aWV3Qm94PScwIDAgODc2IDg2Myc+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nd2hpdGUnLz48dGV4dCB4PSc5MC4wJyB5PScyOC4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxNScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nYm9sZCc+RnJvbnQgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSczOTkuOScgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9Jzk1LjEnIHJ4PSc2JyBmaWxsPScjZTllY2VmJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMS41Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzQ1Mi41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzhhOTI5YScgZm9udC13ZWlnaHQ9J25vcm1hbCc+YmFzZTwvdGV4dD48cmVjdCB4PScxNTkuMCcgeT0nMzgzLjgnIHdpZHRoPSczNTYuNScgaGVpZ2h0PScxNi4xJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48cG9seWdvbiBwb2ludHM9JzE1My4yLDI5My44IDE1My4yLDE3OC44IDQ0Ni41LDE3OC44IDQ0Ni41LDM4My44IDM5OC4yLDM4My44IDM5OC4yLDIyMS4zIDIyNS43LDIyMS4zIDIyNS43LDI5My44JyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48bGluZSB4MT0nMTg4LjknIHkxPScyOTMuOCcgeDI9JzE4OC45JyB5Mj0nMzc2LjknIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzMgMycvPjxjaXJjbGUgY3g9JzQ3OC43JyBjeT0nMjM5LjcnIHI9JzQzLjcnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzUgMycvPjxsaW5lIHgxPSczMjAuMCcgeTE9JzE3OC44JyB4Mj0nMzIwLjAnIHkyPScxMjkuMycgc3Ryb2tlPScjOGE5MjlhJyBzdHJva2Utd2lkdGg9JzInIHN0cm9rZS1kYXNoYXJyYXk9JzQgMycvPjx0ZXh0IHg9JzMwOC41JyB5PScyMDEuOCcgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM4YTkyOWEnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPm1hY2hpbmUgKG91dGxpbmUgb25seSk8L3RleHQ+PHRleHQgeD0nMzI1LjgnIHk9JzEyNC44JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5zcG9vbCBwaW48L3RleHQ+PGxpbmUgeDE9Jzk4LjAnIHkxPSc0ODcuMCcgeDI9JzMzOC4xJyB5Mj0nNTAuMCcgc3Ryb2tlPScjYzI1ODJiJyBzdHJva2Utd2lkdGg9JzcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgb3BhY2l0eT0nMC45Jy8+PGNpcmNsZSBjeD0nOTguMCcgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxsaW5lIHgxPSc1NzguMicgeTE9JzQ4Ny4wJyB4Mj0nMzM4LjEnIHkyPSc1MC4wJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBvcGFjaXR5PScwLjknLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzMwNC4xJyB5PSczMC4wJyB3aWR0aD0nNjgnIGhlaWdodD0nMjYnIHJ4PScxMicgZmlsbD0nIzJmNmY5Zicgb3BhY2l0eT0nMC45Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzIyLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEzJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nYm9sZCc+aGFuZGxlPC90ZXh0Pjx0ZXh0IHg9JzM4Ni4xJyB5PSc1Mi4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nbm9ybWFsJz5oaWdoIGVub3VnaCB0byBjbGVhciB0aGUgaGVhZCBhbmQgc3Bvb2wgcGluczwvdGV4dD48dGV4dCB4PSc1NzAuMicgeT0nNTExLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nZW5kJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nbm9ybWFsJz5zbmFwIGhvb2sgb24gdGhlIGhhcm5lc3Mgcm9kLCBpbiBpdHMgbm90Y2g8L3RleHQ+PHRleHQgeD0nMTEzLjAnIHk9JzM1Ny4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J2VuZCcgZmlsbD0nI2MyNTgyYicgZm9udC13ZWlnaHQ9J2JvbGQnPndlYmJpbmc8L3RleHQ+PHRleHQgeD0nOTAuMCcgeT0nNTQ3LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzE1JyB0ZXh0LWFuY2hvcj0nc3RhcnQnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdib2xkJz5Ub3AgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc1NTkuMCcgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9JzI2NC41JyByeD0nOCcgZmlsbD0nI2U5ZWNlZicgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEuNScvPjxyZWN0IHg9JzE1OS4wJyB5PSc2MTAuOCcgd2lkdGg9JzM1Ni41JyBoZWlnaHQ9JzE5Mi4wJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48dGV4dCB4PSczMzcuMicgeT0nNzg5LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5tYWNoaW5lIGJlZDwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nOTAuMCcgeT0nNTg3LjgnIHdpZHRoPScxOC40JyBoZWlnaHQ9JzI4LjcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMScvPjxyZWN0IHg9JzU2Ny44JyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nNTY3LjgnIHk9JzU4Ny44JyB3aWR0aD0nMTguNCcgaGVpZ2h0PScyOC43JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEnLz48bGluZSB4MT0nOTguMCcgeTE9Jzc4MC40JyB4Mj0nNTc4LjInIHkyPSc2MDIuMicgc3Ryb2tlPScjYzI1ODJiJyBzdHJva2Utd2lkdGg9JzcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgb3BhY2l0eT0nMC45Jy8+PGxpbmUgeDE9JzU3OC4yJyB5MT0nNzgwLjQnIHgyPSc5OC4wJyB5Mj0nNjAyLjInIHN0cm9rZT0nI2MyNTgyYicgc3Ryb2tlLXdpZHRoPSc3JyBzdHJva2UtbGluZWNhcD0ncm91bmQnIG9wYWNpdHk9JzAuOScvPjxjaXJjbGUgY3g9Jzk4LjAnIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc5OC4wJyBjeT0nNjAyLjInIHI9JzcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyZjZmOWYnIHN0cm9rZS13aWR0aD0nMi41Jy8+PGNpcmNsZSBjeD0nNTc4LjInIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzYwMi4yJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzMwNC4xJyB5PSc2NzguMycgd2lkdGg9JzY4JyBoZWlnaHQ9JzI2JyByeD0nMTInIGZpbGw9JyMyZjZmOWYnIG9wYWNpdHk9JzAuOScvPjx0ZXh0IHg9JzMzOC4xJyB5PSc3MjUuMycgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPnNld24gdG9nZXRoZXIgd2hlcmUgdGhleSBjcm9zcyw8L3RleHQ+PHRleHQgeD0nMzM4LjEnIHk9Jzc0MS4zJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzJiMmYzMycgZm9udC13ZWlnaHQ9J25vcm1hbCc+dGhyb3VnaCB0aGUgaGFuZGxlPC90ZXh0Pjx0ZXh0IHg9JzkwLjAnIHk9Jzg0NS41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5mcm9udDwvdGV4dD48L3N2Zz4K" style="width:90.0%" alt="A harness on the four harness rods: two lengths of webbing crossing in an X over the machine, through a handle at the crossing, each end clipped to a rod in its notch with a snap hook. The machine is an outline only." />
+<figcaption aria-hidden="true">A harness on the four harness rods: two
+lengths of webbing crossing in an X over the machine, through a handle
+at the crossing, each end clipped to a rod in its notch with a snap
+hook. The machine is an outline only.</figcaption>
+</figure>
+<ul>
+<li><strong>The handle has to clear the machine.</strong> On the 99K
+base it sits about 380 mm above the rods, enough to clear the head and
+the spool pins; each length of webbing is then about 440 mm from hook to
+handle, so about 0.9 m each plus what the hooks’ loops take. Lay the
+harness over your machine before cutting. The webbing will rest against
+the machine near the head and the hand wheel; pad it there, or it will
+rub the finish.</li>
+<li><strong>The hooks have to fit the notch.</strong> The notch leaves
+<code>notch_clear</code> (4 mm) round the rod, behind it and above it,
+so a hook’s wire must be thinner than that to pass. Pick the hooks
+before printing the base, and raise <code>notch_clear</code> if they
+need it.</li>
+<li><strong>The hooks, webbing and stitching</strong> are the parts most
+likely to fail. Use metal snap hooks with a stated working load of at
+least 25 kg each, and webbing rated well above that.</li>
+</ul>
+<p><strong>The loads, worked by hand.</strong> These are estimates from
+simplified geometry, not measurements; they show where the margins are
+large and where they aren’t, nothing more.</p>
+<ul>
+<li><em>The load.</em> A 50 lb (22.7 kg) machine in a base of about 4 kg
+is 262 N. Doubling that for jolts and uneven lifting gives 523 N, a
+quarter of it, 131 N, at each corner.</li>
+<li><em>The webbing.</em> With the handle 380 mm above the rods and each
+corner 223 mm from the center, each length of webbing rises at about
+60°, so each end pulls 152 N along the webbing, 77 N of it inward. A
+lower handle raises that: 163 N at 300 mm.</li>
+<li><em>The rods.</em> Each 3/16” rod spans the 25 mm notch, with the
+hook pulling at its middle. As a simply supported beam that is a bending
+moment of about 950 N·mm and a stress of about 90 MPa. A hardened steel
+dowel pin yields at well over 1,000 MPa and 303 stainless at about 240
+MPa, so steel has a margin of 2.7 or more; brass is weaker and varies,
+so use steel for rods that will carry the machine.</li>
+<li><em>The plastic round the rods.</em> The hook pulls up and inward,
+so the rod bears into the solid end wall above and behind it, not into
+the 4.5 mm of plastic below and outside it. Spread over about 10 mm
+either side of the notch, the bearing stress is under 2 MPa, against
+tens of MPa for printed PETG.</li>
+<li><em>The base as a beam.</em> Lifted at its ends with the machine’s
+weight in the middle, the base bends by about 27 N·m. Even counting only
+the floor and two 10 mm walls, that is under 1 MPa of bending stress.
+Across the split it puts roughly 360 N of tension into the floor, shared
+by the three mending plates and the dovetails, about 120 N per
+plate.</li>
+<li><em>The handholds.</em> Each carries half the load, and the fingers
+pull up into the solid end wall, as the rods do.</li>
+</ul>
+<p>So on paper the printed structure has a wide margin, and the weak
+points are the bought parts: hooks, webbing, stitching, and the rods’
+material. On paper is all it is. Layer adhesion, voids, a crack, creep,
+heat (a car in summer) or a print defect can each remove most of a
+margin, and the numbers say nothing about fatigue. Inspect the rods’
+notches, the handholds and the split joint before each carry, and redo
+the arithmetic for a heavier machine.</p>
 <h1 data-number="8" id="other-machines-and-hinges"><span class="header-section-number">8</span> Other machines and hinges</h1>
 <p><em>This chapter is an outline, still to be written. It will
 cover:</em></p>

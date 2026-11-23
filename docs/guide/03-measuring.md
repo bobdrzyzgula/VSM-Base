@@ -108,7 +108,9 @@ the bed length:
 
 If they don't add up, measure again before going any further. If the two
 insets really differ by more than about 1/32", the model's symmetric
-placement won't fit your machine; see the chapter on other machines.
+placement won't fit your machine; see the chapter on other machines. This
+is a limit of the model: don't force asymmetric holes into the symmetric
+settings.
 
 ### Hole height, `hinge_hole_drop_in`
 
@@ -226,7 +228,14 @@ add a relief.
 
 The center slice in the test parts (see the chapter on test parts) has the
 full inside profile of the base, and is the best check: slide it along the
-underside of the machine and see that nothing touches.
+underside of the machine and see that nothing touches. For a new profile
+this check is required, not optional, and it has to cover the machine
+moving, not only at rest: turn the hand wheel through a full stitch and
+work the feed, the shuttle or hook drive and anything else that moves
+underneath, check the belt, cords and covers, check with the bed cushions
+in place and compressed, and check again with the machine tilted back. A
+static slice can miss a part that only swings low at one point in its
+travel.
 
 A machine that stands on cast feet under the casting can be carried on
 them instead (see *a bed set flush, or standing on its feet* in

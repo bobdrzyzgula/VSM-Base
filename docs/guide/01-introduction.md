@@ -13,12 +13,28 @@ that casting, and that prints in two halves on an ordinary desktop printer.
 
 ## What has been tested
 
+> **Open source, at your own risk.** This is an open-source hobby project,
+> not a product. It is published under the MIT license, which provides it
+> "as is", without warranty of any kind, and anyone who prints, builds or
+> uses anything from it does so at their own risk. It is tested as far as
+> one person can test it at a workbench: fit samples, printed parts tried on
+> a real machine, and a working base used at home. It has not had the
+> structural, endurance, environmental and safety testing a product would
+> need (loads, cycles, carrying, heat, aging, misuse), and its motor-control
+> designs are research only. A configuration the model can generate is not
+> one that has been printed, fitted, load-tested or shown suitable for use.
+> Anyone who wants to make a product from this work takes on the whole of
+> that validation; `docs/VALIDATION.md` outlines what it would involve.
+
 These documents use these words for how far a thing has got: a
-*concept* is drawn or modeled only; *simulated* means modeled numerically
+*concept* is drawn or modeled only; a part that has *rendered* has been
+generated without error, which shows nothing about how it prints or holds;
+*simulated* means modeled numerically
 from assumed values, not measured; a *fit sample* is printed and fitted,
 unpowered; a *low-voltage prototype* is built and run without mains; a
 *mains-connected research rig* is a live bench apparatus; a *machine
-modification* is fitted to a working machine. "Build" means a physical
+modification* is fitted to a working machine; *load-tested* means tested
+for strength and endurance, which nothing here has been. "Build" means a physical
 object, never a drawing or a simulation. As of now, the base's printed
 parts are fit samples or mechanical builds; no low-voltage prototype, no
 mains rig and no controller of any kind has been built; and every
@@ -68,7 +84,7 @@ not from the current one: later changes have not all been printed yet.
 Not yet tested, among others: other machines and custom profiles; the base
 printed in one piece; the outlet compartment as a whole (beyond its test block and cap), the
 knee-controller and controller compartments;
-the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158-14001 profile; the turn button; the ruler and logos on the front face, and the logos on the back and bottom; pin or molded extension pegs; the
+the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge (experimental: it has not been printed as a complete hinge); flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158-14001 profile; the turn button; the ruler and logos on the front face, and the logos on the back and bottom; pin or molded extension pegs; the
 pass-through cover; and every option set away from its default. The knee
 controller and the motor-control paper's designs have not been built at
 all.

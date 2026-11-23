@@ -9,6 +9,11 @@
   the Kenmore's halves (231.5 × 250 mm) only just fit a 256 mm bed: in
   Bambu Studio, rotate each until the keys clear the excluded corner.
 - Extensions: printed upright with supports under the lips.
+- The printer check is a geometric envelope check, not a guarantee that
+  a part prints: excluded corners, clips, the purge tower, the first
+  layer's usable area and the slicer's rotation all matter. A part close
+  to the limit, like the Kenmore's halves on a 256 mm bed, is
+  printer-sensitive; record which printer and orientation worked.
 - Print plates: `part = "all"` gives every part of the build in print
   orientation, grouped into plates for your `printer_size` and
   `printer_margin`; `print_plate = N` gives plate N on its own. The console

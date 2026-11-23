@@ -56,7 +56,10 @@
 > cavity (an attached bay's screws, say), lift the machine out. Decide at
 > print time: hinge recesses can't be added well to a printed base later.
 >
-> **Note: the printed hinge.** `hinge_type = "printed"` is a hinge to print,
+> **Note: the printed hinge.** *Experimental: the printed hinge has not
+> yet been printed and assembled as a complete hinge, and it has not been
+> load- or cycle-tested. Don't treat it as equivalent to a metal hinge until
+> it has been; print `hinge_block_test` first.* `hinge_type = "printed"` is a hinge to print,
 > for a machine whose hinges are missing or broken, or which came in a
 > molded base whose hinges went with it (most portable Kenmores, for one).
 > Each hinge is a printed **arm**, a printed **block** and two pieces of
@@ -98,7 +101,8 @@
 > least effort to hold, and past about 75° the machine's weight behind the
 > base outweighs the base, so the base starts to tip up unless you hold the
 > machine or brace its arm (on a 99K at 90°, about 6" above the table
-> behind). The tilt prop (part `tilt_prop`, one of the tools) does the
+> behind). **Use the tilt prop whenever you tip the machine back to work
+> on it.** The tilt prop (part `tilt_prop`, one of the tools) does the
 > bracing: a stand on the table behind the base whose cradle, lined with
 > felt, catches the arm at 90°, so you can work with both hands while the
 > machine's weight goes into the table instead of tipping the base. Its
@@ -271,6 +275,17 @@
 >   (`back_ext_length`; other lengths get a note), and its pegs sit at 16
 >   and 160 mm from the base's left face (`back_peg_xs`), clear of the
 >   hinges and the split on both machines.
+> - **Pegs.** The printed peg inserts (`ext_peg_style = "insert"`) are
+>   tested and cheap to replace, but printed pegs wear, can split when
+>   tapped in, and loosen their holes over many removals. For extensions
+>   you take on and off often, `ext_peg_style = "pin"` uses steel pins
+>   instead: 3/16" steel rod or dowel pin, cut to the console's length
+>   (8.5 mm on the 99K) and pressed into the lip, with the base's holes
+>   sized for it. A stock dowel pin works if its length is no more than the
+>   console's; 3/8" is too long for the default `peg_hole_depth`. Pins with
+>   clinch heads, such as PEM's TPS captive pins, are made to be clinched
+>   into sheet metal and don't suit printed lips. Check the pegs, and the
+>   plastic round them, for cracks when fitting.
 >
 > Bases of the same machine and class share extensions. Machines whose
 > beds are set flush, like the Kenmore, won't share extensions with

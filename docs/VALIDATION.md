@@ -1,20 +1,47 @@
-# Validation required before any motor control could be called buildable
+# Validation required before anything here could be called a product
 
 *Written by Claude at Bob Drzyzgula's direction, November 2026, from a
 safety review of the repository.*
 
-None of the motor-control designs in this repository is a safe, buildable
-design. They are research artifacts: concepts, some of them simulated, none
-built, tested or assessed against an electrical safety standard. This
-checklist records what would have to be done, for a specific design and a
-specific jurisdiction, before that design could be called buildable or
-shippable. Until every item has been completed for a design, it keeps its
-status as research only.
+VSM Base is an open-source hobby project, provided under the MIT license
+"as is", without warranty. Its printed parts are tested as far as one person
+can at a workbench; its motor-control designs are research artifacts:
+concepts, some of them simulated, none built, tested or assessed against an
+electrical safety standard. This checklist records what would have to be
+done, for a specific configuration and a specific jurisdiction, before it
+could be called a product: buildable, shippable, or safe to sell. Anyone who
+wants to make one takes that on. Until every item applying to a design has
+been completed, a motor control keeps its status as research only, and a
+printed configuration its status as a hobby build used at the builder's own
+risk.
 
 The list is a minimum. It is not a substitute for an engineer qualified in
 product safety, the applicable standards themselves, or a test laboratory.
 
-## Requirements and analysis
+## The printed base and its accessories
+
+- A reference build from a named model version, with the printer, slicer,
+  material and filament batch, drying, nozzle, layer height, walls, top
+  and bottom layers, infill, orientation, supports and hardware recorded.
+- Static vertical and lateral load on the seat, joint and hinges.
+- Lifting by each handhold, by the harness rods, and asymmetrically;
+  set-down and impact loads; a dropped or struck part.
+- Repeated machine insertion and removal, hinge tilting, lid opening, and
+  extension fitting and removal; peg and peg-hole wear.
+- Creep under load over time; behavior warm, cold, after oil or moisture,
+  and after print defects or partial delamination.
+- The printed hinge, if used: pin engagement, pivot retention, arm and
+  block strength, stop strength, sideways loads, wear and creep.
+- Heat-set inserts, nut traps and mending plates: hole sizes, insertion,
+  tightening, and pull-out under cyclic load.
+- Every other machine profile, end to end, with its underside clearance
+  checked through the mechanisms' full movement.
+- Each printer's usable bed, not only its nominal build volume.
+- Transport and shipping, separately from use at home.
+- Inspection criteria for cracks, whitening, loose inserts, worn holes,
+  hinge play and distortion, and a replacement-part workflow.
+
+## Motor controls: requirements and analysis
 
 - Formal requirements and intended-use limits.
 - Risk and hazard analysis, including foreseeable misuse and abuse.

@@ -37,38 +37,39 @@ and corner extensions and their lids, in gray and gold PETG.*
 
 ## Status: what has been tested
 
-Only a small part of what the model can make has been printed and used.
-Treat everything else as **untested on a real printer**: it has been checked
-in the model, but not built.
+> **Open source, at your own risk.** This is an open-source hobby project,
+> not a product. It is published under the MIT license, which provides it
+> "as is", without warranty of any kind, and anyone who prints, builds or
+> uses anything from it does so at their own risk. It is tested as far as
+> one person can test it at a workbench: fit samples, printed parts tried on
+> a real machine, and a working base used at home. It has not had the
+> structural, endurance, environmental and safety testing a product would
+> need (loads, cycles, carrying, heat, aging, misuse), and its motor-control
+> designs are research only. A configuration the model can generate is not
+> one that has been printed, fitted, load-tested or shown suitable for use.
+> Anyone who wants to make a product from this work takes on the whole of
+> that validation; `docs/VALIDATION.md` outlines what it would involve.
 
-Tested, on a Singer 99K (the default machine profile), printed in PETG:
+The words used for status: a *concept* is drawn or modeled only; a part
+that has *rendered* has been generated without error; *simulated* means
+modeled numerically from assumed values; a *fit sample* is printed and
+tried, unpowered; a *build* is a physical object in use; *load-tested*
+means tested for strength and endurance, which nothing here has been.
 
-- the base in its default form: split into two halves with the dovetail
-  keys and mending plates, the storage compartment, the handholds and
-  harness rods;
-- the back, left and corner extensions with their hinged lids, the printed
-  extension pegs (tapped into the lips with a hammer; they then mate with
-  the base's holes), and the extended back lip;
-- the lollipop hinges, mounted with 1" #8-32 screws and nylon-insert
-  locknuts in the nut traps; the mending plates, held by
-  1/2" #8-32 flat-head screws into nylon-insert locknuts in their traps
-  (the screws push through the printed membranes);
-- the organizer insert test parts (`bobbin_test`, `notion_test`) and the
-  full stack of five bobbin trays; a spool tray and a divided notion tray
-  for the back bay. On the spool tray, in silk PLA, a curb split from the
-  floor at the first layer above it; the gussets and taller curb added
-  since have not been printed yet.
-
-These were printed from development versions of the model as it evolved,
-not from the current one: later changes (the split joint's serrations, for
-one) have not all been printed yet.
-
-Not yet tested, among others: other machines and custom profiles; the base
-printed in one piece; the outlet, knee-controller and jack compartments;
-the freestanding boxes, the standalone bobbin box, the motor test rig and the attached bay; a base without hinges; the printed hinge; flush beds, beds on their feet, recessed lips, trims and the cord slot; the Kenmore 158-14001 profile; the turn button; pin or molded extension pegs; the
-pass-through cover; and every option set away from its default. The knee
-controller and the motor-control paper's designs have not been built at
-all.
+Only a small part of what the model can make has been printed and used,
+all of it on a Singer 99K (the default profile), in PETG, from development
+versions of the model as it evolved rather than the current one: the base
+in its default form (split, dovetails and mending plates, storage
+compartment, handholds and harness rods), the back, left and corner
+extensions with their hinged lids and printed pegs, the lollipop hinges,
+the organizer trays, and test pieces for the outlet block and its cap, the
+pass-through's knock-out walls and the split joint's center slice. The
+User's Guide (chapter 1, *What has been tested*) gives the details and
+the long list of what has not been printed: other machines and custom
+profiles, the one-piece base, the printed hinge, the outlet, knee and
+controller compartments as wholes, the attached bay, the freestanding
+boxes, the motor test rig, and every option set away from its default.
+No motor control of any kind has been built.
 
 ## Why
 
@@ -306,4 +307,6 @@ along the way.
 
 ## License
 
-MIT; see [LICENSE](LICENSE). Copyright © 2026 Robert Drzyzgula.
+MIT; see [LICENSE](LICENSE). Copyright © 2026 Robert Drzyzgula. The
+license provides the work "as is", without warranty of any kind; see
+*Status* above.
