@@ -3,7 +3,8 @@
 
 Drawn by Claude at Bob Drzyzgula's direction, November 2026. A sketch of
 one way to carry the base: two lengths of webbing from the four harness
-rods, crossing in an X over the machine, through a handle. Dimensions are
+rods, crossing in an X over the machine, running together through the
+printed handle (standalone/harness-handle). Dimensions are
 the Singer 99K base's defaults; the machine is an outline only.
 """
 import os
@@ -12,6 +13,7 @@ L, W, H = 431.5, 230.0, 82.7          # base, mm
 ROD_X, ROD_Z = 7.0, 7.0               # rod center in from the end face, above the bottom
 NOTCH = [(25, 50), (180, 205)]        # notch spans along Y
 HANDLE_Z = 387.0                       # handle above the table
+HANDLE_L = 154.0                       # the printed handle's length
 S = 1.15                               # px per mm
 
 ink, soft, strap, accent = "#2b2f33", "#8a929a", "#c2582b", "#2f6f9f"
@@ -45,14 +47,14 @@ parts.append(t(fx(190), fz(255), "machine (outline only)", 12, "middle", soft))
 parts.append(t(fx(205), fz(322), "spool pin", 11, "start", soft))
 # straps: from the rods at each end up to the handle (the front and back straps overlap in this view)
 hx, hz = L / 2, HANDLE_Z
-for x in (ROD_X, L - ROD_X):
-    parts.append(f"<line x1='{fx(x):.1f}' y1='{fz(ROD_Z):.1f}' x2='{fx(hx):.1f}' y2='{fz(hz):.1f}' stroke='{strap}' stroke-width='7' stroke-linecap='round' opacity='0.9'/>")
+for x, he in ((ROD_X, hx - HANDLE_L / 2), (L - ROD_X, hx + HANDLE_L / 2)):
+    parts.append(f"<line x1='{fx(x):.1f}' y1='{fz(ROD_Z):.1f}' x2='{fx(he):.1f}' y2='{fz(hz):.1f}' stroke='{strap}' stroke-width='7' stroke-linecap='round' opacity='0.9'/>")
     # snap hook
     parts.append(f"<circle cx='{fx(x):.1f}' cy='{fz(ROD_Z):.1f}' r='7' fill='white' stroke='{accent}' stroke-width='2.5'/>")
 # handle
-parts.append(f"<rect x='{fx(hx)-34:.1f}' y='{fz(hz)-20:.1f}' width='68' height='26' rx='12' fill='{accent}' opacity='0.9'/>")
+parts.append(f"<rect x='{fx(hx - HANDLE_L / 2):.1f}' y='{fz(hz)-20:.1f}' width='{HANDLE_L*S:.1f}' height='34' rx='10' fill='{accent}' opacity='0.9'/>")
 parts.append(t(fx(hx), fz(hz) - 28, "handle", 13, "middle", accent, "bold"))
-parts.append(t(fx(hx) + 48, fz(hz) + 2, "high enough to clear the head and spool pins", 12, "start", ink))
+parts.append(t(fx(hx + HANDLE_L / 2) + 14, fz(hz) + 2, "high enough to clear the head and spool pins", 12, "start", ink))
 parts.append(t(fx(L - ROD_X) - 8, fz(ROD_Z) + 24, "snap hook on the harness rod, in its notch", 12, "end", accent))
 parts.append(t(fx(20), fz(120), "webbing", 13, "end", strap, "bold"))
 front_bottom = oy + 34
@@ -74,14 +76,22 @@ for x0 in (0, L):
         centers.append((cx, (y0 + y1) / 2))
 # the X: front-left to back-right, front-right to back-left
 c = {k: v for k, v in zip(["lf", "lb", "rf", "rb"], centers)}
+# each length: its corner to the near end of the handle, through it, and on
+# to the opposite corner from the far end
+hl, hr = L / 2 - HANDLE_L / 2, L / 2 + HANDLE_L / 2
 for a, b in (("lf", "rb"), ("rf", "lb")):
     (x0, y0), (x1, y1) = c[a], c[b]
-    parts.append(f"<line x1='{tx(x0):.1f}' y1='{ty(y0):.1f}' x2='{tx(x1):.1f}' y2='{ty(y1):.1f}' stroke='{strap}' stroke-width='7' stroke-linecap='round' opacity='0.9'/>")
+    e0, e1 = (hl, hr) if x0 < x1 else (hr, hl)
+    pts = f"{tx(x0):.1f},{ty(y0):.1f} {tx(e0):.1f},{ty(W/2):.1f} {tx(e1):.1f},{ty(W/2):.1f} {tx(x1):.1f},{ty(y1):.1f}"
+    parts.append(f"<polyline points='{pts}' fill='none' stroke='{strap}' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' opacity='0.9'/>")
+# bar tacks just outside each end
+for xe in (hl - 8, hr + 8):
+    parts.append(f"<line x1='{tx(xe):.1f}' y1='{ty(W/2)-6:.1f}' x2='{tx(xe):.1f}' y2='{ty(W/2)+6:.1f}' stroke='{ink}' stroke-width='3'/>")
 for (x, y) in centers:
     parts.append(f"<circle cx='{tx(x):.1f}' cy='{ty(y):.1f}' r='7' fill='white' stroke='{accent}' stroke-width='2.5'/>")
-parts.append(f"<rect x='{tx(L/2)-34:.1f}' y='{ty(W/2)-13:.1f}' width='68' height='26' rx='12' fill='{accent}' opacity='0.9'/>")
-parts.append(t(tx(L / 2), ty(W / 2) + 34, "sewn together where they cross,", 12, "middle", ink))
-parts.append(t(tx(L / 2), ty(W / 2) + 50, "through the handle", 12, "middle", ink))
+parts.append(f"<rect x='{tx(hl):.1f}' y='{ty(W/2)-23:.1f}' width='{HANDLE_L*S:.1f}' height='46' rx='8' fill='{accent}' opacity='0.9'/>")
+parts.append(t(tx(L / 2), ty(W / 2) + 44, "both lengths run through the handle,", 12, "middle", ink))
+parts.append(t(tx(L / 2), ty(W / 2) + 60, "sewn together just outside each end", 12, "middle", ink))
 parts.append(t(tx(0), ty(0) + 22, "front", 12, "start", soft))
 bottom = ty(0) + 40
 

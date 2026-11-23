@@ -84,19 +84,28 @@ problems, so it isn't part of this project.
 
 **A harness.** One way to make one, sketched below: two lengths of 1"
 polyester or nylon webbing, each running from a front corner's rod to the
-opposite back corner's, crossing in an X above the machine. Sew them
-together where they cross (a box-and-X stitch, with bonded nylon or
-polyester thread), and pass them through a handle there. A snap hook at
-each end clips onto the rod where it is exposed in its notch.
+opposite back corner's, crossing in an X above the machine. They cross
+in a printed handle (`standalone/harness-handle/`): both lengths run
+through a tunnel along its grip, one on top of the other, and are sewn
+together just outside each end of it (a bar tack or a short box-and-X,
+with bonded nylon or polyester thread). A snap hook at each end clips onto
+the rod where it is exposed in its notch. The handle's
+[README](../../standalone/harness-handle/README.md) gives the order of
+work: the webbing has to go through the handle before anything is sewn.
 
 ![A harness on the four harness rods: two lengths of webbing crossing in an
-X over the machine, through a handle at the crossing, each end clipped to a
-rod in its notch with a snap hook. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
+X over the machine, running together through the handle, each end clipped
+to a rod in its notch with a snap hook. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
 
+- **The webbing must not slide through the handle.** Sewn on both sides
+  of it, each of the four legs has a fixed length, and the base hangs
+  steady below the handle. Unsewn, the harness is a sling over a pulley:
+  the base can rock in it, and since its weight sits above the rods, it
+  will tip.
 - **The handle has to clear the machine.** On the 99K base it sits about
   380 mm above the rods, enough to clear the head and the spool pins; each
-  length of webbing is then about 440 mm from hook to handle, so about
-  0.9 m each plus what the hooks' loops take. Lay the harness over your
+  leg is then about 410 mm from hook to handle, so each length is about
+  1 m (two legs and the handle's 154 mm) plus what the hooks' loops take. Lay the harness over your
   machine before cutting. The webbing will rest against the machine near
   the head and the hand wheel; pad it there, or it will rub the finish.
 - **The hooks have to fit the notch.** The notch leaves `notch_clear`
@@ -117,7 +126,10 @@ where they aren't, nothing more.
 - *The webbing.* With the handle 380 mm above the rods and each corner
   223 mm from the center, each length of webbing rises at about 60°, so
   each end pulls 152 N along the webbing, 77 N of it inward. A lower
-  handle raises that: 163 N at 300 mm.
+  handle raises that: 163 N at 300 mm. (These figures take the legs to
+  one point. The printed handle is 154 mm long, which makes the legs
+  steeper and the pull a little less, about 141 N; the handle's own
+  loads are in its README.)
 - *The rods.* Each 3/16" rod spans the 25 mm notch, with the hook pulling
   at its middle. As a simply supported beam that is a bending moment of
   about 950 N·mm and a stress of about 90 MPa. A hardened steel dowel pin
