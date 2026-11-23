@@ -262,8 +262,10 @@ spool tray and a divided notion tray for the back bay. On the spool
 tray, in silk PLA, a curb split from the floor at the first layer above
 it; the gussets and taller curb added since have not been printed
 yet;</li>
-<li>test pieces printed in November 2026, in Sunlu High-Speed PETG Matte
-(grey), dried and calibrated: the outlet block
+<li>test pieces printed in November 2026 on one printer (a Bambu Lab
+P1S), in one material (Sunlu High-Speed PETG Matte, grey, dried and
+calibrated), one of each: single fit samples, observed once, not
+repeated, cycled or loaded. They were: the outlet block
 (<code>outlet_test</code>) with its teardrop screw recess and printed
 cap (<code>outlet_cap</code>), the cap snapping in flush and holding
 firmly until pushed out from behind, and with a cordset’s duplex outlet
@@ -277,7 +279,11 @@ to trim, much like trimming supports; and the center slice
 and whose front-wall serrations print cleanly, their 45° tops intact,
 and mate between the halves. (It was printed with split off by mistake,
 so without the mending-plate pockets; the pockets were last printed in
-the version 15 base.)</li>
+the version 15 base.) And the controller compartment
+(<code>compartment_test</code>, version 85), its back wall, keystone and
+inlet cutouts, tunnels and anchor posts printing as modeled; one 2 mm
+bar between keystone cutouts broke as its supports were removed, which
+led to the wider bars of version 87.</li>
 </ul>
 <p>These were printed from development versions of the model as it
 evolved, not from the current one: later changes have not all been
@@ -1788,13 +1794,17 @@ in the lids.</li>
 </ul>
 <h2 data-number="7.1" id="carrying"><span class="header-section-number">7.1</span> Carrying</h2>
 <p><em>This section describes what the base is meant to carry and a
-harness for it. The harness has not been made, and none of it has been
-load-tested: see the note at the end.</em></p>
+harness for it. Nothing here has been load-tested: not the base, its
+handholds or its rods, and not the harness, which has not been made. The
+figures at the end are illustrative arithmetic, not evidence of
+strength.</em></p>
 <p><strong>What is meant to be carried.</strong> In its basic build, the
 base is a base:</p>
 <ul>
 <li><strong>Across a room,</strong> lift the base, machine and all, by
-its two handholds, one hand at each end, and keep it level.</li>
+its two handholds, one hand at each end, low over the floor, and keep it
+level. (The handholds have been used this way on the 99K build, but not
+load-tested.)</li>
 <li><strong>Farther,</strong> use a harness on the four harness rods
 (below).</li>
 <li><strong>Take the extensions off first.</strong> They are
@@ -1820,8 +1830,14 @@ it</strong> until it is repaired or reprinted.</li>
 <p>A commercial portable base would come with a cover and a handle on
 the cover. That needs a very large printer and solves harder structural
 problems, so it isn’t part of this project.</p>
-<p><strong>A harness.</strong> One way to make one, sketched below: two
-lengths of 1” polyester or nylon webbing, each running from a front
+<p><strong>A harness (experimental: do not carry a machine with it
+yet).</strong> Don’t carry a machine with a harness until the complete
+assembly (hooks, webbing, stitching, handle and rods, as built) has been
+proof-load tested and inspected; the handle’s README outlines what that
+test would involve, and <code>docs/VALIDATION.md</code> what more a
+dependable design would need. Until then, what follows is a design to
+build and test, not a way to carry. One way to make one, sketched below:
+two lengths of 1” polyester or nylon webbing, each running from a front
 corner’s rod to the opposite back corner’s, crossing in an X above the
 machine. They cross in a printed handle
 (<code>standalone/harness-handle/</code>): both lengths run through a
@@ -1832,11 +1848,12 @@ the rod where it is exposed in its notch. The handle’s <a href="../../standalo
 order of work: the webbing has to go through the handle before anything
 is sewn.</p>
 <figure>
-<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4NzYnIGhlaWdodD0nODYzJyB2aWV3Qm94PScwIDAgODc2IDg2Myc+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nd2hpdGUnLz48dGV4dCB4PSc5MC4wJyB5PScyOC4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxNScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nYm9sZCc+RnJvbnQgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSczOTkuOScgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9Jzk1LjEnIHJ4PSc2JyBmaWxsPScjZTllY2VmJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMS41Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzQ1Mi41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzhhOTI5YScgZm9udC13ZWlnaHQ9J25vcm1hbCc+YmFzZTwvdGV4dD48cmVjdCB4PScxNTkuMCcgeT0nMzgzLjgnIHdpZHRoPSczNTYuNScgaGVpZ2h0PScxNi4xJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48cG9seWdvbiBwb2ludHM9JzE1My4yLDI5My44IDE1My4yLDE3OC44IDQ0Ni41LDE3OC44IDQ0Ni41LDM4My44IDM5OC4yLDM4My44IDM5OC4yLDIyMS4zIDIyNS43LDIyMS4zIDIyNS43LDI5My44JyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48bGluZSB4MT0nMTg4LjknIHkxPScyOTMuOCcgeDI9JzE4OC45JyB5Mj0nMzc2LjknIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzMgMycvPjxjaXJjbGUgY3g9JzQ3OC43JyBjeT0nMjM5LjcnIHI9JzQzLjcnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzUgMycvPjxsaW5lIHgxPSczMjAuMCcgeTE9JzE3OC44JyB4Mj0nMzIwLjAnIHkyPScxMjkuMycgc3Ryb2tlPScjOGE5MjlhJyBzdHJva2Utd2lkdGg9JzInIHN0cm9rZS1kYXNoYXJyYXk9JzQgMycvPjx0ZXh0IHg9JzMwOC41JyB5PScyMDEuOCcgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM4YTkyOWEnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPm1hY2hpbmUgKG91dGxpbmUgb25seSk8L3RleHQ+PHRleHQgeD0nMzI1LjgnIHk9JzEyNC44JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5zcG9vbCBwaW48L3RleHQ+PGxpbmUgeDE9Jzk4LjAnIHkxPSc0ODcuMCcgeDI9JzI0OS42JyB5Mj0nNTAuMCcgc3Ryb2tlPScjYzI1ODJiJyBzdHJva2Utd2lkdGg9JzcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgb3BhY2l0eT0nMC45Jy8+PGNpcmNsZSBjeD0nOTguMCcgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxsaW5lIHgxPSc1NzguMicgeTE9JzQ4Ny4wJyB4Mj0nNDI2LjcnIHkyPSc1MC4wJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBvcGFjaXR5PScwLjknLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzI0OS42JyB5PSczMC4wJyB3aWR0aD0nMTc3LjEnIGhlaWdodD0nMzQnIHJ4PScxMCcgZmlsbD0nIzJmNmY5Zicgb3BhY2l0eT0nMC45Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzIyLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEzJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nYm9sZCc+aGFuZGxlPC90ZXh0Pjx0ZXh0IHg9JzQ0MC43JyB5PSc1Mi4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nbm9ybWFsJz5oaWdoIGVub3VnaCB0byBjbGVhciB0aGUgaGVhZCBhbmQgc3Bvb2wgcGluczwvdGV4dD48dGV4dCB4PSc1NzAuMicgeT0nNTExLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nZW5kJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nbm9ybWFsJz5zbmFwIGhvb2sgb24gdGhlIGhhcm5lc3Mgcm9kLCBpbiBpdHMgbm90Y2g8L3RleHQ+PHRleHQgeD0nMTEzLjAnIHk9JzM1Ny4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J2VuZCcgZmlsbD0nI2MyNTgyYicgZm9udC13ZWlnaHQ9J2JvbGQnPndlYmJpbmc8L3RleHQ+PHRleHQgeD0nOTAuMCcgeT0nNTQ3LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzE1JyB0ZXh0LWFuY2hvcj0nc3RhcnQnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdib2xkJz5Ub3AgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc1NTkuMCcgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9JzI2NC41JyByeD0nOCcgZmlsbD0nI2U5ZWNlZicgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEuNScvPjxyZWN0IHg9JzE1OS4wJyB5PSc2MTAuOCcgd2lkdGg9JzM1Ni41JyBoZWlnaHQ9JzE5Mi4wJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48dGV4dCB4PSczMzcuMicgeT0nNzg5LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5tYWNoaW5lIGJlZDwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nOTAuMCcgeT0nNTg3LjgnIHdpZHRoPScxOC40JyBoZWlnaHQ9JzI4LjcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMScvPjxyZWN0IHg9JzU2Ny44JyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nNTY3LjgnIHk9JzU4Ny44JyB3aWR0aD0nMTguNCcgaGVpZ2h0PScyOC43JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEnLz48cG9seWxpbmUgcG9pbnRzPSc5OC4wLDc4MC40IDI0OS42LDY5MS4zIDQyNi43LDY5MS4zIDU3OC4yLDYwMi4yJyBmaWxsPSdub25lJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJyBvcGFjaXR5PScwLjknLz48cG9seWxpbmUgcG9pbnRzPSc1NzguMiw3ODAuNCA0MjYuNyw2OTEuMyAyNDkuNiw2OTEuMyA5OC4wLDYwMi4yJyBmaWxsPSdub25lJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJyBvcGFjaXR5PScwLjknLz48bGluZSB4MT0nMjQwLjQnIHkxPSc2ODUuMycgeDI9JzI0MC40JyB5Mj0nNjk3LjMnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPSczJy8+PGxpbmUgeDE9JzQzNS45JyB5MT0nNjg1LjMnIHgyPSc0MzUuOScgeTI9JzY5Ny4zJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9Jzk4LjAnIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc5OC4wJyBjeT0nNjAyLjInIHI9JzcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyZjZmOWYnIHN0cm9rZS13aWR0aD0nMi41Jy8+PGNpcmNsZSBjeD0nNTc4LjInIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzYwMi4yJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzI0OS42JyB5PSc2NjguMycgd2lkdGg9JzE3Ny4xJyBoZWlnaHQ9JzQ2JyByeD0nOCcgZmlsbD0nIzJmNmY5Zicgb3BhY2l0eT0nMC45Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzczNS4zJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzJiMmYzMycgZm9udC13ZWlnaHQ9J25vcm1hbCc+Ym90aCBsZW5ndGhzIHJ1biB0aHJvdWdoIHRoZSBoYW5kbGUsPC90ZXh0Pjx0ZXh0IHg9JzMzOC4xJyB5PSc3NTEuMycgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPnNld24gdG9nZXRoZXIganVzdCBvdXRzaWRlIGVhY2ggZW5kPC90ZXh0Pjx0ZXh0IHg9JzkwLjAnIHk9Jzg0NS41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5mcm9udDwvdGV4dD48L3N2Zz4K" style="width:90.0%" alt="A harness on the four harness rods: two lengths of webbing crossing in an X over the machine, running together through the handle, each end clipped to a rod in its notch with a snap hook. The machine is an outline only." />
-<figcaption aria-hidden="true">A harness on the four harness rods: two
-lengths of webbing crossing in an X over the machine, running together
-through the handle, each end clipped to a rod in its notch with a snap
-hook. The machine is an outline only.</figcaption>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4NzYnIGhlaWdodD0nODYzJyB2aWV3Qm94PScwIDAgODc2IDg2Myc+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nd2hpdGUnLz48dGV4dCB4PSc5MC4wJyB5PScyOC4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxNScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nYm9sZCc+RnJvbnQgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSczOTkuOScgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9Jzk1LjEnIHJ4PSc2JyBmaWxsPScjZTllY2VmJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMS41Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzQ1Mi41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzhhOTI5YScgZm9udC13ZWlnaHQ9J25vcm1hbCc+YmFzZTwvdGV4dD48cmVjdCB4PScxNTkuMCcgeT0nMzgzLjgnIHdpZHRoPSczNTYuNScgaGVpZ2h0PScxNi4xJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48cG9seWdvbiBwb2ludHM9JzE1My4yLDI5My44IDE1My4yLDE3OC44IDQ0Ni41LDE3OC44IDQ0Ni41LDM4My44IDM5OC4yLDM4My44IDM5OC4yLDIyMS4zIDIyNS43LDIyMS4zIDIyNS43LDI5My44JyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48bGluZSB4MT0nMTg4LjknIHkxPScyOTMuOCcgeDI9JzE4OC45JyB5Mj0nMzc2LjknIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzMgMycvPjxjaXJjbGUgY3g9JzQ3OC43JyBjeT0nMjM5LjcnIHI9JzQzLjcnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzhhOTI5YScgc3Ryb2tlLXdpZHRoPScxLjUnIHN0cm9rZS1kYXNoYXJyYXk9JzUgMycvPjxsaW5lIHgxPSczMjAuMCcgeTE9JzE3OC44JyB4Mj0nMzIwLjAnIHkyPScxMjkuMycgc3Ryb2tlPScjOGE5MjlhJyBzdHJva2Utd2lkdGg9JzInIHN0cm9rZS1kYXNoYXJyYXk9JzQgMycvPjx0ZXh0IHg9JzMwOC41JyB5PScyMDEuOCcgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyM4YTkyOWEnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPm1hY2hpbmUgKG91dGxpbmUgb25seSk8L3RleHQ+PHRleHQgeD0nMzI1LjgnIHk9JzEyNC44JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMScgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5zcG9vbCBwaW48L3RleHQ+PGxpbmUgeDE9Jzk4LjAnIHkxPSc0ODcuMCcgeDI9JzI0OS42JyB5Mj0nNTAuMCcgc3Ryb2tlPScjYzI1ODJiJyBzdHJva2Utd2lkdGg9JzcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgb3BhY2l0eT0nMC45Jy8+PGNpcmNsZSBjeD0nOTguMCcgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxsaW5lIHgxPSc1NzguMicgeTE9JzQ4Ny4wJyB4Mj0nNDI2LjcnIHkyPSc1MC4wJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBvcGFjaXR5PScwLjknLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzQ4Ny4wJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzI0OS42JyB5PSczMC4wJyB3aWR0aD0nMTc3LjEnIGhlaWdodD0nMzQnIHJ4PScxMCcgZmlsbD0nIzJmNmY5Zicgb3BhY2l0eT0nMC45Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzIyLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEzJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nYm9sZCc+aGFuZGxlPC90ZXh0Pjx0ZXh0IHg9JzQ0MC43JyB5PSc1Mi4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjMmIyZjMzJyBmb250LXdlaWdodD0nbm9ybWFsJz5oaWdoIGVub3VnaCB0byBjbGVhciB0aGUgaGVhZCBhbmQgc3Bvb2wgcGluczwvdGV4dD48dGV4dCB4PSc1NzAuMicgeT0nNTExLjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nZW5kJyBmaWxsPScjMmY2ZjlmJyBmb250LXdlaWdodD0nbm9ybWFsJz5zbmFwIGhvb2sgb24gdGhlIGhhcm5lc3Mgcm9kLCBpbiBpdHMgbm90Y2g8L3RleHQ+PHRleHQgeD0nMTEzLjAnIHk9JzM1Ny4wJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMycgdGV4dC1hbmNob3I9J2VuZCcgZmlsbD0nI2MyNTgyYicgZm9udC13ZWlnaHQ9J2JvbGQnPndlYmJpbmc8L3RleHQ+PHRleHQgeD0nOTAuMCcgeT0nNTQ3LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzE1JyB0ZXh0LWFuY2hvcj0nc3RhcnQnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdib2xkJz5Ub3AgdmlldzwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc1NTkuMCcgd2lkdGg9JzQ5Ni4yJyBoZWlnaHQ9JzI2NC41JyByeD0nOCcgZmlsbD0nI2U5ZWNlZicgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEuNScvPjxyZWN0IHg9JzE1OS4wJyB5PSc2MTAuOCcgd2lkdGg9JzM1Ni41JyBoZWlnaHQ9JzE5Mi4wJyBmaWxsPSdub25lJyBzdHJva2U9JyM4YTkyOWEnIHN0cm9rZS13aWR0aD0nMS41JyBzdHJva2UtZGFzaGFycmF5PSc1IDMnLz48dGV4dCB4PSczMzcuMicgeT0nNzg5LjAnIGZvbnQtZmFtaWx5PSdIZWx2ZXRpY2EsIEFyaWFsLCBzYW5zLXNlcmlmJyBmb250LXNpemU9JzEyJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5tYWNoaW5lIGJlZDwvdGV4dD48cmVjdCB4PSc5MC4wJyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nOTAuMCcgeT0nNTg3LjgnIHdpZHRoPScxOC40JyBoZWlnaHQ9JzI4LjcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMScvPjxyZWN0IHg9JzU2Ny44JyB5PSc3NjYuMCcgd2lkdGg9JzE4LjQnIGhlaWdodD0nMjguNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPScxJy8+PHJlY3QgeD0nNTY3LjgnIHk9JzU4Ny44JyB3aWR0aD0nMTguNCcgaGVpZ2h0PScyOC43JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmIyZjMzJyBzdHJva2Utd2lkdGg9JzEnLz48cG9seWxpbmUgcG9pbnRzPSc5OC4wLDc4MC40IDI0OS42LDY5MS4zIDQyNi43LDY5MS4zIDU3OC4yLDYwMi4yJyBmaWxsPSdub25lJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJyBvcGFjaXR5PScwLjknLz48cG9seWxpbmUgcG9pbnRzPSc1NzguMiw3ODAuNCA0MjYuNyw2OTEuMyAyNDkuNiw2OTEuMyA5OC4wLDYwMi4yJyBmaWxsPSdub25lJyBzdHJva2U9JyNjMjU4MmInIHN0cm9rZS13aWR0aD0nNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJyBvcGFjaXR5PScwLjknLz48bGluZSB4MT0nMjQwLjQnIHkxPSc2ODUuMycgeDI9JzI0MC40JyB5Mj0nNjk3LjMnIHN0cm9rZT0nIzJiMmYzMycgc3Ryb2tlLXdpZHRoPSczJy8+PGxpbmUgeDE9JzQzNS45JyB5MT0nNjg1LjMnIHgyPSc0MzUuOScgeTI9JzY5Ny4zJyBzdHJva2U9JyMyYjJmMzMnIHN0cm9rZS13aWR0aD0nMycvPjxjaXJjbGUgY3g9Jzk4LjAnIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc5OC4wJyBjeT0nNjAyLjInIHI9JzcnIGZpbGw9J3doaXRlJyBzdHJva2U9JyMyZjZmOWYnIHN0cm9rZS13aWR0aD0nMi41Jy8+PGNpcmNsZSBjeD0nNTc4LjInIGN5PSc3ODAuNCcgcj0nNycgZmlsbD0nd2hpdGUnIHN0cm9rZT0nIzJmNmY5Zicgc3Ryb2tlLXdpZHRoPScyLjUnLz48Y2lyY2xlIGN4PSc1NzguMicgY3k9JzYwMi4yJyByPSc3JyBmaWxsPSd3aGl0ZScgc3Ryb2tlPScjMmY2ZjlmJyBzdHJva2Utd2lkdGg9JzIuNScvPjxyZWN0IHg9JzI0OS42JyB5PSc2NjguMycgd2lkdGg9JzE3Ny4xJyBoZWlnaHQ9JzQ2JyByeD0nOCcgZmlsbD0nIzJmNmY5Zicgb3BhY2l0eT0nMC45Jy8+PHRleHQgeD0nMzM4LjEnIHk9JzczNS4zJyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J21pZGRsZScgZmlsbD0nIzJiMmYzMycgZm9udC13ZWlnaHQ9J25vcm1hbCc+Ym90aCBsZW5ndGhzIHJ1biB0aHJvdWdoIHRoZSBoYW5kbGUsPC90ZXh0Pjx0ZXh0IHg9JzMzOC4xJyB5PSc3NTEuMycgZm9udC1mYW1pbHk9J0hlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTInIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyYjJmMzMnIGZvbnQtd2VpZ2h0PSdub3JtYWwnPnNld24gdG9nZXRoZXIganVzdCBvdXRzaWRlIGVhY2ggZW5kPC90ZXh0Pjx0ZXh0IHg9JzkwLjAnIHk9Jzg0NS41JyBmb250LWZhbWlseT0nSGVsdmV0aWNhLCBBcmlhbCwgc2Fucy1zZXJpZicgZm9udC1zaXplPScxMicgdGV4dC1hbmNob3I9J3N0YXJ0JyBmaWxsPScjOGE5MjlhJyBmb250LXdlaWdodD0nbm9ybWFsJz5mcm9udDwvdGV4dD48L3N2Zz4K" style="width:90.0%" alt="An experimental harness, not made or tested, on the four harness rods: two lengths of webbing crossing in an X over the machine, running together through the handle, each end clipped to a rod in its notch with a snap hook. The machine is an outline only." />
+<figcaption aria-hidden="true">An experimental harness, not made or
+tested, on the four harness rods: two lengths of webbing crossing in an
+X over the machine, running together through the handle, each end
+clipped to a rod in its notch with a snap hook. The machine is an
+outline only.</figcaption>
 </figure>
 <ul>
 <li><strong>The webbing must not slide through the handle.</strong> Sewn
@@ -1858,15 +1875,23 @@ before printing the base, and raise <code>notch_clear</code> if they
 need it.</li>
 <li><strong>The hooks, webbing and stitching</strong> are the parts most
 likely to fail. Use metal snap hooks with a stated working load of at
-least 25 kg each, and webbing rated well above that.</li>
+least 25 kg each, and webbing rated well above that. Ratings of the
+parts are not a rating of the assembly: a seam, a hook’s gate or a
+twisted leg can each be the weakest point, and only a test of the
+assembly finds it.</li>
 </ul>
-<p><strong>The loads, worked by hand.</strong> These are estimates from
-simplified geometry, not measurements; they show where the margins are
-large and where they aren’t, nothing more.</p>
+<p><strong>The loads, worked by hand.</strong> These are illustrative
+estimates from simplified, static geometry and assumed weights, not
+measurements and not a load rating; they show where stresses are high
+and where they are low, nothing more. They do not cover a dropped or
+swung load, the loss of one leg, fatigue, creep or heat.</p>
 <ul>
 <li><em>The load.</em> A 50 lb (22.7 kg) machine in a base of about 4 kg
-is 262 N. Doubling that for jolts and uneven lifting gives 523 N, a
-quarter of it, 131 N, at each corner.</li>
+is 262 N. Doubling that, an arbitrary illustrative allowance for jolts
+and uneven lifting, gives 523 N, a quarter of it, 131 N, at each corner.
+The factor of 2 is not a recognized proof-load or design factor; lifting
+gear is ordinarily rated with much larger ones (see
+<code>docs/VALIDATION.md</code>).</li>
 <li><em>The webbing.</em> With the handle 380 mm above the rods and each
 corner 223 mm from the center, each length of webbing rises at about
 60°, so each end pulls 152 N along the webbing, 77 N of it inward. A
@@ -1878,8 +1903,9 @@ are in its README.)</li>
 hook pulling at its middle. As a simply supported beam that is a bending
 moment of about 950 N·mm and a stress of about 90 MPa. A hardened steel
 dowel pin yields at well over 1,000 MPa and 303 stainless at about 240
-MPa, so steel has a margin of 2.7 or more; brass is weaker and varies,
-so use steel for rods that will carry the machine.</li>
+MPa, so in this arithmetic steel’s yield is 2.7 or more times the
+stress; brass is weaker and varies, so use steel for rods that will
+carry the machine.</li>
 <li><em>The plastic round the rods.</em> The hook pulls up and inward,
 so the rod bears into the solid end wall above and behind it, not into
 the 4.5 mm of plastic below and outside it. Spread over about 10 mm
@@ -1894,13 +1920,14 @@ plate.</li>
 <li><em>The handholds.</em> Each carries half the load, and the fingers
 pull up into the solid end wall, as the rods do.</li>
 </ul>
-<p>So on paper the printed structure has a wide margin, and the weak
-points are the bought parts: hooks, webbing, stitching, and the rods’
-material. On paper is all it is. Layer adhesion, voids, a crack, creep,
-heat (a car in summer) or a print defect can each remove most of a
-margin, and the numbers say nothing about fatigue. Inspect the rods’
-notches, the handholds and the split joint before each carry, and redo
-the arithmetic for a heavier machine.</p>
+<p>So in this arithmetic the printed structure’s stresses are low next
+to the material’s strength, and the weak points are the bought parts:
+hooks, webbing, stitching, and the rods’ material. That is arithmetic,
+not strength validation. Layer adhesion, voids, a crack, creep, heat (a
+car in summer) or a print defect can each remove most of a margin, and
+the numbers say nothing about fatigue. Inspect the rods’ notches, the
+handholds and the split joint before each carry, and redo the arithmetic
+for a heavier machine.</p>
 <h1 data-number="8" id="other-machines-and-hinges"><span class="header-section-number">8</span> Other machines and hinges</h1>
 <p><em>This chapter is an outline, still to be written. It will
 cover:</em></p>
@@ -2068,9 +2095,11 @@ rolling it against its gear, so the 16-tooth pinions have the undercut a
 small pinion needs and each pair runs with a little backlash.</li>
 <li><strong>Switch.</strong> The switch lies on the bulkhead under the
 shaft, lever up. A cam on the sector holds its lever down at rest, so
-its normally-closed contact is open and the motor is off. A ramp on the
-cam lets the lever up at 1” of knee travel. The switch is wired in
-series with the motor.</li>
+its normally-closed contact is open and the motor is meant to be off.
+That is one layer of protection, not a guarantee: a welded or stuck
+contact, a jammed mechanism or a broken return spring defeats it, and it
+has not been built or tested. A ramp on the cam lets the lever up at 1”
+of knee travel. The switch is wired in series with the motor.</li>
 </ul>
 <p>For why this controller behaves as it does (an open-loop triac phase
 control, like a good stock pedal, that holds no speed under load), and
