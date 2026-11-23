@@ -61,8 +61,8 @@ end are illustrative arithmetic, not evidence of strength.*
 
 - **Across a room,** lift the base, machine and all, by its two
   handholds, one hand at each end, low over the floor, and keep it level.
-  (The handholds have been used this way on the 99K build, but not
-  load-tested.)
+  (The handholds were printed in the version 15 99K build, but have not
+  been load-tested.)
 - **Farther,** use a harness on the four harness rods (below).
 - **Take the extensions off first.** They are accessories, not part of
   what the base carries: lift them off their pegs and carry them
