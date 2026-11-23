@@ -62,8 +62,10 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   for the back bay. On the spool tray, in silk PLA, a curb split from the
   floor at the first layer above it; the gussets and taller curb added
   since have not been printed yet;
-- test pieces printed in November 2026, in Sunlu High-Speed PETG Matte
-  (grey), dried and calibrated: the outlet block (`outlet_test`)
+- test pieces printed in November 2026 on one printer (a Bambu Lab P1S),
+  in one material (Sunlu High-Speed PETG Matte, grey, dried and
+  calibrated), one of each: single fit samples, observed once, not
+  repeated, cycled or loaded. They were: the outlet block (`outlet_test`)
   with its teardrop screw recess and printed cap (`outlet_cap`), the cap
   snapping in flush and holding firmly until pushed out from behind, and
   with a cordset's duplex outlet mounted on it by the 2" #8-32 screw the
@@ -76,7 +78,11 @@ Tested, on a Singer 99K (the default machine profile), printed in PETG:
   front-wall serrations print cleanly, their 45° tops intact, and mate
   between the halves. (It was printed with split off by mistake, so
   without the mending-plate pockets; the pockets were last printed in the
-  version 15 base.)
+  version 15 base.) And the controller compartment
+  (`compartment_test`, version 85), its back wall, keystone and inlet
+  cutouts, tunnels and anchor posts printing as modeled; one 2 mm bar
+  between keystone cutouts broke as its supports were removed, which led
+  to the wider bars of version 87.
 
 These were printed from development versions of the model as it evolved,
 not from the current one: later changes have not all been printed yet.

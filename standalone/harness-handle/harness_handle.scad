@@ -20,8 +20,10 @@
 // Self-contained: no libraries needed.
 //
 // Drawn by Claude at Robert Drzyzgula's direction. Spun off from the
-// VSM Base (https://github.com/bobdrzyzgula/VSM-Base). Not load-tested:
-// see the README.
+// VSM Base (https://github.com/bobdrzyzgula/VSM-Base). Experimental: not
+// printed, not load-tested, and not for carrying a machine until the
+// complete harness has passed a proof-load test (see the README). The
+// checks below are geometry only; nothing here rates it for a load.
 
 /* [Webbing] */
 // Webbing width (1" = 25.4)
@@ -70,6 +72,7 @@ gh2  = grip_h + 2 * ridge;                     // height at the ridges
 wall = (grip_w - tw) / 2;                      // side wall beside the tunnel
 roof = (grip_h - th) / 2;                      // wall above and below it
 
+echo("Harness handle: EXPERIMENTAL, not load-tested; geometry checks only, no load rating");
 echo(str("Harness handle: ", L, " x ", grip_w, " x ", gh2, " mm overall; tunnel ",
          tw, " x ", th, " mm; side walls ", wall, " mm, top and bottom ", roof, " mm"));
 assert(wall >= 2.5, "grip_w leaves side walls under 2.5 mm beside the tunnel: widen the grip");

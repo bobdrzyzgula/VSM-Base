@@ -8,17 +8,21 @@ sewn together just outside each end. See "Carrying" in the
 [User's Guide](../../docs/guide/07-assembly.md#carrying) for the harness
 and its loads.
 
-> **Not load-tested.** This handle has not been printed or used. It is
-> part of an open-source hobby project, provided as is, without
-> warranty, and used at your own risk. Try it with the base empty, then
-> with a light machine, before trusting it with a heavy one, and don't
-> carry a machine over anything (or anyone) you can't afford to have it
-> fall on.
+> **Experimental: do not carry a machine with it.** This handle has not
+> been printed, and no harness using it has been made or load-tested.
+> Don't carry a machine with it until the complete assembly (handle,
+> webbing, stitching, hooks and the base's rods, as built) has passed a
+> proof-load test and been inspected; "Before any use" below outlines that
+> test, and the VSM Base's `docs/VALIDATION.md` what more would be needed.
+> The figures here are illustrative arithmetic, not a load rating. It is
+> part of an open-source hobby project, personal learning done in public,
+> not a product; it is provided as is, without warranty, and anyone who
+> makes or uses it does so on their own responsibility.
 
 ![The harness handle as carried: a grip with a ridge at each end, and a
 flat tunnel through it for the webbing](harness-handle.png)
 
-- **The webbing carries the load.** Your hand lifts the webbing through
+- **The webbing is meant to carry the load.** Your hand would lift the webbing through
   the grip's floor, so the plastic is mostly in compression. The tunnel's
   ends are rounded where the webbing turns down toward the corners (top
   and bottom, so the handle works either way up) and at the sides, where
@@ -51,9 +55,12 @@ libraries needed.
   used.
 
 The console gives the overall size, the tunnel, and the walls round it,
-and stops if a wall would be too thin.
+and stops if a wall would be too thin. Those are geometry checks only; the
+model knows nothing about loads, and no setting makes it rated for any.
 
-## Making the harness
+## Making a harness to test
+
+This is how one would be made for testing, not a carrying procedure.
 
 1. **Thread first.** The tunnel is closed, so pass both lengths of
    webbing through it before sewing anything else: one from each end,
@@ -71,17 +78,45 @@ and stops if a wall would be too thin.
    handle.
 4. **Sew a snap hook into each end**, with a box-and-X stitch, at the
    marks.
-5. Hang it on the rods with the base empty, lift, and check that the base
-   hangs level and the handle stays put before trying it loaded. Loaded,
-   the base tips until the machine's weight is under the handle; a head
-   and hand wheel are heavier than the far end, so it may hang low on that
-   side. If it hangs far enough off level to matter, it's better found
-   now: unpick and resew with the handle moved toward the heavy end.
+5. Hang it on the rods with the base empty, lift an inch or two, and
+   check that the base hangs level and the handle stays put. With a
+   machine in it, the base tips until the machine's weight is under the
+   handle; a head and hand wheel are heavier than the far end, so it may
+   hang low on that side. If it hangs far enough off level to matter,
+   unpick and resew with the handle moved toward the heavy end.
+
+## Before any use: what a proof-load test would involve
+
+None of this has been done. At the least:
+
+- **Test the assembly, not the parts.** The handle as printed, the
+  webbing and stitching as sewn, the hooks as bought, on a base with its
+  rods, hung from a fixed point, not a hand.
+- **Load it with dead weight, not a machine:** well above the heaviest
+  machine and base it will carry, by a factor taken from lifting practice
+  (synthetic slings, for example, are commonly proof-tested at twice their
+  rated load and designed to five times it), not the 2× used for
+  illustration below. Hold it, a few centimeters over a padded floor, with
+  nobody under or beside it.
+- **Then inspect:** the seams for pulled or broken stitches, the hooks'
+  gates and wire, the webbing for cuts, glazing or slippage, the handle's
+  ends and lips for whitening or cracks, and the rods and notches for
+  bending or crushing. Anything changed fails the test.
+- **And the things a static hang doesn't show:** a jolt or short drop,
+  the loss of one leg (the base then swings and tips: the test should show
+  how far), a twisted leg, repeated lifts, a warm car, and aging of the
+  webbing and the print.
+
+Passing would show only that that one assembly held that load once. It
+would not make the design rated, and each new harness would need its own
+test.
 
 ## The loads, worked by hand
 
-As in the guide: a 50 lb machine in a 4 kg base, doubled for jolts, is
-523 N. The handle is 154 mm long, so each leg runs from a handle end to its
+These are illustrative estimates from simplified, static geometry, not a
+load rating. As in the guide: a 50 lb machine in a 4 kg base is 262 N;
+doubled, an arbitrary illustrative allowance for jolts and not a proof or
+design factor, it is 523 N. The handle is 154 mm long, so each leg runs from a handle end to its
 corner, about 153 mm across and 380 mm up, and pulls about 141 N along
 the webbing.
 
@@ -93,8 +128,9 @@ the webbing.
 - *The lips.* Each leg presses on a 6 mm radius across the webbing's
   width: under 1 MPa.
 
-These are estimates from simplified geometry, not measurements. The weak
-points are the bought parts and the sewing: the hooks, the webbing, and
+These are estimates, not measurements, and say nothing about a dropped
+or swung load, one leg lost, fatigue, creep or heat. In this arithmetic
+the weak points are the bought parts and the sewing: the hooks, the webbing, and
 the stitching. A crack, a void, poor layer adhesion or heat can remove
 most of a printed part's margin; inspect the handle, especially its ends,
 before each carry.

@@ -100,7 +100,10 @@ block gives the figures for your settings, in pounds and newtons.
   and each pair runs with a little backlash.
 - **Switch.** The switch lies on the bulkhead under the shaft, lever up. A
   cam on the sector holds its lever down at rest, so its normally-closed
-  contact is open and the motor is off. A ramp on the cam lets the lever up
+  contact is open and the motor is meant to be off. That is one layer of
+  protection, not a guarantee: a welded or stuck contact, a jammed
+  mechanism or a broken return spring defeats it, and it has not been
+  built or tested. A ramp on the cam lets the lever up
   at 1" of knee travel. The switch is wired in series with the motor.
 
 For why this controller behaves as it does (an open-loop triac phase

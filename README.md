@@ -144,9 +144,10 @@ fit on your printer, and then print a base that fits.
 - **A tilt prop**: a stand that holds the machine tipped back for
   servicing, with a cradle or a flat top, level or sloped, on a foot sized
   to stay upright; see [standalone/tilt-prop/](standalone/tilt-prop/).
-- **A harness handle (draft)**: a grip for a carrying harness of two
-  lengths of webbing crossed over the machine, which run through a tunnel
-  in it; not yet printed or load-tested. See
+- **A harness handle (experimental)**: a grip for a carrying harness of
+  two lengths of webbing crossed over the machine, which run through a
+  tunnel in it. Not yet printed, and not for carrying a machine until a
+  complete harness has passed a proof-load test. See
   [standalone/harness-handle/](standalone/harness-handle/).
 - **Three measuring tools** for fitting parts inside a machine: a slide
   gauge for the height from a casting floor to the underside of a shaft, a

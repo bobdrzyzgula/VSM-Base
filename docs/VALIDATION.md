@@ -38,6 +38,37 @@ product safety, the applicable standards themselves, or a test laboratory.
   checked through the mechanisms' full movement.
 - Each printer's usable bed, not only its nominal build volume.
 - Transport and shipping, separately from use at home.
+- Independent stops: the hinge's tilt stop and the tilt prop, each on
+  its own, and what happens to the machine and the user's hands when one
+  of them fails.
+- Dropped-load scenarios: a handhold, rod, hook or seam letting go at
+  carrying height, with and without the machine's front held down.
+
+## Carrying harnesses
+
+The guide's harness and the printed handle are experimental: none has
+been made, and the arithmetic in the guide and the handle's README is
+illustrative, with an arbitrary factor of 2, not a recognized one.
+
+- Proof-load and ultimate-load factors taken from the standard applicable
+  to lifting gear where it will be used (synthetic slings, for example,
+  are commonly proof-tested at twice their rated load and designed to five
+  times it), applied to the complete assembly as built.
+- Rated hooks (working load and gate strength), rated webbing, and
+  stitch patterns and thread with tested seam strength.
+- A proof-load test of each assembly, with inspection criteria, and
+  destructive tests of samples to find the actual ultimate load and where
+  it fails.
+- Dynamic loads: a jolt, a short drop, a swing; the loss of one leg, and
+  what the base and machine do then.
+- Balance: machines whose weight is off center, and how far the base
+  tilts.
+- Repeated lifts (fatigue of the print, seams and hooks), creep under a
+  sustained load, heat, sunlight and aging of the webbing.
+- The printed handle across printers, materials and print settings; one
+  print report is one sample.
+- Instructions, markings and a stated maximum load, if the harness were
+  ever offered to anyone else.
 - Inspection criteria for cracks, whitening, loose inserts, worn holes,
   hinge play and distortion, and a replacement-part workflow.
 

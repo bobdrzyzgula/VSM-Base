@@ -53,13 +53,16 @@ traps' printed membranes; no drilling needed.](../images/photos/plate-nuts.jpg){
 ## Carrying
 
 *This section describes what the base is meant to carry and a harness
-for it. The harness has not been made, and none of it has been
-load-tested: see the note at the end.*
+for it. Nothing here has been load-tested: not the base, its handholds or
+its rods, and not the harness, which has not been made. The figures at the
+end are illustrative arithmetic, not evidence of strength.*
 
 **What is meant to be carried.** In its basic build, the base is a base:
 
 - **Across a room,** lift the base, machine and all, by its two
-  handholds, one hand at each end, and keep it level.
+  handholds, one hand at each end, low over the floor, and keep it level.
+  (The handholds have been used this way on the 99K build, but not
+  load-tested.)
 - **Farther,** use a harness on the four harness rods (below).
 - **Take the extensions off first.** They are accessories, not part of
   what the base carries: lift them off their pegs and carry them
@@ -82,7 +85,13 @@ A commercial portable base would come with a cover and a handle on the
 cover. That needs a very large printer and solves harder structural
 problems, so it isn't part of this project.
 
-**A harness.** One way to make one, sketched below: two lengths of 1"
+**A harness (experimental: do not carry a machine with it yet).** Don't
+carry a machine with a harness until the complete assembly (hooks,
+webbing, stitching, handle and rods, as built) has been proof-load tested
+and inspected; the handle's README outlines what that test would involve,
+and `docs/VALIDATION.md` what more a dependable design would need. Until
+then, what follows is a design to build and test, not a way to carry. One
+way to make one, sketched below: two lengths of 1"
 polyester or nylon webbing, each running from a front corner's rod to the
 opposite back corner's, crossing in an X above the machine. They cross
 in a printed handle (`standalone/harness-handle/`): both lengths run
@@ -93,7 +102,7 @@ the rod where it is exposed in its notch. The handle's
 [README](../../standalone/harness-handle/README.md) gives the order of
 work: the webbing has to go through the handle before anything is sewn.
 
-![A harness on the four harness rods: two lengths of webbing crossing in an
+![An experimental harness, not made or tested, on the four harness rods: two lengths of webbing crossing in an
 X over the machine, running together through the handle, each end clipped
 to a rod in its notch with a snap hook. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
 
@@ -114,15 +123,21 @@ to a rod in its notch with a snap hook. The machine is an outline only.](../imag
   raise `notch_clear` if they need it.
 - **The hooks, webbing and stitching** are the parts most likely to fail.
   Use metal snap hooks with a stated working load of at least 25 kg each,
-  and webbing rated well above that.
+  and webbing rated well above that. Ratings of the parts are not a rating
+  of the assembly: a seam, a hook's gate or a twisted leg can each be the
+  weakest point, and only a test of the assembly finds it.
 
-**The loads, worked by hand.** These are estimates from simplified
-geometry, not measurements; they show where the margins are large and
-where they aren't, nothing more.
+**The loads, worked by hand.** These are illustrative estimates from
+simplified, static geometry and assumed weights, not measurements and not
+a load rating; they show where stresses are high and where they are low,
+nothing more. They do not cover a dropped or swung load, the loss of one
+leg, fatigue, creep or heat.
 
 - *The load.* A 50 lb (22.7 kg) machine in a base of about 4 kg is 262 N.
-  Doubling that for jolts and uneven lifting gives 523 N, a quarter of it,
-  131 N, at each corner.
+  Doubling that, an arbitrary illustrative allowance for jolts and uneven
+  lifting, gives 523 N, a quarter of it, 131 N, at each corner. The factor
+  of 2 is not a recognized proof-load or design factor; lifting gear is
+  ordinarily rated with much larger ones (see `docs/VALIDATION.md`).
 - *The webbing.* With the handle 380 mm above the rods and each corner
   223 mm from the center, each length of webbing rises at about 60°, so
   each end pulls 152 N along the webbing, 77 N of it inward. A lower
@@ -134,7 +149,7 @@ where they aren't, nothing more.
   at its middle. As a simply supported beam that is a bending moment of
   about 950 N·mm and a stress of about 90 MPa. A hardened steel dowel pin
   yields at well over 1,000 MPa and 303 stainless at about 240 MPa, so
-  steel has a margin of 2.7 or more; brass is weaker and varies, so use
+  in this arithmetic steel's yield is 2.7 or more times the stress; brass is weaker and varies, so use
   steel for rods that will carry the machine.
 - *The plastic round the rods.* The hook pulls up and inward, so the rod
   bears into the solid end wall above and behind it, not into the 4.5 mm
@@ -149,9 +164,10 @@ where they aren't, nothing more.
 - *The handholds.* Each carries half the load, and the fingers pull up
   into the solid end wall, as the rods do.
 
-So on paper the printed structure has a wide margin, and the weak points
-are the bought parts: hooks, webbing, stitching, and the rods' material.
-On paper is all it is. Layer adhesion, voids, a crack, creep, heat (a car
+So in this arithmetic the printed structure's stresses are low next to
+the material's strength, and the weak points are the bought parts: hooks,
+webbing, stitching, and the rods' material. That is arithmetic, not
+strength validation. Layer adhesion, voids, a crack, creep, heat (a car
 in summer) or a print defect can each remove most of a margin, and the
 numbers say nothing about fatigue. Inspect the rods' notches, the
 handholds and the split joint before each carry, and redo the arithmetic
