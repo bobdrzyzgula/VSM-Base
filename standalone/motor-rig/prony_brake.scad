@@ -3,7 +3,8 @@
 //
 // Two felt-lined jaws clamp the motor pulley; two M4 bolts with springs and
 // wing nuts set the drag. The upper jaw carries a lever arm whose tip rests,
-// through an adjustable M5 screw, on a digital kitchen scale.
+// through an adjustable M5 screw, on a digital pocket scale (500 g to 1 kg
+// capacity, 0.1 g resolution; see RIG_GUIDE.md section 6.1).
 //
 //   torque (N*m) = scale reading (kg) * 9.81 * arm_len (m)
 //

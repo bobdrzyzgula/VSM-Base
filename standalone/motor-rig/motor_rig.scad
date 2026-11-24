@@ -6,7 +6,7 @@
 //   - motor cradle (motor_cradle.scad) with the motor's axis along X,
 //     pulley end to the right
 //   - prony brake (prony_brake.scad) on the motor pulley, arm pointing to
-//     the front, onto a digital scale held in a corner fence
+//     the front, onto a digital pocket scale held in a corner fence
 //   - belt load stand behind the pulley: a V-groove load pulley on two 608
 //     bearings, on a carriage that slides in a dovetail rail with a screw
 //     to tension the belt, and a felt drag plunger for a steady load

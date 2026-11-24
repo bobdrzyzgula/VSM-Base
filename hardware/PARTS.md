@@ -124,7 +124,11 @@ These are probably on hand already:
 - a plug-in power meter (Kill-A-Watt type);
 - a decade resistance box rated for at least 200 V, with resistors of at
   least 0.5 W each;
-- a kitchen scale for the brake, about 75 × 80 mm;
+- a digital pocket scale for the brake: 500 g to 1 kg capacity, 0.1 g
+  resolution, about 75 × 80 mm, battery-powered (the rig guide's §6.1
+  says why);
+- a kitchen scale (about 5 kg × 1 g) as a force gauge for the FSR
+  pedal's sensors;
 - a tachometer.
 
 ## Substitution log

@@ -340,6 +340,32 @@ The motor runs at full speed the moment the cord goes in. Hold the strap.
 
 **Torque (N·m) = scale reading (kg) × 9.81 × 0.100**
 
+**The scale.** With the 100 mm arm, each gram on the scale is about
+1 mN·m. A sewing motor's 25–75 W at a few thousand rpm is roughly
+0.04–0.15 N·m, so most readings fall between about 10 and 200 g, and
+light loads are a few grams. That calls for a small digital pocket
+scale (often sold as a jewelry scale), not a kitchen scale:
+
+- **Capacity 500 g to 1 kg.** Enough above the readings for the arm's
+  resting weight and the jolt when the brake grabs; a 100 g or 200 g
+  scale can be overloaded, and an overload can damage its load cell.
+  1 kg × 0.1 g is a good choice.
+- **Resolution 0.1 g.** A kitchen scale's 1 g step is fine at 150 g but
+  20% of a 5 g reading.
+- **Footprint** about 75 × 80 mm, or set `scale_size` in `motor_rig.scad`
+  to yours so the fence fits it. Remove or fold back any lid, and check
+  that the contact screw lands near the middle of the platform; a load
+  near a corner reads differently on many scales.
+- **Tare, and an auto-off you can disable or a long one.** A scale that
+  switches itself off mid-run, and is switched back on with the arm on
+  it, zeroes at the loaded reading and quietly reads low from then on. If
+  it does switch off, lift the arm before switching it on, and zero it
+  again (step 3).
+- **Battery-powered,** with no charging cable to it while the rig is
+  live.
+- **Check it** before a session against a known mass: the calibration
+  weight many pocket scales come with, or a US nickel, which is 5.00 g.
+
 ### 6.2 Belt load stand
 
 1. Slide the motor along the cradle until its pulley groove lines up with
