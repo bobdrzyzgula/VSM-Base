@@ -337,7 +337,21 @@ and set</h2>
 <td><code>scale_size</code></td>
 <td><code>motor_rig.scad</code></td>
 <td>75 × 80</td>
-<td>Your scale’s footprint</td>
+<td>Your scale’s footprint, display end at the front</td>
+</tr>
+<tr class="even">
+<td><code>scale_contact</code></td>
+<td><code>motor_rig.scad</code></td>
+<td>middle</td>
+<td>The center of your scale’s platform, from the footprint’s front-left
+corner</td>
+</tr>
+<tr class="odd">
+<td><code>arm_len</code></td>
+<td>both</td>
+<td>100</td>
+<td>The brake arm; set the same in both files, and use it in the torque
+formula</td>
 </tr>
 <tr class="even">
 <td><code>iso_size</code></td>
@@ -896,7 +910,8 @@ reading.</li>
 <li><strong>Load it</strong> by tightening both wing nuts evenly, a
 quarter turn at a time.</li>
 </ol>
-<p><strong>Torque (N·m) = scale reading (kg) × 9.81 × 0.100</strong></p>
+<p><strong>Torque (N·m) = scale reading (kg) × 9.81 × arm length
+(m)</strong>, which is 0.100 for the default 100 mm arm.</p>
 <p><strong>The scale.</strong> With the 100 mm arm, each gram on the
 scale is about 1 mN·m. A sewing motor’s 25–75 W at a few thousand rpm is
 roughly 0.04–0.15 N·m, so most readings fall between about 10 and 200 g,
@@ -911,8 +926,13 @@ cell. 1 kg × 0.1 g is a good choice.</li>
 fine at 150 g but 20% of a 5 g reading.</li>
 <li><strong>Footprint</strong> about 75 × 80 mm, or set
 <code>scale_size</code> in <code>motor_rig.scad</code> to yours so the
-fence fits it. Remove or fold back any lid, and check that the contact
-screw lands near the middle of the platform; a load near a corner reads
+fence fits it. On a scale whose platform is at one end and display at
+the other, set <code>scale_contact</code> to the platform’s center too,
+so the fence puts the platform under the arm. The console says where the
+arm’s contact screw lands, and warns, with a shorter
+<code>arm_len</code> to use, if it would land well in front of the
+platform. Remove or fold back any lid, and check that the contact screw
+lands near the middle of the platform; a load near a corner reads
 differently on many scales.</li>
 <li><strong>Tare, and an auto-off you can disable or a long
 one.</strong> A scale that switches itself off mid-run, and is switched
