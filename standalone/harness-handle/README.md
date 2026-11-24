@@ -77,12 +77,13 @@ This is how one would be made for testing, not a carrying procedure.
    four legs has a fixed length, and the base hangs steady below the
    handle.
 4. **Fit each end to its rod.** Put a metal three-bar slide (1", a
-   "tri-glide") on the leg first. Then feed the end into the rod's notch
+   "tri-glide", with a working-load rating from its maker) on the leg
+   first. Then feed the end into the rod's notch
    over the rod, down behind it and out underneath, bring it back up
    beside the leg, and thread it through the slide as its maker shows,
    so that the leg's pull pinches the tail against the center bar. Seal
    the cut end with heat, and leave at least 50 mm of tail beyond the
-   slide. The slide should sit above the base's top. The base's notches
+   slide (a provisional figure; a slip test should set it). The slide should sit above the base's top. The base's notches
    have to be the version 88 ones (32 mm long, 5 mm round the rod); the
    earlier 25 mm notch is too short for 1" webbing.
 5. **Adjust and mark.** Hang it with the base empty, lift an inch or two,
@@ -90,8 +91,9 @@ This is how one would be made for testing, not a carrying procedure.
    centered. With a machine in it the base tips until the machine's
    weight is under the handle, and a head and hand wheel make one end
    heavier, so level it again loaded. Then mark the webbing with a pen
-   where it leaves each slide. A mark that has moved means that leg has
-   slipped: reset it, and find out why, before lifting again.
+   on both sides of each slide, leg and tail. A mark that has moved means
+   something changed (slip, stretch, a seam settling, a slide bending):
+   find out which before lifting again.
 
 ## Before any use: what a proof-load test would involve
 

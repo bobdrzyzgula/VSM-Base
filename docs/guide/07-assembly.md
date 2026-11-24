@@ -133,15 +133,20 @@ section at the right. The machine is an outline only.](../images/diagrams/carry-
   lever to be knocked open. Adjustment buckles of this kind, with the
   webbing doubled back, are what climbing harnesses use; a cam buckle
   holds by a spring-loaded cam, and is made for tie-downs. Use slides
-  sized for the webbing (1"), metal, not plastic. Thread them as their
-  maker shows, leave at least 50 mm of tail beyond each, and put each
-  slide above the base's top, where you can see it and it can't gouge
-  the plastic.
+  sized for the webbing (1"), metal, not plastic, with a working-load
+  rating from their maker; an unmarked slide that looks the same is not
+  the same part. Thread them as their maker shows, leave a tail of at
+  least 50 mm beyond each (a provisional figure, not a tested one), and
+  put each slide above the base's top, where you can see it and it can't
+  gouge the plastic. Whether a given slide holds a given webbing is for a
+  slip test to show.
 - **The legs are adjustable.** Hang the base, then set the four legs so it
   hangs level and the handle is centered over the machine's weight;
   a machine's head and hand wheel make one end heavier. Then mark the
-  webbing at each slide with a pen: a mark that has moved before a lift
-  means that leg has slipped. The legs must be fixed while carrying, for
+  webbing with a pen on both sides of each slide, on the leg and on the
+  tail. A mark that has moved before a lift means something has changed:
+  slip, but also stretch, a seam settling or a slide bending. It is a
+  prompt to find out which, not a measurement. The legs must be fixed while carrying, for
   the same reason the webbing must not slide through the handle.
 - **The slides, webbing and stitching** are the parts most likely to
   fail. Use webbing rated well above the load. Ratings of the parts are
@@ -171,16 +176,21 @@ leg, fatigue, creep or heat.
   pull spread across its middle 25.4 mm. As a simply supported beam that
   is a bending moment of about 730 N·mm and a stress of about 70 MPa. (A
   hook pulling at one point in the middle would make 1,220 N·mm and
-  115 MPa; the webbing's spread is worth having.) A hardened steel dowel
-  pin yields at well over 1,000 MPa and 303 stainless at about 240 MPa,
-  so in this arithmetic steel's yield is 3.5 or more times the stress;
-  brass is weaker and varies, so use steel for rods that will carry the
-  machine.
+  115 MPa. The spread assumes the webbing bears evenly across its width;
+  if it bunches or bears at its edges, the truth lies between the two.) A
+  hardened steel dowel pin yields at well over 1,000 MPa and 303
+  stainless at about 240 MPa. That comparison with nominal yield is not a
+  safety factor: it leaves out stress concentration, uneven legs,
+  dynamic loads, fatigue, corrosion and the actual rod's grade and
+  condition. Brass is weaker and varies, so use steel for rods that will
+  carry the machine.
 - *The plastic round the rods.* The webbing pulls up and inward, so the rod
   bears into the solid end wall above and behind it, not into the 4.5 mm
   of plastic below and outside it. Spread over about 10 mm either side of
-  the notch, the bearing stress is under 2 MPa, against tens of MPa for
-  printed PETG.
+  the notch, the average bearing stress is under 2 MPa, against tens of
+  MPa for printed PETG. That is a simplified average. It says nothing
+  about local crushing, layer splitting, voids, or a rod seat that
+  deforms over many lifts; a bearing test of a printed notch would.
 - *The base as a beam.* Lifted at its ends with the machine's weight in
   the middle, the base bends by about 27 N·m. Even counting only the floor
   and two 10 mm walls, that is under 1 MPa of bending stress. Across the

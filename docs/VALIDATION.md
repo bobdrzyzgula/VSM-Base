@@ -58,6 +58,12 @@ illustrative, with an arbitrary factor of 2, not a recognized one.
 - Rated slides or buckles (working load, and slip under steady and
   cyclic loads with the webbing actually used), rated webbing, and
   stitch patterns and thread with tested seam strength.
+- Slip tests of the slide with the exact webbing, threaded exactly as
+  instructed, dry, wet and dirty, under steady and repeated loads, to set
+  the tail length and an allowable movement (the guide's 50 mm tail is
+  provisional).
+- Bearing tests of printed notches with rods, steady and repeated, with
+  inspection for whitening, cracking and a deformed rod seat.
 - A proof-load test of each assembly, with inspection criteria, and
   destructive tests of samples to find the actual ultimate load and where
   it fails.
