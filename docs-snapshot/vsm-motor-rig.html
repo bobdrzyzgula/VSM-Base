@@ -92,7 +92,7 @@ a { color: inherit; }
 <p class="subtitle">User’s Guide</p>
 <p class="author">Claude (Anthropic), at the direction of Robert
 Drzyzgula</p>
-<p class="date">Development Build v86, November 2026</p>
+<p class="date">Development Build v88, November 2026</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -897,6 +897,34 @@ reading.</li>
 quarter turn at a time.</li>
 </ol>
 <p><strong>Torque (N·m) = scale reading (kg) × 9.81 × 0.100</strong></p>
+<p><strong>The scale.</strong> With the 100 mm arm, each gram on the
+scale is about 1 mN·m. A sewing motor’s 25–75 W at a few thousand rpm is
+roughly 0.04–0.15 N·m, so most readings fall between about 10 and 200 g,
+and light loads are a few grams. That calls for a small digital pocket
+scale (often sold as a jewelry scale), not a kitchen scale:</p>
+<ul>
+<li><strong>Capacity 500 g to 1 kg.</strong> Enough above the readings
+for the arm’s resting weight and the jolt when the brake grabs; a 100 g
+or 200 g scale can be overloaded, and an overload can damage its load
+cell. 1 kg × 0.1 g is a good choice.</li>
+<li><strong>Resolution 0.1 g.</strong> A kitchen scale’s 1 g step is
+fine at 150 g but 20% of a 5 g reading.</li>
+<li><strong>Footprint</strong> about 75 × 80 mm, or set
+<code>scale_size</code> in <code>motor_rig.scad</code> to yours so the
+fence fits it. Remove or fold back any lid, and check that the contact
+screw lands near the middle of the platform; a load near a corner reads
+differently on many scales.</li>
+<li><strong>Tare, and an auto-off you can disable or a long
+one.</strong> A scale that switches itself off mid-run, and is switched
+back on with the arm on it, zeroes at the loaded reading and quietly
+reads low from then on. If it does switch off, lift the arm before
+switching it on, and zero it again (step 3).</li>
+<li><strong>Battery-powered,</strong> with no charging cable to it while
+the rig is live.</li>
+<li><strong>Check it</strong> before a session against a known mass: the
+calibration weight many pocket scales come with, or a US nickel, which
+is 5.00 g.</li>
+</ul>
 <h2 id="belt-load-stand">6.2 Belt load stand</h2>
 <ol type="1">
 <li>Slide the motor along the cradle until its pulley groove lines up
