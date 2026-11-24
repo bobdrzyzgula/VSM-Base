@@ -71,7 +71,7 @@ where, and the specification checked.
 | Resistors, mains | 22 kΩ 0.5 W (2, R7/R8); 360 Ω 0.5 W (R4); 100 Ω 1 W (R6, DNP) | 1 set | M | Any | Metal film, 350 V or higher working voltage for R7/R8 |
 | Resistor | 330 Ω 0.25 W (R5) | 1 | M | Any | |
 | X2 capacitor | 47 nF X2 (C2, DNP) | 1 | M | Check | Must be X2-rated across the mains. |
-| Screw terminals | 5.08 mm pitch, 300 V rated | a few | M | Any | For the mains wiring on a prototype board |
+| Screw terminals | 5.08 mm pitch, 300 V, UL-recognized (UL 1059), e.g. Same Sky TB006-508-02BE (2-position) and -03BE (3-position) | a few | M | Any | For the mains wiring on a prototype board: 3-position for L, N and PE in, and the light outlet's PE, LIGHT and N; interlock a 2 and a 2 for the duplex outlet's four. Unbranded blocks carry only their maker's claimed rating. |
 | Hook-up wire | 18 AWG, 300 V insulation (600 V better), stranded | a few m | K R M | Any | |
 | Isolation transformer | Hammond 171B (200 VA), corded | 1 | R | Dist | Needed only when the scope goes on the AC side |
 
