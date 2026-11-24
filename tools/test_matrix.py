@@ -87,6 +87,9 @@ def full_cases():
                   "corner_lid", "base_lid", "ext_pegs", "test_parts"]:
             yield {"machine": m, "part": p}
         yield {"machine": m, "hinge_type": "printed", "part": "printed_hinges"}
+        # the rod notch's mouth at its smallest and largest radius
+        for r in (0, 6):
+            yield {"machine": m, "notch_edge_r": r, "part": "base"}
 
 
 def case_key(kind, d):

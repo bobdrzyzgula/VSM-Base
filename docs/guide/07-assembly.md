@@ -103,7 +103,7 @@ through a metal three-bar slide, which holds the loop. The handle's
 [README](../../standalone/harness-handle/README.md) gives the order of
 work: the webbing has to go through the handle before anything is sewn.
 
-![An experimental harness, not made or tested, on the four harness rods: two lengths of webbing crossing in an
+![A conceptual sketch, not an assembly drawing or sewing pattern: an experimental harness, not made or tested, on the four harness rods: two lengths of webbing crossing in an
 X over the machine, running together through the handle, each end wrapped
 round a rod in its notch and back up through a three-bar slide, shown in
 section at the right. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
@@ -126,7 +126,9 @@ section at the right. The machine is an outline only.](../images/diagrams/carry-
   can be threaded through. Its mouth is rounded (`notch_edge_r`) where the
   webbing turns out of it. These were changed for this harness in
   version 88; a base printed earlier has a 25 mm notch with 4 mm round the
-  rod, too short for 1" webbing.
+  rod, too short for 1" webbing. Don't cut, drill or ream an older
+  base's notches to fit, and don't take narrower webbing or a snap hook
+  as an equivalent: reprint the part with the v88 notches.
 - **The slides.** Each leg's length is held by a metal three-bar slide
   (a tri-glide), not a cam buckle: the webbing's tail is threaded over
   and under its center bar, so the leg's pull pinches it, and there is no

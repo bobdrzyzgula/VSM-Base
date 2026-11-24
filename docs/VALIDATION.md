@@ -64,6 +64,16 @@ illustrative, with an arbitrary factor of 2, not a recognized one.
   provisional).
 - Bearing tests of printed notches with rods, steady and repeated, with
   inspection for whitening, cracking and a deformed rod seat.
+- A specified seam: thread, needle, stitch length and pattern, overlap
+  and edge sealing, tested to destruction and under repeated loads.
+- Acceptance criteria for every test, set in advance: how much movement
+  at a slide, deformation of a rod seat or stretch of a leg is allowed,
+  and what counts as failure. Losing one leg is a drop and impact case:
+  passing means no uncontrolled descent and no machine reaching the
+  floor, with people kept outside a defined zone.
+- Review by someone competent in lifting gear, and whatever the
+  applicable standard or regulations say about homemade lifting
+  assemblies.
 - A proof-load test of each assembly, with inspection criteria, and
   destructive tests of samples to find the actual ultimate load and where
   it fails.

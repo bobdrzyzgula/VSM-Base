@@ -58,9 +58,46 @@ The console gives the overall size, the tunnel, and the walls round it,
 and stops if a wall would be too thin. Those are geometry checks only; the
 model knows nothing about loads, and no setting makes it rated for any.
 
-## Making a harness to test
+## Before any use: what a proof-load test would involve
 
-This is how one would be made for testing, not a carrying procedure.
+None of this has been done. At the least:
+
+- **Test the assembly, not the parts.** The handle as printed, the
+  webbing and stitching as sewn, the slides as bought and threaded, on a base with its
+  rods, hung from a fixed point, not a hand.
+- **Set up a test, not a lift.** An anchor rated well above the test
+  load; a second, slack line that catches the load if the assembly lets
+  go; a way to lower it under control; weights whose mass is known; a
+  padded floor; and nobody under, beside or within reach of where it
+  could swing or fall. If that can't be arranged, it is a job for a
+  facility that can.
+- **Load it with dead weight, not a machine:** well above the heaviest
+  machine and base it will carry, by a factor taken from lifting practice
+  (synthetic slings, for example, are commonly proof-tested at twice their
+  rated load and designed to five times it, but the applicable standard
+  where you are decides, and a lifting-gear professional should set the
+  load, hold time and what counts as passing), not the 2× used for
+  illustration below. Hold it, a few centimeters over a padded floor, with
+  nobody under or beside it.
+- **Then inspect:** the seams for pulled or broken stitches, the marks
+  at the slides for any creep, the slides for bending, the webbing for
+  cuts, glazing or wear where it wraps the rod, the handle's
+  ends and lips for whitening or cracks, and the rods and notches for
+  bending or crushing. Anything changed fails the test.
+- **And the things a static hang doesn't show:** a jolt or short drop,
+  the loss of one leg (the base then swings and tips: the test should show
+  how far), a twisted leg, repeated lifts, a warm car, and aging of the
+  webbing and the print.
+
+Passing would show only that that one assembly held that load once. It
+would not make the design rated, and each new harness would need its own
+test.
+
+## Test-rig assembly only: making a harness to test
+
+This is how one would be made for the test above, not a way to make a
+harness for carrying. Hanging an empty base from it, as below, is a check
+of the assembly, not a qualification of it.
 
 1. **Thread first.** The tunnel is closed, so pass both lengths of
    webbing through it before sewing anything else: one from each end,
@@ -85,7 +122,10 @@ This is how one would be made for testing, not a carrying procedure.
    the cut end with heat, and leave at least 50 mm of tail beyond the
    slide (a provisional figure; a slip test should set it). The slide should sit above the base's top. The base's notches
    have to be the version 88 ones (32 mm long, 5 mm round the rod); the
-   earlier 25 mm notch is too short for 1" webbing.
+   earlier 25 mm notch is too short for 1" webbing. Don't cut, drill or
+   ream an older base's notches to fit, and don't take narrower webbing
+   or a snap hook as an equivalent: reprint the part with the v88
+   notches.
 5. **Adjust and mark.** Hang it with the base empty, lift an inch or two,
    and set the four legs so the base hangs level and the handle is
    centered. With a machine in it the base tips until the machine's
@@ -94,33 +134,6 @@ This is how one would be made for testing, not a carrying procedure.
    on both sides of each slide, leg and tail. A mark that has moved means
    something changed (slip, stretch, a seam settling, a slide bending):
    find out which before lifting again.
-
-## Before any use: what a proof-load test would involve
-
-None of this has been done. At the least:
-
-- **Test the assembly, not the parts.** The handle as printed, the
-  webbing and stitching as sewn, the slides as bought and threaded, on a base with its
-  rods, hung from a fixed point, not a hand.
-- **Load it with dead weight, not a machine:** well above the heaviest
-  machine and base it will carry, by a factor taken from lifting practice
-  (synthetic slings, for example, are commonly proof-tested at twice their
-  rated load and designed to five times it), not the 2× used for
-  illustration below. Hold it, a few centimeters over a padded floor, with
-  nobody under or beside it.
-- **Then inspect:** the seams for pulled or broken stitches, the marks
-  at the slides for any creep, the slides for bending, the webbing for
-  cuts, glazing or wear where it wraps the rod, the handle's
-  ends and lips for whitening or cracks, and the rods and notches for
-  bending or crushing. Anything changed fails the test.
-- **And the things a static hang doesn't show:** a jolt or short drop,
-  the loss of one leg (the base then swings and tips: the test should show
-  how far), a twisted leg, repeated lifts, a warm car, and aging of the
-  webbing and the print.
-
-Passing would show only that that one assembly held that load once. It
-would not make the design rated, and each new harness would need its own
-test.
 
 ## The loads, worked by hand
 
