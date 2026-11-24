@@ -191,7 +191,7 @@ brake jaws if they will see long, heavy runs.
 | #8 × 5/8" wood screws | about 24 | Modules to the plywood |
 | #8 × 1-1/2" wood screws | 2 | Through the board cover's ears |
 | M4 × 50 bolt, washer, light spring, wing nut | 2 | Brake clamp |
-| M5 × 30 screw and nut | 1 | Brake contact screw |
+| M5 × 35 screw and nut | 1 | Brake contact screw: reaches a scale platform 11 mm or more above the board (the arm's underside is about 34 mm up); longer for a lower scale |
 | Stick-on felt, 2 mm | — | Brake jaws, drag plunger |
 | M8 × 50 bolt, nut, nyloc nut, washers | 1 | Load pulley axle |
 | 608 bearings | 2 | Load pulley |
