@@ -65,8 +65,10 @@ motor_pulley_d = 19;
 /* [Scale] */
 // Brake arm length (match prony_brake.scad)
 arm_len = 100;
-// Scale footprint [X, Y] the fence is sized to
+// Scale footprint [X, Y] the fence is sized to (Y front to back, display end at the front)
 scale_size = [75, 80];
+// Center of the scale's weighing platform, from the footprint's front-left corner; the fence puts it under the arm's contact screw ([-1, -1]: the footprint's middle)
+scale_contact = [-1, -1];
 
 /* [Load stand] */
 // Load pulley outside diameter
@@ -139,10 +141,17 @@ pulley_x = cradle_x + motor_len / 2 + pulley_out;   // belt / brake plane
 cradle_footprint = [102.5, 70];                      // from motor_cradle.scad defaults
 
 jp_w = len(jack_labels) * jack_pitch + 16;
+// The fence's front rail is at the board's front edge or behind it, so the
+// platform's middle can be put under the arm's tip only if the arm reaches
+// far enough back; otherwise the tip lands in front of it.
+sc_contact = scale_contact[0] < 0 ? scale_size / 2 : scale_contact;
+tip_y = motor_y - arm_len;
+fence_y = max(3, tip_y - sc_contact.y - 3);
+tip_miss = (fence_y + 3 + sc_contact.y) - tip_y;    // > 0: tip in front of the platform's middle
 pos = [
     // name,          [x, y] of the part's local origin on the board, rotation
     ["jack_panel",    [ply[0] - jp_w - 5, 4], 0],
-    ["scale_fence",   [pulley_x - scale_size[0] / 2 - 3, 3], 0],
+    ["scale_fence",   [pulley_x - sc_contact.x - 3, fence_y], 0],
     ["load_rail",     [pulley_x, ply[1] - rail_len - 16], 0],
     ["bb_tray",       [255, 52], 0],
     ["wago_holder",   [262, 135], 0],
@@ -613,5 +622,9 @@ else if (part == "all") all_parts();
 else print_part(part);
 
 echo(str("Belt plane (motor pulley) at X = ", pulley_x, "; brake arm tip at Y = ", motor_y - arm_len));
+echo(str("Scale: the arm's contact screw lands ", tip_miss, " mm in front of the platform's middle"));
+if (tip_miss > 8)
+    echo(str("WARNING: the brake's contact screw lands ", tip_miss, " mm in front of the scale platform's middle; shorten arm_len by about ",
+             ceil(tip_miss - 3), " mm (here and in prony_brake.scad), or turn the scale so its platform is at the front"));
 echo(str("Load axle to motor axis: ", load_axis_z - motor_axis_z, " mm up; Y from ",
          P("load_rail")[1].y + carriage_len / 2 - motor_y, " to ", P("load_rail")[1].y + rail_len - carriage_len / 2 - 14 - motor_y, " mm back"));

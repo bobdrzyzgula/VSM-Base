@@ -113,7 +113,9 @@ In the OpenSCAD Customizer:
 | `pulley_d`, `pulley_w` | `prony_brake.scad` | 19, 10 | Motor pulley |
 | `breadboard` | `motor_rig.scad` | 82.5 × 54.6 × 8.5 | Your breadboard |
 | `jack_hole` | `motor_rig.scad` | 12.2 | Your sockets' panel hole |
-| `scale_size` | `motor_rig.scad` | 75 × 80 | Your scale's footprint |
+| `scale_size` | `motor_rig.scad` | 75 × 80 | Your scale's footprint, display end at the front |
+| `scale_contact` | `motor_rig.scad` | middle | The center of your scale's platform, from the footprint's front-left corner |
+| `arm_len` | both | 100 | The brake arm; set the same in both files, and use it in the torque formula |
 | `iso_size` | `motor_rig.scad` | 141.2 × 96.5 × 118.9 | Transformer case |
 
 ### 3.2 Print list
@@ -338,7 +340,8 @@ The motor runs at full speed the moment the cord goes in. Hold the strap.
    arm's own weight drops out of every later reading.
 4. **Load it** by tightening both wing nuts evenly, a quarter turn at a time.
 
-**Torque (N·m) = scale reading (kg) × 9.81 × 0.100**
+**Torque (N·m) = scale reading (kg) × 9.81 × arm length (m)**, which is
+0.100 for the default 100 mm arm.
 
 **The scale.** With the 100 mm arm, each gram on the scale is about
 1 mN·m. A sewing motor's 25–75 W at a few thousand rpm is roughly
@@ -353,7 +356,11 @@ scale (often sold as a jewelry scale), not a kitchen scale:
 - **Resolution 0.1 g.** A kitchen scale's 1 g step is fine at 150 g but
   20% of a 5 g reading.
 - **Footprint** about 75 × 80 mm, or set `scale_size` in `motor_rig.scad`
-  to yours so the fence fits it. Remove or fold back any lid, and check
+  to yours so the fence fits it. On a scale whose platform is at one end
+  and display at the other, set `scale_contact` to the platform's
+  center too, so the fence puts the platform under the arm. The console
+  says where the arm's contact screw lands, and warns, with a shorter
+  `arm_len` to use, if it would land well in front of the platform. Remove or fold back any lid, and check
   that the contact screw lands near the middle of the platform; a load
   near a corner reads differently on many scales.
 - **Tare, and an auto-off you can disable or a long one.** A scale that
