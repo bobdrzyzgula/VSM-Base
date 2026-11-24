@@ -2,7 +2,7 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 594 parameters; 590 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 595 parameters; 591 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
@@ -233,9 +233,10 @@ There are 594 parameters; 590 of them appear in the Customizer. The rest are lis
 | `rod_hole_d` | `4.95` | Rod hole diameter (printed as a teardrop, point up) |
 | `rod_x` | `7` | Rod center in from the end face *Range 3 to 15, step 0.1.* |
 | `rod_z` | `7` | Rod center above the bottom face *Range 3 to 15, step 0.1.* |
-| `notch_len` | `25` | Notch length along the rod |
-| `notch_clear` | `4` | Clear space around the rod in the notch, behind and above it *Range 1 to 10, step 0.5.* |
-| `notch_inset` | `25` | Distance from each outer face (front, back) to its notch |
+| `notch_len` | `32` | Notch length along the rod (32 takes 1" webbing flat, with room either side) |
+| `notch_clear` | `5` | Clear space around the rod in the notch, behind and above it (5 lets webbing be threaded round the rod) *Range 1 to 10, step 0.5.* |
+| `notch_inset` | `20` | Distance from each outer face (front, back) to its notch |
+| `notch_edge_r` | `3` | Radius on the notch's mouth, where the webbing turns out of it up the end face *Range 0 to 6, step 0.5.* |
 | `rod_stop` | `5` | Material left between a rod's blind end and the handhold |
 | `rod_plug_len` | `5` | Printed plug closing the open end of each rod hole (0 = no plugs; rods run to the face) *Range 0 to 10, step 0.5.* |
 | `rod_plug_clearance` | `0.1` | Plug clearance in the hole, per side (the crush ribs make the press fit) |

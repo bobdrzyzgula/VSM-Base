@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 87
+// VSM Base, version 88
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -419,6 +419,11 @@
 // broke in the compartment test when its supports came out. To keep two
 // columns fitting beside the inlet, ctrl_pocket_clear is 1.5 (was 2). A
 // warning when a bar is under 4 mm.
+// v88: rod notches for a harness whose webbing wraps the rod and comes back
+// through a three-bar slide, instead of a snap hook: notch_len 32 (was 25)
+// for 1" webbing, notch_clear 5 (was 4) to thread it, notch_inset 20 (was
+// 25) so the longer notch stays clear of the handhold on a 200 mm base,
+// and notch_edge_r 3 rounding the notch's mouth where the webbing turns.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
@@ -778,12 +783,14 @@ rod_hole_d = 4.95;
 rod_x = 7; // [3 : 0.1 : 15]
 // Rod center above the bottom face
 rod_z = 7; // [3 : 0.1 : 15]
-// Notch length along the rod
-notch_len = 25;
-// Clear space around the rod in the notch, behind and above it
-notch_clear = 4; // [1 : 0.5 : 10]
+// Notch length along the rod (32 takes 1" webbing flat, with room either side)
+notch_len = 32;
+// Clear space around the rod in the notch, behind and above it (5 lets webbing be threaded round the rod)
+notch_clear = 5; // [1 : 0.5 : 10]
 // Distance from each outer face (front, back) to its notch
-notch_inset = 25;
+notch_inset = 20;
+// Radius on the notch's mouth, where the webbing turns out of it up the end face
+notch_edge_r = 3; // [0 : 0.5 : 6]
 // Material left between a rod's blind end and the handhold
 rod_stop = 5;
 // Printed plug closing the open end of each rod hole (0 = no plugs; rods run to the face)
@@ -6615,13 +6622,28 @@ module end_cuts(side) {
             // 45 degrees toward the face so it prints without support
             for (n = notch_ys)
                 translate([0, n[1], 0]) rotate([90, 0, 0])
-                    linear_extrude(height = n[1] - n[0])
-                        polygon([[-overlap, -overlap], [nt_x1, -overlap],
-                                 [nt_x1, nt_z1], [-overlap, nt_z1 + nt_x1 + overlap]]);
+                    linear_extrude(height = n[1] - n[0]) notch_profile();
             for (r = rod_runs)
                 teardrop_y(rod_x, rod_z, r[0] - overlap, r[1] - r[0] + 2 * overlap,
                            rod_hole_d);
         }
+    }
+}
+
+// Rod notch, in XZ (x in from the end face, z up from the bottom). With
+// notch_edge_r, the region outside the face is included so that the inner
+// fillet rounds the solid's edge at the notch's mouth (and the ceiling's
+// inner corner); the outside part cuts nothing.
+module notch_profile() {
+    p = [[-overlap, -overlap], [nt_x1, -overlap],
+         [nt_x1, nt_z1], [-overlap, nt_z1 + nt_x1 + overlap]];
+    if (notch_edge_r <= 0) polygon(p);
+    else intersection() {
+        offset(r = -notch_edge_r) offset(delta = notch_edge_r) union() {
+            polygon(p);
+            translate([-20, -overlap]) square([20, nt_z1 + nt_x1 + 20]);
+        }
+        translate([-overlap, -overlap]) square([nt_x1 + overlap, nt_z1 + nt_x1 + 20]);
     }
 }
 

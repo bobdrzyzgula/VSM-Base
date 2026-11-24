@@ -86,7 +86,7 @@ cover. That needs a very large printer and solves harder structural
 problems, so it isn't part of this project.
 
 **A harness (experimental: do not carry a machine with it yet).** Don't
-carry a machine with a harness until the complete assembly (hooks,
+carry a machine with a harness until the complete assembly (slides,
 webbing, stitching, handle and rods, as built) has been proof-load tested
 and inspected; the handle's README outlines what that test would involve,
 and `docs/VALIDATION.md` what more a dependable design would need. Until
@@ -97,14 +97,16 @@ opposite back corner's, crossing in an X above the machine. They cross
 in a printed handle (`standalone/harness-handle/`): both lengths run
 through a tunnel along its grip, one on top of the other, and are sewn
 together just outside each end of it (a bar tack or a short box-and-X,
-with bonded nylon or polyester thread). A snap hook at each end clips onto
-the rod where it is exposed in its notch. The handle's
+with bonded nylon or polyester thread). At each end the webbing goes into
+the rod's notch, round the rod and out again, and back up beside itself
+through a metal three-bar slide, which holds the loop. The handle's
 [README](../../standalone/harness-handle/README.md) gives the order of
 work: the webbing has to go through the handle before anything is sewn.
 
 ![An experimental harness, not made or tested, on the four harness rods: two lengths of webbing crossing in an
-X over the machine, running together through the handle, each end clipped
-to a rod in its notch with a snap hook. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
+X over the machine, running together through the handle, each end wrapped
+round a rod in its notch and back up through a three-bar slide, shown in
+section at the right. The machine is an outline only.](../images/diagrams/carry-harness.svg){width=90%}
 
 - **The webbing must not slide through the handle.** Sewn on both sides
   of it, each of the four legs has a fixed length, and the base hangs
@@ -113,19 +115,39 @@ to a rod in its notch with a snap hook. The machine is an outline only.](../imag
   will tip.
 - **The handle has to clear the machine.** On the 99K base it sits about
   380 mm above the rods, enough to clear the head and the spool pins; each
-  leg is then about 410 mm from hook to handle, so each length is about
-  1 m (two legs and the handle's 154 mm) plus what the hooks' loops take. Lay the harness over your
+  leg is then about 410 mm from rod to handle, so each length is about
+  1 m (two legs and the handle's 154 mm), plus about 150 mm at each end
+  for the loop round the rod and a tail through the slide. Lay the harness over your
   machine before cutting. The webbing will rest against the machine near
   the head and the hand wheel; pad it there, or it will rub the finish.
-- **The hooks have to fit the notch.** The notch leaves `notch_clear`
-  (4 mm) round the rod, behind it and above it, so a hook's wire must be
-  thinner than that to pass. Pick the hooks before printing the base, and
-  raise `notch_clear` if they need it.
-- **The hooks, webbing and stitching** are the parts most likely to fail.
-  Use metal snap hooks with a stated working load of at least 25 kg each,
-  and webbing rated well above that. Ratings of the parts are not a rating
-  of the assembly: a seam, a hook's gate or a twisted leg can each be the
-  weakest point, and only a test of the assembly finds it.
+- **The webbing has to fit the notch.** The notch exposes `notch_len`
+  (32 mm) of rod, so 1" webbing lies flat across it, and leaves
+  `notch_clear` (5 mm) round the rod, behind and above it, so one layer
+  can be threaded through. Its mouth is rounded (`notch_edge_r`) where the
+  webbing turns out of it. These were changed for this harness in
+  version 88; a base printed earlier has a 25 mm notch with 4 mm round the
+  rod, too short for 1" webbing.
+- **The slides.** Each leg's length is held by a metal three-bar slide
+  (a tri-glide), not a cam buckle: the webbing's tail is threaded over
+  and under its center bar, so the leg's pull pinches it, and there is no
+  lever to be knocked open. Adjustment buckles of this kind, with the
+  webbing doubled back, are what climbing harnesses use; a cam buckle
+  holds by a spring-loaded cam, and is made for tie-downs. Use slides
+  sized for the webbing (1"), metal, not plastic. Thread them as their
+  maker shows, leave at least 50 mm of tail beyond each, and put each
+  slide above the base's top, where you can see it and it can't gouge
+  the plastic.
+- **The legs are adjustable.** Hang the base, then set the four legs so it
+  hangs level and the handle is centered over the machine's weight;
+  a machine's head and hand wheel make one end heavier. Then mark the
+  webbing at each slide with a pen: a mark that has moved before a lift
+  means that leg has slipped. The legs must be fixed while carrying, for
+  the same reason the webbing must not slide through the handle.
+- **The slides, webbing and stitching** are the parts most likely to
+  fail. Use webbing rated well above the load. Ratings of the parts are
+  not a rating of the assembly: a slide threaded wrong, a seam or a
+  twisted leg can each be the weakest point, and only a test of the
+  assembly finds it.
 
 **The loads, worked by hand.** These are illustrative estimates from
 simplified, static geometry and assumed weights, not measurements and not
@@ -145,13 +167,16 @@ leg, fatigue, creep or heat.
   one point. The printed handle is 154 mm long, which makes the legs
   steeper and the pull a little less, about 141 N; the handle's own
   loads are in its README.)
-- *The rods.* Each 3/16" rod spans the 25 mm notch, with the hook pulling
-  at its middle. As a simply supported beam that is a bending moment of
-  about 950 N·mm and a stress of about 90 MPa. A hardened steel dowel pin
-  yields at well over 1,000 MPa and 303 stainless at about 240 MPa, so
-  in this arithmetic steel's yield is 2.7 or more times the stress; brass is weaker and varies, so use
-  steel for rods that will carry the machine.
-- *The plastic round the rods.* The hook pulls up and inward, so the rod
+- *The rods.* Each 3/16" rod spans the 32 mm notch, with the webbing's
+  pull spread across its middle 25.4 mm. As a simply supported beam that
+  is a bending moment of about 730 N·mm and a stress of about 70 MPa. (A
+  hook pulling at one point in the middle would make 1,220 N·mm and
+  115 MPa; the webbing's spread is worth having.) A hardened steel dowel
+  pin yields at well over 1,000 MPa and 303 stainless at about 240 MPa,
+  so in this arithmetic steel's yield is 3.5 or more times the stress;
+  brass is weaker and varies, so use steel for rods that will carry the
+  machine.
+- *The plastic round the rods.* The webbing pulls up and inward, so the rod
   bears into the solid end wall above and behind it, not into the 4.5 mm
   of plastic below and outside it. Spread over about 10 mm either side of
   the notch, the bearing stress is under 2 MPa, against tens of MPa for
@@ -165,8 +190,8 @@ leg, fatigue, creep or heat.
   into the solid end wall, as the rods do.
 
 So in this arithmetic the printed structure's stresses are low next to
-the material's strength, and the weak points are the bought parts: hooks,
-webbing, stitching, and the rods' material. That is arithmetic, not
+the material's strength, and the weak points are the bought parts and the
+sewing: slides, webbing, stitching, and the rods' material. That is arithmetic, not
 strength validation. Layer adhesion, voids, a crack, creep, heat (a car
 in summer) or a print defect can each remove most of a margin, and the
 numbers say nothing about fatigue. Inspect the rods' notches, the

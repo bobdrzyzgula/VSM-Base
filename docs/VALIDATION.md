@@ -41,8 +41,9 @@ product safety, the applicable standards themselves, or a test laboratory.
 - Independent stops: the hinge's tilt stop and the tilt prop, each on
   its own, and what happens to the machine and the user's hands when one
   of them fails.
-- Dropped-load scenarios: a handhold, rod, hook or seam letting go at
-  carrying height, with and without the machine's front held down.
+- Dropped-load scenarios: a handhold, rod, slide or seam letting go, or
+  a slide slipping, at carrying height, with and without the machine's
+  front held down.
 
 ## Carrying harnesses
 
@@ -54,7 +55,8 @@ illustrative, with an arbitrary factor of 2, not a recognized one.
   to lifting gear where it will be used (synthetic slings, for example,
   are commonly proof-tested at twice their rated load and designed to five
   times it), applied to the complete assembly as built.
-- Rated hooks (working load and gate strength), rated webbing, and
+- Rated slides or buckles (working load, and slip under steady and
+  cyclic loads with the webbing actually used), rated webbing, and
   stitch patterns and thread with tested seam strength.
 - A proof-load test of each assembly, with inspection criteria, and
   destructive tests of samples to find the actual ultimate load and where
@@ -63,8 +65,9 @@ illustrative, with an arbitrary factor of 2, not a recognized one.
   what the base and machine do then.
 - Balance: machines whose weight is off center, and how far the base
   tilts.
-- Repeated lifts (fatigue of the print, seams and hooks), creep under a
-  sustained load, heat, sunlight and aging of the webbing.
+- Repeated lifts (fatigue of the print and seams, and creep of the
+  webbing through the slides), creep under a sustained load, heat,
+  sunlight and aging of the webbing.
 - The printed handle across printers, materials and print settings; one
   print report is one sample.
 - Instructions, markings and a stated maximum load, if the harness were

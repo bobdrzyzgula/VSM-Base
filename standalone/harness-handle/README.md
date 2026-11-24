@@ -11,7 +11,7 @@ and its loads.
 > **Experimental: do not carry a machine with it.** This handle has not
 > been printed, and no harness using it has been made or load-tested.
 > Don't carry a machine with it until the complete assembly (handle,
-> webbing, stitching, hooks and the base's rods, as built) has passed a
+> webbing, stitching, slides and the base's rods, as built) has passed a
 > proof-load test and been inspected; "Before any use" below outlines that
 > test, and the VSM Base's `docs/VALIDATION.md` what more would be needed.
 > The figures here are illustrative arithmetic, not a load rating. It is
@@ -67,8 +67,8 @@ This is how one would be made for testing, not a carrying procedure.
    lying flat, one on top of the other.
 2. **Lay it out over the machine** in its base, with the handle centered
    above the machine and high enough to clear the head and the spool pins
-   (about 380 mm above the rods on the 99K base). Mark each end where it
-   meets its rod.
+   (about 380 mm above the rods on the 99K base). Leave each end about
+   150 mm longer than it takes to reach its rod, for the loop and a tail.
 3. **Sew the two lengths together just outside each end of the handle**,
    a bar tack or a short box-and-X, through both layers. **This is
    required, not optional.** If the webbing can slide through the handle,
@@ -76,21 +76,29 @@ This is how one would be made for testing, not a carrying procedure.
    since its weight sits above the rods, it will tip. Sewn, each of the
    four legs has a fixed length, and the base hangs steady below the
    handle.
-4. **Sew a snap hook into each end**, with a box-and-X stitch, at the
-   marks.
-5. Hang it on the rods with the base empty, lift an inch or two, and
-   check that the base hangs level and the handle stays put. With a
-   machine in it, the base tips until the machine's weight is under the
-   handle; a head and hand wheel are heavier than the far end, so it may
-   hang low on that side. If it hangs far enough off level to matter,
-   unpick and resew with the handle moved toward the heavy end.
+4. **Fit each end to its rod.** Put a metal three-bar slide (1", a
+   "tri-glide") on the leg first. Then feed the end into the rod's notch
+   over the rod, down behind it and out underneath, bring it back up
+   beside the leg, and thread it through the slide as its maker shows,
+   so that the leg's pull pinches the tail against the center bar. Seal
+   the cut end with heat, and leave at least 50 mm of tail beyond the
+   slide. The slide should sit above the base's top. The base's notches
+   have to be the version 88 ones (32 mm long, 5 mm round the rod); the
+   earlier 25 mm notch is too short for 1" webbing.
+5. **Adjust and mark.** Hang it with the base empty, lift an inch or two,
+   and set the four legs so the base hangs level and the handle is
+   centered. With a machine in it the base tips until the machine's
+   weight is under the handle, and a head and hand wheel make one end
+   heavier, so level it again loaded. Then mark the webbing with a pen
+   where it leaves each slide. A mark that has moved means that leg has
+   slipped: reset it, and find out why, before lifting again.
 
 ## Before any use: what a proof-load test would involve
 
 None of this has been done. At the least:
 
 - **Test the assembly, not the parts.** The handle as printed, the
-  webbing and stitching as sewn, the hooks as bought, on a base with its
+  webbing and stitching as sewn, the slides as bought and threaded, on a base with its
   rods, hung from a fixed point, not a hand.
 - **Load it with dead weight, not a machine:** well above the heaviest
   machine and base it will carry, by a factor taken from lifting practice
@@ -98,8 +106,9 @@ None of this has been done. At the least:
   rated load and designed to five times it), not the 2× used for
   illustration below. Hold it, a few centimeters over a padded floor, with
   nobody under or beside it.
-- **Then inspect:** the seams for pulled or broken stitches, the hooks'
-  gates and wire, the webbing for cuts, glazing or slippage, the handle's
+- **Then inspect:** the seams for pulled or broken stitches, the marks
+  at the slides for any creep, the slides for bending, the webbing for
+  cuts, glazing or wear where it wraps the rod, the handle's
   ends and lips for whitening or cracks, and the rods and notches for
   bending or crushing. Anything changed fails the test.
 - **And the things a static hang doesn't show:** a jolt or short drop,
@@ -130,8 +139,8 @@ the webbing.
 
 These are estimates, not measurements, and say nothing about a dropped
 or swung load, one leg lost, fatigue, creep or heat. In this arithmetic
-the weak points are the bought parts and the sewing: the hooks, the webbing, and
-the stitching. A crack, a void, poor layer adhesion or heat can remove
+the weak points are the bought parts and the sewing: the slides, the
+webbing, and the stitching. A crack, a void, poor layer adhesion or heat can remove
 most of a printed part's margin; inspect the handle, especially its ends,
 before each carry.
 
