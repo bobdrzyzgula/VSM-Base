@@ -427,14 +427,15 @@
 // v89: small notion trays for the bays the regular ones don't fit: the
 // back and left extensions' divided outer bays (1+2) and the corner's square
 // bays (parts notion_back_half, notion_left_half, notion_square, and
-// notion_small_assembly), plain or divided.
+// notion_small_assembly), plain or divided; and notion_corner_long for the
+// corner's long bay (corner_layout long left or long back).
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_back_half, notion_left_half, notion_square, notion_small_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test]
+part = "assembly"; // [assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_back_half, notion_left_half, notion_square, notion_corner_long, notion_small_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 
@@ -927,7 +928,7 @@ ot_divider_frac = 0.8; // [0.2 : 0.05 : 1]
 ot_divider_t = 1.2; // [0.8 : 0.1 : 4]
 
 /* [Small notion trays (divided and corner bays)] */
-// Height of a small tray (parts notion_back_half, notion_left_half, notion_square)
+// Height of a small tray (parts notion_back_half, notion_left_half, notion_square, notion_corner_long)
 ot_small_h = 20; // [5 : 0.5 : 80]
 // Divide the small trays into compartments (size from ot_cell)
 ot_small_compartments = false;
@@ -2659,7 +2660,10 @@ function ot_gcells(g) = [for (i = [0 : g[1] - 1])
 // both extensions doubled, all four bays are the bobbin bay's size.
 ot_small = [["notion_back_half", "back_outer_1", "the back extension's divided outer bays (back_ext_layout = \"1+2\")"],
             ["notion_left_half", "left_outer_1", "the left extension's divided outer bays (left_ext_layout = \"1+2\")"],
-            ["notion_square",    "corner",       "the corner's bobbin bay"]];
+            ["notion_square",    "corner",       "the corner's bobbin bay"],
+            ["notion_corner_long",
+             corner_layout == "long left" ? "corner_left" : corner_layout == "long back" ? "corner_back" : "none",
+             "the corner's long bay (corner_layout = \"long left\" or \"long back\")"]];
 ot_small_parts = concat([for (t = ot_small) t[0]], ["notion_small_assembly"]);
 function ot_bay_rect(name) = let(b = ins_bay(name)) len(b) == 1 ? [b[0][1], b[0][2]] : undef;
 // Outside length and width of a tray for a bay, and the stack height it allows
@@ -2788,7 +2792,7 @@ if (report && ins_in(part, ot_small_parts)) {
     for (t = ot_small) {
         sz = ot_small_sz(t[1]);
         if (is_undef(sz))
-            echo(str(t[0], ": no ", t[1], " bay here; this tray is for ", t[2]));
+            echo(str(t[0], ": no bay for it here; it is for ", t[2]));
         else {
             g = ot_grid(sz.x, sz.y, ot_small_cols, ot_small_rows);
             echo(str(t[0], ": ", sz.x, " x ", sz.y, " outside, ", ot_small_h, " mm tall; for ", t[2],
@@ -6876,7 +6880,8 @@ module notion_small_insert(p) {
     if (p == "notion_small_assembly") {
         bays = [["notion_back_half", ["back_outer_1", "back_outer_2"]],
                 ["notion_left_half", ["left_outer_1", "left_outer_2"]],
-                ["notion_square",    ["corner", "corner_left", "corner_back", "corner_far"]]];
+                ["notion_square",    ["corner", "corner_left", "corner_back", "corner_far"]],
+                ["notion_corner_long", ["corner_left", "corner_back"]]];
         n = len([for (t = ot_small) if (!is_undef(ot_small_sz(t[1]))) t]);
         if (n == 0 && report)
             echo("WARNING: no bay here takes a small notion tray; set back_ext_layout or left_ext_layout to 1+2, or turn on the corner");
@@ -6902,7 +6907,7 @@ module notion_small_insert(p) {
     } else {
         t = [for (q = ot_small) if (q[0] == p) q][0];
         sz = ot_small_sz(t[1]);
-        assert(!is_undef(sz), str(p, " is for ", t[2], ", and there is no ", t[1], " bay here"));
+        assert(!is_undef(sz), str(p, " is for ", t[2], ", and this configuration has none"));
         ot_tray(ot_small_h, ot_small_compartments, true, [sz.x, sz.y], [ot_small_cols, ot_small_rows]);
     }
 }

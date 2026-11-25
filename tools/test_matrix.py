@@ -92,6 +92,9 @@ def full_cases():
             yield {"machine": m, "left_ext_double": True, "back_ext_double": True,
                    "left_ext_layout": "1+2", "back_ext_layout": "1+2", "corner_layout": "2x2",
                    "ot_small_compartments": True, "part": p}
+        for lay in ("long left", "long back"):
+            yield {"machine": m, "left_ext_double": True, "back_ext_double": True,
+                   "corner_layout": lay, "ot_small_compartments": True, "part": "notion_corner_long"}
         # the rod notch's mouth at its smallest and largest radius
         for r in (0, 6):
             yield {"machine": m, "notch_edge_r": r, "part": "base"}

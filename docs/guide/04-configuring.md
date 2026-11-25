@@ -327,7 +327,9 @@
 > the rest: `notion_back_half` for the halves of a `1+2` back extension,
 > `notion_left_half` for the halves of a `1+2` left extension, and
 > `notion_square` for the corner's square bobbin bay, which with both
-> extensions doubled is also the size of every bay in a `2x2` corner. Each
+> extensions doubled is also the size of every bay in a `2x2` corner; and
+> `notion_corner_long` for the corner's long bay, with `corner_layout` set
+> to `long left` or `long back` (166.9 × 81.2 mm doubled). Each
 > is sized from its bay, so a part asks for that bay to exist. They stack,
 > pin to socket, like the regular trays. One height, `ot_small_h`, is
 > printed at a time; `ot_small_compartments` divides them, with `ot_cell`
