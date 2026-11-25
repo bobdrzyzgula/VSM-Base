@@ -1338,9 +1338,12 @@ of a <code>1+2</code> back extension, <code>notion_left_half</code> for
 the halves of a <code>1+2</code> left extension, and
 <code>notion_square</code> for the corner’s square bobbin bay, which
 with both extensions doubled is also the size of every bay in a
-<code>2x2</code> corner. Each is sized from its bay, so a part asks for
-that bay to exist. They stack, pin to socket, like the regular trays.
-One height, <code>ot_small_h</code>, is printed at a time;
+<code>2x2</code> corner; and <code>notion_corner_long</code> for the
+corner’s long bay, with <code>corner_layout</code> set to
+<code>long left</code> or <code>long back</code> (166.9 × 81.2 mm
+doubled). Each is sized from its bay, so a part asks for that bay to
+exist. They stack, pin to socket, like the regular trays. One height,
+<code>ot_small_h</code>, is printed at a time;
 <code>ot_small_compartments</code> divides them, with
 <code>ot_cell</code> (or <code>ot_small_cols</code> and
 <code>ot_small_rows</code>) setting the grid. The console gives each
@@ -2583,13 +2586,13 @@ ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom,
 bobbin_upper, notion_assembly, notion_set, notion_30, notion_25,
 notion_20, notion_15, notion_10, notion_custom, spool_tray,
 spool_assembly, notion_back_half, notion_left_half, notion_square,
-notion_small_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig,
-foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test,
-ext_top_test, dovetail_test, center_test, hinge_block_test,
-end_strip_test, hinge_coupon, turn_button_test, outlet_test,
-passthrough_test, front_corner_test, lid_hinge_test, split_test,
-compartment_test, knee_entry_test, ctrl_panel_test, attach_test,
-printed_hinge_test, bobbin_test, notion_test.</em></td>
+notion_corner_long, notion_small_assembly, tools, hinge_nut_tool,
+tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts,
+top_test, bottom_test, ext_top_test, dovetail_test, center_test,
+hinge_block_test, end_strip_test, hinge_coupon, turn_button_test,
+outlet_test, passthrough_test, front_corner_test, lid_hinge_test,
+split_test, compartment_test, knee_entry_test, ctrl_panel_test,
+attach_test, printed_hinge_test, bobbin_test, notion_test.</em></td>
 </tr>
 <tr class="even">
 <td><code>explode</code></td>
@@ -4244,7 +4247,8 @@ and corner bays)</h2>
 <td><code>ot_small_h</code></td>
 <td><code>20</code></td>
 <td>Height of a small tray (parts notion_back_half, notion_left_half,
-notion_square) <em>Range 5 to 80, step 0.5.</em></td>
+notion_square, notion_corner_long) <em>Range 5 to 80, step
+0.5.</em></td>
 </tr>
 <tr class="even">
 <td><code>ot_small_compartments</code></td>
