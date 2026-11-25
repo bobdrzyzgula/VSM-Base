@@ -14,7 +14,7 @@
 - The `part` setting and the views it gives: assembly, all, test parts, individual parts.
 - Reading the console: what each line means, and every WARNING with what to do about it.
 - Choosing a side compartment, extensions, trenches and lid hinges.
-- Organizer inserts: bobbin trays (corner bay), notion trays and the spool tray (back or left bay, chosen with `ot_bay`), the stack-height budget the console reports, and the `*_assembly` views.
+- Organizer inserts: bobbin trays (corner bay), notion trays and the spool tray (back or left bay, chosen with `ot_bay`), small notion trays for the divided and corner bays, the stack-height budget the console reports, and the `*_assembly` views.
 
 > **Note: starting a Custom machine from a profile.** The Customizer's
 > preset menu, at the top of its panel, has a preset for each machine
@@ -321,6 +321,19 @@
 > so the larger need wins and the other piece's outer bin is walled in to
 > match its inner one. With both on, a `2x2` corner holds four bobbin
 > stacks, and a `1+1` left extension two spool or notion trays.
+>
+> **Small notion trays for the smaller bays.** The regular notion trays fit
+> only the back and left extensions' inner bays. Three smaller sizes fit
+> the rest: `notion_back_half` for the halves of a `1+2` back extension,
+> `notion_left_half` for the halves of a `1+2` left extension, and
+> `notion_square` for the corner's square bobbin bay, which with both
+> extensions doubled is also the size of every bay in a `2x2` corner. Each
+> is sized from its bay, so a part asks for that bay to exist. They stack,
+> pin to socket, like the regular trays. One height, `ot_small_h`, is
+> printed at a time; `ot_small_compartments` divides them, with `ot_cell`
+> (or `ot_small_cols` and `ot_small_rows`) setting the grid. The console
+> gives each size, the bays it fits snugly, and how tall a stack may be;
+> `notion_small_assembly` shows a stack in every bay one fits.
 >
 > **One lid or a lid per bay.** Each piece takes one lid over all its bays
 > (`back_lids`, `left_lids`, `corner_lids` = `one`), resting on the

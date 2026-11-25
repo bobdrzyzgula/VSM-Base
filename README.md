@@ -128,7 +128,8 @@ fit on your printer, and then print a base that fits.
 - **Organizer inserts** for the bays: stacking bobbin trays for the corner
   bay (40 class 15/66 bobbins at the defaults), lifted out together by a
   center knob; stacking notion trays for the back or left bay in 10–30 mm
-  and custom heights, plain or divided into compartments; and a spool tray
+  and custom heights, plain or divided into compartments, and smaller ones
+  for the divided outer bays and the corner's square bays; and a spool tray
   that holds each spool with its bobbin on top. Others can be designed
   against a published list of bay sizes; see [docs/inserts.md](docs/inserts.md).
 - **A nut tool**: a printed rod for holding a nut in a trap while the

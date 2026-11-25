@@ -1,4 +1,79 @@
 {
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Kenmore 158-14001, ot_small_compartments=True, part=notion_back_half": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Back extension part: [240, 240.5, 88.225]  WARNING: exceeds printer",
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [200.325, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_ext ([240, 240.5]) is larger than the bed inside the margin",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([200.325, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([181.8, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Kenmore 158-14001, ot_small_compartments=True, part=notion_left_half": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Back extension part: [240, 240.5, 88.225]  WARNING: exceeds printer",
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [200.325, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_ext ([240, 240.5]) is larger than the bed inside the margin",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([200.325, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([181.8, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Kenmore 158-14001, ot_small_compartments=True, part=notion_square": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [
+   "Back extension part: [240, 240.5, 88.225]  WARNING: exceeds printer",
+   "Base part (each half): [277.475, 250, 88.225]  WARNING: exceeds printer",
+   "Left extension part: [200.325, 250, 88.225]  WARNING: exceeds printer",
+   "WARNING: back_ext ([240, 240.5]) is larger than the bed inside the margin",
+   "WARNING: back_trim ([242, 55.5]) is larger than the bed inside the margin",
+   "WARNING: base_left ([277.975, 250]) is larger than the bed inside the margin",
+   "WARNING: base_right ([277.475, 250]) is larger than the bed inside the margin",
+   "WARNING: hinge pin axis is off the bed hole axis by 2.75 mm",
+   "WARNING: left_ext ([200.325, 250]) is larger than the bed inside the margin",
+   "WARNING: lid_left ([181.8, 241.8]) is larger than the bed inside the margin"
+  ],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Singer 99K, ot_small_compartments=True, part=notion_back_half": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Singer 99K, ot_small_compartments=True, part=notion_left_half": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
+ "full: back_ext_double=True, back_ext_layout=1+2, corner_layout=2x2, left_ext_double=True, left_ext_layout=1+2, machine=Singer 99K, ot_small_compartments=True, part=notion_square": {
+  "empty": false,
+  "nonmanifold": false,
+  "problems": [],
+  "rc": 0,
+  "solids": 1
+ },
  "full: compartment_mount=attached, compartment_option=storage, machine=Kenmore 158-14001, part=right_bay": {
   "empty": false,
   "nonmanifold": false,

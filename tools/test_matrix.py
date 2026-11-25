@@ -87,6 +87,11 @@ def full_cases():
                   "corner_lid", "base_lid", "ext_pegs", "test_parts"]:
             yield {"machine": m, "part": p}
         yield {"machine": m, "hinge_type": "printed", "part": "printed_hinges"}
+        # small notion trays, in doubled extensions split 1+2 with a 2x2 corner
+        for p in ("notion_back_half", "notion_left_half", "notion_square"):
+            yield {"machine": m, "left_ext_double": True, "back_ext_double": True,
+                   "left_ext_layout": "1+2", "back_ext_layout": "1+2", "corner_layout": "2x2",
+                   "ot_small_compartments": True, "part": p}
         # the rod notch's mouth at its smallest and largest radius
         for r in (0, 6):
             yield {"machine": m, "notch_edge_r": r, "part": "base"}

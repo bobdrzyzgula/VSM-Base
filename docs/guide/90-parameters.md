@@ -2,13 +2,13 @@
 
 This chapter is generated from the comments in `scad/vsm_base.scad` by `tools/extract_params.py`. Do not edit it by hand; change the comment in the model and rebuild.
 
-There are 595 parameters; 591 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
+There are 599 parameters; 595 of them appear in the Customizer. The rest are lists the Customizer cannot show, and are marked *edit in the file*.
 
 ## Part
 
 | Parameter | Default | Description |
 |---------|----|---------------|
-| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test.* |
+| `part` | `"assembly"` | What to render *Choices: assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_back_half, notion_left_half, notion_square, notion_small_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test.* |
 | `explode` | `40` | Spacing between parts in the "exploded" layout |
 
 ## Options
@@ -322,6 +322,15 @@ There are 595 parameters; 591 of them appear in the Customizer. The rest are lis
 | `ot_rows` | `0` | Compartments across the tray's width (0 = from ot_cell) *Range 0 to 20, step 1.* |
 | `ot_divider_frac` | `0.8` | Divider height, as a fraction of the tray height *Range 0.2 to 1, step 0.05.* |
 | `ot_divider_t` | `1.2` | Divider thickness *Range 0.8 to 4, step 0.1.* |
+
+## Small notion trays (divided and corner bays)
+
+| Parameter | Default | Description |
+|---------|----|---------------|
+| `ot_small_h` | `20` | Height of a small tray (parts notion_back_half, notion_left_half, notion_square) *Range 5 to 80, step 0.5.* |
+| `ot_small_compartments` | `false` | Divide the small trays into compartments (size from ot_cell) |
+| `ot_small_cols` | `0` | Small trays: compartments along the length (0 = from ot_cell) *Range 0 to 20, step 1.* |
+| `ot_small_rows` | `0` | Small trays: compartments across the width (0 = from ot_cell) *Range 0 to 20, step 1.* |
 
 ## Spool tray
 

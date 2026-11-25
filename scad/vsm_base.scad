@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// VSM Base, version 88
+// VSM Base, version 89
 // Copyright (c) 2026 Robert Drzyzgula
 // All dimensions in mm unless noted.
 //
@@ -424,13 +424,17 @@
 // for 1" webbing, notch_clear 5 (was 4) to thread it, notch_inset 20 (was
 // 25) so the longer notch stays clear of the handhold on a 200 mm base,
 // and notch_edge_r 3 rounding the notch's mouth where the webbing turns.
+// v89: small notion trays for the bays the regular ones don't fit: the
+// back and left extensions' divided outer bays (1+2) and the corner's square
+// bays (parts notion_back_half, notion_left_half, notion_square, and
+// notion_small_assembly), plain or divided.
 
 include <BOSL2/std.scad>
 include <BOSL2/screws.scad>
 
 /* [Part] */
 // What to render
-part = "assembly"; // [assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test]
+part = "assembly"; // [assembly, exploded, all, extensions_view, base, base_lid, right_bay, rod_plugs, turn_button, passthrough_cover, outlet_cap, outlet_trims, back_trim, left_trim, cord_slot_trim, back_ext, back_lid, back_podium, back_box, left_ext, left_lid, left_podium, left_box, corner_ext, corner_lid, corner_podium, corner_box, bin_lids, ext_pegs, printed_hinges, printed_hinge_view, knee_assembly, knee_sector, knee_idler, knee_pinion, knee_hub, knee_spring_housing, knee_spring_cap, knee_cover, knee_cord_clamp, ctrl_mezzanine, bobbin_assembly, bobbin_trays, bobbin_bottom, bobbin_upper, notion_assembly, notion_set, notion_30, notion_25, notion_20, notion_15, notion_10, notion_custom, spool_tray, spool_assembly, notion_back_half, notion_left_half, notion_square, notion_small_assembly, tools, hinge_nut_tool, tilt_prop, foot_rig, foot_rig_left, foot_rig_right, test_parts, top_test, bottom_test, ext_top_test, dovetail_test, center_test, hinge_block_test, end_strip_test, hinge_coupon, turn_button_test, outlet_test, passthrough_test, front_corner_test, lid_hinge_test, split_test, compartment_test, knee_entry_test, ctrl_panel_test, attach_test, printed_hinge_test, bobbin_test, notion_test]
 // Spacing between parts in the "exploded" layout
 explode = 40;
 
@@ -921,6 +925,16 @@ ot_rows = 0; // [0 : 1 : 20]
 ot_divider_frac = 0.8; // [0.2 : 0.05 : 1]
 // Divider thickness
 ot_divider_t = 1.2; // [0.8 : 0.1 : 4]
+
+/* [Small notion trays (divided and corner bays)] */
+// Height of a small tray (parts notion_back_half, notion_left_half, notion_square)
+ot_small_h = 20; // [5 : 0.5 : 80]
+// Divide the small trays into compartments (size from ot_cell)
+ot_small_compartments = false;
+// Small trays: compartments along the length (0 = from ot_cell)
+ot_small_cols = 0; // [0 : 1 : 20]
+// Small trays: compartments across the width (0 = from ot_cell)
+ot_small_rows = 0; // [0 : 1 : 20]
 
 /* [Spool tray] */
 // Spool diameter
@@ -2624,6 +2638,42 @@ ot_cell_sz = [(ot_in.x - (ot_ncols - 1) * ot_divider_t) / ot_ncols,
 // Divider centerlines, from the tray center
 function ot_div_pos(n, inside, cell) =
     [for (k = [1 : 1 : n - 1]) -inside / 2 + k * (cell + ot_divider_t) - ot_divider_t / 2];
+// The same for any tray of outside size L x W: [inside, columns, rows,
+// cell size]; corner pin positions; gusset positions, plain or per cell
+function ot_grid(L, W, cols, rows) =
+    let(in = [L - 2 * ot_wall, W - 2 * ot_wall],
+        nc = cols > 0 ? cols : max(1, round(in.x / ot_cell)),
+        nr = rows > 0 ? rows : max(1, round(in.y / ot_cell)))
+    [in, nc, nr, [(in.x - (nc - 1) * ot_divider_t) / nc, (in.y - (nr - 1) * ot_divider_t) / nr]];
+function ot_pins(L, W) = [for (sx = [-1, 1], sy = [-1, 1])
+                             [sx * (L / 2 - ot_boss / 2), sy * (W / 2 - ot_boss / 2)]];
+function ot_gspan(inx) = inx / 2 - ot_boss + ot_wall;
+function ot_gplain(inx) = let(sp = ot_gspan(inx), n = max(1, round(2 * sp / ot_gusset_pitch)))
+    [for (i = [0 : n - 1]) -sp + (i + 0.5) * 2 * sp / n];
+function ot_gcells(g) = [for (i = [0 : g[1] - 1])
+                            let(x = -g[0].x / 2 + (i + 0.5) * g[3].x + i * ot_divider_t)
+                            if (abs(x) < ot_gspan(g[0].x)) x];
+
+// Small notion trays, each sized from one bay: [part, bay, description].
+// The two halves of a 1+2 outer bay are the same size; in a corner with
+// both extensions doubled, all four bays are the bobbin bay's size.
+ot_small = [["notion_back_half", "back_outer_1", "the back extension's divided outer bays (back_ext_layout = \"1+2\")"],
+            ["notion_left_half", "left_outer_1", "the left extension's divided outer bays (left_ext_layout = \"1+2\")"],
+            ["notion_square",    "corner",       "the corner's bobbin bay"]];
+ot_small_parts = concat([for (t = ot_small) t[0]], ["notion_small_assembly"]);
+function ot_bay_rect(name) = let(b = ins_bay(name)) len(b) == 1 ? [b[0][1], b[0][2]] : undef;
+// Outside length and width of a tray for a bay, and the stack height it allows
+function ot_small_sz(name) =
+    let(r = ot_bay_rect(name)) is_undef(r) ? undef
+  : let(s = r[1] - r[0])
+    [max(s.x, s.y) - 2 * ot_wall_clear, min(s.x, s.y) - 2 * ot_wall_clear, s.z - ot_pin_h - ot_top_clear];
+// The bays (either way round) a tray of outside size sz fits snugly: no
+// more than 1 mm more play per side than ot_wall_clear gives
+function ot_fits_bays(sz) =
+    [for (b = compartments) let(s = b[2] - b[1],
+                                dl = max(s.x, s.y) - 2 * ot_wall_clear - sz.x,
+                                dw = min(s.x, s.y) - 2 * ot_wall_clear - sz.y)
+        if (dl >= -0.01 && dw >= -0.01 && dl <= 2 && dw <= 2) b[0]];
 
 // Spool tray: height, and the post layout that holds the most spools. Three
 // layouts are tried, a square grid and rows or columns staggered by half a
@@ -2730,6 +2780,32 @@ if (report && ins_in(part, ot_parts)) {
     if (ot_spool_tray_h - ot_grip_t - ot_reach(ot_spool_tray_h) < ot_floor + ot_spool_h)
         echo("WARNING: the spool tray's finger holds come down below the spool tops");
     }
+    echo("=================================");
+}
+
+if (report && ins_in(part, ot_small_parts)) {
+    echo("=== Small notion trays ===");
+    for (t = ot_small) {
+        sz = ot_small_sz(t[1]);
+        if (is_undef(sz))
+            echo(str(t[0], ": no ", t[1], " bay here; this tray is for ", t[2]));
+        else {
+            g = ot_grid(sz.x, sz.y, ot_small_cols, ot_small_rows);
+            echo(str(t[0], ": ", sz.x, " x ", sz.y, " outside, ", ot_small_h, " mm tall; for ", t[2],
+                     "; fits ", ot_fits_bays(sz), "; trays may stack to ", floor(sz.z * 10) / 10, " mm"));
+            echo(str("  compartments ", ot_small_compartments ? "on" : "off", ": ", g[1], " x ", g[2],
+                     ", each ", round(g[3].x * 10) / 10, " x ", round(g[3].y * 10) / 10, " mm"));
+            if (ot_small_compartments && min(g[3]) < 12)
+                echo(str("WARNING: ", t[0], ": compartments under 12 mm across are hard to reach into"));
+            if (ot_grip_w > sz.y - 2 * ot_boss)
+                echo(str("WARNING: ", t[0], ": the finger-hold lip (ot_grip_w ", ot_grip_w,
+                         ") runs into the corner bosses; shorten it to ", floor(sz.y - 2 * ot_boss)));
+            if (ot_small_h > sz.z)
+                echo(str("WARNING: ", t[0], ": taller than the bay allows"));
+        }
+    }
+    if (ot_small_h < ot_floor + ot_grip_t + 2)
+        echo("WARNING: the small trays are too shallow for a finger hold");
     echo("=================================");
 }
 
@@ -3842,6 +3918,8 @@ if (part == "assembly") {
 } else if (ins_in(part, bb_parts)) {
     assert(bb_have, "The bobbin trays need the corner bay: turn on back_ext, left_ext and corner_ext, or set make_corner_box");
     bobbin_insert(part);
+} else if (ins_in(part, ot_small_parts)) {
+    notion_small_insert(part);
 } else if (ins_in(part, ot_parts)) {
     assert(ot_have, str("The notion trays need the ", ot_bay, " bay: turn on the ", ot_bay, " extension, or set make_", ot_bay, "_box"));
     notion_insert(part);
@@ -6791,6 +6869,44 @@ module notion_insert(p) {
     }
 }
 
+// Small notion trays: one tray, sized from its bay; or every small bay
+// filled with a stack (ot_show, as far as the bay allows), the pieces shown
+// for context
+module notion_small_insert(p) {
+    if (p == "notion_small_assembly") {
+        bays = [["notion_back_half", ["back_outer_1", "back_outer_2"]],
+                ["notion_left_half", ["left_outer_1", "left_outer_2"]],
+                ["notion_square",    ["corner", "corner_left", "corner_back", "corner_far"]]];
+        n = len([for (t = ot_small) if (!is_undef(ot_small_sz(t[1]))) t]);
+        if (n == 0 && report)
+            echo("WARNING: no bay here takes a small notion tray; set back_ext_layout or left_ext_layout to 1+2, or turn on the corner");
+        for (i = [0 : len(bays) - 1]) {
+            sz = ot_small_sz(ot_small[i][1]);
+            if (!is_undef(sz))
+                for (nm = bays[i][1]) {
+                    r = ot_bay_rect(nm);
+                    if (!is_undef(r) && ins_in(nm, ot_fits_bays(sz)))
+                        translate([(r[0].x + r[1].x) / 2, (r[0].y + r[1].y) / 2, r[0].z])
+                            rotate(r[1].y - r[0].y > r[1].x - r[0].x ? 90 : 0)
+                                for (k = [0 : len(ot_show) - 1])
+                                    if (sum([for (j = [0 : k]) ot_show[j]]) <= sz.z)
+                                        translate([0, 0, sum([for (j = [0 : k]) ot_show[j]]) - ot_show[k]])
+                                            color(k % 2 == 0 ? "SteelBlue" : "LightSteelBlue")
+                                                ot_tray(ot_show[k], ot_small_compartments, true,
+                                                        [sz.x, sz.y], [ot_small_cols, ot_small_rows]);
+                }
+        }
+        if (bay_back) %back_ext_part();
+        if (bay_left) %left_ext_part();
+        if (bay_corner) %corner_part();
+    } else {
+        t = [for (q = ot_small) if (q[0] == p) q][0];
+        sz = ot_small_sz(t[1]);
+        assert(!is_undef(sz), str(p, " is for ", t[2], ", and there is no ", t[1], " bay here"));
+        ot_tray(ot_small_h, ot_small_compartments, true, [sz.x, sz.y], [ot_small_cols, ot_small_rows]);
+    }
+}
+
 // Children placed in the bay: tray center at the bay center, on its floor,
 // tray length along the bay's long side
 module ot_in_bay() {
@@ -6803,14 +6919,16 @@ module ot_in_bay() {
 // corner carries a pin on top and a socket underneath; a tray rests on the
 // wall tops of the one below. A lip with a 45-degree underside at the
 // middle of each end wall gives a finger hold.
-module ot_tray(h, grid = false, gussets = true) {
-    L = ot_len;
-    W = ot_wid;
+module ot_tray(h, grid = false, gussets = true, sz = [ot_len, ot_wid], cr = [ot_cols, ot_rows]) {
+    L = sz.x;
+    W = sz.y;
     w = ot_wall;
+    pins = ot_pins(L, W);
+    g = ot_grid(L, W, cr[0], cr[1]);
     r = ot_grip_reach > 0 ? ot_reach(h) : 0;
-    if (grid) ot_dividers(h);
+    if (grid) ot_dividers(h, g);
     if (ot_gussets && gussets)
-        for (sy = [-1, 1]) ot_gusset_row(grid ? ot_g_cells : ot_g_plain, sy, h);
+        for (sy = [-1, 1]) ot_gusset_row(grid ? ot_gcells(g) : ot_gplain(g[0].x), sy, h, W);
     difference() {
         union() {
             // Shell
@@ -6821,7 +6939,7 @@ module ot_tray(h, grid = false, gussets = true) {
                         rect([L - 2 * w, W - 2 * w], rounding = max(0.5, ot_corner_r - w));
             }
             // Corner bosses, with a rounded inner corner
-            for (q = ot_pin_xy) {
+            for (q = pins) {
                 s = [sign(q.x), sign(q.y)];
                 translate([q.x, q.y, 0])
                     linear_extrude(height = h)
@@ -6832,7 +6950,7 @@ module ot_tray(h, grid = false, gussets = true) {
                         }
             }
             // Pins
-            for (q = ot_pin_xy)
+            for (q = pins)
                 translate([q.x, q.y, h - overlap])
                     cyl(h = ot_pin_h + overlap, d = ot_pin_d, chamfer2 = 0.5, anchor = BOTTOM);
             // Finger-hold lips at the middle of each end wall
@@ -6843,7 +6961,7 @@ module ot_tray(h, grid = false, gussets = true) {
                             ot_grip_lip(h, r);
         }
         // Sockets under the pins
-        for (q = ot_pin_xy) translate([q.x, q.y, -overlap]) {
+        for (q = pins) translate([q.x, q.y, -overlap]) {
             cylinder(h = ot_sock_h + overlap, d = ot_sock_d);
             cylinder(h = ot_socket_chamfer + overlap,
                      d1 = ot_sock_d + 2 * (ot_socket_chamfer + overlap), d2 = ot_sock_d);
@@ -6854,9 +6972,9 @@ module ot_tray(h, grid = false, gussets = true) {
 // Gussets along the long wall on side sy (+1 = +Y), at positions xs along
 // it, for a tray of height h: triangles from the wall's foot, ot_gusset_d
 // along the floor and up to ot_gusset_h up the wall
-module ot_gusset_row(xs, sy, h) {
+module ot_gusset_row(xs, sy, h, W = ot_wid) {
     gh = min(ot_gusset_h, 0.6 * (h - ot_floor));
-    yi = sy * (ot_wid / 2 - ot_wall);
+    yi = sy * (W / 2 - ot_wall);
     for (x = xs)
         translate([x - ot_gusset_t / 2, yi, ot_floor - overlap])
             mirror([0, sy > 0 ? 1 : 0, 0])
@@ -6866,15 +6984,16 @@ module ot_gusset_row(xs, sy, h) {
 
 // Divider grid for a tray of height h, from the floor to ot_divider_frac of
 // the tray height
-module ot_dividers(h) {
+module ot_dividers(h, g = ot_grid(ot_len, ot_wid, ot_cols, ot_rows)) {
     dh = ot_divider_frac * h - ot_floor + overlap;
+    in = g[0];
     translate([0, 0, ot_floor - overlap]) {
-        for (x = ot_div_pos(ot_ncols, ot_in.x, ot_cell_sz.x))
-            translate([x - ot_divider_t / 2, -ot_in.y / 2 - overlap, 0])
-                cube([ot_divider_t, ot_in.y + 2 * overlap, dh]);
-        for (y = ot_div_pos(ot_nrows, ot_in.y, ot_cell_sz.y))
-            translate([-ot_in.x / 2 - overlap, y - ot_divider_t / 2, 0])
-                cube([ot_in.x + 2 * overlap, ot_divider_t, dh]);
+        for (x = ot_div_pos(g[1], in.x, g[3].x))
+            translate([x - ot_divider_t / 2, -in.y / 2 - overlap, 0])
+                cube([ot_divider_t, in.y + 2 * overlap, dh]);
+        for (y = ot_div_pos(g[2], in.y, g[3].y))
+            translate([-in.x / 2 - overlap, y - ot_divider_t / 2, 0])
+                cube([in.x + 2 * overlap, ot_divider_t, dh]);
     }
 }
 
