@@ -58,7 +58,7 @@ DEVVER   := $(shell sed -n 's/^\/\/ VSM Base, version \([0-9]*\).*/\1/p' $(MODEL
 LABEL    := $(if $(VERSION),Version $(VERSION),Development Build v$(DEVVER))
 IMAGES   := $(wildcard docs/images/*/*)
 
-.PHONY: presets all params images pdf html docs clean snapshot matrix matrix-full
+.PHONY: presets all params images pdf html docs clean snapshot matrix matrix-full lazy-check
 
 all: params presets images docs
 
@@ -234,8 +234,13 @@ clean:
 # combination of the main options (minutes); "matrix-full" also renders the
 # printable parts (about a quarter of an hour on two cores). Both compare
 # with the committed baseline, write build/test-matrix.md, and fail if anything changed.
-matrix:
+matrix: lazy-check
 	python3 tools/test_matrix.py --level quick
 
-matrix-full:
+matrix-full: lazy-check
 	python3 tools/test_matrix.py --level full
+
+# Code that OpenSCAD's lazy union would change (tools/check_lazy_union.py);
+# reads the source only, so it takes a moment. Run first by both matrices.
+lazy-check:
+	python3 tools/check_lazy_union.py

@@ -313,6 +313,14 @@ see [`tools/test_matrix.py`](tools/test_matrix.py). Passing means only that
 the model generates what it did before, not that anything prints, fits or
 holds. The moving parts (hinges, lids, the knee mechanism) are not swept
 through their travel for collisions; that is left as an exercise.
+Both first run `make lazy-check`
+([`tools/check_lazy_union.py`](tools/check_lazy_union.py)), which reads the
+.scad files for code whose meaning changes when OpenSCAD's experimental
+lazy union is on (as it is for multi-color 3MF export): a `for`, an
+`if` with more than one object, or `children()`, inside `intersection()` or
+first in `difference()`. Lazy union passes such a child's objects on one by
+one, so they are intersected with or subtracted from one another; wrapping
+the child in `union()` cures it.
 
 A version tag (`v*`) builds the documents and attaches them to a GitHub
 release (see
